@@ -6,7 +6,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#0a0a14">
-    <title>Feelio — Your private mood space</title>
+    <title>Feelio</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&family=Noto+Sans+Arabic:wght@300;400;500;700&family=Noto+Sans+JP:wght@300;400;500&family=Noto+Sans+SC:wght@300;400;500&display=swap');
         *{margin:0;padding:0;box-sizing:border-box}
@@ -47,10 +47,10 @@
         @keyframes popIn{0%{transform:scale(0) rotate(-8deg);opacity:0}70%{transform:scale(1.15) rotate(2deg)}100%{transform:scale(1) rotate(0);opacity:1}}
         #phrase{color:var(--text);font-size:0.95rem;font-weight:400;text-align:center;max-width:340px;line-height:1.4}
         #phrase2{color:var(--text2);font-size:0.72rem;font-weight:300;text-align:center;max-width:340px;line-height:1.4}
-        .ask-box{display:flex;flex-direction:column;align-items:center;gap:12px;margin-top:18px;animation:fadeIn 0.5s ease-out}
+        #askBox{display:none;flex-direction:column;align-items:center;gap:12px;margin-top:18px;animation:fadeIn 0.5s ease-out}
         @keyframes fadeIn{0%{opacity:0}100%{opacity:1}}
-        .ask-text{color:var(--text);font-size:0.85rem;font-weight:400;text-align:center}
-        .ask-btns{display:flex;gap:10px}
+        #askText{color:var(--text);font-size:0.85rem;font-weight:400;text-align:center}
+        #askBtns{display:flex;gap:10px}
         .btn{display:inline-flex;align-items:center;gap:6px;padding:12px 26px;border-radius:50px;font-size:0.7rem;font-weight:400;letter-spacing:0.5px;cursor:pointer;transition:all 0.3s;border:none}
         .btn-primary{background:linear-gradient(135deg,var(--accent2),var(--accent));color:#fff;box-shadow:0 4px 18px rgba(124,58,237,0.25)}
         .btn-primary:active{transform:scale(0.95)}
@@ -83,15 +83,12 @@
     </style>
 </head>
 <body>
-
 <div class="bg-orb" id="bgOrb"></div>
 <div class="rain-layer" id="rainCt"></div>
-
 <div class="top-bar">
     <div class="privacy-badge"><span class="privacy-dot"></span><span id="privacyText">100% Private • No data collected</span></div>
     <div class="langs" id="langsTop"></div>
 </div>
-
 <div class="app">
     <div class="screen active" id="screen-draw">
         <svg class="logo-svg" viewBox="0 0 50 50" fill="none"><ellipse cx="25" cy="18" rx="16" ry="9" fill="url(#g1)"/><ellipse cx="18" cy="24" rx="9" ry="7" fill="url(#g2)"/><ellipse cx="33" cy="22" rx="7" ry="5" fill="url(#g3)"/><circle cx="25" cy="34" r="4" fill="url(#g4)"/><defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#a78bfa"/><stop offset="1" stop-color="#7c3aed"/></linearGradient><linearGradient id="g2" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#c4b5fd"/><stop offset="1" stop-color="#a78bfa"/></linearGradient><linearGradient id="g3" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#8b5cf6"/><stop offset="1" stop-color="#6366f1"/></linearGradient><linearGradient id="g4" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e9d5ff"/><stop offset="1" stop-color="#a78bfa"/></linearGradient></defs></svg>
@@ -99,7 +96,7 @@
         <div class="tagline" id="tagline">Draw your mood</div>
         <div class="canvas-wrap"><canvas id="canvas" width="560" height="560"></canvas></div>
         <div id="resultWrap"><div id="result"></div><div id="phrase"></div><div id="phrase2"></div></div>
-        <div id="askBox" style="display:none"></div>
+        <div id="askBox"><div id="askText"></div><div id="askBtns"></div></div>
         <button class="btn btn-outline btn-small" onclick="resetCanvas()" id="btnReset" style="margin-top:10px">Clear</button>
         <div class="counter" id="counter"></div>
         <div class="hint" id="hint">Use your finger to draw</div>
@@ -114,53 +111,22 @@
         <div style="font-size:1.1rem;font-weight:300;letter-spacing:5px;margin-bottom:4px" id="statsTitle">Your Stats</div>
         <div style="color:var(--text3);font-size:0.6rem;margin-bottom:18px" id="statsSub">This month's emotions</div>
         <div id="statsContainer"></div>
-        <div class="premium-card">
-            <h3 id="premTitle">Feelio Premium</h3>
-            <p style="color:var(--text2);font-size:0.6rem;margin-bottom:8px;line-height:1.5" id="premDesc">30-day history • Export PDF • Custom themes<br>Support Feelio's mission</p>
-            <div class="price" id="premPrice">2€</div>
-            <div class="period" id="premPeriod">per month</div>
-            <button class="btn btn-primary btn-small" style="margin-top:10px" onclick="alert('Coming soon')" id="premBtn">Coming soon</button>
-        </div>
+        <div class="premium-card"><h3 id="premTitle">Feelio Premium</h3><p style="color:var(--text2);font-size:0.6rem;margin-bottom:8px;line-height:1.5" id="premDesc">30-day history • Export PDF • Custom themes<br>Support Feelio's mission</p><div class="price" id="premPrice">2€</div><div class="period" id="premPeriod">per month</div><button class="btn btn-primary btn-small" style="margin-top:10px" onclick="alert('Coming soon')" id="premBtn">Coming soon</button></div>
     </div>
     <div class="screen" id="screen-about">
         <div style="font-size:1.1rem;font-weight:300;letter-spacing:5px;margin-bottom:18px" id="aboutTitle">About Feelio</div>
         <div class="about-block" id="aboutContent"></div>
     </div>
 </div>
-
 <div class="nav">
     <div class="nav-item active" onclick="showScreen('draw')"><span class="icon">🎨</span><span class="nav-label">Draw</span></div>
     <div class="nav-item" onclick="showScreen('history')"><span class="icon">📅</span><span class="nav-label">Week</span></div>
     <div class="nav-item" onclick="showScreen('stats')"><span class="icon">📊</span><span class="nav-label">Stats</span></div>
     <div class="nav-item" onclick="showScreen('about')"><span class="icon">ℹ️</span><span class="nav-label">About</span></div>
 </div>
-
-<div class="modal-overlay" id="modalWrite"><div class="modal">
-    <div style="font-size:1rem;font-weight:400;margin-bottom:2px" id="modalWriteTitle">What's on your mind?</div>
-    <div style="color:var(--text3);font-size:0.5rem;margin-bottom:6px">Everything stays on your phone.</div>
-    <textarea id="journalText" placeholder="Write here..."></textarea>
-    <div class="btn-row"><button class="btn btn-outline btn-small" onclick="closeModal('modalWrite')">Cancel</button><button class="btn btn-primary btn-small" onclick="saveJournal()">💾 Save</button></div>
-</div></div>
-
-<div class="modal-overlay" id="modalSpeak"><div class="modal">
-    <div style="font-size:1rem;font-weight:400;margin-bottom:2px" id="modalSpeakTitle">Speak freely</div>
-    <div style="color:var(--text3);font-size:0.5rem;margin-bottom:8px">Your voice stays on your phone.</div>
-    <div id="speechResult" style="min-height:50px;color:var(--text);font-size:0.7rem;padding:12px;background:rgba(255,255,255,0.03);border-radius:14px;margin-bottom:10px"></div>
-    <div class="btn-row">
-        <button class="btn btn-outline btn-small" onclick="closeModal('modalSpeak')">Cancel</button>
-        <button class="btn btn-primary btn-small" id="btnStartSpeak" onclick="startSpeech()">🎙️ Start</button>
-        <button class="btn btn-outline btn-small" id="btnStopSpeak" onclick="stopSpeech()" style="display:none">⏹️ Stop</button>
-        <button class="btn btn-primary btn-small" id="btnSaveSpeech" onclick="saveSpeech()" style="display:none">💾 Save</button>
-    </div>
-</div></div>
-
-<div class="modal-overlay" id="modalSaved"><div class="modal">
-    <div style="font-size:2.5rem;margin-bottom:12px">🔒</div>
-    <div style="font-size:1rem;font-weight:400;margin-bottom:4px" id="savedMsg">It's between you and you.</div>
-    <div style="color:var(--text3);font-size:0.6rem">No one will ever read this.</div>
-    <button class="btn btn-primary btn-small" style="margin-top:16px" onclick="closeModal('modalSaved')">OK</button>
-</div></div>
-
+<div class="modal-overlay" id="modalWrite"><div class="modal"><div style="font-size:1rem;font-weight:400;margin-bottom:2px" id="modalWriteTitle">What's on your mind?</div><div style="color:var(--text3);font-size:0.5rem;margin-bottom:6px">Everything stays on your phone.</div><textarea id="journalText" placeholder="Write here..."></textarea><div class="btn-row"><button class="btn btn-outline btn-small" onclick="closeModal('modalWrite')">Cancel</button><button class="btn btn-primary btn-small" onclick="saveJournal()">💾 Save</button></div></div></div>
+<div class="modal-overlay" id="modalSpeak"><div class="modal"><div style="font-size:1rem;font-weight:400;margin-bottom:2px" id="modalSpeakTitle">Speak freely</div><div style="color:var(--text3);font-size:0.5rem;margin-bottom:8px">Your voice stays on your phone.</div><div id="speechResult" style="min-height:50px;color:var(--text);font-size:0.7rem;padding:12px;background:rgba(255,255,255,0.03);border-radius:14px;margin-bottom:10px"></div><div class="btn-row"><button class="btn btn-outline btn-small" onclick="closeModal('modalSpeak')">Cancel</button><button class="btn btn-primary btn-small" id="btnStartSpeak" onclick="startSpeech()">🎙️ Start</button><button class="btn btn-outline btn-small" id="btnStopSpeak" onclick="stopSpeech()" style="display:none">⏹️ Stop</button><button class="btn btn-primary btn-small" id="btnSaveSpeech" onclick="saveSpeech()" style="display:none">💾 Save</button></div></div></div>
+<div class="modal-overlay" id="modalSaved"><div class="modal"><div style="font-size:2.5rem;margin-bottom:12px">🔒</div><div style="font-size:1rem;font-weight:400;margin-bottom:4px" id="savedMsg">It's between you and you.</div><div style="color:var(--text3);font-size:0.6rem">No one will ever read this.</div><button class="btn btn-primary btn-small" style="margin-top:16px" onclick="closeModal('modalSaved')">OK</button></div></div>
 <script>
 const T={
 en:{privacy:'100% Private • No data collected',tagline:'Draw your mood',reset:'Clear',hint:'Use your finger to draw',counter:'moods drawn worldwide',nav:['Draw','Week','Stats','About'],week:'Your Week',weekSub:'7-day emotional weather',clearH:'Clear history',stats:'Your Stats',statsSub:'This month\'s emotions',premTitle:'Feelio Premium',premDesc:'30-day history • Export PDF • Custom themes<br>Support Feelio\'s mission',premPrice:'2€',premPeriod:'per month',premBtn:'Coming soon',about:'About Feelio',aboutText:'<p>Feelio was created by someone who knows what it means to <span class="hl">hurt</span>.</p><p>Someone who still walks through storms.</p><p>In a world where everyone is connected<br>but no one truly <span class="hl">listens</span>,<br>Feelio is a quiet place.</p><p>No ads. No cookies. No account.<br>No data collected. No one watching.</p><p>Just you, your finger, and a moment of <span class="hl">truth</span>.</p><p>You draw. Feelio listens.<br>You can write. You can speak.<br>Everything stays on your phone.</p><p>Feelio wants <span class="hl">nothing</span> from you.<br>Feelio is <span class="hl">here</span> for you.</p><p>Free. Private. Human.<br>Forever.</p>',askWant:'Do you want to talk about it?',askYes:'Yes',askNo:'No',thanks:'Okay. Take care of yourself. 🌿',writeLabel:'Write',speakLabel:'Speak',modalWrite:'What\'s on your mind?',modalSpeak:'Speak freely',saved:'It\'s between you and you.',writePH:'Write here...',tornado:'🌪️',t1:'A storm inside.',t2:'Even storms run out of rain.',lightning:'⚡',l1:'Electric. Alive.',l2:'This energy is yours.',rain:'🌧️',r1:'It falls. It washes.',r2:'Some things grow only in rain.',sun:'☀️',s1:'You shine today.',s2:'Someone needed this light.',night:'🌙',n1:'Quiet now.',n2:'Rest is not weakness.',rainbow:'🌈',rb1:'Look what you\'ve crossed.',rb2:'Still here. That\'s everything.'},
@@ -170,58 +136,49 @@ ar:{privacy:'100% خاص • لا جمع للبيانات',tagline:'ارسم م�
 ja:{privacy:'100% プライベート • データ収集なし',tagline:'気持ちを描いて',reset:'消す',hint:'指で描いて',counter:'世界で描かれた気持ち',nav:['描く','週間','統計','情報'],week:'あなたの一週間',weekSub:'7日間の感情の天気',clearH:'履歴を消去',stats:'統計',statsSub:'今月の感情',premTitle:'Feelio プレミアム',premDesc:'30日間 • PDF出力 • テーマ<br>Feelioの使命をサポート',premPrice:'2€',premPeriod:'月額',premBtn:'近日公開',about:'情報',aboutText:'<p>Feelioは、<span class="hl">痛み</span>を知る誰かによって作られました。</p><p>今も嵐の中を歩いている誰か。</p><p>みんながつながっているのに、<br>誰も本当に<span class="hl">聞いていない</span>世界で、<br>Feelioは静かな場所です。</p><p>広告なし。クッキーなし。アカウントなし。<br>データ収集なし。監視なし。</p><p>ただ、あなたと、あなたの指と、<br><span class="hl">真実</span>の瞬間だけ。</p><p>描く。Feelioが聞く。<br>書ける。話せる。<br>すべては端末に残ります。</p><p>Feelioはあなたに<span class="hl">何も</span>求めません。<br>Feelioはあなたのために<span class="hl">ここに</span>います。</p><p>無料。プライベート。人間らしい。<br>永遠に。</p>',askWant:'話したいですか？',askYes:'はい',askNo:'いいえ',thanks:'わかりました。大切にしてください。🌿',writeLabel:'書く',speakLabel:'話す',modalWrite:'何を考えていますか？',modalSpeak:'自由に話してください',saved:'それはあなただけのものです。',writePH:'ここに書いてください...',tornado:'🌪️',t1:'内なる嵐。',t2:'嵐もいつかは雨が尽きる。',lightning:'⚡',l1:'電気的。生きている。',l2:'このエネルギーはあなたのもの。',rain:'🌧️',r1:'降る。洗い流す。',r2:'雨の中でしか育たないものもある。',sun:'☀️',s1:'今日は輝いている。',s2:'誰かがこの光を必要としていた。',night:'🌙',n1:'今は静かに。',n2:'休息は弱さではない。',rainbow:'🌈',rb1:'越えてきたものをご覧。',rb2:'まだここにいる。それで十分。'},
 zh:{privacy:'100% 私密 • 无数据收集',tagline:'画出你的心情',reset:'清除',hint:'用你的手指画画',counter:'全世界画出的心情',nav:['画画','周记','统计','关于'],week:'你的一周',weekSub:'7天情绪天气',clearH:'清除记录',stats:'你的统计',statsSub:'本月情绪',premTitle:'Feelio 高级版',premDesc:'30天记录 • 导出PDF • 主题<br>支持 Feelio 的使命',premPrice:'2€',premPeriod:'每月',premBtn:'即将推出',about:'关于',aboutText:'<p>Feelio 由一个深知<span class="hl">痛苦</span>的人创造。</p><p>一个仍在风暴中前行的人。</p><p>在一个每个人都连接着<br>却没有人真正<span class="hl">倾听</span>的世界里，<br>Feelio 是一个安静的地方。</p><p>无广告。无Cookie。无账户。<br>无数据收集。无人监视。</p><p>只有你，你的手指，和一刻<span class="hl">真实</span>。</p><p>你画。Feelio 倾听。<br>你可以写。你可以说。<br>一切都留在你的手机上。</p><p>Feelio 对你<span class="hl">一无所求</span>。<br>Feelio <span class="hl">在这里</span>为你。</p><p>免费。私密。人性。<br>永远。</p>',askWant:'你想谈谈吗？',askYes:'是',askNo:'否',thanks:'好的。照顾好自己。🌿',writeLabel:'写',speakLabel:'说',modalWrite:'你在想什么？',modalSpeak:'自由地说',saved:'这是你和自己之间的事。',writePH:'在这里写...',tornado:'🌪️',t1:'内心的风暴。',t2:'即使风暴也会耗尽雨水。',lightning:'⚡',l1:'电力十足。活着。',l2:'这份能量是你的。',rain:'🌧️',r1:'落下。冲刷。',r2:'有些东西只在雨中生长。',sun:'☀️',s1:'你今天闪闪发光。',s2:'有人需要这道光。',night:'🌙',n1:'现在安静。',n2:'休息不是软弱。',rainbow:'🌈',rb1:'看看你跨越的一切。',rb2:'还在这里。这就是一切。'},
 tam:{privacy:'100% ⵓⵙⵍⵉⴳ • ⵓⵔ ⵜⵜⵡⴰⴳⵔⴰⵏ ⵉⵙⴼⴽⴰ',tagline:'ⵙⵙⵓⵏⵖ ⵍⵃⴰⵍ ⵏⵏⴽ',reset:'ⵙⴼⴹ',hint:'ⵙⵙⵓⵏⵖ ⵙ ⴹⴹⴰⴹ',counter:'ⵍⵃⵡⴰⵍ ⴳ ⵓⵎⴰⴹⴰⵍ',nav:['ⵙⵙⵓⵏⵖ','ⵉⵎⴰⵍⴰⵙ','ⵉⵙⵉⴹⵏ','ⵖⴼ'],week:'ⵉⵎⴰⵍⴰⵙ ⵏⵏⴽ',weekSub:'ⵍⵃⴰⵍ ⵏ 7 ⵡⵓⵙⵙⴰⵏ',clearH:'ⵙⴼⴹ',stats:'ⵉⵙⵉⴹⵏ ⵏⵏⴽ',statsSub:'ⵍⵃⵡⴰⵍ ⵏ ⵡⴰⵢⵢⵓⵔ',premTitle:'ⴼⵉⵍⵢⵓ ⴱⵔⵉⵎⵢⵓⵎ',premDesc:'30 ⵡⵓⵙⵙⴰⵏ • PDF • ⵉⵣⵡⴰⵔ<br>ⴰⵡⵙ ⵉ ⵓⵡⴰⵍⵉⴼ ⵏ ⴼⵉⵍⵢⵓ',premPrice:'2€',premPeriod:'ⴽⵓ ⴰⵢⵢⵓⵔ',premBtn:'ⴰⴷ ⵢⴰⵙ',about:'ⵖⴼ',aboutText:'<p>ⴼⵉⵍⵢⵓ ⵉⵜⵜⵓⵙⵏⵓⵍⴼⴰ ⵙⴳ ⴷⴰⵔ ⵡⵉⵏ ⵉⵙⵙⵏⵏ <span class="hl">ⵍⵃⴰⵍ</span>.</p><p>ⵡⵉⵏ ⵉⵣⵔⵉⵏ ⴳ ⵡⴰⵙⵏⵖⴰⵍ.</p><p>ⴳ ⵓⵎⴰⴹⴰⵍ ⵏⵏⴰ ⵖ ⴽⵓⵍⵍⵓ ⵉⵇⵇⵏ,<br>ⵎⴰⵛⴰ ⵓⵔ ⴷ <span class="hl">ⵉⵙⵙⵎⵀⴰⵍ</span> ⵡⴰⵍⵓ,<br>ⴼⵉⵍⵢⵓ ⵉⴳⴰ ⴰⵎⴹⵇⴰⵔ ⵏ ⵍⵀⴷⵡⴰ.</p><p>ⴱⵍⴰ ⴰⴷⵖⴰⵍ. ⴱⵍⴰ ⴽⵓⴽⵉⵣ. ⴱⵍⴰ ⴰⵎⵉⴹⴰⵏ.<br>ⵓⵔ ⵜⵜⵡⴰⴳⵔⴰⵏ ⵉⵙⴼⴽⴰ. ⵡⴰⵍⵓ ⴰⴷ ⴽⵯⵏⵏ ⵉⵥⵕⵓ.</p><p>ⵖⴰⵙ ⴽⵯⵏⵏⵉ, ⴹⴹⴰⴹ ⵏⵏⴽ, ⴷ ⵓⴽⵓⴷ ⵏ <span class="hl">ⵜⵉⴷⵜ</span>.</p><p>ⴰⵔ ⵜⵙⵙⵓⵏⵖⴷ. ⴼⵉⵍⵢⵓ ⴰⵔ ⵉⵙⵙⵎⵀⴰⵍ.<br>ⵜⵣⵎⵔⴷ ⴰⴷ ⵜⴰⵔⴷ. ⵜⵣⵎⵔⴷ ⴰⴷ ⵜⵙⵙⵉⵡⵍⴷ.<br>ⴽⵓⵍⵍⵓ ⵉⵇⵇⵉⵎ ⴳ ⵜⵍⵉⴼⵓⵏ ⵏⵏⴽ.</p><p>ⴼⵉⵍⵢⵓ ⵓⵔ ⵉⵔⵉ <span class="hl">ⴰⵎⵢⴰ</span> ⵙⴳ ⴷⴰⵔⴽ.<br>ⴼⵉⵍⵢⵓ <span class="hl">ⴰⵇⵇⴰⵏ</span> ⵉ ⴽⵯⵏⵏⵉ.</p><p>ⴱⴰⵟⵍ. ⵓⵙⵍⵉⴳ. ⴰⴼⴳⴰⵏ.<br>ⵉ ⴷⴷⴰⵢⵎ.</p>',askWant:'ⵉⵙ ⵜⵔⵉⴷ ⴰⴷ ⵜⵙⵙⵉⵡⵍⴷ ⴼⵍⵍⴰⵙ?',askYes:'ⵡⴰⵅⵅⴰ',askNo:'ⵓⵀⵓ',thanks:'ⵡⴰⵅⵅⴰ. ⵃⵓⵡⵍ ⵖⴼ ⵢⵉⵎⴰⵏ ⵏⵏⴽ. 🌿',writeLabel:'ⴰⵔⵓ',speakLabel:'ⵙⵙⵉⵡⵍ',modalWrite:'ⵎⴰⵢⴷ ⴳ ⵓⵅⵅⴰⵎ ⵏⵏⴽ?',modalSpeak:'ⵙⵙⵉⵡⵍ ⴱⵍⴰ ⵜⵓⴽⴽⴰ',saved:'ⵊⴰⵔ ⴽⵯⵏⵏⵉ ⴷ ⴽⵯⵏⵏⵉ.',writePH:'ⴰⵔⵓ ⴷⴰ...',tornado:'🌪️',t1:'ⴰⵙⵏⵖⴰⵍ ⴳ ⵓⴳⵏⵙⵓ.',t2:'ⵓⵍⴰ ⴰⵙⵏⵖⴰⵍ ⴰⵔ ⵉⵜⴽⴽⴰ ⴰⵏⵥⴰⵕ.',lightning:'⚡',l1:'ⴰⵣⴳⵣⴰⵡ. ⴰⵎⵓⴷⴷⵉⵔ.',l2:'ⵜⵉⵥⵓⵕⵉ ⴰⴷ ⵜⵉⵏⵏⵉⵜ ⵏⵏⴽ.',rain:'🌧️',r1:'ⴰⵔ ⵉⵖⵍⵉ. ⴰⵔ ⵉⵙⵙⵉⵔⴷ.',r2:'ⴽⵔⴰ ⵏ ⵜⵖⴰⵡⵙⵉⵡⵉⵏ ⴰⵔ ⵎⵇⵇⵓⵔⵏⵜ ⵖⴰⵙ ⴳ ⵓⵏⵥⴰⵕ.',sun:'☀️',s1:'ⴰⵔ ⵜⵙⵙⴼⴰⵡⴷ ⴰⵙⵙⴰ.',s2:'ⴽⵔⴰ ⵏ ⵢⴰⵏ ⵉⵃⵡⴰⵊ ⵜⵉⴼⴰⵡⵜ ⴰⴷ.',night:'🌙',n1:'ⵙⵙⵓⵏⴼⵙ ⵖⵉⵍⴰⴷ.',n2:'ⵓⵔ ⵉⴳⵉ ⵓⵙⵙⵓⵏⴼⵙ ⴹⵓⵄⴼ.',rainbow:'🌈',rb1:'ⵥⵕ ⵎⴰⵢⴷ ⵜⵣⵔⵉⴷ.',rb2:'ⴰⵇⵇⴰⵏⴷ ⴷⴰ. ⵡⴰⵅⵅⴰ ⵢⴰⴷⴷⵓⴷⴷⵓⵏ.'}};
-
-let lang=(navigator.language||'en').split('-')[0];
-if(!T[lang])lang='en';
-let TX=T[lang];
-
-function setLang(l){lang=l;TX=T[l];document.querySelectorAll('.langs span').forEach(s=>s.classList.remove('active'));const b=document.getElementById('lang-'+l);if(b)b.classList.add('active');updateAllTexts();resetCanvas();buildHistory();buildStats()}
-function updateAllTexts(){document.getElementById('privacyText').textContent=TX.privacy;document.getElementById('tagline').textContent=TX.tagline;document.getElementById('btnReset').textContent=TX.reset;document.getElementById('hint').textContent=TX.hint;document.querySelectorAll('.nav-label').forEach((n,i)=>{if(i<TX.nav.length)n.textContent=TX.nav[i]});document.getElementById('weekTitle').textContent=TX.week;document.getElementById('weekSub').textContent=TX.weekSub;document.getElementById('clearHBtn').textContent=TX.clearH;document.getElementById('statsTitle').textContent=TX.stats;document.getElementById('statsSub').textContent=TX.statsSub;document.getElementById('premTitle').textContent=TX.premTitle;document.getElementById('premDesc').innerHTML=TX.premDesc;document.getElementById('premPrice').textContent=TX.premPrice;document.getElementById('premPeriod').textContent=TX.premPeriod;document.getElementById('premBtn').textContent=TX.premBtn;document.getElementById('aboutTitle').textContent=TX.about;document.getElementById('aboutContent').innerHTML=TX.aboutText;document.getElementById('modalWriteTitle').textContent=TX.modalWrite;document.getElementById('modalSpeakTitle').textContent=TX.modalSpeak;document.getElementById('savedMsg').textContent=TX.saved;document.getElementById('journalText').placeholder=TX.writePH;document.getElementById('btnWriteLabel').textContent=TX.writeLabel;document.getElementById('btnSpeakLabel').textContent=TX.speakLabel}
-
+function t(k){return TX[k]||''}
+let lang=(navigator.language||'en').split('-')[0];if(!T[lang])lang='en';let TX=T[lang];
+function setLang(l){lang=l;TX=T[l];document.querySelectorAll('.langs span').forEach(s=>s.classList.remove('active'));const b=document.getElementById('lang-'+l);if(b)b.classList.add('active');updateUI();resetCanvas();buildHistory();buildStats()}
+function updateUI(){
+    document.getElementById('privacyText').textContent=TX.privacy;
+    document.getElementById('tagline').textContent=TX.tagline;
+    document.getElementById('btnReset').textContent=TX.reset;
+    document.getElementById('hint').textContent=TX.hint;
+    document.querySelectorAll('.nav-label').forEach((n,i)=>{if(TX.nav[i])n.textContent=TX.nav[i]});
+    document.getElementById('weekTitle').textContent=TX.week;
+    document.getElementById('weekSub').textContent=TX.weekSub;
+    document.getElementById('clearHBtn').textContent=TX.clearH;
+    document.getElementById('statsTitle').textContent=TX.stats;
+    document.getElementById('statsSub').textContent=TX.statsSub;
+    document.getElementById('premTitle').textContent=TX.premTitle;
+    document.getElementById('premDesc').innerHTML=TX.premDesc;
+    document.getElementById('premPrice').textContent=TX.premPrice;
+    document.getElementById('premPeriod').textContent=TX.premPeriod;
+    document.getElementById('premBtn').textContent=TX.premBtn;
+    document.getElementById('aboutTitle').textContent=TX.about;
+    document.getElementById('aboutContent').innerHTML=TX.aboutText;
+    document.getElementById('modalWriteTitle').textContent=TX.modalWrite;
+    document.getElementById('modalSpeakTitle').textContent=TX.modalSpeak;
+    document.getElementById('savedMsg').textContent=TX.saved;
+    document.getElementById('journalText').placeholder=TX.writePH;
+    document.getElementById('counter').textContent=(parseInt(localStorage.getItem('feelio_total')||'0')).toLocaleString()+' '+TX.counter;
+}
 const langCodes=Object.keys(T),langLabels={en:'EN',fr:'FR',es:'ES',ar:'AR',ja:'JA',zh:'中',tam:'ⵜ'};
 langCodes.forEach(c=>{const s=document.createElement('span');s.textContent=langLabels[c]||c;s.id='lang-'+c;s.onclick=()=>setLang(c);if(c===lang)s.classList.add('active');document.getElementById('langsTop').appendChild(s)});
-
-const canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
-let drawing=false,points=[],startTime=0;
-
+const canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');let drawing=false,points=[],startTime=0;
 function getPos(e){const r=canvas.getBoundingClientRect(),sX=canvas.width/r.width,sY=canvas.height/r.height,cX=e.touches?e.touches[0].clientX:e.clientX,cY=e.touches?e.touches[0].clientY:e.clientY;return{x:(cX-r.left)*sX,y:(cY-r.top)*sY}}
-
 canvas.addEventListener('touchstart',e=>{e.preventDefault();drawing=true;points=[];startTime=Date.now();document.getElementById('hint').style.opacity='0';const p=getPos(e);points.push({x:p.x,y:p.y,time:Date.now()});ctx.beginPath();ctx.moveTo(p.x,p.y);if(navigator.vibrate)navigator.vibrate(8)});
 canvas.addEventListener('touchmove',e=>{e.preventDefault();if(!drawing)return;const p=getPos(e);points.push({x:p.x,y:p.y,time:Date.now()});ctx.lineTo(p.x,p.y);const g=ctx.createLinearGradient(p.x-10,p.y-10,p.x+10,p.y+10);g.addColorStop(0,'rgba(200,180,255,0.9)');g.addColorStop(0.5,'rgba(240,220,255,0.7)');g.addColorStop(1,'rgba(160,140,255,0.5)');ctx.strokeStyle=g;ctx.lineWidth=6;ctx.lineCap='round';ctx.lineJoin='round';ctx.shadowColor='rgba(180,160,255,0.35)';ctx.shadowBlur=14;ctx.stroke();ctx.shadowBlur=0});
 canvas.addEventListener('touchend',()=>{drawing=false;analyzeDrawing()});
 canvas.addEventListener('mousedown',e=>{drawing=true;points=[];startTime=Date.now();document.getElementById('hint').style.opacity='0';const p=getPos(e);points.push({x:p.x,y:p.y,time:Date.now()});ctx.beginPath();ctx.moveTo(p.x,p.y)});
 canvas.addEventListener('mousemove',e=>{if(!drawing)return;const p=getPos(e);points.push({x:p.x,y:p.y,time:Date.now()});ctx.lineTo(p.x,p.y);ctx.strokeStyle='rgba(200,180,255,0.9)';ctx.lineWidth=6;ctx.lineCap='round';ctx.lineJoin='round';ctx.stroke()});
 canvas.addEventListener('mouseup',()=>{drawing=false;analyzeDrawing()});
-
-function analyzeDrawing(){
-    document.getElementById('rainCt').style.opacity='0';document.body.style.background='var(--bg)';
-    if(points.length<8)return;
-    const endTime=Date.now(),duration=Math.max((endTime-startTime)/1000,0.1);
-    let totalDistance=0;for(let i=1;i<points.length;i++){const dx=points[i].x-points[i-1].x,dy=points[i].y-points[i-1].y;totalDistance+=Math.sqrt(dx*dx+dy*dy)}
-    const speed=totalDistance/duration;
-    let sumX=0,sumY=0;points.forEach(p=>{sumX+=p.x;sumY+=p.y});const cx=sumX/points.length,cy=sumY/points.length;
-    let dispersion=0;points.forEach(p=>{dispersion+=Math.sqrt((p.x-cx)**2+(p.y-cy)**2)});dispersion/=points.length;
-    const dc=countDirectionChanges(points),area=dispersion*dispersion*Math.PI;
-    let emoji,p1,p2,bg='';
-    if(speed>6&&dispersion>90){emoji=TX.tornado;p1=TX.t1;p2=TX.t2;bg='#140a1e'}
-    else if(speed>4&&dc>3){emoji=TX.lightning;p1=TX.l1;p2=TX.l2;bg='#0c0c22'}
-    else if(speed<2&&dispersion<50){emoji=TX.rain;p1=TX.r1;p2=TX.r2;bg='#0a121c';document.getElementById('rainCt').style.opacity='1'}
-    else if(speed<1.2&&area<10000){emoji=TX.sun;p1=TX.s1;p2=TX.s2;bg='#12100a'}
-    else if(speed<1&&dispersion<35){emoji=TX.night;p1=TX.n1;p2=TX.n2;bg='#080812'}
-    else if(dc>4&&speed>2){emoji=TX.lightning;p1=TX.l1;p2=TX.l2;bg='#0c0c22'}
-    else if(dispersion>60&&speed<3){emoji=TX.rainbow;p1=TX.rb1;p2=TX.rb2;bg='#0c0c16'}
-    else if(speed<1.8){emoji=TX.rain;p1=TX.r1;p2=TX.r2;bg='#0a121c';document.getElementById('rainCt').style.opacity='1'}
-    else{emoji=TX.rainbow;p1=TX.rb1;p2=TX.rb2;bg='#0c0c16'}
-    if(bg)document.body.style.background=bg;
-    const rel=document.getElementById('result');rel.textContent=emoji;rel.classList.remove('pop');void rel.offsetWidth;rel.classList.add('pop');
-    document.getElementById('phrase').textContent=p1;document.getElementById('phrase2').textContent=p2;
-    showAskBox();saveMood(emoji);updateCounter();
-}
+function analyzeDrawing(){document.getElementById('rainCt').style.opacity='0';document.body.style.background='var(--bg)';if(points.length<8)return;const endTime=Date.now(),duration=Math.max((endTime-startTime)/1000,0.1);let totalDistance=0;for(let i=1;i<points.length;i++){const dx=points[i].x-points[i-1].x,dy=points[i].y-points[i-1].y;totalDistance+=Math.sqrt(dx*dx+dy*dy)}const speed=totalDistance/duration;let sumX=0,sumY=0;points.forEach(p=>{sumX+=p.x;sumY+=p.y});const cx=sumX/points.length,cy=sumY/points.length;let dispersion=0;points.forEach(p=>{dispersion+=Math.sqrt((p.x-cx)**2+(p.y-cy)**2)});dispersion/=points.length;const dc=countDirectionChanges(points),area=dispersion*dispersion*Math.PI;let emoji,p1,p2,bg='';if(speed>6&&dispersion>90){emoji=TX.tornado;p1=TX.t1;p2=TX.t2;bg='#140a1e'}else if(speed>4&&dc>3){emoji=TX.lightning;p1=TX.l1;p2=TX.l2;bg='#0c0c22'}else if(speed<2&&dispersion<50){emoji=TX.rain;p1=TX.r1;p2=TX.r2;bg='#0a121c';document.getElementById('rainCt').style.opacity='1'}else if(speed<1.2&&area<10000){emoji=TX.sun;p1=TX.s1;p2=TX.s2;bg='#12100a'}else if(speed<1&&dispersion<35){emoji=TX.night;p1=TX.n1;p2=TX.n2;bg='#080812'}else if(dc>4&&speed>2){emoji=TX.lightning;p1=TX.l1;p2=TX.l2;bg='#0c0c22'}else if(dispersion>60&&speed<3){emoji=TX.rainbow;p1=TX.rb1;p2=TX.rb2;bg='#0c0c16'}else if(speed<1.8){emoji=TX.rain;p1=TX.r1;p2=TX.r2;bg='#0a121c';document.getElementById('rainCt').style.opacity='1'}else{emoji=TX.rainbow;p1=TX.rb1;p2=TX.rb2;bg='#0c0c16'}if(bg)document.body.style.background=bg;const rel=document.getElementById('result');rel.textContent=emoji;rel.classList.remove('pop');void rel.offsetWidth;rel.classList.add('pop');document.getElementById('phrase').textContent=p1;document.getElementById('phrase2').textContent=p2;showAskBox();saveMood(emoji);updateCounter()}
 function countDirectionChanges(pts){let c=0;if(pts.length<3)return 0;for(let i=2;i<pts.length;i++){const dx1=pts[i-1].x-pts[i-2].x,dy1=pts[i-1].y-pts[i-2].y,dx2=pts[i].x-pts[i-1].x,dy2=pts[i].y-pts[i-1].y;const dot=dx1*dx2+dy1*dy2,m1=Math.sqrt(dx1*dx1+dy1*dy1),m2=Math.sqrt(dx2*dx2+dy2*dy2);if(m1>0&&m2>0&&dot/(m1*m2)<0.3)c++}return c}
-function showAskBox(){const box=document.getElementById('askBox');box.style.display='flex';box.innerHTML='<div class="ask-text">'+TX.askWant+'</div><div class="ask-btns"><button class="btn btn-primary btn-small" onclick="showWriteSpeak()">'+TX.askYes+'</button><button class="btn btn-outline btn-small" onclick="sayThanks()">'+TX.askNo+'</button></div>'}
-function showWriteSpeak(){const box=document.getElementById('askBox');box.innerHTML='<div class="ask-btns"><button class="btn btn-primary" onclick="openWrite()">✍️ '+TX.writeLabel+'</button><button class="btn btn-outline" onclick="openSpeak()">🎙️ '+TX.speakLabel+'</button></div>'}
-function sayThanks(){document.getElementById('askBox').innerHTML='<div class="ask-text">'+TX.thanks+'</div>';setTimeout(()=>{document.getElementById('askBox').style.display='none'},3000)}
-function resetCanvas(){ctx.clearRect(0,0,canvas.width,canvas.height);document.getElementById('result').textContent='';document.getElementById('phrase').textContent='';document.getElementById('phrase2').textContent='';document.body.style.background='var(--bg)';document.getElementById('rainCt').style.opacity='0';document.getElementById('askBox').style.display='none';document.getElementById('askBox').innerHTML='';points=[];document.getElementById('hint').style.opacity='1'}
+function showAskBox(){const box=document.getElementById('askBox');box.style.display='flex';document.getElementById('askText').textContent=TX.askWant;document.getElementById('askBtns').innerHTML='<button class="btn btn-primary btn-small" onclick="showWriteSpeak()">'+TX.askYes+'</button><button class="btn btn-outline btn-small" onclick="sayThanks()">'+TX.askNo+'</button>'}
+function showWriteSpeak(){document.getElementById('askBtns').innerHTML='<button class="btn btn-primary" onclick="openWrite()">✍️ '+TX.writeLabel+'</button><button class="btn btn-outline" onclick="openSpeak()">🎙️ '+TX.speakLabel+'</button>'}
+function sayThanks(){document.getElementById('askBox').innerHTML='<div id="askText">'+TX.thanks+'</div>';setTimeout(()=>{document.getElementById('askBox').style.display='none'},3000)}
+function resetCanvas(){ctx.clearRect(0,0,canvas.width,canvas.height);document.getElementById('result').textContent='';document.getElementById('phrase').textContent='';document.getElementById('phrase2').textContent='';document.body.style.background='var(--bg)';document.getElementById('rainCt').style.opacity='0';document.getElementById('askBox').style.display='none';document.getElementById('askBox').innerHTML='<div id="askText"></div><div id="askBtns"></div>';points=[];document.getElementById('hint').style.opacity='1'}
 function updateCounter(){let c=parseInt(localStorage.getItem('feelio_total')||'0');c++;localStorage.setItem('feelio_total',c);document.getElementById('counter').textContent=c.toLocaleString()+' '+TX.counter}
 let saved=parseInt(localStorage.getItem('feelio_total')||'0');document.getElementById('counter').textContent=saved.toLocaleString()+' '+TX.counter;
 function saveMood(emoji){const h=JSON.parse(localStorage.getItem('feelio_history')||'[]');h.push({emoji,date:new Date().toISOString().split('T')[0]});if(h.length>30)h.shift();localStorage.setItem('feelio_history',JSON.stringify(h))}
@@ -238,7 +195,7 @@ function startSpeech(){const SR=window.SpeechRecognition||window.webkitSpeechRec
 function stopSpeech(){if(recognition){recognition.stop();recognition=null}}
 function saveSpeech(){const text=document.getElementById('speechResult').textContent.trim();if(!text)return;const entries=JSON.parse(localStorage.getItem('feelio_journal')||'[]');entries.push({text,date:new Date().toISOString()});localStorage.setItem('feelio_journal',JSON.stringify(entries));closeModal('modalSpeak');document.getElementById('modalSaved').classList.add('open')}
 (function(){const c=document.getElementById('rainCt');for(let i=0;i<100;i++){const d=document.createElement('div');d.className='drop';d.style.left=Math.random()*100+'%';d.style.height=(6+Math.random()*20)+'px';d.style.animationDuration=(0.4+Math.random()*0.8)+'s';d.style.animationDelay=Math.random()*3+'s';c.appendChild(d)}})();
-updateAllTexts();
+updateUI();
 </script>
 </body>
 </html>
