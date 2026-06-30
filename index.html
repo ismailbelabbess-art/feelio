@@ -2,228 +2,475 @@
 <html lang="mul">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#0a0a12">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    <title>Feelio — Draw your mood</title>
+    <title>Feelio</title>
     <style>
-        * { margin:0; padding:0; box-sizing:border-box; }
-        body {
-            background:#080810; color:#fff;
-            font-family: -apple-system, sans-serif;
-            height:100vh; height:100dvh;
-            display:flex; flex-direction:column; align-items:center; justify-content:center;
-            overflow:hidden; transition: background 1.2s;
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&family=Noto+Sans+Arabic:wght@300;400;500&family=Noto+Sans+JP:wght@300;400;500&family=Noto+Sans+SC:wght@300;400;500&display=swap');
+        *{margin:0;padding:0;box-sizing:border-box}
+        :root{
+            --bg:#0a0a12;--surface:rgba(20,20,40,0.7);--text:#e0e0e0;--text2:#888;--text3:#555;
+            --accent:#8b5cf6;--accent2:#6366f1;--danger:#ef4444;--sun:#f59e0b;--rain:#3b82f6;--night:#1e1b4b;--storm:#6b21a8;
+            --font:'Inter',-apple-system,sans-serif;--font-ar:'Noto Sans Arabic',sans-serif;--font-ja:'Noto Sans JP',sans-serif;--font-zh:'Noto Sans SC',sans-serif;
         }
-        .langs { position:fixed; top:16px; right:16px; z-index:20; display:flex; gap:4px; flex-wrap:wrap; justify-content:flex-end; max-width:200px; }
-        .langs span {
-            color:#555; font-size:0.6rem; cursor:pointer;
-            padding:5px 8px; border-radius:10px;
+        body{
+            background:var(--bg);color:var(--text);font-family:var(--font);
+            height:100vh;height:100dvh;width:100vw;overflow:hidden;position:relative;
+            transition:background 1.2s cubic-bezier(0.4,0,0.2,1);
+            -webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased;
         }
-        .langs span.active { color:#aaa; background:rgba(255,255,255,0.06); }
-        .logo { font-size:1.8rem; font-weight:200; letter-spacing:5px; margin-bottom:4px; }
-        .tagline { color:#555; font-size:0.75rem; margin-bottom:16px; }
-        canvas {
-            border:1px solid rgba(255,255,255,0.1); border-radius:24px;
-            background:rgba(10,10,30,0.6); touch-action:none;
-            width:280px; height:280px;
-        }
-        #result { font-size:3.8rem; min-height:65px; margin-top:14px; }
-        #phrase { color:#999; font-size:0.85rem; margin-top:6px; text-align:center; max-width:320px; }
-        #phrase2 { color:#666; font-size:0.72rem; margin-top:3px; text-align:center; max-width:320px; }
-        button {
-            margin-top:12px; padding:12px 32px;
-            background:rgba(255,255,255,0.04); color:#777;
-            border:1px solid rgba(255,255,255,0.08); border-radius:50px;
-            font-size:0.8rem; cursor:pointer;
-        }
-        #counter { margin-top:18px; color:#333; font-size:0.65rem; }
-        .hint { color:#444; font-size:0.7rem; margin-top:8px; }
+        .bg-layer{position:fixed;inset:0;pointer-events:none;z-index:0}
+        .orb{position:absolute;border-radius:50%;filter:blur(100px);opacity:0.08;transition:all 1.5s}
+        .orb:nth-child(1){width:350px;height:350px;background:var(--accent);top:-5%;left:-10%}
+        .orb:nth-child(2){width:280px;height:280px;background:var(--accent2);bottom:-8%;right:-8%}
+        .orb:nth-child(3){width:200px;height:200px;background:var(--sun);top:40%;left:60%;opacity:0.04}
+        
+        .rain-layer{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:0;transition:opacity 1.2s}
+        .drop{position:absolute;width:1px;border-radius:2px;animation:fall linear infinite;background:linear-gradient(transparent,rgba(150,180,240,0.4))}
+        @keyframes fall{0%{transform:translateY(-5vh);opacity:0}15%{opacity:1}100%{transform:translateY(105vh);opacity:0.2}}
+        
+        .snow-layer{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:0;transition:opacity 1.2s}
+        .flake{position:absolute;background:#fff;border-radius:50%;animation:drift linear infinite}
+        @keyframes drift{0%{transform:translateY(-5vh) rotate(0deg);opacity:0}10%{opacity:0.8}100%{transform:translateY(105vh) rotate(360deg);opacity:0}}
+        
+        .app{position:relative;z-index:10;height:100%;display:flex;flex-direction:column}
+        .screen{display:none;flex:1;flex-direction:column;align-items:center;justify-content:center;padding:20px;overflow-y:auto}
+        .screen.active{display:flex}
+        
+        .nav{position:fixed;bottom:0;left:0;right:0;z-index:50;display:flex;justify-content:space-around;align-items:center;
+            background:rgba(10,10,18,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+            border-top:1px solid rgba(255,255,255,0.05);padding:8px 0 env(safe-area-inset-bottom,10px);height:64px}
+        .nav-item{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;padding:6px 14px;border-radius:16px;
+            transition:all 0.3s;color:var(--text3);font-size:0.6rem;font-weight:400;letter-spacing:0.5px}
+        .nav-item.active{color:var(--accent);background:rgba(139,92,246,0.08)}
+        .nav-item .icon{font-size:1.3rem;transition:transform 0.3s}
+        .nav-item.active .icon{transform:scale(1.1)}
+        
+        .logo{font-size:2.2rem;font-weight:200;letter-spacing:10px;margin-bottom:4px;
+            background:linear-gradient(135deg,#c4b5fd,#8b5cf6);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .tagline{color:var(--text3);font-size:0.7rem;font-weight:300;letter-spacing:3px;margin-bottom:24px;text-transform:uppercase}
+        
+        .canvas-wrap{position:relative;margin-bottom:16px}
+        .canvas-wrap::before{content:'';position:absolute;inset:-1px;border-radius:28px;
+            background:linear-gradient(135deg,var(--accent2),var(--accent));opacity:0.3;filter:blur(6px);z-index:0;transition:opacity 0.8s}
+        canvas{position:relative;z-index:1;width:290px;height:290px;border-radius:27px;
+            background:rgba(18,18,38,0.6);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+            touch-action:none;cursor:crosshair;border:1px solid rgba(255,255,255,0.04)}
+        
+        #result{font-size:4.5rem;min-height:70px;margin-top:10px;transition:all 0.5s cubic-bezier(0.34,1.56,0.64,1)}
+        #phrase{color:var(--text2);font-size:0.85rem;font-weight:300;margin-top:6px;text-align:center;max-width:320px;line-height:1.5}
+        #phrase2{color:var(--text3);font-size:0.7rem;font-weight:200;margin-top:3px;text-align:center;max-width:320px}
+        
+        .btn{display:inline-flex;align-items:center;gap:6px;margin-top:14px;padding:10px 28px;
+            background:rgba(255,255,255,0.03);color:var(--text3);border:1px solid rgba(255,255,255,0.06);
+            border-radius:50px;font-size:0.72rem;font-weight:300;letter-spacing:1px;cursor:pointer;transition:all 0.3s}
+        .btn:active{background:rgba(139,92,246,0.12);color:var(--accent);transform:scale(0.96)}
+        
+        .counter{color:#2a2a3a;font-size:0.6rem;font-weight:200;letter-spacing:1px;margin-top:16px}
+        .hint{color:var(--text3);font-size:0.65rem;font-weight:200;margin-top:8px;letter-spacing:1px;transition:opacity 0.4s}
+        
+        .promise{color:#2a2a35;font-size:0.55rem;font-weight:200;text-align:center;margin-top:20px;max-width:260px;line-height:1.6}
+        
+        .langs{position:fixed;top:14px;right:14px;z-index:60;display:flex;gap:3px;flex-wrap:wrap;justify-content:flex-end;max-width:200px}
+        .langs span{color:#3a3a4a;font-size:0.5rem;font-weight:500;cursor:pointer;padding:5px 7px;border-radius:8px;transition:all 0.3s}
+        .langs span.active{color:var(--accent);background:rgba(139,92,246,0.1)}
+        
+        .history-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-top:20px}
+        .history-day{display:flex;flex-direction:column;align-items:center;padding:12px 6px;background:rgba(255,255,255,0.02);border-radius:14px;font-size:0.65rem}
+        .history-day .emoji{font-size:1.5rem}
+        .history-day .label{color:var(--text3);margin-top:4px}
+        
+        .stat-card{display:flex;align-items:center;gap:14px;padding:16px 20px;background:rgba(255,255,255,0.02);border-radius:18px;margin:6px 0;width:100%;max-width:280px}
+        .stat-card .emoji{font-size:2rem}
+        .stat-card .count{font-size:1.3rem;font-weight:500}
+        .stat-card .label{color:var(--text3);font-size:0.7rem}
+        
+        .about-text{color:var(--text2);font-size:0.8rem;font-weight:300;line-height:1.8;text-align:center;max-width:320px;margin-top:20px}
+        .about-highlight{color:var(--accent);font-weight:400}
+        
+        .premium-card{background:rgba(139,92,246,0.06);border:1px solid rgba(139,92,246,0.12);border-radius:20px;padding:20px;margin-top:20px;text-align:center;max-width:300px}
+        .premium-card h3{color:var(--accent);font-size:1rem;font-weight:500;margin-bottom:8px}
+        .premium-card p{color:var(--text2);font-size:0.7rem;margin-bottom:12px;line-height:1.6}
+        .premium-card .price{font-size:1.6rem;font-weight:600;color:#fff;margin-bottom:4px}
+        .premium-card .period{color:var(--text3);font-size:0.65rem}
     </style>
 </head>
 <body>
 
-<div class="langs">
-    <span onclick="setLang('en')" class="active" id="lang-en">EN</span>
-    <span onclick="setLang('fr')" id="lang-fr">FR</span>
-    <span onclick="setLang('es')" id="lang-es">ES</span>
-    <span onclick="setLang('ar')" id="lang-ar">AR</span>
-    <span onclick="setLang('ja')" id="lang-ja">JA</span>
-    <span onclick="setLang('zh')" id="lang-zh">中</span>
-    <span onclick="setLang('tam')" id="lang-tam">ⵜ</span>
+<div class="bg-layer"><div class="orb"></div><div class="orb"></div><div class="orb"></div></div>
+<div class="rain-layer" id="rainLayer"></div>
+<div class="snow-layer" id="snowLayer"></div>
+
+<div class="langs" id="langs"></div>
+
+<div class="app">
+    <div class="screen active" id="screen-draw">
+        <div class="logo" id="logo">Feelio</div>
+        <div class="tagline" id="tagline">Draw your mood</div>
+        <div class="canvas-wrap"><canvas id="canvas" width="580" height="580"></canvas></div>
+        <div id="result"></div>
+        <div id="phrase"></div>
+        <div id="phrase2"></div>
+        <button class="btn" onclick="resetCanvas()" id="btnReset">Clear</button>
+        <div class="counter" id="counter"></div>
+        <div class="hint" id="hint">Use your finger to draw</div>
+        <div class="promise">No ads. No cookies. No account.<br>Your mood stays on your phone.<br>Free. Forever.</div>
+    </div>
+    
+    <div class="screen" id="screen-history">
+        <div style="font-size:1.2rem;font-weight:300;letter-spacing:4px;margin-bottom:8px">Your Week</div>
+        <div style="color:var(--text3);font-size:0.65rem;margin-bottom:16px">7-day emotional weather</div>
+        <div class="history-grid" id="historyGrid"></div>
+        <button class="btn" onclick="clearHistory()">Clear history</button>
+    </div>
+    
+    <div class="screen" id="screen-stats">
+        <div style="font-size:1.2rem;font-weight:300;letter-spacing:4px;margin-bottom:8px">Your Stats</div>
+        <div style="color:var(--text3);font-size:0.65rem;margin-bottom:16px">This month's emotions</div>
+        <div id="statsContainer"></div>
+        <div class="premium-card">
+            <h3>Feelio Premium</h3>
+            <p>30-day history • Export PDF • Custom themes<br>Support Feelio's mission</p>
+            <div class="price">2€</div>
+            <div class="period">per month</div>
+            <button class="btn" style="margin-top:10px" onclick="alert('Premium coming soon. Thank you for your support!')">Coming soon</button>
+        </div>
+    </div>
+    
+    <div class="screen" id="screen-about">
+        <div style="font-size:1.2rem;font-weight:300;letter-spacing:4px;margin-bottom:8px">About Feelio</div>
+        <div class="about-text">
+            <p>Feelio is a <span class="about-highlight">confident</span>.</p>
+            <p>You draw. It listens. No judgment.</p>
+            <p>In a world that wants your data,<br>Feelio wants <span class="about-highlight">nothing</span> from you.</p>
+            <p style="margin-top:12px">No ads. No trackers. No accounts.<br>Your emotions stay on your phone.<br>Always free. Always private.</p>
+            <p style="margin-top:14px;color:var(--text3);font-size:0.6rem">Created with care.<br>For those who need a moment of calm.</p>
+        </div>
+    </div>
 </div>
 
-<div class="logo" id="logo">☁️ Feelio</div>
-<div class="tagline" id="tagline">Draw your mood</div>
-
-<canvas id="canvas" width="560" height="560"></canvas>
-
-<div id="result"></div>
-<div id="phrase"></div>
-<div id="phrase2"></div>
-<button onclick="resetCanvas()" id="btnReset">Clear</button>
-<div id="counter"></div>
-<div class="hint" id="hint">Use your finger to draw</div>
+<div class="nav">
+    <div class="nav-item active" onclick="showScreen('draw')"><span class="icon">🎨</span>Draw</div>
+    <div class="nav-item" onclick="showScreen('history')"><span class="icon">📅</span>Week</div>
+    <div class="nav-item" onclick="showScreen('stats')"><span class="icon">📊</span>Stats</div>
+    <div class="nav-item" onclick="showScreen('about')"><span class="icon">ℹ️</span>About</div>
+</div>
 
 <script>
-const texts = {
-    en:{logo:'☁️ Feelio',tagline:'Draw your mood',reset:'Clear',hint:'Use your finger to draw',counter:'moods drawn worldwide',
-        tornado:'🌪️',t1:'Inner storm. Breathe. It will pass.',t2:'Let the wind carry your thoughts.',
-        lightning:'⚡',l1:'Electric energy. You need to move.',l2:'Turn this tension into action.',
-        rain:'🌧️',r1:'Gentle rain. It\'s okay to be sad.',r2:'After rain, the earth breathes.',
-        sun:'☀️',s1:'Quiet sun. Enjoy this moment.',s2:'Your light shines on those around you.',
-        night:'🌙',n1:'Soft night. Rest now.',n2:'The stars are watching over you.',
-        rainbow:'🌈',rb1:'Rainbow. You\'re going through many things.',rb2:'Your complexity is your beauty.'},
-    fr:{logo:'☁️ Feelio',tagline:'Dessine ton humeur',reset:'Effacer',hint:'Utilise ton doigt pour dessiner',counter:'humeurs dessinées dans le monde',
-        tornado:'🌪️',t1:'Orage intérieur. Respire. Ça va passer.',t2:'Laisse le vent emporter tes pensées.',
-        lightning:'⚡',l1:'Énergie électrique. Tu as besoin de bouger.',l2:'Transforme cette tension en action.',
-        rain:'🌧️',r1:'Pluie calme. Autorise-toi à être triste.',r2:'Après la pluie, la terre respire.',
-        sun:'☀️',s1:'Soleil tranquille. Savoure.',s2:'Ta lumière éclaire ceux qui t\'entourent.',
-        night:'🌙',n1:'Nuit douce. Repose-toi.',n2:'Les étoiles veillent sur toi.',
-        rainbow:'🌈',rb1:'Arc-en-ciel. Tu traverses plusieurs choses.',rb2:'Ta complexité est ta beauté.'},
-    es:{logo:'☁️ Feelio',tagline:'Dibuja tu estado',reset:'Borrar',hint:'Usa tu dedo para dibujar',counter:'estados dibujados en el mundo',
-        tornado:'🌪️',t1:'Tormenta interior. Respira. Pasará.',t2:'Deja que el viento se lleve tus pensamientos.',
-        lightning:'⚡',l1:'Energía eléctrica. Necesitas moverte.',l2:'Convierte esta tensión en acción.',
-        rain:'🌧️',r1:'Lluvia suave. Está bien estar triste.',r2:'Después de la lluvia, la tierra respira.',
-        sun:'☀️',s1:'Sol tranquilo. Disfruta.',s2:'Tu luz ilumina a quienes te rodean.',
-        night:'🌙',n1:'Noche suave. Descansa.',n2:'Las estrellas velan por ti.',
-        rainbow:'🌈',rb1:'Arcoíris. Estás pasando por muchas cosas.',rb2:'Tu complejidad es tu belleza.'},
-    ar:{logo:'☁️ فيليو',tagline:'ارسم مزاجك',reset:'مسح',hint:'استخدم إصبعك للرسم',counter:'حالة مرسومة حول العالم',
-        tornado:'🌪️',t1:'عاصفة داخلية. تنفس. ستمر.',t2:'دع الرياح تحمل أفكارك بعيداً.',
-        lightning:'⚡',l1:'طاقة كهربائية. تحتاج أن تتحرك.',l2:'حول هذا التوتر إلى عمل.',
-        rain:'🌧️',r1:'مطر هادئ. لا بأس أن تكون حزيناً.',r2:'بعد المطر، تتنفس الأرض.',
-        sun:'☀️',s1:'شمس هادئة. استمتع.',s2:'نورك يضيء من حولك.',
-        night:'🌙',n1:'ليلة ناعمة. استرح.',n2:'النجوم تحرسك.',
-        rainbow:'🌈',rb1:'قوس قزح. تمر بأشياء كثيرة.',rb2:'تعقيدك هو جمالك.'},
-    ja:{logo:'☁️ フィーリオ',tagline:'気持ちを描いて',reset:'消す',hint:'指で描いてください',counter:'世界で描かれた気持ち',
-        tornado:'🌪️',t1:'内なる嵐。呼吸して。過ぎ去るよ。',t2:'風に思いを運ばせて。',
-        lightning:'⚡',l1:'電気のエネルギー。動く必要がある。',l2:'この緊張を行動に変えて。',
-        rain:'🌧️',r1:'静かな雨。悲しんでいい。',r2:'雨の後、地球は呼吸する。',
-        sun:'☀️',s1:'静かな太陽。この瞬間を味わって。',s2:'あなたの光が周りを照らす。',
-        night:'🌙',n1:'優しい夜。休んで。',n2:'星が見守っている。',
-        rainbow:'🌈',rb1:'虹。たくさんのことを経験中。',rb2:'あなたの複雑さが美しさ。'},
-    zh:{logo:'☁️ Feelio',tagline:'画出你的心情',reset:'清除',hint:'用你的手指画画',counter:'全世界画出的心情',
-        tornado:'🌪️',t1:'内心的风暴。呼吸。会过去的。',t2:'让风带走你的思绪。',
-        lightning:'⚡',l1:'电能。你需要动起来。',l2:'把这份紧张转化为行动。',
-        rain:'🌧️',r1:'温柔的雨。可以难过。',r2:'雨后，大地在呼吸。',
-        sun:'☀️',s1:'宁静的阳光。享受这一刻。',s2:'你的光芒照耀着身边的人。',
-        night:'🌙',n1:'温柔的夜晚。休息吧。',n2:'星星在守护着你。',
-        rainbow:'🌈',rb1:'彩虹。你正在经历很多事。',rb2:'你的复杂就是你的美。'},
-    tam:{logo:'☁️ ⴼⵉⵍⵢⵓ / Feelio',tagline:'ⵙⵙⵓⵏⵖ ⵍⵃⴰⵍ ⵏⵏⴽ / Ssuneɣ lḥal nnek',reset:'ⵙⴼⴹ / Sfeḍ',hint:'ⵙⵙⵓⵏⵖ ⵙ ⴹⴹⴰⴹ / Ssuneɣ s ḍḍaḍ',counter:'ⵍⵃⵡⴰⵍ ⵉⵜⵜⵓⵙⵓⵏⵖⴻⵏ ⴳ ⵓⵎⴰⴹⴰⵍ',
-        tornado:'🌪️',t1:'ⴰⵙⵏⵖⴰⵍ ⴰⴳⵏⵙⴰⵏ. ⵙⵙⵓⵏⴼⵙ. ⴰⴷ ⵉⵣⵔⵉ.',t2:'ⴰⵊⵊ ⴰⴹⵓ ⵉⴳⴳⵉ ⵜⵉⵙⵡⵉⵏ ⵏⵏⴽ.',
-        lightning:'⚡',l1:'ⵜⴰⵥⵓⵕⵉ ⵏ ⵍⴽⵀⵕⴰⴱⴰ. ⵜⵃⵡⴰⵊⴷ ⴰⴷ ⵜⵜⴱⵔⵔⴽⴷ.',l2:'ⵙⵙⵓⵖⴰⵍ ⵜⵉⵏⵏⵉⵜ ⴰⴷ ⵖⵔ ⵉⴳⵉ.',
-        rain:'🌧️',r1:'ⴰⵏⵥⴰⵕ ⴰⵔⵖⴰⵏ. ⵉⵃⵍⴰ ⴰⴷ ⵜⵇⵇⵉⵎⴷ ⵉⵎⵇⵇⵓⵕⵏ.',r2:'ⵍⵍⵉⵖ ⴷ ⵓⴽⴰⵍ ⴰⵔ ⵉⵙⵙⵓⵏⴼⵙ ⴹⴼⵉⵕ ⵓⵏⵥⴰⵕ.',
-        sun:'☀️',s1:'ⵜⴰⴼⵓⴽⵜ ⵜⴰⵔⵖⴰⵏⵜ. ⵣⵣⵀⵔ ⴷ ⵡⴰⴽⵓⴷ ⴰⴷ.',s2:'ⵜⵉⴼⴰⵡⵜ ⵏⵏⴽ ⴰⵔ ⵜⵙⵙⴼⴰⵡ ⵡⵉⵏⵏⴰ ⴷⴰⵔ ⴽⵯⵏⵏⵉⵏ.',
-        night:'🌙',n1:'ⵉⴹ ⴰⵔⵖⴰⵏ. ⵙⵙⵓⵏⴼⵙ ⵖⵉⵍⴰⴷ.',n2:'ⵉⵜⵔⴰⵏ ⴰⵔ ⴽⵯⵏⵏ ⵙⵙⵓⵔⵓⵜⵏ.',
-        rainbow:'🌈',rb1:'ⵜⴰⵙⵔⵉⵜ ⵏ ⵓⵏⵥⴰⵕ. ⴰⵔ ⵜⵣⵔⵉⴷ ⴳ ⵓⵟⵟⵓⵏ ⵏ ⵜⵖⴰⵡⵙⵉⵡⵉⵏ.',rb2:'ⵜⵉⵖⴰⵡⵙⵉⵡⵉⵏ ⵏⵏⴽ ⴰⵢⴷ ⵉⴳⴰⵏ ⵚⵚⴱⴰⵃⵜ ⵏⵏⴽ.'
+// ============ LANGUAGES ============
+const L = {
+    en:{logo:'Feelio',tagline:'Draw your mood',reset:'Clear',hint:'Use your finger to draw',counter:'moods drawn worldwide',
+        promise:'No ads. No cookies. No account.<br>Your mood stays on your phone.<br>Free. Forever.',
+        nav:['Draw','Week','Stats','About'],week:'Your Week',weekSub:'7-day emotional weather',clearH:'Clear history',
+        stats:'Your Stats',statsSub:'This month\'s emotions',premTitle:'Feelio Premium',
+        premDesc:'30-day history • Export PDF • Custom themes<br>Support Feelio\'s mission',premPrice:'2€',premPeriod:'per month',premBtn:'Coming soon',
+        about:'About Feelio',about1:'Feelio is a <span class="about-highlight">confident</span>.',
+        about2:'You draw. It listens. No judgment.',
+        about3:'In a world that wants your data,<br>Feelio wants <span class="about-highlight">nothing</span> from you.',
+        about4:'No ads. No trackers. No accounts.<br>Your emotions stay on your phone.<br>Always free. Always private.',
+        about5:'Created with care.<br>For those who need a moment of calm.',
+        tornado:'🌪️',t1:'A storm today. It will pass.',t2:'Hold on. You\'ve weathered worse.',
+        lightning:'⚡',l1:'Electric. You\'re alive.',l2:'Channel this. Make something.',
+        rain:'🌧️',r1:'Let it fall. Let it wash away.',r2:'Tomorrow is another sky.',
+        sun:'☀️',s1:'You earned this light.',s2:'Breathe it in. You\'re here.',
+        night:'🌙',n1:'Rest now. The world can wait.',n2:'Even the moon needs darkness.',
+        rainbow:'🌈',rb1:'Look at all you\'ve crossed.',rb2:'You\'re still standing. Respect.'
+    },
+    fr:{logo:'Feelio',tagline:'Dessine ton humeur',reset:'Effacer',hint:'Utilise ton doigt',counter:'humeurs dessinées dans le monde',
+        promise:'Pas de pub. Pas de cookies. Pas de compte.<br>Ton humeur reste sur ton téléphone.<br>Gratuit. Pour toujours.',
+        nav:['Dessiner','Semaine','Stats','À propos'],week:'Ta semaine',weekSub:'Météo des 7 derniers jours',clearH:'Effacer l\'historique',
+        stats:'Tes stats',statsSub:'Émotions du mois',premTitle:'Feelio Premium',
+        premDesc:'Historique 30 jours • Export PDF • Thèmes<br>Soutiens la mission de Feelio',premPrice:'2€',premPeriod:'par mois',premBtn:'Bientôt disponible',
+        about:'À propos',about1:'Feelio est un <span class="about-highlight">confident</span>.',
+        about2:'Tu dessines. Il écoute. Sans jugement.',
+        about3:'Dans un monde qui veut tes données,<br>Feelio ne veut <span class="about-highlight">rien</span> de toi.',
+        about4:'Pas de pub. Pas de traqueurs. Pas de comptes.<br>Tes émotions restent sur ton téléphone.<br>Toujours gratuit. Toujours privé.',
+        about5:'Créé avec soin.<br>Pour ceux qui ont besoin d\'un moment de calme.',
+        tornado:'🌪️',t1:'Un orage aujourd\'hui. Il passera.',t2:'Tiens bon. T\'as traversé pire.',
+        lightning:'⚡',l1:'Électrique. T\'es vivant.',l2:'Utilise ça. Crée quelque chose.',
+        rain:'🌧️',r1:'Laisse tomber. Laisse laver.',r2:'Demain est un autre ciel.',
+        sun:'☀️',s1:'T\'as mérité cette lumière.',s2:'Respire. T\'es là.',
+        night:'🌙',n1:'Repose-toi. Le monde attendra.',n2:'Même la lune a besoin d\'obscurité.',
+        rainbow:'🌈',rb1:'Regarde tout ce que t\'as traversé.',rb2:'T\'es encore debout. Respect.'
+    },
+    es:{logo:'Feelio',tagline:'Dibuja tu estado',reset:'Borrar',hint:'Usa tu dedo',counter:'estados dibujados en el mundo',
+        promise:'Sin anuncios. Sin cookies. Sin cuenta.<br>Tu estado se queda en tu teléfono.<br>Gratis. Para siempre.',
+        nav:['Dibujar','Semana','Stats','Info'],week:'Tu semana',weekSub:'7 días de clima emocional',clearH:'Borrar historial',
+        stats:'Tus stats',statsSub:'Emociones del mes',premTitle:'Feelio Premium',
+        premDesc:'30 días • Exportar PDF • Temas<br>Apoya la misión de Feelio',premPrice:'2€',premPeriod:'al mes',premBtn:'Próximamente',
+        about:'Acerca de',about1:'Feelio es un <span class="about-highlight">confidente</span>.',
+        about2:'Dibujas. Escucha. Sin juicios.',
+        about3:'En un mundo que quiere tus datos,<br>Feelio no quiere <span class="about-highlight">nada</span> de ti.',
+        about4:'Sin anuncios. Sin rastreadores. Sin cuentas.<br>Tus emociones se quedan en tu teléfono.<br>Siempre gratis. Siempre privado.',
+        about5:'Creado con cuidado.<br>Para quienes necesitan un momento de calma.',
+        tornado:'🌪️',t1:'Tormenta hoy. Pasará.',t2:'Aguanta. Has pasado peores.',
+        lightning:'⚡',l1:'Eléctrico. Estás vivo.',l2:'Usa esto. Crea algo.',
+        rain:'🌧️',r1:'Déjalo caer. Deja que lave.',r2:'Mañana es otro cielo.',
+        sun:'☀️',s1:'Te ganaste esta luz.',s2:'Respira. Estás aquí.',
+        night:'🌙',n1:'Descansa. El mundo puede esperar.',n2:'Hasta la luna necesita oscuridad.',
+        rainbow:'🌈',rb1:'Mira todo lo que has cruzado.',rb2:'Sigues de pie. Respeto.'
+    },
+    ar:{logo:'فيليو',tagline:'ارسم مزاجك',reset:'مسح',hint:'استخدم إصبعك',counter:'حالة مرسومة حول العالم',
+        promise:'بدون إعلانات. بدون ملفات تعريف. بدون حساب.<br>مزاجك يبقى في هاتفك.<br>مجاني. للأبد.',
+        nav:['رسم','أسبوع','إحصائيات','حول'],week:'أسبوعك',weekSub:'الطقس العاطفي لـ 7 أيام',clearH:'مسح السجل',
+        stats:'إحصائياتك',statsSub:'مشاعر هذا الشهر',premTitle:'فيليو بريميوم',
+        premDesc:'30 يوم • تصدير PDF • سمات<br>ادعم مهمة فيليو',premPrice:'2€',premPeriod:'شهرياً',premBtn:'قريباً',
+        about:'حول فيليو',about1:'فيليو هو <span class="about-highlight">صديق مقرب</span>.',
+        about2:'ترسم. يستمع. بدون حكم.',
+        about3:'في عالم يريد بياناتك،<br>فيليو لا يريد <span class="about-highlight">شيئاً</span> منك.',
+        about4:'بدون إعلانات. بدون متتبعين. بدون حسابات.<br>مشاعرك تبقى في هاتفك.<br>دائماً مجاني. دائماً خاص.',
+        about5:'صُنع بعناية.<br>لمن يحتاجون لحظة هدوء.',
+        tornado:'🌪️',t1:'عاصفة اليوم. ستمر.',t2:'تماسك. لقد اجتزت أسوأ.',
+        lightning:'⚡',l1:'كهربائي. أنت حي.',l2:'استخدم هذا. اصنع شيئاً.',
+        rain:'🌧️',r1:'دعه يسقط. دعه يغسل.',r2:'غداً سماء أخرى.',
+        sun:'☀️',s1:'لقد استحقت هذا الضوء.',s2:'تنفس. أنت هنا.',
+        night:'🌙',n1:'استرح. العالم يمكنه الانتظار.',n2:'حتى القمر يحتاج الظلام.',
+        rainbow:'🌈',rb1:'انظر لكل ما عبرت.',rb2:'ما زلت واقفاً. احترام.'
+    },
+    ja:{logo:'Feelio',tagline:'気持ちを描いて',reset:'消す',hint:'指で描いて',counter:'世界で描かれた気持ち',
+        promise:'広告なし。クッキーなし。アカウントなし。<br>あなたの気持ちは端末に残ります。<br>永久に無料。',
+        nav:['描く','週間','統計','情報'],week:'あなたの一週間',weekSub:'7日間の感情の天気',clearH:'履歴を消去',
+        stats:'統計',statsSub:'今月の感情',premTitle:'Feelio プレミアム',
+        premDesc:'30日間 • PDF出力 • テーマ<br>Feelioの使命をサポート',premPrice:'2€',premPeriod:'月額',premBtn:'近日公開',
+        about:'Feelioについて',about1:'Feelioは<span class="about-highlight">聞き役</span>です。',
+        about2:'あなたが描き、Feelioが聞きます。判断なし。',
+        about3:'データを欲しがる世界で、<br>Feelioはあなたに<span class="about-highlight">何も</span>求めません。',
+        about4:'広告なし。トラッカーなし。アカウントなし。<br>あなたの感情は端末に残ります。<br>常に無料。常にプライベート。',
+        about5:'大切に作りました。<br>静けさが必要な人のために。',
+        tornado:'🌪️',t1:'今日は嵐。過ぎ去ります。',t2:'耐えて。もっと悪い時も乗り越えた。',
+        lightning:'⚡',l1:'電気的。あなたは生きている。',l2:'これを使って。何かを作って。',
+        rain:'🌧️',r1:'降らせて。洗い流して。',r2:'明日は別の空。',
+        sun:'☀️',s1:'この光を受ける価値がある。',s2:'吸い込んで。あなたはここにいる。',
+        night:'🌙',n1:'休んで。世界は待てる。',n2:'月でさえ闇を必要とする。',
+        rainbow:'🌈',rb1:'越えてきたものを見て。',rb2:'まだ立っている。尊敬。'
+    },
+    zh:{logo:'Feelio',tagline:'画出你的心情',reset:'清除',hint:'用你的手指画画',counter:'全世界画出的心情',
+        promise:'无广告。无Cookie。无账户。<br>你的心情留在你的手机上。<br>永久免费。',
+        nav:['画画','周记','统计','关于'],week:'你的一周',weekSub:'7天情绪天气',clearH:'清除记录',
+        stats:'你的统计',statsSub:'本月情绪',premTitle:'Feelio 高级版',
+        premDesc:'30天记录 • 导出PDF • 主题<br>支持 Feelio 的使命',premPrice:'2€',premPeriod:'每月',premBtn:'即将推出',
+        about:'关于 Feelio',about1:'Feelio 是一个<span class="about-highlight">倾听者</span>。',
+        about2:'你画。它听。没有评判。',
+        about3:'在一个想要你数据的世界里，<br>Feelio 对你<span class="about-highlight">一无所求</span>。',
+        about4:'无广告。无追踪器。无账户。<br>你的情绪留在你的手机上。<br>永远免费。永远私密。',
+        about5:'用心创造。<br>为需要片刻宁静的人。',
+        tornado:'🌪️',t1:'今天有风暴。会过去的。',t2:'坚持住。你经历过更糟的。',
+        lightning:'⚡',l1:'电力十足。你还活着。',l2:'利用它。创造些什么。',
+        rain:'🌧️',r1:'让它落下。让它冲刷。',r2:'明天是另一片天空。',
+        sun:'☀️',s1:'你值得这光芒。',s2:'深呼吸。你在这里。',
+        night:'🌙',n1:'休息吧。世界可以等待。',n2:'即使月亮也需要黑暗。',
+        rainbow:'🌈',rb1:'看看你跨越的一切。',rb2:'你依然站立。敬佩。'
+    },
+    tam:{logo:'ⴼⵉⵍⵢⵓ',tagline:'ⵙⵙⵓⵏⵖ ⵍⵃⴰⵍ ⵏⵏⴽ',reset:'ⵙⴼⴹ',hint:'ⵙⵙⵓⵏⵖ ⵙ ⴹⴹⴰⴹ',counter:'ⵍⵃⵡⴰⵍ ⴳ ⵓⵎⴰⴹⴰⵍ',
+        promise:'ⴱⵍⴰ ⴰⴷⵖⴰⵍ. ⴱⵍⴰ ⴽⵓⴽⵉⵣ. ⴱⵍⴰ ⴰⵎⵉⴹⴰⵏ.<br>ⵍⵃⴰⵍ ⵏⵏⴽ ⵉⵇⵇⵉⵎ ⴳ ⵜⵍⵉⴼⵓⵏ ⵏⵏⴽ.<br>ⴱⴰⵟⵍ. ⵉ ⴷⴷⴰⵢⵎ.',
+        nav:['ⵙⵙⵓⵏⵖ','ⵉⵎⴰⵍⴰⵙ','ⵉⵙⵉⴹⵏ','ⵖⴼ'],week:'ⵉⵎⴰⵍⴰⵙ ⵏⵏⴽ',weekSub:'ⵍⵃⴰⵍ ⵏ 7 ⵡⵓⵙⵙⴰⵏ',clearH:'ⵙⴼⴹ ⴰⵎⵣⵔⵓⵢ',
+        stats:'ⵉⵙⵉⴹⵏ ⵏⵏⴽ',statsSub:'ⵍⵃⵡⴰⵍ ⵏ ⵡⴰⵢⵢⵓⵔ',premTitle:'ⴼⵉⵍⵢⵓ ⴱⵔⵉⵎⵢⵓⵎ',
+        premDesc:'30 ⵡⵓⵙⵙⴰⵏ • ⴰⵙⵙⵓⴼⵖ PDF • ⵉⵣⵡⴰⵔ<br>ⴰⵡⵙ ⵉ ⵓⵡⴰⵍⵉⴼ ⵏ ⴼⵉⵍⵢⵓ',premPrice:'2€',premPeriod:'ⴽⵓ ⴰⵢⵢⵓⵔ',premBtn:'ⴰⴷ ⵢⴰⵙ ⴷⴰⴷⵅ',
+        about:'ⵖⴼ ⴼⵉⵍⵢⵓ',about1:'ⴼⵉⵍⵢⵓ ⵉⴳⴰ <span class="about-highlight">ⴰⵎⴹⴼⴰⵔ</span>.',
+        about2:'ⴰⵔ ⵜⵙⵙⵓⵏⵖⴷ. ⴰⵔ ⵉⵙⵙⵎⵀⴰⵍ. ⴱⵍⴰ ⵍⵃⴽⵎ.',
+        about3:'ⴳ ⵓⵎⴰⴹⴰⵍ ⵏⵏⴰ ⵉⵔⴰⵏ ⵉⵙⴼⴽⴰ ⵏⵏⴽ,<br>ⴼⵉⵍⵢⵓ ⵓⵔ ⵉⵔⵉ <span class="about-highlight">ⴰⵎⵢⴰ</span> ⵙⴳ ⴷⴰⵔⴽ.',
+        about4:'ⴱⵍⴰ ⴰⴷⵖⴰⵍ. ⴱⵍⴰ ⵉⵏⵇⵇⴰⴹⵏ. ⴱⵍⴰ ⵉⵎⵉⴹⴰⵏⵏ.<br>ⵍⵃⵡⴰⵍ ⵏⵏⴽ ⵇⵇⵉⵎⵏ ⴳ ⵜⵍⵉⴼⵓⵏ ⵏⵏⴽ.<br>ⴱⴰⵟⵍ ⴷⴰⵢⵎ. ⵓⵙⵍⵉⴳ ⴷⴰⵢⵎ.',
+        about5:'ⵉⵜⵜⵓⵙⵏⵓⵍⴼⴰ ⵙ ⵜⵖⴰⵡⵙⴰ.<br>ⵉ ⵡⵉⵏⵏⴰ ⵉⵃⵡⴰⵊⵏ ⴰⴽⵓⴷ ⵏ ⵍⵀⴷⵡⴰ.',
+        tornado:'🌪️',t1:'ⴰⵙⵏⵖⴰⵍ ⴰⵙⵙⴰ. ⴰⴷ ⵉⵣⵔⵉ.',t2:'ⵇⵇⵉⵎ. ⵜⵣⵔⵉⴷ ⴰⴽⴽⵯ ⵏⵉⵛⴰⵏ.',
+        lightning:'⚡',l1:'ⴰⵣⴳⵣⴰⵡ. ⵜⴷⴷⵔⴷ.',l2:'ⵙⵎⵔⵙ ⴰⵢⴰ. ⵙⵏⵓⵍⴼⵓ ⴽⵔⴰ.',
+        rain:'🌧️',r1:'ⴰⵊⵊ ⵉⵖⵍⵉ. ⴰⵊⵊ ⵉⵙⵙⵉⵔⴷ.',r2:'ⴰⵣⴽⴽⴰ ⵉⴳⴰ ⵉⴳⵏⵏⴰ ⵢⴰⴹⵏⵉ.',
+        sun:'☀️',s1:'ⵜⴽⵍⴰⵍⴷ ⵜⵉⴼⴰⵡⵜ ⴰⴷ.',s2:'ⵙⵙⵓⵏⴼⵙ. ⴰⵇⵇⴰⵏ ⴷⴰ.',
+        night:'🌙',n1:'ⵙⵙⵓⵏⴼⵙ. ⴰⵎⴰⴹⴰⵍ ⵉⵣⵎⵔ ⴰⴷ ⵉⵔⴰⵊⵓ.',n2:'ⵓⵍⴰ ⴰⵢⵢⵓⵔ ⵉⵃⵡⴰⵊ ⵜⵉⵍⵍⵉⵙ.',
+        rainbow:'🌈',rb1:'ⵥⵕ ⵎⴰⵢⴷ ⵜⵣⵔⵉⴷ.',rb2:'ⴰⵇⵇⴰⵏⴷ ⵜⴱⴷⴷⴷ. ⵍⵃⵓⵕⵎⴰ.'
     }
 };
 
-let lang = 'en';
-let T = texts[lang];
+// ============ DETECT LANGUAGE ============
+let lang = (navigator.language || 'en').split('-')[0];
+if(!L[lang]) lang = 'en';
+let T = L[lang];
 
-function setLang(l) {
-    lang = l; T = texts[l];
-    document.querySelectorAll('.langs span').forEach(s => s.classList.remove('active'));
-    document.getElementById('lang-'+l).classList.add('active');
+function setLang(l){
+    lang = l; T = L[l];
+    document.querySelectorAll('.langs span').forEach(s=>s.classList.remove('active'));
+    const btn = document.getElementById('lang-'+l);
+    if(btn) btn.classList.add('active');
+    updateAllTexts();
+    resetCanvas();
+    buildHistory();
+    buildStats();
+}
+
+function updateAllTexts(){
     document.getElementById('logo').textContent = T.logo;
     document.getElementById('tagline').textContent = T.tagline;
     document.getElementById('btnReset').textContent = T.reset;
     document.getElementById('hint').textContent = T.hint;
-    resetCanvas();
+    document.querySelector('.promise').innerHTML = T.promise;
+    document.querySelectorAll('.nav-item span').forEach((s,i)=>s.nextSibling.textContent=' '+T.nav[i]);
+    document.querySelector('#screen-history > div:first-child').textContent = T.week;
+    document.querySelector('#screen-history > div:nth-child(2)').textContent = T.weekSub;
+    document.querySelector('#screen-history .btn').textContent = T.clearH;
+    document.querySelector('#screen-stats > div:first-child').textContent = T.stats;
+    document.querySelector('#screen-stats > div:nth-child(2)').textContent = T.statsSub;
+    document.querySelector('.premium-card h3').textContent = T.premTitle;
+    document.querySelector('.premium-card p').innerHTML = T.premDesc;
+    document.querySelector('.premium-card .price').textContent = T.premPrice;
+    document.querySelector('.premium-card .period').textContent = T.premPeriod;
+    document.querySelector('.premium-card .btn').textContent = T.premBtn;
+    document.querySelector('#screen-about > div:first-child').textContent = T.about;
+    document.querySelectorAll('.about-text p')[0].innerHTML = T.about1;
+    document.querySelectorAll('.about-text p')[1].textContent = T.about2;
+    document.querySelectorAll('.about-text p')[2].innerHTML = T.about3;
+    document.querySelectorAll('.about-text p')[3].innerHTML = T.about4;
+    document.querySelectorAll('.about-text p')[4].innerHTML = T.about5;
 }
 
+// ============ LANG SWITCHER ============
+const langCodes = Object.keys(L);
+const langLabels = {en:'EN',fr:'FR',es:'ES',ar:'AR',ja:'JA',zh:'中',tam:'ⵜ'};
+const langsDiv = document.getElementById('langs');
+langCodes.forEach(code=>{
+    const span = document.createElement('span');
+    span.textContent = langLabels[code]||code;
+    span.id = 'lang-'+code;
+    span.onclick = ()=>setLang(code);
+    if(code===lang) span.classList.add('active');
+    langsDiv.appendChild(span);
+});
+
+// ============ CANVAS ============
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 let drawing = false, points = [], startTime = 0;
 
-function getPos(e) {
-    const rect = canvas.getBoundingClientRect();
-    const scaleX = canvas.width / rect.width;
-    const scaleY = canvas.height / rect.height;
-    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-    return { x: (clientX - rect.left) * scaleX, y: (clientY - rect.top) * scaleY };
+function getPos(e){
+    const r = canvas.getBoundingClientRect();
+    const sX = canvas.width / r.width;
+    const sY = canvas.height / r.height;
+    const cX = e.touches ? e.touches[0].clientX : e.clientX;
+    const cY = e.touches ? e.touches[0].clientY : e.clientY;
+    return {x:(cX - r.left) * sX, y:(cY - r.top) * sY};
 }
 
-canvas.addEventListener('touchstart', (e) => {
-    e.preventDefault(); drawing = true; points = []; startTime = Date.now();
-    document.getElementById('hint').style.display = 'none';
-    const p = getPos(e); points.push({x:p.x, y:p.y, time:Date.now()});
-    ctx.beginPath(); ctx.moveTo(p.x, p.y);
-});
-canvas.addEventListener('touchmove', (e) => {
-    e.preventDefault(); if(!drawing) return;
-    const p = getPos(e); points.push({x:p.x, y:p.y, time:Date.now()});
-    ctx.lineTo(p.x, p.y); ctx.strokeStyle = 'rgba(200,210,255,0.9)'; ctx.lineWidth = 5; ctx.lineCap = 'round'; ctx.stroke();
-});
-canvas.addEventListener('touchend', () => { drawing = false; analyzeDrawing(); });
+canvas.addEventListener('touchstart', e=>{e.preventDefault();drawing=true;points=[];startTime=Date.now();document.getElementById('hint').style.opacity='0';const p=getPos(e);points.push({x:p.x,y:p.y,time:Date.now()});ctx.beginPath();ctx.moveTo(p.x,p.y)});
+canvas.addEventListener('touchmove', e=>{e.preventDefault();if(!drawing)return;const p=getPos(e);points.push({x:p.x,y:p.y,time:Date.now()});ctx.lineTo(p.x,p.y);ctx.strokeStyle='rgba(199,210,254,0.9)';ctx.lineWidth=5;ctx.lineCap='round';ctx.lineJoin='round';ctx.stroke()});
+canvas.addEventListener('touchend', ()=>{drawing=false;analyzeDrawing()});
+canvas.addEventListener('mousedown', e=>{drawing=true;points=[];startTime=Date.now();document.getElementById('hint').style.opacity='0';const p=getPos(e);points.push({x:p.x,y:p.y,time:Date.now()});ctx.beginPath();ctx.moveTo(p.x,p.y)});
+canvas.addEventListener('mousemove', e=>{if(!drawing)return;const p=getPos(e);points.push({x:p.x,y:p.y,time:Date.now()});ctx.lineTo(p.x,p.y);ctx.strokeStyle='rgba(199,210,254,0.9)';ctx.lineWidth=5;ctx.lineCap='round';ctx.lineJoin='round';ctx.stroke()});
+canvas.addEventListener('mouseup', ()=>{drawing=false;analyzeDrawing()});
 
-canvas.addEventListener('mousedown', (e) => {
-    drawing = true; points = []; startTime = Date.now();
-    document.getElementById('hint').style.display = 'none';
-    const p = getPos(e); points.push({x:p.x, y:p.y, time:Date.now()});
-    ctx.beginPath(); ctx.moveTo(p.x, p.y);
-});
-canvas.addEventListener('mousemove', (e) => {
-    if(!drawing) return;
-    const p = getPos(e); points.push({x:p.x, y:p.y, time:Date.now()});
-    ctx.lineTo(p.x, p.y); ctx.strokeStyle = 'rgba(200,210,255,0.9)'; ctx.lineWidth = 5; ctx.lineCap = 'round'; ctx.stroke();
-});
-canvas.addEventListener('mouseup', () => { drawing = false; analyzeDrawing(); });
-
-function analyzeDrawing() {
-    if(points.length < 5) return;
+function analyzeDrawing(){
+    document.getElementById('rainLayer').style.opacity = '0';
+    document.body.style.background = 'var(--bg)';
+    if(points.length < 8) return;
     const endTime = Date.now();
     const duration = (endTime - startTime) / 1000;
     let totalDistance = 0;
-    for(let i=1; i<points.length; i++) {
-        const dx = points[i].x - points[i-1].x;
-        const dy = points[i].y - points[i-1].y;
-        totalDistance += Math.sqrt(dx*dx+dy*dy);
-    }
+    for(let i=1;i<points.length;i++){const dx=points[i].x-points[i-1].x;const dy=points[i].y-points[i-1].y;totalDistance+=Math.sqrt(dx*dx+dy*dy)}
     const speed = totalDistance / duration;
-    let sumX=0, sumY=0;
-    points.forEach(p => { sumX+=p.x; sumY+=p.y; });
+    let sumX=0,sumY=0;
+    points.forEach(p=>{sumX+=p.x;sumY+=p.y});
     const cx=sumX/points.length, cy=sumY/points.length;
     let dispersion=0;
-    points.forEach(p => { dispersion += Math.sqrt((p.x-cx)**2+(p.y-cy)**2); });
-    dispersion /= points.length;
-    
-    let emoji, p1, p2;
-    if(speed > 5 && dispersion > 80) { emoji=T.tornado; p1=T.t1; p2=T.t2; document.body.style.background='#0f0a18'; }
-    else if(speed > 3) { emoji=T.lightning; p1=T.l1; p2=T.l2; document.body.style.background='#0a0a1f'; }
-    else if(dispersion < 40) { emoji=T.rain; p1=T.r1; p2=T.r2; document.body.style.background='#080f18'; }
-    else if(speed < 1.5) { emoji=T.sun; p1=T.s1; p2=T.s2; document.body.style.background='#0f0f08'; }
-    else if(totalDistance < 100) { emoji=T.night; p1=T.n1; p2=T.n2; document.body.style.background='#060610'; }
-    else { emoji=T.rainbow; p1=T.rb1; p2=T.rb2; document.body.style.background='#0a0a12'; }
-    
+    points.forEach(p=>{dispersion+=Math.sqrt((p.x-cx)**2+(p.y-cy)**2)});
+    dispersion/=points.length;
+    let emoji,p1,p2;
+    if(speed>5&&dispersion>80){emoji=T.tornado;p1=T.t1;p2=T.t2;document.body.style.background='#0f0a18'}
+    else if(speed>3){emoji=T.lightning;p1=T.l1;p2=T.l2;document.body.style.background='#0a0a1f'}
+    else if(dispersion<40){emoji=T.rain;p1=T.r1;p2=T.r2;document.body.style.background='#080f18';document.getElementById('rainLayer').style.opacity='1'}
+    else if(speed<1.5){emoji=T.sun;p1=T.s1;p2=T.s2;document.body.style.background='#0f0f08'}
+    else if(totalDistance<100){emoji=T.night;p1=T.n1;p2=T.n2;document.body.style.background='#060610'}
+    else{emoji=T.rainbow;p1=T.rb1;p2=T.rb2;document.body.style.background='#0a0a12'}
     document.getElementById('result').textContent = emoji;
     document.getElementById('phrase').textContent = p1;
     document.getElementById('phrase2').textContent = p2;
+    saveMood(emoji);
     updateCounter();
 }
 
-function resetCanvas() {
+function resetCanvas(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
-    document.getElementById('result').textContent = '';
-    document.getElementById('phrase').textContent = '';
-    document.getElementById('phrase2').textContent = '';
-    document.body.style.background = '#080810';
-    points = [];
-    document.getElementById('hint').style.display = 'block';
+    document.getElementById('result').textContent='';
+    document.getElementById('phrase').textContent='';
+    document.getElementById('phrase2').textContent='';
+    document.body.style.background='var(--bg)';
+    document.getElementById('rainLayer').style.opacity='0';
+    points=[];document.getElementById('hint').style.opacity='1';
 }
 
-function updateCounter() {
-    let count = parseInt(localStorage.getItem('feelio_count') || '0');
+// ============ COUNTER ============
+function updateCounter(){
+    let count = parseInt(localStorage.getItem('feelio_total')||'0');
     count++;
-    localStorage.setItem('feelio_count', count);
-    document.getElementById('counter').textContent = count.toLocaleString() + ' ' + T.counter;
+    localStorage.setItem('feelio_total',count);
+    document.getElementById('counter').textContent = count.toLocaleString()+' '+T.counter;
+}
+let savedCount = parseInt(localStorage.getItem('feelio_total')||'0');
+document.getElementById('counter').textContent = savedCount.toLocaleString()+' '+T.counter;
+
+// ============ HISTORY ============
+function saveMood(emoji){
+    const history = JSON.parse(localStorage.getItem('feelio_history')||'[]');
+    history.push({emoji,date:new Date().toISOString().split('T')[0]});
+    if(history.length > 30) history.shift();
+    localStorage.setItem('feelio_history',JSON.stringify(history));
 }
 
-let savedCount = parseInt(localStorage.getItem('feelio_count') || '0');
-document.getElementById('counter').textContent = savedCount.toLocaleString() + ' ' + T.counter;
+function buildHistory(){
+    const history = JSON.parse(localStorage.getItem('feelio_history')||'[]');
+    const last7 = history.slice(-7).reverse();
+    const grid = document.getElementById('historyGrid');
+    grid.innerHTML = '';
+    if(last7.length===0){grid.innerHTML='<div style="color:var(--text3);text-align:center;grid-column:1/-1;padding:20px">No data yet. Draw your mood!</div>';return}
+    last7.forEach(day=>{
+        const div = document.createElement('div');
+        div.className='history-day';
+        div.innerHTML = `<span class="emoji">${day.emoji}</span><span class="label">${day.date.slice(5)}</span>`;
+        grid.appendChild(div);
+    });
+}
+
+function clearHistory(){localStorage.removeItem('feelio_history');buildHistory()}
+
+// ============ STATS ============
+function buildStats(){
+    const history = JSON.parse(localStorage.getItem('feelio_history')||'[]');
+    const counts = {};
+    history.forEach(h=>{counts[h.emoji]=(counts[h.emoji]||0)+1});
+    const container = document.getElementById('statsContainer');
+    container.innerHTML = '';
+    if(Object.keys(counts).length===0){container.innerHTML='<div style="color:var(--text3);text-align:center;padding:20px">Draw your first mood to see stats.</div>';return}
+    Object.entries(counts).sort((a,b)=>b[1]-a[1]).forEach(([emoji,count])=>{
+        const div = document.createElement('div');
+        div.className='stat-card';
+        div.innerHTML = `<span class="emoji">${emoji}</span><div><span class="count">${count}</span><br><span class="label">${T[emoji]||''}</span></div>`;
+        container.appendChild(div);
+    });
+}
+
+// ============ NAVIGATION ============
+function showScreen(name){
+    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+    document.getElementById('screen-'+name).classList.add('active');
+    document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+    document.querySelector(`.nav-item[onclick="showScreen('${name}')"]`).classList.add('active');
+    if(name==='history') buildHistory();
+    if(name==='stats') buildStats();
+}
+
+// ============ RAIN & SNOW ============
+function createRain(){
+    const container = document.getElementById('rainLayer');
+    for(let i=0;i<100;i++){
+        const d=document.createElement('div');d.className='drop';
+        d.style.left=Math.random()*100+'%';d.style.height=(6+Math.random()*20)+'px';
+        d.style.animationDuration=(0.4+Math.random()*0.8)+'s';d.style.animationDelay=Math.random()*3+'s';
+        container.appendChild(d);
+    }
+}
+createRain();
+
+// Init
+updateAllTexts();
 </script>
 </body>
 </html>
