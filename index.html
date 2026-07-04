@@ -19,7 +19,7 @@
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&family=Noto+Sans+Arabic:wght@300;400;500;700&family=Noto+Sans+JP:wght@300;400;500&family=Noto+Sans+SC:wght@300;400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&family=Noto+Sans+Arabic:wght@300;400;500;700&family=Noto+Sans+JP:wght@300;400;500&family=Noto+Sans+SC:wght@300;400;500&display=swap"></noscript>
     <style>
-        :root{--accent:#a78bfa;--accent2:#7c3aed;--bg:#0a0a18;--surface:rgba(16,16,32,0.6);--text:#f0f0f0;--text2:#b0b0b0;--text3:#666;--font:'Inter',-apple-system,sans-serif;--radius:28px;--transition:0.35s cubic-bezier(0.4,0,0.2,1);--nav-h:64px}
+        :root{--accent:#a78bfa;--accent2:#7c3aed;--bg:#0a0a18;--surface:rgba(16,16,32,0.6);--text:#f0f0f0;--text2:#b0b0b0;--text3:#666;--font:'Inter',-apple-system,sans-serif;--radius:28px;--transition:0.35s cubic-bezier(0.4,0,0.2,1);--nav-h:56px}
         *{margin:0;padding:0;box-sizing:border-box}
         body{font-family:var(--font);background:var(--bg);color:var(--text);height:100vh;height:100dvh;overflow:hidden;position:relative;-webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased;transition:background 1.5s ease}
         body.ar{direction:rtl;font-family:'Noto Sans Arabic',var(--font)}body.ja{font-family:'Noto Sans JP',var(--font)}body.zh{font-family:'Noto Sans SC',var(--font)}
@@ -44,14 +44,19 @@
         .lang-options{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:24px}
         .lang-option{padding:16px;border-radius:16px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.03);color:var(--text);cursor:pointer;transition:all var(--transition);font-size:0.85rem;text-align:center}
         .lang-option.active{border-color:var(--accent);background:rgba(139,92,246,0.1);color:var(--accent)}
-        .lang-option .emoji{font-size:1.5rem;display:block;margin-bottom:4px}
         .disclaimer-overlay{position:fixed;inset:0;z-index:750;background:rgba(0,0,0,0.9);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.5s}
         .disclaimer-overlay.show{opacity:1;pointer-events:auto}
         .disclaimer-box{text-align:center;padding:30px;animation:fadeInUp 0.6s ease-out;max-width:360px;max-height:80vh;overflow-y:auto}
         .disclaimer-box h2{font-size:1.4rem;font-weight:300;margin-bottom:12px;color:#fff}
         .disclaimer-box p{color:rgba(255,255,255,0.6);font-size:0.72rem;line-height:1.8;margin-bottom:12px}
         .disclaimer-box .check-row{display:flex;align-items:center;gap:8px;margin:8px 0;text-align:left;color:rgba(255,255,255,0.7);font-size:0.68rem}
-        .disclaimer-box input[type=checkbox]{width:18px;height:18px;accent-color:var(--accent)}
+        .disclaimer-box input[type=checkbox]{width:18px;height:18px;accent-color:var(--accent);flex-shrink:0}
+        .install-banner{position:fixed;bottom:calc(var(--nav-h) + 10px);left:12px;right:12px;z-index:650;background:rgba(22,22,44,0.97);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);padding:12px 16px;border-radius:18px;display:none;align-items:center;gap:10px;border:1px solid rgba(139,92,246,0.2);max-width:420px;margin:0 auto;animation:fadeInUp 0.4s ease-out}
+        .install-banner.show{display:flex}
+        .install-banner .install-icon{font-size:1.5rem;flex-shrink:0}
+        .install-banner p{font-size:0.55rem;color:var(--text2);line-height:1.4;flex:1}
+        .install-banner button{flex-shrink:0;padding:6px 14px;border-radius:16px;border:none;background:linear-gradient(135deg,var(--accent2),var(--accent));color:#fff;font-size:0.5rem;font-weight:500;cursor:pointer}
+        .install-banner .install-close{background:none;border:none;color:var(--text3);font-size:1rem;cursor:pointer;padding:2px}
         .onboarding-overlay{position:fixed;inset:0;z-index:500;background:#000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.5s}
         .onboarding-overlay.show{opacity:1;pointer-events:auto}
         .onboarding-slide{text-align:center;padding:40px;animation:fadeInUp 0.6s ease-out;max-width:320px;display:none}
@@ -68,12 +73,17 @@
         .screen.active{display:flex}
         @keyframes screenIn{0%{opacity:0;transform:translateY(8px)}100%{opacity:1;transform:translateY(0)}}
         .nav{position:fixed;bottom:0;left:0;right:0;z-index:100;display:flex;justify-content:space-around;align-items:center;height:var(--nav-h);padding:0 8px max(0px,env(safe-area-inset-bottom));background:rgba(10,10,22,0.95);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);border-top:0.5px solid rgba(255,255,255,0.05)}
-        .nav-item{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;padding:4px 12px;border-radius:16px;transition:all var(--transition);color:var(--text3);position:relative;min-width:48px}
+        .nav-item{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;padding:2px 10px;border-radius:14px;transition:all var(--transition);color:var(--text3);position:relative;min-width:44px}
         .nav-item.active{color:var(--accent)}
-        .nav-item .icon{font-size:1.2rem;transition:all var(--transition);position:relative;z-index:1}
-        .nav-item.active .icon{transform:scale(1.08);filter:drop-shadow(0 0 5px rgba(139,92,246,0.5))}
-        .nav-item .nav-label{font-size:0.48rem;font-weight:500;letter-spacing:0.2px;transition:all var(--transition);opacity:0.7}
+        .nav-item .icon-wrap{position:relative;display:flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;transition:all var(--transition);background:transparent}
+        .nav-item.active .icon-wrap{background:rgba(139,92,246,0.12)}
+        .nav-item .icon{width:1.2rem;height:1.2rem;transition:all var(--transition);position:relative;z-index:1;stroke:currentColor}
+        .nav-item.active .icon{filter:drop-shadow(0 0 4px rgba(139,92,246,0.5));animation:iconPop 0.3s ease-out}
+        @keyframes iconPop{0%{transform:scale(1)}50%{transform:scale(1.2)}100%{transform:scale(1.08)}}
+        .nav-item .nav-label{font-size:0.46rem;font-weight:500;letter-spacing:0.2px;transition:all var(--transition);opacity:0.7}
         .nav-item.active .nav-label{opacity:1;font-weight:600}
+        .nav-item .active-dot{position:absolute;top:-2px;width:3px;height:3px;border-radius:50%;background:var(--accent);opacity:0;transition:all var(--transition)}
+        .nav-item.active .active-dot{opacity:1;box-shadow:0 0 6px var(--accent)}
         .top-bar{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:8px 16px;background:rgba(8,8,18,0.5);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
         .privacy-badge{display:flex;align-items:center;gap:5px;color:var(--accent);font-size:0.5rem;font-weight:500;letter-spacing:0.3px}
         .privacy-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);box-shadow:0 0 6px var(--accent);animation:dotPulse 2s ease-in-out infinite;flex-shrink:0}
@@ -141,17 +151,8 @@
         .settings-group{margin:8px 0;width:100%;max-width:320px}.settings-group .group-title{color:var(--text3);font-size:0.52rem;font-weight:500;letter-spacing:1px;margin-bottom:6px;text-transform:uppercase}
         .speech-indicator{display:none;align-items:center;gap:6px;padding:6px 14px;background:rgba(239,68,68,0.15);border-radius:16px;color:#ef4444;font-size:0.55rem;margin-top:8px;animation:pulse 1.5s ease-in-out infinite}
         @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
-        .rare-badge{display:inline-block;padding:3px 8px;border-radius:8px;background:rgba(251,191,36,0.15);color:#fbbf24;font-size:0.5rem;font-weight:500;margin-left:6px;animation:popIn 0.4s cubic-bezier(0.34,1.56,0.64,1)}
         @media(min-width:768px){canvas{width:320px;height:320px}.logo-text-main{font-size:2.8rem}.screen{padding:28px}}
-        @media(max-width:767px){
-            .screen{padding:24px 20px;padding-top:50px}
-            .logo-text-main{font-size:2rem}.tagline{font-size:0.68rem;margin-bottom:28px}
-            canvas{width:280px;height:280px}.canvas-wrap{margin-bottom:16px}
-            #result{font-size:3.5rem}#phrase{font-size:0.82rem}#phrase2{font-size:0.64rem}
-            .toolbar button{width:32px;height:32px}.btn{padding:11px 24px;font-size:0.65rem}
-            .nav{padding:0 4px;height:56px;--nav-h:56px}.nav-item{padding:2px 8px;min-width:40px}.nav-item .icon{font-size:1.1rem}
-            .cookie-banner{bottom:calc(var(--nav-h) + 8px)}
-        }
+        @media(max-width:767px){.screen{padding:24px 20px;padding-top:50px}.logo-text-main{font-size:2rem}.tagline{font-size:0.68rem;margin-bottom:28px}canvas{width:280px;height:280px}.canvas-wrap{margin-bottom:16px}#result{font-size:3.5rem}#phrase{font-size:0.82rem}#phrase2{font-size:0.64rem}.toolbar button{width:32px;height:32px}.btn{padding:11px 24px;font-size:0.65rem}.nav{--nav-h:52px;padding:0 4px}.nav-item{padding:2px 6px;min-width:38px}.nav-item .icon{width:1.1rem;height:1.1rem}.nav-item .icon-wrap{width:30px;height:30px}.nav-item .nav-label{font-size:0.42rem}.cookie-banner{bottom:calc(var(--nav-h) + 8px)}.install-banner{bottom:calc(var(--nav-h) + 8px)}}
         @media(prefers-reduced-motion:reduce){*,::before,::after{animation-duration:0.01ms!important;animation-iteration-count:1!important;transition-duration:0.01ms!important}}
     </style>
 </head>
@@ -159,14 +160,18 @@
 <div class="bg-orb" id="bgOrb"></div><div class="particles-bg" id="particlesBg"></div><div class="rain-layer" id="rainCt"></div>
 <div class="lang-select-overlay show" id="langSelectOverlay"><div class="lang-select-box"><h2>Choose your language</h2><p>Feelio speaks your language.</p><div class="lang-options" id="langOptions"></div><button class="btn btn-primary" onclick="confirmLang()">Continue</button></div></div>
 <div class="disclaimer-overlay" id="disclaimerOverlay"><div class="disclaimer-box">
-    <h2 id="discTitle">Before you begin</h2>
-    <p id="discIntro">Feelio is your private space. Please read and accept:</p>
+    <h2 id="discTitle">Before you begin</h2><p id="discIntro">Feelio is your private space. Please read and accept:</p>
     <div class="check-row"><input type="checkbox" id="discCheck1"><label for="discCheck1" id="discLabel1">I understand Feelio is not a medical tool</label></div>
     <div class="check-row"><input type="checkbox" id="discCheck2"><label for="discCheck2" id="discLabel2">I understand my data stays on my device</label></div>
     <div class="check-row"><input type="checkbox" id="discCheck3"><label for="discCheck3" id="discLabel3">I am 13 years or older</label></div>
     <div class="check-row"><input type="checkbox" id="discCheck4"><label for="discCheck4" id="discLabel4">I agree to use Feelio for personal, non-commercial purposes</label></div>
     <button class="btn btn-primary" onclick="acceptDisclaimer()" id="discBtn" disabled>Begin</button>
 </div></div>
+<div class="install-banner" id="installBanner">
+    <span class="install-icon">💜</span><p><strong>Add Feelio to your home screen</strong><br>Access it in one tap, like an app.</p>
+    <button onclick="installPWA()">Install</button>
+    <button class="install-close" onclick="document.getElementById('installBanner').classList.remove('show')">✕</button>
+</div>
 <div class="cookie-banner" id="cookieBanner"><div class="cookie-dot"></div><span id="cookieText">Feelio uses no cookies and collects no personal data.</span><button onclick="document.getElementById('cookieBanner').classList.add('hidden')">OK</button></div>
 <div class="crisis-bar" id="crisisBar">🆘 <span id="crisisBarText">If you're in crisis, help is available.</span> <a href="https://findahelpline.com" target="_blank">Find support →</a></div>
 <div class="onboarding-overlay" id="onboardingOverlay">
@@ -183,10 +188,7 @@
     <div class="screen active" id="screen-draw">
         <div class="logo-block"><svg class="logo-svg-main" viewBox="0 0 60 60" fill="none"><defs><radialGradient id="lg1" cx="50%" cy="50%"><stop stop-color="#c4b5fd"/><stop offset="1" stop-color="#7c3aed"/></radialGradient></defs><circle cx="30" cy="30" r="28" fill="url(#lg1)" opacity="0.15"/><circle cx="30" cy="30" r="28" stroke="url(#lg1)" stroke-width="1.5" fill="none"/><path d="M18 36c0-5 5-8 12-8s12 3 12 8" stroke="#c4b5fd" stroke-width="2.5" stroke-linecap="round" fill="none"/><circle cx="30" cy="30" r="6" fill="#a78bfa" opacity="0.6"/></svg><div class="logo-text-main">Feelio</div></div>
         <div class="tagline" id="tagline">Take a deep breath. Draw what you feel.</div>
-        <div class="badge-row">
-            <div class="streak-badge" id="streakBadge" style="display:none"><span class="fire">🔥</span> <span id="streakText">1 day streak</span></div>
-            <div class="collection-badge" id="collectionBadge" style="display:none">🎨 <span id="collectionText">0/13 emotions</span></div>
-        </div>
+        <div class="badge-row"><div class="streak-badge" id="streakBadge" style="display:none"><span class="fire">🔥</span> <span id="streakText">1 day streak</span></div><div class="collection-badge" id="collectionBadge" style="display:none">🎨 <span id="collectionText">0/13 emotions</span></div></div>
         <div class="daily-counter" id="dailyCounter">0 people drew their mood today</div>
         <div class="toolbar"><button onclick="setBrushSize(4)" class="active" id="brushS" title="Small">S</button><button onclick="setBrushSize(7)" id="brushM" title="Medium">M</button><button onclick="setBrushSize(12)" id="brushL" title="Large">L</button><button onclick="undoLastStroke()" title="Undo">↩️</button><button onclick="toggleHighContrast()" title="Contrast">👁️</button><button onclick="toggleFullScreen()" title="Fullscreen">⛶</button></div>
         <div class="canvas-wrap"><div class="canvas-hint-overlay" id="canvasHint">✍️</div><canvas id="canvas" width="600" height="600" class="breathe" aria-label="Draw your mood"></canvas></div>
@@ -195,8 +197,7 @@
         <div class="speech-indicator" id="speechIndicator">🎙️ Listening...</div>
         <div id="askBox"><div id="askText">Do you want to talk about it?</div><div id="askBtns"><button class="btn btn-primary btn-small" onclick="showWriteSpeak()">Yes</button><button class="btn btn-outline btn-small" onclick="sayThanks()">No</button></div><div class="calm-link" id="calmLink" style="display:none"><a href="https://tiktok.com/@calm.chaos16" target="_blank">🌿 Need a moment of calm? Watch Calm Chaos →</a></div><div class="share-btns" id="shareBtns" style="display:none"><button class="btn btn-outline btn-icon" onclick="shareMood('copy')" title="Copy">📋</button><button class="btn btn-outline btn-icon" onclick="shareMood('twitter')" title="Twitter">𝕏</button><button class="btn btn-outline btn-icon" onclick="shareMood('whatsapp')" title="WhatsApp">💬</button><button class="btn btn-outline btn-small" onclick="openStoryPreview()">📱 Story</button></div></div>
         <button class="btn btn-outline btn-small" onclick="resetCanvas()" id="btnReset" style="margin-top:10px">Clear</button>
-        <div class="counter" id="counter">0 moods drawn worldwide</div>
-        <div class="hint" id="hint">Use your finger to draw</div>
+        <div class="counter" id="counter">0 moods drawn worldwide</div><div class="hint" id="hint">Use your finger to draw</div>
     </div>
     <div class="screen" id="screen-history"><div class="section-title" id="weekTitle">Your Week</div><div class="section-sub" id="weekSub">7-day emotional weather</div><div class="history-grid" id="historyGrid"><div style="color:var(--text3);text-align:center;grid-column:1/-1;padding:24px;font-size:0.65rem">No data yet.<br>Draw your first mood!</div></div><button class="btn btn-outline btn-small" onclick="clearHistory()" style="margin-top:12px">Clear history</button></div>
     <div class="screen" id="screen-stats"><div class="section-title" id="statsTitle">Your Stats</div><div class="section-sub" id="statsSub">This month's emotions</div><div id="statsContainer"><div style="color:var(--text3);text-align:center;padding:24px;font-size:0.65rem">Draw your first mood to see stats.</div></div><div class="premium-card"><h3 id="premTitle">Feelio Premium</h3><p style="color:var(--text2);font-size:0.55rem;margin-bottom:6px;line-height:1.4" id="premDesc">30-day history • Export PDF • Custom themes<br>Support Feelio's mission</p><div class="price" id="premPrice">2€</div><div class="period" id="premPeriod">per month</div><div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-top:4px"><button class="btn btn-primary btn-small" onclick="window.open('https://www.paypal.com/ncp/payment/87EWJWTBTWXWS','_blank')">💛 PayPal</button><button class="btn btn-outline btn-small" onclick="window.open('https://ko-fi.com/feelio','_blank')">☕ Ko-fi</button></div></div></div>
@@ -210,11 +211,11 @@
     <div class="screen" id="screen-resources"><div class="section-title" id="resourcesTitle">Resources</div><a class="resource-link" href="https://www.youtube.com/results?search_query=guided+meditation+10+minutes" target="_blank"><span class="icon">🧘</span><span id="resMeditation">Guided meditation</span></a><a class="resource-link" href="https://www.youtube.com/results?search_query=calm+nature+sounds" target="_blank"><span class="icon">🌿</span><span id="resNature">Calm nature sounds</span></a><a class="resource-link" href="https://www.youtube.com/results?search_query=breathing+exercises+5+minutes" target="_blank"><span class="icon">🫁</span><span id="resBreathing">Breathing exercises</span></a><a class="resource-link" href="https://tiktok.com/@calm.chaos16" target="_blank"><span class="icon">🎨</span><span id="resCalmChaos">Calm Chaos videos</span></a><a class="resource-link" href="https://findahelpline.com" target="_blank"><span class="icon">🆘</span><span id="resCrisis">Find a helpline</span></a></div>
 </div>
 <div class="nav">
-    <div class="nav-item active" onclick="showScreen('draw')"><span class="icon">🎨</span><span class="nav-label">Draw</span></div>
-    <div class="nav-item" onclick="showScreen('history')"><span class="icon">📅</span><span class="nav-label">Week</span></div>
-    <div class="nav-item" onclick="showScreen('stats')"><span class="icon">📊</span><span class="nav-label">Stats</span></div>
-    <div class="nav-item" onclick="showScreen('gallery')"><span class="icon">🖼️</span><span class="nav-label">Gallery</span></div>
-    <div class="nav-item" onclick="showScreen('settings')"><span class="icon">⚙️</span><span class="nav-label">Settings</span></div>
+    <div class="nav-item active" onclick="showScreen('draw')"><div class="icon-wrap"><div class="active-dot"></div><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg></div><span class="nav-label">Draw</span></div>
+    <div class="nav-item" onclick="showScreen('history')"><div class="icon-wrap"><div class="active-dot"></div><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 14h.01M12 14h.01M16 14h.01"/></svg></div><span class="nav-label">Week</span></div>
+    <div class="nav-item" onclick="showScreen('stats')"><div class="icon-wrap"><div class="active-dot"></div><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M18 20V10M12 20V4M6 20v-6"/></svg></div><span class="nav-label">Stats</span></div>
+    <div class="nav-item" onclick="showScreen('gallery')"><div class="icon-wrap"><div class="active-dot"></div><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div><span class="nav-label">Gallery</span></div>
+    <div class="nav-item" onclick="showScreen('settings')"><div class="icon-wrap"><div class="active-dot"></div><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg></div><span class="nav-label">Settings</span></div>
 </div>
 <div class="modal-overlay" id="modalWrite"><div class="modal"><span class="close-x" onclick="closeModal('modalWrite')">✕</span><div style="font-size:0.95rem;font-weight:400;margin-bottom:2px" id="modalWriteTitle">What's on your mind?</div><div style="color:var(--text3);font-size:0.48rem;margin-bottom:4px">Everything stays on your phone.</div><textarea id="journalText" placeholder="Write here..." aria-label="Journal"></textarea><div class="btn-row"><button class="btn btn-outline btn-small" onclick="closeModal('modalWrite')">Cancel</button><button class="btn btn-primary btn-small" onclick="saveJournal()">💾 Save</button></div></div></div>
 <div class="modal-overlay" id="modalSpeak"><div class="modal"><span class="close-x" onclick="closeModal('modalSpeak')">✕</span><div style="font-size:0.95rem;font-weight:400;margin-bottom:2px" id="modalSpeakTitle">Speak freely</div><div style="color:var(--text3);font-size:0.48rem;margin-bottom:6px">Your voice stays on your phone.</div><div id="speechResult" style="min-height:45px;color:var(--text);font-size:0.65rem;padding:10px;background:rgba(255,255,255,0.03);border-radius:12px;margin-bottom:8px"></div><div class="btn-row"><button class="btn btn-outline btn-small" onclick="closeModal('modalSpeak')">Cancel</button><button class="btn btn-primary btn-small" id="btnStartSpeak" onclick="startSpeech()">🎙️ Start</button><button class="btn btn-outline btn-small" id="btnStopSpeak" onclick="stopSpeech()" style="display:none">⏹️ Stop</button><button class="btn btn-primary btn-small" id="btnSaveSpeech" onclick="saveSpeech()" style="display:none">💾 Save</button></div></div></div>
@@ -262,29 +263,29 @@ gratitude:'🙏',g1:'Tu as dit merci.',g2:'La gratitude te change.'}};
 const TRUST_EN={content:`<h3>Privacy Policy</h3><p>Feelio collects <strong>no personal data</strong>. Everything stays on your device.</p><h3>Medical Disclaimer</h3><p>Feelio is <strong>not a medical tool</strong>. If in crisis: <a href="https://findahelpline.com" style="color:var(--accent)">findahelpline.com</a></p><h3>Contact</h3><p>Ismail Belabbess — calmewave2026@proton.me</p>`,fr:`<h3>Confidentialité</h3><p>Feelio ne collecte <strong>aucune donnée</strong>. Tout reste sur votre appareil.</p><h3>Disclaimer médical</h3><p>Feelio n'est <strong>pas un outil médical</strong>. En cas de crise : <a href="https://findahelpline.com" style="color:var(--accent)">findahelpline.com</a></p><h3>Contact</h3><p>Ismail Belabbess — calmewave2026@proton.me</p>`};
 let lang=(navigator.language||'en').split('-')[0];if(!LANGDATA[lang])lang='en';let TX=LANGDATA[lang];
 let currentTheme={accent:'#a78bfa',accent2:'#7c3aed',bg:'#0a0a18'},currentMood='',brushSize=7,voiceEnabled=false;
-let strokeHistory=[],highContrast=false,notificationsEnabled=false,phrasesSpoken=0;
+let strokeHistory=[],highContrast=false,notificationsEnabled=false,phrasesSpoken=0,deferredPrompt=null;
 
-function buildLangOptions(){const container=document.getElementById('langOptions');container.innerHTML='';const langs={en:'🇬🇧 English',fr:'🇫🇷 Français',es:'🇪🇸 Español',ar:'🇸🇦 العربية',ja:'🇯🇵 日本語',zh:'🇨🇳 中文',tam:'ⵜⴰⵎⴰⵣⵉⵖⵜ'};Object.entries(langs).forEach(([code,label])=>{const div=document.createElement('div');div.className='lang-option'+(code===lang?' active':'');div.innerHTML=label;div.onclick=()=>{lang=code;TX=LANGDATA[lang]||LANGDATA.en;buildLangOptions();setLang(code)};container.appendChild(div)})}
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;setTimeout(()=>{if(!localStorage.getItem('feelio_install_dismissed'))document.getElementById('installBanner').classList.add('show')},10000)});
+function installPWA(){if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then(()=>{deferredPrompt=null;document.getElementById('installBanner').classList.remove('show')})}else{alert('Installation not available right now. You can add Feelio from your browser menu.')}}
+function buildLangOptions(){const container=document.getElementById('langOptions');container.innerHTML='';const langs={en:'🇬🇧 English',fr:'🇫🇷 Français',es:'🇪🇸 Español',ar:'🇸🇦 العربية',ja:'🇯🇵 日本語',zh:'🇨🇳 中文',tam:'ⵜⴰⵎⴰⵣⵉⵖⵜ'};Object.entries(langs).forEach(([code,label])=>{const div=document.createElement('div');div.className='lang-option'+(code===lang?' active':'');div.innerHTML=label;div.onclick=()=>{lang=code;TX=LANGDATA[lang]||LANGDATA.en;buildLangOptions();setLang(code)}});container.appendChild(div)}
 function confirmLang(){document.getElementById('langSelectOverlay').classList.remove('show');document.getElementById('disclaimerOverlay').classList.add('show');checkDisclaimer()}
 function checkDisclaimer(){const c1=document.getElementById('discCheck1').checked;const c2=document.getElementById('discCheck2').checked;const c3=document.getElementById('discCheck3').checked;const c4=document.getElementById('discCheck4').checked;document.getElementById('discBtn').disabled=!(c1&&c2&&c3&&c4)}
 function acceptDisclaimer(){document.getElementById('disclaimerOverlay').classList.remove('show');document.getElementById('onboardingOverlay').classList.add('show');playAmbient()}
 let onStep=0;
-function nextOnboarding(){onStep++;if(onStep>=3){document.getElementById('onboardingOverlay').classList.remove('show');if(!localStorage.getItem('feelio_tutorial_done')){setTimeout(()=>{document.getElementById('onboardingOverlay').classList.remove('show')},100)}localStorage.setItem('feelio_onboarding_done','1')}else{document.querySelectorAll('.onboarding-slide').forEach(s=>s.classList.remove('active'));document.getElementById('onSlide'+onStep).classList.add('active');document.querySelectorAll('.onboarding-dots .dot').forEach((d,i)=>d.classList.toggle('active',i===onStep));document.getElementById('onBtn').textContent=onStep===2?'Begin':'Next'}}
-function skipOnboarding(){document.getElementById('onboardingOverlay').classList.remove('show')}
+function nextOnboarding(){onStep++;if(onStep>=3){document.getElementById('onboardingOverlay').classList.remove('show');localStorage.setItem('feelio_onboarding_done','1')}else{document.querySelectorAll('.onboarding-slide').forEach(s=>s.classList.remove('active'));document.getElementById('onSlide'+onStep).classList.add('active');document.querySelectorAll('.onboarding-dots .dot').forEach((d,i)=>d.classList.toggle('active',i===onStep));document.getElementById('onBtn').textContent=onStep===2?'Begin':'Next'}}
+function skipOnboarding(){document.getElementById('onboardingOverlay').classList.remove('show');localStorage.setItem('feelio_onboarding_done','1')}
 function setLang(l){lang=l;TX=LANGDATA[l]||LANGDATA.en;document.querySelectorAll('.langs span').forEach(s=>s.classList.remove('active'));const b=document.querySelector('.langs span[onclick="setLang(\''+l+'\')"]');if(b)b.classList.add('active');document.body.className=lang==='ar'?'ar':lang==='ja'?'ja':lang==='zh'?'zh':'';updateUI();resetCanvas();buildHistory();buildStats()}
 function updateUI(){
     document.getElementById('privacyText').textContent=TX.privacy;document.getElementById('tagline').textContent=TX.tagline;document.getElementById('btnReset').textContent=TX.reset;document.getElementById('hint').textContent=TX.hint;
     document.querySelectorAll('.nav-label').forEach((n,i)=>{if(TX.nav[i])n.textContent=TX.nav[i]});
     document.getElementById('trustTitle').textContent='Trust & Safety';document.getElementById('trustContent').innerHTML=lang==='fr'?TRUST_EN.fr:TRUST_EN.content;
     document.getElementById('cookieText').textContent=TX.cookieText;
-    document.getElementById('discTitle').textContent=TX.discTitle;document.getElementById('discIntro').textContent=TX.discIntro;
-    document.getElementById('discLabel1').textContent=TX.discLabel1;document.getElementById('discLabel2').textContent=TX.discLabel2;document.getElementById('discLabel3').textContent=TX.discLabel3;document.getElementById('discLabel4').textContent=TX.discLabel4;document.getElementById('discBtn').textContent=TX.discBtn;
+    document.getElementById('discTitle').textContent=TX.discTitle;document.getElementById('discIntro').textContent=TX.discIntro;document.getElementById('discLabel1').textContent=TX.discLabel1;document.getElementById('discLabel2').textContent=TX.discLabel2;document.getElementById('discLabel3').textContent=TX.discLabel3;document.getElementById('discLabel4').textContent=TX.discLabel4;document.getElementById('discBtn').textContent=TX.discBtn;
     document.getElementById('onTitle0').textContent=TX.onTitle0;document.getElementById('onText0').innerHTML=TX.onText0;document.getElementById('onTitle1').textContent=TX.onTitle1;document.getElementById('onText1').innerHTML=TX.onText1;document.getElementById('onTitle2').textContent=TX.onTitle2;document.getElementById('onText2').innerHTML=TX.onText2;
     document.getElementById('counter').textContent=(parseInt(localStorage.getItem('feelio_total')||'0')).toLocaleString()+' '+TX.counter;
     document.getElementById('dailyCounter').textContent=(parseInt(localStorage.getItem('feelio_daily')||'0')).toLocaleString()+' '+TX.dailyCounter;updateStreak();updateCollection();buildGallery();
 }
-buildLangOptions();
-document.querySelectorAll('.disclaimer-overlay input[type=checkbox]').forEach(cb=>cb.addEventListener('change',checkDisclaimer));
+buildLangOptions();document.querySelectorAll('.disclaimer-overlay input[type=checkbox]').forEach(cb=>cb.addEventListener('change',checkDisclaimer));
 const canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');let drawing=false,points=[],startTime=0;
 function setBrushSize(s){brushSize=s;document.querySelectorAll('.toolbar button:first-child, .toolbar button:nth-child(2), .toolbar button:nth-child(3)').forEach(b=>b.classList.remove('active'));document.getElementById(s===4?'brushS':s===7?'brushM':'brushL').classList.add('active')}
 function undoLastStroke(){if(strokeHistory.length>0){const last=strokeHistory.pop();ctx.putImageData(last,0,0)}}
@@ -308,7 +309,7 @@ function spawnConfetti(){const cl={'🌪️':['#6b21a8','#4c1d95'],'⚡':['#fbbf
 function showAskBox(){const box=document.getElementById('askBox');box.style.display='flex';document.getElementById('askText').textContent=TX.askWant;document.getElementById('askBtns').innerHTML='<button class="btn btn-primary btn-small" onclick="showWriteSpeak()">'+TX.askYes+'</button><button class="btn btn-outline btn-small" onclick="sayThanks()">'+TX.askNo+'</button>'}
 function showWriteSpeak(){document.getElementById('askBtns').innerHTML='<button class="btn btn-primary" onclick="openWrite()">✍️ '+TX.writeLabel+'</button><button class="btn btn-outline" onclick="openSpeak()">🎙️ '+TX.speakLabel+'</button>'}
 function sayThanks(){document.getElementById('askBox').innerHTML='<div id="askText">'+TX.thanks+'</div>';setTimeout(()=>{document.getElementById('askBox').style.display='none'},3000)}
-function speakPhrase(){const phrase=document.getElementById('phrase').textContent+' ... '+document.getElementById('phrase2').textContent;if(window.speechSynthesis){window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(phrase);const voices={'en':'en-US','fr':'fr-FR','es':'es-ES','ar':'ar-SA','ja':'ja-JP','zh':'zh-CN'};u.lang=voices[lang]||'en-US';u.rate=0.85;u.pitch=1;u.volume=0.8;window.speechSynthesis.speak(u);phrasesSpoken++}}
+function speakPhrase(){const phrase=document.getElementById('phrase').textContent+' ... '+document.getElementById('phrase2').textContent;if(window.speechSynthesis){window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(phrase);const voices={'en':'en-US','fr':'fr-FR','es':'es-ES','ar':'ar-SA','ja':'ja-JP','zh':'zh-CN'};u.lang=voices[lang]||'en-US';u.rate=0.85;u.pitch=1;u.volume=0.8;window.speechSynthesis.speak(u)}}
 function shareMood(platform){const text=currentMood+' "'+document.getElementById('phrase').textContent+'"\n\nDraw yours on feelio.org 💜';if(platform==='copy'){navigator.clipboard.writeText(text).then(()=>alert('Copied!'));return}let link='';if(platform==='twitter')link='https://twitter.com/intent/tweet?text='+encodeURIComponent(text);else if(platform==='whatsapp')link='https://wa.me/?text='+encodeURIComponent(text);if(link)window.open(link,'_blank')}
 function openStoryPreview(){document.getElementById('storyEmoji').textContent=currentMood;document.getElementById('storyPhrase').textContent=document.getElementById('phrase').textContent;document.getElementById('storyPreview').classList.add('show')}
 function resetCanvas(){if(points&&points.length>8){if(!confirm('Clear your drawing?'))return}ctx.clearRect(0,0,canvas.width,canvas.height);strokeHistory=[];document.getElementById('result').textContent='';document.getElementById('phrase').textContent='';document.getElementById('phrase2').textContent='';document.body.style.background=currentTheme.bg;document.getElementById('rainCt').style.opacity='0';document.getElementById('askBox').style.display='none';document.getElementById('shareBtns').style.display='none';document.getElementById('calmLink').style.display='none';document.getElementById('speakBtn').style.display='none';points=[];document.getElementById('hint').style.opacity='1';document.getElementById('canvasHint').style.opacity='0.15';canvas.classList.add('breathe');currentMood='';if(window.speechSynthesis)window.speechSynthesis.cancel()}
