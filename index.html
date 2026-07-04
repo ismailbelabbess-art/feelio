@@ -38,8 +38,6 @@
     --transition-fast:0.2s cubic-bezier(0.4,0,0.2,1);
     --nav-h:56px;--font-size:1rem;
     --danger:#ef4444;--success:#34d399;--warning:#fbbf24;
-    --safe-bottom:env(safe-area-inset-bottom,0px);
-    --safe-top:env(safe-area-inset-top,0px);
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 html{font-size:var(--font-size);-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}
@@ -52,13 +50,7 @@ body{
 body.ar{direction:rtl;font-family:'Noto Sans Arabic',var(--font)}
 body.ja{font-family:'Noto Sans JP',var(--font)}
 body.zh{font-family:'Noto Sans SC',var(--font)}
-body.high-contrast{
-    --bg:#000;--text:#fff;--text2:#ddd;--text3:#aaa;
-    --accent:#ffff00;--accent2:#ffff00;--accent-glow:#ffff88;
-    --surface:#111;--surface2:#1a1a1a;
-}
-
-/* Background */
+body.high-contrast{--bg:#000;--text:#fff;--text2:#ddd;--text3:#aaa;--accent:#ffff00;--accent2:#ffff00;--accent-glow:#ffff88;--surface:#111;--surface2:#1a1a1a;}
 .bg-orb{position:fixed;width:600px;height:600px;border-radius:50%;filter:blur(180px);opacity:0.03;pointer-events:none;z-index:0;top:50%;left:50%;transform:translate(-50%,-50%);background:radial-gradient(circle,var(--accent) 0%,transparent 70%);transition:all 3s ease}
 .particles-bg{position:fixed;inset:0;z-index:0;pointer-events:none}
 .particle-bg{position:absolute;width:2px;height:2px;border-radius:50%;background:var(--accent);animation:floatUp 8s linear infinite;opacity:0}
@@ -66,24 +58,16 @@ body.high-contrast{
 .rain-layer{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity 1.5s ease}
 .drop{position:absolute;width:1px;border-radius:2px;animation:dropFall linear infinite;background:linear-gradient(transparent,rgba(180,180,240,0.3))}
 @keyframes dropFall{0%{transform:translateY(-5vh);opacity:0}10%{opacity:1}100%{transform:translateY(105vh);opacity:0.1}}
-
-/* Ripple */
-.ripple{position:fixed;border-radius:50%;background:rgba(167,139,250,0.25);transform:scale(0);animation:rippleEffect 0.5s ease-out forwards;pointer-events:none;z-index:250}
-@keyframes rippleEffect{100%{transform:scale(4);opacity:0}}
-
-/* Confetti */
 .confetti{position:fixed;pointer-events:none;z-index:200;animation:confettiFall 2.5s ease-out forwards}
 @keyframes confettiFall{0%{transform:translateY(0) rotate(0deg) scale(1);opacity:1}100%{transform:translateY(100vh) rotate(720deg) scale(0.3);opacity:0}}
-
-/* Overlays */
+.ripple{position:fixed;border-radius:50%;background:rgba(167,139,250,0.25);transform:scale(0);animation:rippleEffect 0.5s ease-out forwards;pointer-events:none;z-index:250}
+@keyframes rippleEffect{100%{transform:scale(4);opacity:0}}
 .overlay{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,0.95);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.5s ease}
 .overlay.show{opacity:1;pointer-events:auto}
-.overlay-box{text-align:center;padding:32px 24px;animation:fadeInUp 0.6s ease-out;max-width:420px;max-height:85vh;overflow-y:auto;width:100%}
+.overlay-box{text-align:center;padding:28px 20px;animation:fadeInUp 0.6s ease-out;max-width:420px;max-height:85vh;overflow-y:auto;width:100%}
 @keyframes fadeInUp{0%{opacity:0;transform:translateY(40px)}100%{opacity:1;transform:translateY(0)}}
 .overlay-box h2{font-size:1.5rem;font-weight:200;margin-bottom:10px;color:#fff;letter-spacing:2px}
 .overlay-box p{color:rgba(255,255,255,0.55);font-size:0.82rem;margin-bottom:22px;line-height:1.6}
-
-/* Splash */
 .splash-icon{font-size:4.5rem;margin-bottom:16px;animation:breatheSplash 3s ease-in-out infinite}
 @keyframes breatheSplash{0%,100%{transform:scale(1);filter:drop-shadow(0 0 20px rgba(167,139,250,0.4))}50%{transform:scale(1.06);filter:drop-shadow(0 0 40px rgba(167,139,250,0.7))}}
 .splash-logo{font-size:2.6rem;font-weight:100;letter-spacing:14px;color:#fff;margin-bottom:8px;text-shadow:0 0 30px rgba(167,139,250,0.5)}
@@ -91,18 +75,12 @@ body.high-contrast{
 .splash-features{display:flex;gap:20px;justify-content:center;margin-bottom:28px;flex-wrap:wrap}
 .splash-feature{text-align:center;color:rgba(255,255,255,0.5);font-size:0.58rem}
 .splash-feature .sf-icon{font-size:1.5rem;display:block;margin-bottom:4px}
-
-/* Langues */
 .lang-options{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:20px}
 .lang-option{padding:12px 8px;border-radius:12px;border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.02);color:var(--text2);cursor:pointer;transition:all var(--transition-fast);font-size:0.78rem;text-align:center}
 .lang-option:active,.lang-option.active{border-color:var(--accent);background:rgba(139,92,246,0.15);color:#fff;transform:scale(0.96)}
-
-/* Disclaimer */
 .check-row{display:flex;align-items:flex-start;gap:10px;margin:10px 0;text-align:left;color:rgba(255,255,255,0.75);font-size:0.68rem;padding:6px 0}
 .check-row input[type=checkbox]{width:20px;height:20px;accent-color:var(--accent);flex-shrink:0;cursor:pointer;margin-top:1px}
 .check-row label{cursor:pointer;line-height:1.4}
-
-/* Onboarding */
 .onboarding-slide{display:none;animation:fadeInUp 0.5s ease-out}
 .onboarding-slide.active{display:block}
 .onboarding-slide .on-icon{font-size:5rem;margin-bottom:20px;animation:breatheSplash 3s ease-in-out infinite}
@@ -110,7 +88,14 @@ body.high-contrast{
 .onboarding-progress .seg{height:3px;width:40px;border-radius:3px;background:rgba(255,255,255,0.1);transition:all 0.4s ease}
 .onboarding-progress .seg.done{background:var(--accent)}
 
-/* Install banner */
+/* Démo canvas */
+.demo-canvas-wrap{position:relative;width:200px;height:200px;margin:0 auto 20px;border-radius:24px;overflow:hidden;background:var(--surface);border:1.5px solid rgba(255,255,255,0.06)}
+.demo-canvas-wrap canvas{width:100%;height:100%;border-radius:24px}
+.demo-label{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);color:var(--accent);font-size:0.5rem;font-weight:500;letter-spacing:1px;opacity:0;transition:opacity 0.5s}
+.demo-label.show{opacity:1}
+.demo-tap{position:absolute;width:16px;height:16px;background:rgba(200,180,255,0.6);border-radius:50%;pointer-events:none;opacity:0;transform:scale(0);animation:demoTap 1.5s ease-out infinite}
+@keyframes demoTap{0%{opacity:0;transform:scale(0)}20%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(0.5)}}
+
 .install-banner{position:fixed;bottom:calc(var(--nav-h) + 12px);left:12px;right:12px;z-index:650;background:var(--surface2);backdrop-filter:blur(25px);-webkit-backdrop-filter:blur(25px);padding:14px 16px;border-radius:18px;display:none;align-items:center;gap:10px;border:1px solid rgba(139,92,246,0.2);max-width:420px;margin:0 auto;animation:fadeInUp 0.4s ease-out;box-shadow:0 8px 32px rgba(0,0,0,0.4)}
 .install-banner.show{display:flex}
 .install-banner .install-icon{font-size:1.8rem;flex-shrink:0}
@@ -119,41 +104,29 @@ body.high-contrast{
 .install-banner button{flex-shrink:0;padding:8px 16px;border-radius:16px;border:none;background:linear-gradient(135deg,var(--accent2),var(--accent));color:#fff;font-size:0.52rem;font-weight:500;cursor:pointer;transition:all var(--transition-fast)}
 .install-banner button:active{transform:scale(0.94)}
 .install-banner .install-close{background:none;border:none;color:var(--text3);font-size:1rem;cursor:pointer;padding:4px;min-width:30px;min-height:30px;display:flex;align-items:center;justify-content:center}
-
-/* App */
 .app{position:relative;z-index:10;height:100%;display:flex;flex-direction:column;padding-bottom:var(--nav-h)}
 .screen{flex:1;display:none;flex-direction:column;align-items:center;justify-content:center;padding:20px;overflow-y:auto;-webkit-overflow-scrolling:touch;animation:screenIn 0.35s ease-out}
 .screen.active{display:flex}
 @keyframes screenIn{0%{opacity:0;transform:translateY(8px)}100%{opacity:1;transform:translateY(0)}}
-
-/* Top bar */
-.top-bar{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:8px 14px;padding-top:calc(8px + var(--safe-top));background:rgba(8,8,18,0.4);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.top-bar{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:8px 14px;padding-top:calc(8px + env(safe-area-inset-top,0px));background:rgba(8,8,18,0.4);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
 .privacy-badge{display:flex;align-items:center;gap:5px;color:var(--accent);font-size:0.48rem;font-weight:500;letter-spacing:0.3px}
 .privacy-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);box-shadow:0 0 6px var(--accent);animation:dotPulse 2s ease-in-out infinite;flex-shrink:0}
 @keyframes dotPulse{0%,100%{opacity:0.3}50%{opacity:1}}
 .langs{display:flex;gap:3px;flex-shrink:0}
 .langs span{color:#444;font-size:0.46rem;font-weight:500;cursor:pointer;padding:3px 6px;border-radius:4px;transition:all var(--transition-fast);min-width:22px;text-align:center}
 .langs span.active{color:var(--accent);background:rgba(139,92,246,0.1)}
-
-/* Cookie */
 .cookie-banner{position:fixed;bottom:calc(var(--nav-h) + 12px);left:12px;right:12px;z-index:700;background:var(--surface2);padding:10px 14px;border-radius:14px;display:flex;align-items:center;gap:8px;font-size:0.46rem;color:var(--text2);border:1px solid rgba(255,255,255,0.06);max-width:400px;margin:0 auto;transition:opacity 0.3s,transform 0.3s}
 .cookie-banner.hidden{opacity:0;transform:translateY(30px);pointer-events:none}
 .cookie-banner .cookie-dot{width:6px;height:6px;border-radius:50%;background:var(--success);flex-shrink:0}
 .cookie-banner button{flex-shrink:0;padding:4px 10px;border-radius:12px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.03);color:var(--text);font-size:0.44rem;cursor:pointer}
-
-/* Crisis */
-.crisis-bar{position:fixed;top:calc(44px + var(--safe-top));left:0;right:0;z-index:99;background:rgba(239,68,68,0.1);padding:6px 14px;text-align:center;font-size:0.46rem;color:var(--danger);display:none;animation:slideDown 0.3s ease-out}
+.crisis-bar{position:fixed;top:calc(44px + env(safe-area-inset-top,0px));left:0;right:0;z-index:99;background:rgba(239,68,68,0.1);padding:6px 14px;text-align:center;font-size:0.46rem;color:var(--danger);display:none;animation:slideDown 0.3s ease-out}
 @keyframes slideDown{0%{transform:translateY(-100%)}100%{transform:translateY(0)}}
 .crisis-bar a{color:var(--danger);text-decoration:underline}
-
-/* Logo */
 .logo-block{display:flex;flex-direction:column;align-items:center;margin-bottom:6px}
 .logo-svg-main{width:44px;height:44px;margin-bottom:4px;filter:drop-shadow(0 0 16px rgba(167,139,250,0.4))}
 .logo-text-main{font-size:2.2rem;font-weight:100;letter-spacing:12px;color:#fff;text-shadow:0 0 30px rgba(167,139,250,0.5);animation:logoGlow 3s ease-in-out infinite}
 @keyframes logoGlow{0%,100%{text-shadow:0 0 20px rgba(167,139,250,0.3)}50%{text-shadow:0 0 45px rgba(167,139,250,0.8)}}
 .tagline{color:var(--accent);font-size:0.65rem;font-weight:300;letter-spacing:3px;margin-bottom:20px;text-align:center;opacity:0.85}
-
-/* Badges */
 .badge-row{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:8px}
 .streak-badge{display:none;align-items:center;gap:5px;padding:5px 12px;background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.2);border-radius:14px;color:var(--warning);font-size:0.55rem;font-weight:500;animation:popIn 0.5s cubic-bezier(0.34,1.56,0.64,1)}
 .streak-badge .fire{font-size:0.7rem;animation:firePulse 0.8s ease-in-out infinite}
@@ -161,24 +134,18 @@ body.high-contrast{
 @keyframes popIn{0%{transform:scale(0)}100%{transform:scale(1)}}
 .collection-badge{display:none;align-items:center;gap:4px;padding:5px 12px;background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.15);border-radius:14px;color:var(--accent);font-size:0.52rem;font-weight:500}
 .daily-counter{color:var(--accent);font-size:0.52rem;font-weight:300;margin-bottom:14px;padding:4px 10px;background:rgba(139,92,246,0.05);border-radius:10px;display:inline-block}
-
-/* Canvas */
 .canvas-wrap{position:relative;margin-bottom:12px}
 .canvas-wrap::after{content:'';position:absolute;inset:-2px;border-radius:calc(var(--radius) + 2px);background:linear-gradient(135deg,var(--accent),var(--accent2));opacity:0.15;filter:blur(8px);z-index:0;animation:glowPulse 3s ease-in-out infinite}
 @keyframes glowPulse{0%,100%{opacity:0.1}50%{opacity:0.3}}
-canvas{position:relative;z-index:1;width:280px;height:280px;border-radius:var(--radius);background:var(--surface);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);touch-action:none;cursor:crosshair;border:1.5px solid rgba(255,255,255,0.06);transition:transform var(--transition-fast)}
-canvas:active{transform:scale(0.97)}
-canvas.breathe{animation:breathe 5s ease-in-out infinite}
+canvas#canvas{position:relative;z-index:1;width:280px;height:280px;border-radius:var(--radius);background:var(--surface);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);touch-action:none;cursor:crosshair;border:1.5px solid rgba(255,255,255,0.06);transition:transform var(--transition-fast)}
+canvas#canvas:active{transform:scale(0.97)}
+canvas#canvas.breathe{animation:breathe 5s ease-in-out infinite}
 @keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.004)}}
 .canvas-hint-overlay{position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;pointer-events:none;opacity:0.12;transition:opacity 0.4s;font-size:1.2rem;color:var(--text3)}
-
-/* Toolbar */
 .toolbar{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;justify-content:center}
 .toolbar button{width:32px;height:32px;border-radius:50%;border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.02);color:var(--text3);cursor:pointer;font-size:0.65rem;transition:all var(--transition-fast)}
 .toolbar button:active{transform:scale(0.9)}
 .toolbar button.active{border-color:var(--accent);color:var(--accent);background:rgba(139,92,246,0.1);box-shadow:0 0 12px rgba(139,92,246,0.2)}
-
-/* Result */
 #resultWrap{display:flex;flex-direction:column;align-items:center;min-height:70px;margin-top:2px;gap:6px}
 #result{font-size:3.5rem;transition:all 0.5s cubic-bezier(0.34,1.56,0.64,1);filter:drop-shadow(0 0 35px rgba(200,200,240,0.25))}
 #result.pop{animation:popIn 0.5s cubic-bezier(0.34,1.56,0.64,1)}
@@ -186,15 +153,11 @@ canvas.breathe{animation:breathe 5s ease-in-out infinite}
 #phrase2{color:var(--text2);font-size:0.62rem;font-weight:200;text-align:center;max-width:320px;line-height:1.5}
 .speak-btn{display:none;margin-top:4px;padding:5px 10px;border-radius:14px;border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.02);color:var(--text3);cursor:pointer;font-size:0.5rem;transition:all var(--transition-fast)}
 .speak-btn:active{background:rgba(139,92,246,0.08);color:var(--accent)}
-
-/* Ask box */
 #askBox{display:none;flex-direction:column;align-items:center;gap:10px;margin-top:12px;animation:fadeIn 0.4s ease-out}
 @keyframes fadeIn{0%{opacity:0;transform:translateY(6px)}100%{opacity:1;transform:translateY(0)}}
 .calm-link{display:none;margin-top:4px;text-align:center}
 .calm-link a{text-decoration:none;color:var(--accent);font-size:0.52rem}
 .share-btns{display:flex;gap:6px;margin-top:6px;animation:fadeIn 0.4s ease-out}
-
-/* Buttons */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:11px 24px;border-radius:50px;font-size:0.62rem;font-weight:400;letter-spacing:0.5px;cursor:pointer;transition:all var(--transition-fast);border:none;position:relative;overflow:hidden;text-decoration:none;min-height:40px}
 .btn:active{transform:scale(0.95)}
 .btn:disabled{opacity:0.35;cursor:not-allowed;transform:none}
@@ -205,9 +168,7 @@ canvas.breathe{animation:breathe 5s ease-in-out infinite}
 .btn-icon{padding:8px 10px;border-radius:50%;font-size:0.85rem;min-width:38px;min-height:38px}
 .counter{color:var(--accent);font-size:0.55rem;font-weight:300;letter-spacing:1px;margin-top:14px;padding:5px 12px;background:rgba(139,92,246,0.06);border-radius:14px;display:inline-block}
 .hint{color:var(--text3);font-size:0.52rem;font-weight:200;margin-top:4px;letter-spacing:1px;transition:opacity 0.4s}
-
-/* Nav */
-.nav{position:fixed;bottom:0;left:0;right:0;z-index:100;display:flex;justify-content:space-around;align-items:center;height:var(--nav-h);padding:0 6px var(--safe-bottom);background:rgba(10,10,22,0.95);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);border-top:0.5px solid rgba(255,255,255,0.04)}
+.nav{position:fixed;bottom:0;left:0;right:0;z-index:100;display:flex;justify-content:space-around;align-items:center;height:var(--nav-h);padding:0 6px env(safe-area-inset-bottom,0px);background:rgba(10,10,22,0.95);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);border-top:0.5px solid rgba(255,255,255,0.04)}
 .nav-item{display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;padding:4px 8px;border-radius:12px;transition:all var(--transition-fast);color:var(--text3);position:relative;min-width:40px;min-height:40px;justify-content:center}
 .nav-item.active{color:var(--accent)}
 .nav-item .icon-wrap{position:relative;display:flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;transition:all var(--transition-fast);background:transparent}
@@ -218,8 +179,6 @@ canvas.breathe{animation:breathe 5s ease-in-out infinite}
 .nav-item.active .nav-label{opacity:1}
 .nav-item .active-dot{position:absolute;top:2px;width:3px;height:3px;border-radius:50%;background:var(--accent);opacity:0;transition:all var(--transition-fast)}
 .nav-item.active .active-dot{opacity:1;box-shadow:0 0 5px var(--accent)}
-
-/* Screens */
 .section-title{font-size:1rem;font-weight:200;letter-spacing:4px;margin-bottom:4px}
 .section-sub{color:var(--text3);font-size:0.5rem;margin-bottom:12px}
 .history-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-top:10px;width:100%;max-width:320px}
@@ -227,15 +186,15 @@ canvas.breathe{animation:breathe 5s ease-in-out infinite}
 .history-day .emoji{font-size:1.1rem}.history-day .label{color:var(--text3);margin-top:2px}
 .stat-card{display:flex;align-items:center;gap:12px;padding:14px 18px;background:rgba(255,255,255,0.02);border-radius:16px;margin:3px 0;width:100%;max-width:300px}.stat-card .emoji{font-size:2rem}.stat-card .count{font-size:1.2rem;font-weight:500}.stat-card .label{color:var(--text3);font-size:0.5rem}
 .legal-text{text-align:left;max-width:380px;font-size:0.55rem;font-weight:300;line-height:1.8;color:var(--text2);width:100%}
-.legal-text h3{color:var(--accent);font-size:0.65rem;font-weight:500;margin:14px 0 4px}.legal-text a{color:var(--accent)}
+.legal-text h3{color:var(--accent);font-size:0.65rem;font-weight:500;margin:14px 0 4px}
+.legal-text a{color:var(--accent)}
+.legal-text strong{color:var(--text)}
 .resource-link{display:flex;align-items:center;gap:10px;padding:14px 18px;background:rgba(255,255,255,0.02);border-radius:16px;margin:4px 0;width:100%;max-width:320px;text-decoration:none;color:var(--text2);font-size:0.62rem;transition:all var(--transition-fast)}
 .resource-link:active{background:rgba(139,92,246,0.06);color:var(--accent)}
 .premium-card{background:rgba(139,92,246,0.04);border:1px solid rgba(139,92,246,0.1);border-radius:20px;padding:22px;margin-top:18px;text-align:center;width:100%;max-width:300px}
 .premium-card h3{color:var(--accent);font-size:0.85rem;font-weight:400;margin-bottom:4px}
 .premium-card .price{font-size:1.5rem;font-weight:600;color:#fff;margin:4px 0}
 .premium-card .period{color:var(--text3);font-size:0.46rem;margin-bottom:8px}
-
-/* Modals */
 .modal-overlay{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,0.85);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.3s}
 .modal-overlay.open{opacity:1;pointer-events:auto}
 .modal{background:var(--surface2);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);border-radius:24px;padding:26px;width:90%;max-width:350px;text-align:center;border:1px solid rgba(255,255,255,0.04);position:relative;animation:modalIn 0.3s ease-out}
@@ -244,43 +203,24 @@ canvas.breathe{animation:breathe 5s ease-in-out infinite}
 .modal textarea:focus{outline:none;border-color:var(--accent)}
 .modal .close-x{position:absolute;top:10px;right:12px;cursor:pointer;color:var(--text3);font-size:1.1rem;background:none;border:none;min-width:30px;min-height:30px;display:flex;align-items:center;justify-content:center}
 .modal .btn-row{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
-
-/* Story */
 .story-preview{position:fixed;inset:0;z-index:600;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.4s}
 .story-preview.show{opacity:1;pointer-events:auto}
 .story-preview .story-content{text-align:center;padding:40px}
 .story-preview .story-emoji{font-size:6rem}
 .story-preview .story-phrase{color:var(--text);font-size:1rem;font-weight:200;margin-top:12px;max-width:280px}
 .story-preview .story-logo{font-size:0.55rem;color:var(--accent);margin-top:16px;letter-spacing:3px}
-
-/* Gallery */
 .gallery-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px;max-width:320px}
 .gallery-item{aspect-ratio:1;border-radius:12px;background:rgba(255,255,255,0.02);overflow:hidden}
 .gallery-item img{width:100%;height:100%;object-fit:cover}
-
-/* Settings */
 .settings-group{margin:6px 0;width:100%;max-width:300px}
 .settings-group .group-title{color:var(--text3);font-size:0.46rem;font-weight:500;letter-spacing:1px;margin-bottom:4px;text-transform:uppercase}
-
-/* Toast */
 .toast{position:fixed;top:80px;left:50%;transform:translateX(-50%);z-index:400;background:var(--surface2);backdrop-filter:blur(20px);padding:10px 20px;border-radius:20px;color:#fff;font-size:0.58rem;font-weight:500;opacity:0;pointer-events:none;transition:opacity 0.3s,transform 0.3s;border:1px solid rgba(255,255,255,0.06);white-space:nowrap}
 .toast.show{opacity:1;animation:toastIn 0.4s ease-out}
 @keyframes toastIn{0%{transform:translateX(-50%) translateY(-20px);opacity:0}100%{transform:translateX(-50%) translateY(0);opacity:1}}
 .speech-indicator{display:none;align-items:center;gap:5px;padding:5px 12px;background:rgba(239,68,68,0.1);border-radius:14px;color:var(--danger);font-size:0.5rem;margin-top:6px;animation:pulse 1.5s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
-
-@media(min-width:768px){
-    canvas{width:300px;height:300px}
-    .logo-text-main{font-size:2.6rem}
-    .lang-options{grid-template-columns:repeat(4,1fr)}
-    .screen{padding:24px}
-    .splash-logo{font-size:2.8rem}
-}
-@media(max-width:380px){
-    canvas{width:250px;height:250px}
-    .logo-text-main{font-size:1.8rem}
-    .toolbar button{width:28px;height:28px;font-size:0.6rem}
-}
+@media(min-width:768px){canvas#canvas{width:300px;height:300px}.logo-text-main{font-size:2.6rem}.lang-options{grid-template-columns:repeat(4,1fr)}.screen{padding:24px}.splash-logo{font-size:2.8rem}.demo-canvas-wrap{width:220px;height:220px}}
+@media(max-width:380px){canvas#canvas{width:250px;height:250px}.logo-text-main{font-size:1.8rem}.toolbar button{width:28px;height:28px;font-size:0.6rem}.demo-canvas-wrap{width:170px;height:170px}}
 @media(prefers-reduced-motion:reduce){*,::before,::after{animation-duration:0.01ms!important;animation-iteration-count:1!important;transition-duration:0.01ms!important}}
 </style>
 </head>
@@ -313,7 +253,7 @@ canvas.breathe{animation:breathe 5s ease-in-out infinite}
     <div class="check-row"><input type="checkbox" id="discCheck1"><label for="discCheck1" id="discLabel1">I understand Feelio is not a medical tool</label></div>
     <div class="check-row"><input type="checkbox" id="discCheck2"><label for="discCheck2" id="discLabel2">I understand my data stays on my device</label></div>
     <div class="check-row"><input type="checkbox" id="discCheck3"><label for="discCheck3" id="discLabel3">I am 13 years or older</label></div>
-    <div class="check-row"><input type="checkbox" id="discCheck4"><label for="discCheck4" id="discLabel4">I agree to use Feelio for personal, non-commercial purposes</label></div>
+    <div class="check-row"><input type="checkbox" id="discCheck4"><label for="discCheck4" id="discLabel4">I agree to the Terms of Service &amp; Privacy Policy</label></div>
     <button class="btn btn-primary" id="discBtn" disabled>Begin</button>
 </div></div>
 
@@ -322,17 +262,19 @@ canvas.breathe{animation:breathe 5s ease-in-out infinite}
     <div class="onboarding-progress"><div class="seg done" id="seg0"></div><div class="seg" id="seg1"></div><div class="seg" id="seg2"></div></div>
     <div class="onboarding-slide active" id="onSlide0"><div class="on-icon">🫁</div><h2 id="onTitle0">Welcome</h2><p id="onText0">Your private emotional space.<br>No judgment. No data collected.</p></div>
     <div class="onboarding-slide" id="onSlide1"><div class="on-icon">✍️</div><h2 id="onTitle1">Draw your mood</h2><p id="onText1">Use your finger to draw how you feel.<br>Feelio understands.</p></div>
-    <div class="onboarding-slide" id="onSlide2"><div class="on-icon">💜</div><h2 id="onTitle2">You are not alone</h2><p id="onText2">Every storm passes.<br>Every sun rises again.</p></div>
+    <div class="onboarding-slide" id="onSlide2">
+        <div class="on-icon">💜</div><h2 id="onTitle2">You are not alone</h2><p id="onText2">Every storm passes.<br>Every sun rises again.</p>
+        <!-- Démo animée -->
+        <div class="demo-canvas-wrap" id="demoWrap"><canvas id="demoCanvas" width="300" height="300"></canvas><div class="demo-label" id="demoLabel">😊 Happy</div></div>
+    </div>
     <button class="btn btn-primary" id="onBtn">Next</button>
     <button class="btn btn-outline btn-small" style="margin-top:8px" id="btnSkipOnboarding">Skip</button>
 </div></div>
 
-<!-- INSTALL BANNER -->
+<!-- INSTALL -->
 <div class="install-banner" id="installBanner">
-    <span class="install-icon">💜</span>
-    <p id="installText"><strong>Add Feelio to your home screen</strong><br>Access it in one tap, like an app.</p>
-    <button id="btnInstall">Install</button>
-    <button class="install-close" id="btnCloseInstall">✕</button>
+    <span class="install-icon">💜</span><p id="installText"><strong>Add to home screen</strong><br>One tap access.</p>
+    <button id="btnInstall">Install</button><button class="install-close" id="btnCloseInstall">✕</button>
 </div>
 
 <!-- COOKIE -->
@@ -354,7 +296,7 @@ canvas.breathe{animation:breathe 5s ease-in-out infinite}
     <div class="tagline" id="tagline">Take a deep breath. Draw what you feel.</div>
     <div class="badge-row"><div class="streak-badge" id="streakBadge"><span class="fire">🔥</span> <span id="streakText">1</span></div><div class="collection-badge" id="collectionBadge">🎨 <span id="collectionText">0/13</span></div></div>
     <div class="daily-counter" id="dailyCounter">0</div>
-    <div class="toolbar"><button data-size="4" class="active" title="Small">S</button><button data-size="7" title="Medium">M</button><button data-size="12" title="Large">L</button><button id="btnUndo" title="Undo">↩</button><button id="btnContrast" title="Contrast">◐</button><button id="btnFullscreen" title="Fullscreen">⛶</button></div>
+    <div class="toolbar"><button data-size="3" class="active" title="Thin">S</button><button data-size="6" title="Medium">M</button><button data-size="14" title="Thick">L</button><button id="btnUndo" title="Undo">↩</button><button id="btnContrast" title="Contrast">◐</button><button id="btnFullscreen" title="Fullscreen">⛶</button></div>
     <div class="canvas-wrap"><div class="canvas-hint-overlay" id="canvasHint">✍️</div><canvas id="canvas" width="600" height="600" class="breathe" aria-label="Draw your mood"></canvas></div>
     <div id="resultWrap"><div id="result" aria-live="polite"></div><div id="phrase"></div><div id="phrase2"></div></div>
     <button class="speak-btn" id="speakBtn">🔊 Listen</button>
@@ -366,11 +308,11 @@ canvas.breathe{animation:breathe 5s ease-in-out infinite}
 <div class="screen" id="screen-history"><div class="section-title" id="weekTitle">Your Week</div><div class="section-sub" id="weekSub">7-day emotional weather</div><div class="history-grid" id="historyGrid"></div><button class="btn btn-outline btn-small" id="btnClearHistory" style="margin-top:10px">Clear history</button></div>
 <div class="screen" id="screen-stats"><div class="section-title" id="statsTitle">Your Stats</div><div class="section-sub" id="statsSub">This month</div><div id="statsContainer"></div><div class="premium-card"><h3 id="premTitle">Feelio Premium</h3><p style="color:var(--text2);font-size:0.5rem;margin-bottom:4px;line-height:1.4" id="premDesc">30-day history • Export • Themes<br>Support Feelio</p><div class="price" id="premPrice">2€</div><div class="period" id="premPeriod">/month</div><div style="display:flex;gap:5px;flex-wrap:wrap;justify-content:center"><button class="btn btn-primary btn-small" id="btnPaypal">💛 PayPal</button><button class="btn btn-outline btn-small" id="btnKofi">☕ Ko-fi</button></div></div></div>
 <div class="screen" id="screen-gallery"><div class="section-title" id="galleryTitle">Gallery</div><div class="gallery-grid" id="galleryGrid"></div></div>
-<div class="screen" id="screen-trust"><div class="section-title" id="trustTitle">Trust & Safety</div><div class="legal-text" id="trustContent"></div></div>
+<div class="screen" id="screen-trust"><div class="section-title" id="trustTitle">Trust &amp; Safety</div><div class="legal-text" id="trustContent"></div></div>
 <div class="screen" id="screen-settings"><div class="section-title">Settings</div>
     <div class="settings-group"><div class="group-title">Data</div><button class="btn btn-outline btn-small" style="margin:3px;width:100%" id="btnExport">📤 Export my data</button><button class="btn btn-outline btn-small" style="margin:3px;width:100%" id="btnDelete">🗑️ Delete all data</button></div>
     <div class="settings-group"><div class="group-title">Preferences</div><button class="btn btn-outline btn-small" style="margin:3px;width:100%" id="btnNotifToggle">🔔 <span id="notifBtn">Enable reminders</span></button><button class="btn btn-outline btn-small" style="margin:3px;width:100%" id="btnSpeechToggle">🔊 <span id="speechToggleBtn">Enable voice</span></button><button class="btn btn-outline btn-small" style="margin:3px;width:100%" id="btnFontUp">🔤 Text +</button><button class="btn btn-outline btn-small" style="margin:3px;width:100%" id="btnFontDown">🔤 Text -</button></div>
-    <div class="settings-group"><div class="group-title">More</div><button class="btn btn-outline btn-small" style="margin:3px;width:100%" id="btnGoTrust">🛡️ Trust & Safety</button><button class="btn btn-outline btn-small" style="margin:3px;width:100%" id="btnGoResources">🌿 Resources</button></div>
+    <div class="settings-group"><div class="group-title">Legal</div><button class="btn btn-outline btn-small" style="margin:3px;width:100%" id="btnGoTrust">🛡️ Privacy &amp; Terms</button><button class="btn btn-outline btn-small" style="margin:3px;width:100%" id="btnGoResources">🌿 Resources</button></div>
 </div>
 <div class="screen" id="screen-resources"><div class="section-title" id="resourcesTitle">Resources</div><a class="resource-link" href="https://www.youtube.com/results?search_query=guided+meditation+10+minutes" target="_blank" rel="noopener"><span>🧘</span><span id="resMeditation">Guided meditation</span></a><a class="resource-link" href="https://www.youtube.com/results?search_query=calm+nature+sounds" target="_blank" rel="noopener"><span>🌿</span><span id="resNature">Calm nature sounds</span></a><a class="resource-link" href="https://www.youtube.com/results?search_query=breathing+exercises+5+minutes" target="_blank" rel="noopener"><span>🫁</span><span id="resBreathing">Breathing exercises</span></a><a class="resource-link" href="https://tiktok.com/@calm.chaos16" target="_blank" rel="noopener"><span>🎨</span><span id="resCalmChaos">Calm Chaos</span></a><a class="resource-link" href="https://findahelpline.com" target="_blank" rel="noopener"><span>🆘</span><span id="resCrisis">Find a helpline</span></a></div>
 </div>
@@ -392,31 +334,68 @@ canvas.breathe{animation:breathe 5s ease-in-out infinite}
 <script>
 (function(){
 'use strict';
+// ==================== LANGUAGES ====================
 var LANGDATA={
-en:{discTitle:'Before you begin',discIntro:'Feelio is your private space. Please read and accept:',discLabel1:'I understand Feelio is not a medical tool',discLabel2:'I understand my data stays on my device',discLabel3:'I am 13 years or older',discLabel4:'I agree to use Feelio for personal, non-commercial purposes',discBtn:'Begin',onTitle0:'Welcome to Feelio',onText0:'Your private emotional space.<br>No judgment. No data collected.',onTitle1:'Draw your mood',onText1:'Use your finger to draw.<br>Feelio listens.',onTitle2:'You are not alone',onText2:'Every storm passes.<br>Every sun rises again.',privacy:'100% Private',tagline:'Take a deep breath. Draw what you feel.',reset:'Clear',hint:'Use your finger to draw',counter:'moods drawn worldwide',nav:['Draw','Week','Stats','Gallery','Settings'],dailyCounter:'drew their mood today',streakText:'day streak!',collectionText:'/13 emotions',calmText:'Need a moment of calm?',askWant:'Do you want to talk about it?',askYes:'Yes',askNo:'No',thanks:'Okay. Take care. 🌿',writeLabel:'Write',speakLabel:'Speak',cookieText:'Feelio uses no cookies and collects no personal data.',crisisBarText:'If you\'re in crisis, help is available.',installMobile:'Add Feelio to your home screen',installDesktop:'Add Feelio to your browser',installSubMobile:'Access it in one tap, like an app.',installSubDesktop:'Quick access from your desktop.',tornado:'🌪️',t1:'A storm is raging inside you.',t2:'Even storms run out of rain. Hold on.',lightning:'⚡',l1:'Electric. Alive.',l2:'This energy is yours.',rain:'🌧️',r1:'Let it fall. Let it wash over you.',r2:'Some things grow after rain.',sun:'☀️',s1:'You are shining today.',s2:'Someone needed this light.',night:'🌙',n1:'Quiet now.',n2:'Rest is not weakness.',rainbow:'🌈',rb1:'Look what you crossed.',rb2:'Still standing.',fog:'🌫️',f1:'Lost in the fog.',f2:'Clarity comes slowly.',snow:'❄️',s1:'Frozen. Still.',s2:'Spring always comes.',wind:'💨',w1:'Restless.',w2:'Let the wind carry you.',heat:'🔥',h1:'A fire inside.',h2:'Passion is power.',empty:'🕳️',e1:'Empty today.',e2:'Space waiting.',hope:'🌱',ho1:'A tiny spark.',ho2:'Hope whispers.',gratitude:'🙏',g1:'You said thank you.',g2:'Gratitude changes you.',streakToast:'day streak! Keep going!',newEmotion:'New emotion unlocked!',collectionComplete:'All 13 emotions collected! Legendary! 🏆'},
-fr:{discTitle:'Avant de commencer',discIntro:'Feelio est votre espace privé. Veuillez lire et accepter :',discLabel1:'Je comprends que Feelio n\'est pas un outil médical',discLabel2:'Je comprends que mes données restent sur mon appareil',discLabel3:'J\'ai 13 ans ou plus',discLabel4:'J\'accepte d\'utiliser Feelio à des fins personnelles',discBtn:'Commencer',onTitle0:'Bienvenue',onText0:'Votre espace émotionnel privé.<br>Sans jugement. Sans données.',onTitle1:'Dessinez votre humeur',onText1:'Utilisez votre doigt pour dessiner.<br>Feelio écoute.',onTitle2:'Vous n\'êtes pas seul',onText2:'Chaque tempête passe.<br>Chaque soleil revient.',privacy:'100% Privé',tagline:'Respire. Dessine ce que tu ressens.',reset:'Effacer',hint:'Utilise ton doigt',counter:'humeurs dans le monde',nav:['Dessiner','Semaine','Stats','Galerie','Réglages'],dailyCounter:'ont dessiné aujourd\'hui',streakText:'jours !',collectionText:'/13 émotions',calmText:'Besoin de calme ?',askWant:'Veux-tu en parler ?',askYes:'Oui',askNo:'Non',thanks:'Prends soin de toi. 🌿',writeLabel:'Écrire',speakLabel:'Parler',cookieText:'Aucun cookie. Aucune collecte de données.',crisisBarText:'En cas de crise, de l\'aide est disponible.',installMobile:'Ajoute Feelio à ton écran d\'accueil',installDesktop:'Ajoute Feelio à ton navigateur',installSubMobile:'Accès en un clic, comme une app.',installSubDesktop:'Accès rapide depuis ton bureau.',tornado:'🌪️',t1:'Une tempête fait rage en toi.',t2:'Même les tempêtes s\'épuisent.',lightning:'⚡',l1:'Électrique. Vivant.',l2:'Cette énergie est la tienne.',rain:'🌧️',r1:'Laisse tomber. Laisse laver.',r2:'Certaines choses poussent après la pluie.',sun:'☀️',s1:'Tu brilles aujourd\'hui.',s2:'Quelqu\'un avait besoin de cette lumière.',night:'🌙',n1:'Silence.',n2:'Le repos n\'est pas une faiblesse.',rainbow:'🌈',rb1:'Regarde ce que tu as traversé.',rb2:'Encore debout.',fog:'🌫️',f1:'Perdu dans le brouillard.',f2:'La clarté vient doucement.',snow:'❄️',s1:'Gelé. Immobile.',s2:'Le printemps revient.',wind:'💨',w1:'Agité.',w2:'Laisse le vent t\'emmener.',heat:'🔥',h1:'Un feu brûle en toi.',h2:'La passion est une force.',empty:'🕳️',e1:'Vide aujourd\'hui.',e2:'De l\'espace à remplir.',hope:'🌱',ho1:'Une petite étincelle.',ho2:'L\'espoir murmure.',gratitude:'🙏',g1:'Tu as dit merci.',g2:'La gratitude te change.',streakToast:'jours de suite ! Continue !',newEmotion:'Nouvelle émotion débloquée !',collectionComplete:'13 émotions collectées ! Légendaire ! 🏆'},
-es:{discTitle:'Antes de comenzar',discIntro:'Feelio es tu espacio privado. Lee y acepta:',discLabel1:'Entiendo que Feelio no es una herramienta médica',discLabel2:'Entiendo que mis datos permanecen en mi dispositivo',discLabel3:'Tengo 13 años o más',discLabel4:'Acepto usar Feelio para fines personales',discBtn:'Comenzar',onTitle0:'Bienvenido',onText0:'Tu espacio emocional privado.<br>Sin juicios. Sin datos.',onTitle1:'Dibuja tu estado',onText1:'Usa tu dedo para dibujar.<br>Feelio te escucha.',onTitle2:'No estás solo',onText2:'Toda tormenta pasa.<br>Todo sol vuelve a salir.',privacy:'100% Privado',tagline:'Respira. Dibuja lo que sientes.',reset:'Limpiar',hint:'Usa tu dedo',counter:'estados dibujados',nav:['Dibujar','Semana','Estadísticas','Galería','Ajustes'],dailyCounter:'dibujaron hoy',streakText:'días!',collectionText:'/13 emociones',calmText:'¿Necesitas calma?',askWant:'¿Quieres hablar?',askYes:'Sí',askNo:'No',thanks:'Cuídate. 🌿',writeLabel:'Escribir',speakLabel:'Hablar',cookieText:'Sin cookies. Sin recolección de datos.',crisisBarText:'Si estás en crisis, hay ayuda.',installMobile:'Añadir a pantalla de inicio',installDesktop:'Añadir al navegador',installSubMobile:'Accede en un toque.',installSubDesktop:'Acceso rápido.',tornado:'🌪️',t1:'Una tormenta ruge dentro de ti.',t2:'Hasta las tormentas se agotan.',lightning:'⚡',l1:'Eléctrico. Vivo.',l2:'Esta energía es tuya.',rain:'🌧️',r1:'Déjalo caer. Deja que te lave.',r2:'Algo crece tras la lluvia.',sun:'☀️',s1:'Estás brillando hoy.',s2:'Alguien necesitaba esta luz.',night:'🌙',n1:'Silencio.',n2:'Descansar no es debilidad.',rainbow:'🌈',rb1:'Mira lo que has cruzado.',rb2:'Sigues en pie.',fog:'🌫️',f1:'Perdido en la niebla.',f2:'La claridad llega.',snow:'❄️',s1:'Congelado. Quieto.',s2:'La primavera vuelve.',wind:'💨',w1:'Inquieto.',w2:'Deja que el viento te lleve.',heat:'🔥',h1:'Fuego interior.',h2:'La pasión es poder.',empty:'🕳️',e1:'Vacío hoy.',e2:'Espacio esperando.',hope:'🌱',ho1:'Una chispa.',ho2:'La esperanza susurra.',gratitude:'🙏',g1:'Diste las gracias.',g2:'La gratitud te cambia.',streakToast:'días! Sigue!',newEmotion:'¡Nueva emoción!',collectionComplete:'¡13 emociones! ¡Legendario! 🏆'},
-ar:{discTitle:'قبل أن تبدأ',discIntro:'فيليو هو مساحتك الخاصة. اقرأ ووافق:',discLabel1:'أفهم أن فيليو ليس أداة طبية',discLabel2:'أفهم أن بياناتي تبقى على جهازي',discLabel3:'عمري 13 سنة أو أكثر',discLabel4:'أوافق على استخدام فيليو لأغراض شخصية',discBtn:'ابدأ',onTitle0:'مرحباً',onText0:'مساحتك العاطفية الخاصة.<br>بدون حكم. بدون بيانات.',onTitle1:'ارسم مزاجك',onText1:'استخدم إصبعك للرسم.<br>فيليو يستمع.',onTitle2:'لست وحدك',onText2:'كل عاصفة تمر.<br>كل شمس تشرق.',privacy:'خصوصية 100%',tagline:'تنفس. ارسم ما تشعر به.',reset:'مسح',hint:'استخدم إصبعك',counter:'حالة مرسومة',nav:['رسم','أسبوع','إحصائيات','معرض','إعدادات'],dailyCounter:'رسموا اليوم',streakText:'أيام!',collectionText:'/13 عاطفة',calmText:'تحتاج هدوء؟',askWant:'هل تريد التحدث؟',askYes:'نعم',askNo:'لا',thanks:'اعتني بنفسك. 🌿',writeLabel:'كتابة',speakLabel:'تحدث',cookieText:'بدون كوكيز. بدون جمع بيانات.',crisisBarText:'إذا كنت في أزمة، المساعدة متاحة.',installMobile:'أضف إلى الشاشة الرئيسية',installDesktop:'أضف إلى المتصفح',installSubMobile:'وصول بنقرة واحدة.',installSubDesktop:'وصول سريع.',tornado:'🌪️',t1:'عاصفة بداخلك.',t2:'حتى العواصف تنتهي.',lightning:'⚡',l1:'كهربائي. حي.',l2:'هذه طاقتك.',rain:'🌧️',r1:'دعه يسقط. دعه يغسلك.',r2:'أشياء تنمو بعد المطر.',sun:'☀️',s1:'أنت مشرق اليوم.',s2:'أحدهم احتاج هذا الضوء.',night:'🌙',n1:'هدوء.',n2:'الراحة ليست ضعفاً.',rainbow:'🌈',rb1:'انظر ما عبرت.',rb2:'ما زلت واقفاً.',fog:'🌫️',f1:'تائه في الضباب.',f2:'الوضوح يأتي.',snow:'❄️',s1:'متجمد. ساكن.',s2:'الربيع يعود.',wind:'💨',w1:'مضطرب.',w2:'دع الريح تحملك.',heat:'🔥',h1:'نار بالداخل.',h2:'الشغف قوة.',empty:'🕳️',e1:'فارغ اليوم.',e2:'مساحة تنتظر.',hope:'🌱',ho1:'شرارة صغيرة.',ho2:'الأمل يهمس.',gratitude:'🙏',g1:'قلت شكراً.',g2:'الامتنان يغيرك.',streakToast:'أيام! استمر!',newEmotion:'عاطفة جديدة!',collectionComplete:'13 عاطفة! أسطوري! 🏆'},
-ja:{discTitle:'始める前に',discIntro:'Feelioはあなたのプライベートな空間です。',discLabel1:'Feelioは医療ツールではないことを理解しました',discLabel2:'データは端末に保存されることを理解しました',discLabel3:'13歳以上です',discLabel4:'個人的な目的で使用することに同意します',discBtn:'始める',onTitle0:'ようこそ',onText0:'あなたの感情の空間。<br>判断なし。データ収集なし。',onTitle1:'気分を描く',onText1:'指で描いてください。<br>Feelioが聞きます。',onTitle2:'一人じゃない',onText2:'すべての嵐は過ぎ去る。<br>太陽はまた昇る。',privacy:'100%プライベート',tagline:'深呼吸。感じたことを描いて。',reset:'クリア',hint:'指で描く',counter:'描かれた気分',nav:['描く','週','統計','ギャラリー','設定'],dailyCounter:'人が今日描きました',streakText:'日継続!',collectionText:'/13の感情',calmText:'落ち着きたい？',askWant:'話したい？',askYes:'はい',askNo:'いいえ',thanks:'お大事に。🌿',writeLabel:'書く',speakLabel:'話す',cookieText:'クッキーなし。データ収集なし。',crisisBarText:'危機の場合は助けがあります。',installMobile:'ホーム画面に追加',installDesktop:'ブラウザに追加',installSubMobile:'ワンタップでアクセス。',installSubDesktop:'すぐにアクセス。',tornado:'🌪️',t1:'内側で嵐が荒れている。',t2:'嵐もいつかは止む。',lightning:'⚡',l1:'電気的。生きている。',l2:'このエネルギーはあなたのもの。',rain:'🌧️',r1:'降らせて。洗い流して。',r2:'雨の後に育つものがある。',sun:'☀️',s1:'今日は輝いている。',s2:'誰かがこの光を必要としていた。',night:'🌙',n1:'静けさ。',n2:'休息は弱さではない。',rainbow:'🌈',rb1:'乗り越えたものを見て。',rb2:'まだ立っている。',fog:'🌫️',f1:'霧の中で迷った。',f2:'明確さはゆっくり来る。',snow:'❄️',s1:'凍った。静か。',s2:'春は必ず来る。',wind:'💨',w1:'落ち着かない。',w2:'風に身を任せて。',heat:'🔥',h1:'内なる炎。',h2:'情熱は力。',empty:'🕳️',e1:'今日は空っぽ。',e2:'待っている空間。',hope:'🌱',ho1:'小さな火花。',ho2:'希望がささやく。',gratitude:'🙏',g1:'ありがとうと言った。',g2:'感謝があなたを変える。',streakToast:'日継続! 続けて!',newEmotion:'新しい感情!',collectionComplete:'13感情達成! 伝説! 🏆'},
-zh:{discTitle:'开始之前',discIntro:'Feelio是您的私人空间。请阅读并接受：',discLabel1:'我理解Feelio不是医疗工具',discLabel2:'我理解我的数据保留在设备上',discLabel3:'我已年满13岁',discLabel4:'我同意将Feelio用于个人目的',discBtn:'开始',onTitle0:'欢迎',onText0:'您的私人情感空间。<br>没有评判。没有数据。',onTitle1:'画出心情',onText1:'用手指画出感受。<br>Feelio在倾听。',onTitle2:'你并不孤单',onText2:'每场风暴都会过去。<br>太阳总会升起。',privacy:'100%私密',tagline:'深呼吸。画出感受。',reset:'清除',hint:'用手指画',counter:'心情已绘制',nav:['绘画','周','统计','画廊','设置'],dailyCounter:'人今天画了',streakText:'天连续!',collectionText:'/13情绪',calmText:'需要平静？',askWant:'想谈谈吗？',askYes:'是',askNo:'否',thanks:'照顾好自己。🌿',writeLabel:'写',speakLabel:'说',cookieText:'无Cookie。无数据收集。',crisisBarText:'如需帮助，有支持可用。',installMobile:'添加到主屏幕',installDesktop:'添加到浏览器',installSubMobile:'一键访问。',installSubDesktop:'快速访问。',tornado:'🌪️',t1:'内心有风暴。',t2:'风暴也会停息。',lightning:'⚡',l1:'电流。活着。',l2:'这能量是你的。',rain:'🌧️',r1:'让它落下。让它洗涤。',r2:'雨后会有生长。',sun:'☀️',s1:'你今天在发光。',s2:'有人需要这光芒。',night:'🌙',n1:'安静。',n2:'休息不是软弱。',rainbow:'🌈',rb1:'看你走过的路。',rb2:'依然站立。',fog:'🌫️',f1:'迷失雾中。',f2:'清晰会慢慢来。',snow:'❄️',s1:'冻结。静止。',s2:'春天会来。',wind:'💨',w1:'不安。',w2:'让风带你走。',heat:'🔥',h1:'内心火焰。',h2:'激情是力量。',empty:'🕳️',e1:'今天空虚。',e2:'空间在等待。',hope:'🌱',ho1:'微小火花。',ho2:'希望低语。',gratitude:'🙏',g1:'你说了谢谢。',g2:'感恩改变你。',streakToast:'天! 继续!',newEmotion:'新情绪!',collectionComplete:'13情绪! 传奇! 🏆'},
-tam:{discTitle:'தொடங்குவதற்கு முன்',discIntro:'Feelio உங்கள் தனிப்பட்ட இடம். படித்து ஏற்கவும்:',discLabel1:'Feelio மருத்துவ கருவி அல்ல என்பதை புரிந்தேன்',discLabel2:'எனது தரவு சாதனத்திலேயே இருக்கும்',discLabel3:'எனக்கு 13 வயது அல்லது அதற்கு மேல்',discLabel4:'தனிப்பட்ட பயன்பாட்டிற்கு ஒப்புக்கொள்கிறேன்',discBtn:'தொடங்கு',onTitle0:'வரவேற்கிறோம்',onText0:'உங்கள் தனிப்பட்ட உணர்வு இடம்.<br>தீர்ப்பு இல்லை. தரவு இல்லை.',onTitle1:'மனநிலையை வரையவும்',onText1:'விரலால் வரையவும்.<br>Feelio கேட்கிறது.',onTitle2:'நீங்கள் தனியாக இல்லை',onText2:'ஒவ்வொரு புயலும் கடக்கும்.<br>சூரியன் மீண்டும் உதிக்கும்.',privacy:'100% தனிப்பட்டது',tagline:'ஆழமாக மூச்சு விடு. உணர்வதை வரை.',reset:'அழி',hint:'விரலைப் பயன்படுத்து',counter:'மனநிலைகள் வரையப்பட்டன',nav:['வரை','வாரம்','புள்ளிவிவரம்','தொகுப்பு','அமைப்புகள்'],dailyCounter:'இன்று வரைந்தனர்',streakText:'நாட்கள்!',collectionText:'/13 உணர்வுகள்',calmText:'அமைதி தேவையா?',askWant:'பேச விரும்புகிறீர்களா?',askYes:'ஆம்',askNo:'இல்லை',thanks:'உன்னை கவனித்துக்கொள். 🌿',writeLabel:'எழுது',speakLabel:'பேசு',cookieText:'குக்கிகள் இல்லை. தரவு சேகரிப்பு இல்லை.',crisisBarText:'நெருக்கடியில் இருந்தால் உதவி உள்ளது.',installMobile:'முகப்புத் திரையில் சேர்',installDesktop:'உலாவியில் சேர்',installSubMobile:'ஒரு தட்டலில் அணுகவும்.',installSubDesktop:'விரைவான அணுகல்.',tornado:'🌪️',t1:'உள்ளே புயல்.',t2:'புயலும் ஓயும்.',lightning:'⚡',l1:'மின்சாரம். உயிர்.',l2:'இந்த ஆற்றல் உங்களுடையது.',rain:'🌧️',r1:'விழட்டும். கழுவட்டும்.',r2:'மழைக்குப் பின் வளர்ச்சி.',sun:'☀️',s1:'இன்று பிரகாசிக்கிறீர்கள்.',s2:'யாரோ இந்த ஒளியை எதிர்பார்த்தனர்.',night:'🌙',n1:'அமைதி.',n2:'ஓய்வு பலவீனம் அல்ல.',rainbow:'🌈',rb1:'கடந்ததைப் பார்.',rb2:'இன்னும் நிற்கிறாய்.',fog:'🌫️',f1:'மூடுபனியில் தொலைந்தது.',f2:'தெளிவு மெதுவாக வரும்.',snow:'❄️',s1:'உறைந்தது. அமைதி.',s2:'வசந்தம் வரும்.',wind:'💨',w1:'அமைதியற்றது.',w2:'காற்று உன்னை அழைத்துச் செல்லட்டும்.',heat:'🔥',h1:'உள் நெருப்பு.',h2:'ஆர்வம் சக்தி.',empty:'🕳️',e1:'இன்று வெறுமை.',e2:'காத்திருக்கும் இடம்.',hope:'🌱',ho1:'சிறு தீப்பொறி.',ho2:'நம்பிக்கை முணுமுணுக்கிறது.',gratitude:'🙏',g1:'நன்றி சொன்னாய்.',g2:'நன்றி உன்னை மாற்றும்.',streakToast:'நாட்கள்! தொடர்!',newEmotion:'புதிய உணர்வு!',collectionComplete:'13 உணர்வுகள்! அற்புதம்! 🏆'}};
-var TRUST_EN='<h3>Privacy Policy</h3><p>Feelio collects <strong>no personal data</strong>. Everything stays on your device. We use localStorage only.</p><h3>Medical Disclaimer</h3><p>Feelio is <strong>not a medical tool</strong>. In crisis: <a href="https://findahelpline.com" target="_blank" rel="noopener">findahelpline.com</a></p><h3>Contact</h3><p>Ismail Belabbess — <a href="mailto:calmewave2026@proton.me">calmewave2026@proton.me</a></p>';
-var TRUST_FR='<h3>Confidentialité</h3><p>Feelio ne collecte <strong>aucune donnée</strong>. Tout reste sur votre appareil.</p><h3>Disclaimer médical</h3><p>Feelio n\'est <strong>pas un outil médical</strong>. En crise : <a href="https://findahelpline.com" target="_blank" rel="noopener">findahelpline.com</a></p><h3>Contact</h3><p>Ismail Belabbess — <a href="mailto:calmewave2026@proton.me">calmewave2026@proton.me</a></p>';
+en:{discTitle:'Before you begin',discIntro:'Feelio is your private space. Please read and accept:',discLabel1:'I understand Feelio is not a medical tool',discLabel2:'I understand my data stays on my device',discLabel3:'I am 13 years or older',discLabel4:'I agree to the Terms of Service & Privacy Policy',discBtn:'Begin',onTitle0:'Welcome to Feelio',onText0:'Your private emotional space.<br>No judgment. No data collected.',onTitle1:'Draw your mood',onText1:'Use your finger to draw.<br>Feelio listens.',onTitle2:'See how it works',onText2:'Draw anything.<br>Feelio understands your mood.',privacy:'100% Private',tagline:'Take a deep breath. Draw what you feel.',reset:'Clear',hint:'Use your finger to draw',counter:'moods drawn worldwide',nav:['Draw','Week','Stats','Gallery','Settings'],dailyCounter:'drew their mood today',streakText:'day streak!',collectionText:'/13 emotions',calmText:'Need a moment of calm?',askWant:'Do you want to talk about it?',askYes:'Yes',askNo:'No',thanks:'Okay. Take care. 🌿',writeLabel:'Write',speakLabel:'Speak',cookieText:'Feelio uses no cookies and collects no personal data.',crisisBarText:'If you\'re in crisis, help is available.',installMobile:'Add Feelio to your home screen',installDesktop:'Add Feelio to your browser',installSubMobile:'Access it in one tap, like an app.',installSubDesktop:'Quick access from your desktop.',tornado:'🌪️',t1:'A storm is raging inside you.',t2:'Even storms run out of rain. Hold on.',lightning:'⚡',l1:'Electric. Alive.',l2:'This energy is yours.',rain:'🌧️',r1:'Let it fall. Let it wash over you.',r2:'Some things grow after rain.',sun:'☀️',s1:'You are shining today.',s2:'Someone needed this light.',night:'🌙',n1:'Quiet now.',n2:'Rest is not weakness.',rainbow:'🌈',rb1:'Look what you crossed.',rb2:'Still standing.',fog:'🌫️',f1:'Lost in the fog.',f2:'Clarity comes slowly.',snow:'❄️',s1:'Frozen. Still.',s2:'Spring always comes.',wind:'💨',w1:'Restless.',w2:'Let the wind carry you.',heat:'🔥',h1:'A fire inside.',h2:'Passion is power.',empty:'🕳️',e1:'Empty today.',e2:'Space waiting.',hope:'🌱',ho1:'A tiny spark.',ho2:'Hope whispers.',gratitude:'🙏',g1:'You said thank you.',g2:'Gratitude changes you.',streakToast:'day streak! Keep going!',newEmotion:'New emotion unlocked!',collectionComplete:'All 13 emotions collected! Legendary! 🏆'},
+fr:{discTitle:'Avant de commencer',discIntro:'Feelio est votre espace privé. Veuillez lire et accepter :',discLabel1:'Je comprends que Feelio n\'est pas un outil médical',discLabel2:'Je comprends que mes données restent sur mon appareil',discLabel3:'J\'ai 13 ans ou plus',discLabel4:'J\'accepte les Conditions d\'Utilisation et la Politique de Confidentialité',discBtn:'Commencer',onTitle0:'Bienvenue',onText0:'Votre espace émotionnel privé.<br>Sans jugement. Sans données.',onTitle1:'Dessinez votre humeur',onText1:'Utilisez votre doigt pour dessiner.<br>Feelio écoute.',onTitle2:'Voyez comment ça marche',onText2:'Dessinez n\'importe quoi.<br>Feelio comprend votre humeur.',privacy:'100% Privé',tagline:'Respire. Dessine ce que tu ressens.',reset:'Effacer',hint:'Utilise ton doigt',counter:'humeurs dans le monde',nav:['Dessiner','Semaine','Stats','Galerie','Réglages'],dailyCounter:'ont dessiné aujourd\'hui',streakText:'jours !',collectionText:'/13 émotions',calmText:'Besoin de calme ?',askWant:'Veux-tu en parler ?',askYes:'Oui',askNo:'Non',thanks:'Prends soin de toi. 🌿',writeLabel:'Écrire',speakLabel:'Parler',cookieText:'Aucun cookie. Aucune collecte de données.',crisisBarText:'En cas de crise, de l\'aide est disponible.',installMobile:'Ajoute Feelio à ton écran d\'accueil',installDesktop:'Ajoute Feelio à ton navigateur',installSubMobile:'Accès en un clic, comme une app.',installSubDesktop:'Accès rapide depuis ton bureau.',tornado:'🌪️',t1:'Une tempête fait rage en toi.',t2:'Même les tempêtes s\'épuisent.',lightning:'⚡',l1:'Électrique. Vivant.',l2:'Cette énergie est la tienne.',rain:'🌧️',r1:'Laisse tomber. Laisse laver.',r2:'Certaines choses poussent après la pluie.',sun:'☀️',s1:'Tu brilles aujourd\'hui.',s2:'Quelqu\'un avait besoin de cette lumière.',night:'🌙',n1:'Silence.',n2:'Le repos n\'est pas une faiblesse.',rainbow:'🌈',rb1:'Regarde ce que tu as traversé.',rb2:'Encore debout.',fog:'🌫️',f1:'Perdu dans le brouillard.',f2:'La clarté vient doucement.',snow:'❄️',s1:'Gelé. Immobile.',s2:'Le printemps revient.',wind:'💨',w1:'Agité.',w2:'Laisse le vent t\'emmener.',heat:'🔥',h1:'Un feu brûle en toi.',h2:'La passion est une force.',empty:'🕳️',e1:'Vide aujourd\'hui.',e2:'De l\'espace à remplir.',hope:'🌱',ho1:'Une petite étincelle.',ho2:'L\'espoir murmure.',gratitude:'🙏',g1:'Tu as dit merci.',g2:'La gratitude te change.',streakToast:'jours de suite ! Continue !',newEmotion:'Nouvelle émotion débloquée !',collectionComplete:'13 émotions collectées ! Légendaire ! 🏆'},
+es:{discTitle:'Antes de comenzar',discIntro:'Feelio es tu espacio privado. Lee y acepta:',discLabel1:'Entiendo que Feelio no es una herramienta médica',discLabel2:'Entiendo que mis datos permanecen en mi dispositivo',discLabel3:'Tengo 13 años o más',discLabel4:'Acepto los Términos y la Política de Privacidad',discBtn:'Comenzar',onTitle0:'Bienvenido',onText0:'Tu espacio emocional privado.<br>Sin juicios. Sin datos.',onTitle1:'Dibuja tu estado',onText1:'Usa tu dedo para dibujar.<br>Feelio te escucha.',onTitle2:'Mira cómo funciona',onText2:'Dibuja cualquier cosa.<br>Feelio entiende tu estado.',privacy:'100% Privado',tagline:'Respira. Dibuja lo que sientes.',reset:'Limpiar',hint:'Usa tu dedo',counter:'estados dibujados',nav:['Dibujar','Semana','Estadísticas','Galería','Ajustes'],dailyCounter:'dibujaron hoy',streakText:'días!',collectionText:'/13 emociones',calmText:'¿Necesitas calma?',askWant:'¿Quieres hablar?',askYes:'Sí',askNo:'No',thanks:'Cuídate. 🌿',writeLabel:'Escribir',speakLabel:'Hablar',cookieText:'Sin cookies. Sin recolección de datos.',crisisBarText:'Si estás en crisis, hay ayuda.',installMobile:'Añadir a pantalla de inicio',installDesktop:'Añadir al navegador',installSubMobile:'Accede en un toque.',installSubDesktop:'Acceso rápido.',tornado:'🌪️',t1:'Una tormenta ruge dentro de ti.',t2:'Hasta las tormentas se agotan.',lightning:'⚡',l1:'Eléctrico. Vivo.',l2:'Esta energía es tuya.',rain:'🌧️',r1:'Déjalo caer. Deja que te lave.',r2:'Algo crece tras la lluvia.',sun:'☀️',s1:'Estás brillando hoy.',s2:'Alguien necesitaba esta luz.',night:'🌙',n1:'Silencio.',n2:'Descansar no es debilidad.',rainbow:'🌈',rb1:'Mira lo que has cruzado.',rb2:'Sigues en pie.',fog:'🌫️',f1:'Perdido en la niebla.',f2:'La claridad llega.',snow:'❄️',s1:'Congelado. Quieto.',s2:'La primavera vuelve.',wind:'💨',w1:'Inquieto.',w2:'Deja que el viento te lleve.',heat:'🔥',h1:'Fuego interior.',h2:'La pasión es poder.',empty:'🕳️',e1:'Vacío hoy.',e2:'Espacio esperando.',hope:'🌱',ho1:'Una chispa.',ho2:'La esperanza susurra.',gratitude:'🙏',g1:'Diste las gracias.',g2:'La gratitud te cambia.',streakToast:'días! Sigue!',newEmotion:'¡Nueva emoción!',collectionComplete:'¡13 emociones! ¡Legendario! 🏆'},
+ar:{discTitle:'قبل أن تبدأ',discIntro:'فيليو هو مساحتك الخاصة. اقرأ ووافق:',discLabel1:'أفهم أن فيليو ليس أداة طبية',discLabel2:'أفهم أن بياناتي تبقى على جهازي',discLabel3:'عمري 13 سنة أو أكثر',discLabel4:'أوافق على شروط الخدمة وسياسة الخصوصية',discBtn:'ابدأ',onTitle0:'مرحباً',onText0:'مساحتك العاطفية الخاصة.<br>بدون حكم. بدون بيانات.',onTitle1:'ارسم مزاجك',onText1:'استخدم إصبعك للرسم.<br>فيليو يستمع.',onTitle2:'شاهد كيف يعمل',onText2:'ارسم أي شيء.<br>فيليو يفهم مزاجك.',privacy:'خصوصية 100%',tagline:'تنفس. ارسم ما تشعر به.',reset:'مسح',hint:'استخدم إصبعك',counter:'حالة مرسومة',nav:['رسم','أسبوع','إحصائيات','معرض','إعدادات'],dailyCounter:'رسموا اليوم',streakText:'أيام!',collectionText:'/13 عاطفة',calmText:'تحتاج هدوء؟',askWant:'هل تريد التحدث؟',askYes:'نعم',askNo:'لا',thanks:'اعتني بنفسك. 🌿',writeLabel:'كتابة',speakLabel:'تحدث',cookieText:'بدون كوكيز. بدون جمع بيانات.',crisisBarText:'إذا كنت في أزمة، المساعدة متاحة.',installMobile:'أضف إلى الشاشة الرئيسية',installDesktop:'أضف إلى المتصفح',installSubMobile:'وصول بنقرة واحدة.',installSubDesktop:'وصول سريع.',tornado:'🌪️',t1:'عاصفة بداخلك.',t2:'حتى العواصف تنتهي.',lightning:'⚡',l1:'كهربائي. حي.',l2:'هذه طاقتك.',rain:'🌧️',r1:'دعه يسقط. دعه يغسلك.',r2:'أشياء تنمو بعد المطر.',sun:'☀️',s1:'أنت مشرق اليوم.',s2:'أحدهم احتاج هذا الضوء.',night:'🌙',n1:'هدوء.',n2:'الراحة ليست ضعفاً.',rainbow:'🌈',rb1:'انظر ما عبرت.',rb2:'ما زلت واقفاً.',fog:'🌫️',f1:'تائه في الضباب.',f2:'الوضوح يأتي.',snow:'❄️',s1:'متجمد. ساكن.',s2:'الربيع يعود.',wind:'💨',w1:'مضطرب.',w2:'دع الريح تحملك.',heat:'🔥',h1:'نار بالداخل.',h2:'الشغف قوة.',empty:'🕳️',e1:'فارغ اليوم.',e2:'مساحة تنتظر.',hope:'🌱',ho1:'شرارة صغيرة.',ho2:'الأمل يهمس.',gratitude:'🙏',g1:'قلت شكراً.',g2:'الامتنان يغيرك.',streakToast:'أيام! استمر!',newEmotion:'عاطفة جديدة!',collectionComplete:'13 عاطفة! أسطوري! 🏆'},
+ja:{discTitle:'始める前に',discIntro:'Feelioはあなたのプライベートな空間です。',discLabel1:'Feelioは医療ツールではないことを理解しました',discLabel2:'データは端末に保存されることを理解しました',discLabel3:'13歳以上です',discLabel4:'利用規約とプライバシーポリシーに同意します',discBtn:'始める',onTitle0:'ようこそ',onText0:'あなたの感情の空間。<br>判断なし。データ収集なし。',onTitle1:'気分を描く',onText1:'指で描いてください。<br>Feelioが聞きます。',onTitle2:'使い方を見る',onText2:'何でも描いてください。<br>Feelioが気分を理解します。',privacy:'100%プライベート',tagline:'深呼吸。感じたことを描いて。',reset:'クリア',hint:'指で描く',counter:'描かれた気分',nav:['描く','週','統計','ギャラリー','設定'],dailyCounter:'人が今日描きました',streakText:'日継続!',collectionText:'/13の感情',calmText:'落ち着きたい？',askWant:'話したい？',askYes:'はい',askNo:'いいえ',thanks:'お大事に。🌿',writeLabel:'書く',speakLabel:'話す',cookieText:'クッキーなし。データ収集なし。',crisisBarText:'危機の場合は助けがあります。',installMobile:'ホーム画面に追加',installDesktop:'ブラウザに追加',installSubMobile:'ワンタップでアクセス。',installSubDesktop:'すぐにアクセス。',tornado:'🌪️',t1:'内側で嵐が荒れている。',t2:'嵐もいつかは止む。',lightning:'⚡',l1:'電気的。生きている。',l2:'このエネルギーはあなたのもの。',rain:'🌧️',r1:'降らせて。洗い流して。',r2:'雨の後に育つものがある。',sun:'☀️',s1:'今日は輝いている。',s2:'誰かがこの光を必要としていた。',night:'🌙',n1:'静けさ。',n2:'休息は弱さではない。',rainbow:'🌈',rb1:'乗り越えたものを見て。',rb2:'まだ立っている。',fog:'🌫️',f1:'霧の中で迷った。',f2:'明確さはゆっくり来る。',snow:'❄️',s1:'凍った。静か。',s2:'春は必ず来る。',wind:'💨',w1:'落ち着かない。',w2:'風に身を任せて。',heat:'🔥',h1:'内なる炎。',h2:'情熱は力。',empty:'🕳️',e1:'今日は空っぽ。',e2:'待っている空間。',hope:'🌱',ho1:'小さな火花。',ho2:'希望がささやく。',gratitude:'🙏',g1:'ありがとうと言った。',g2:'感謝があなたを変える。',streakToast:'日継続! 続けて!',newEmotion:'新しい感情!',collectionComplete:'13感情達成! 伝説! 🏆'},
+zh:{discTitle:'开始之前',discIntro:'Feelio是您的私人空间。请阅读并接受：',discLabel1:'我理解Feelio不是医疗工具',discLabel2:'我理解我的数据保留在设备上',discLabel3:'我已年满13岁',discLabel4:'我同意服务条款和隐私政策',discBtn:'开始',onTitle0:'欢迎',onText0:'您的私人情感空间。<br>没有评判。没有数据。',onTitle1:'画出心情',onText1:'用手指画出感受。<br>Feelio在倾听。',onTitle2:'看看如何运作',onText2:'随便画。<br>Feelio理解你的心情。',privacy:'100%私密',tagline:'深呼吸。画出感受。',reset:'清除',hint:'用手指画',counter:'心情已绘制',nav:['绘画','周','统计','画廊','设置'],dailyCounter:'人今天画了',streakText:'天连续!',collectionText:'/13情绪',calmText:'需要平静？',askWant:'想谈谈吗？',askYes:'是',askNo:'否',thanks:'照顾好自己。🌿',writeLabel:'写',speakLabel:'说',cookieText:'无Cookie。无数据收集。',crisisBarText:'如需帮助，有支持可用。',installMobile:'添加到主屏幕',installDesktop:'添加到浏览器',installSubMobile:'一键访问。',installSubDesktop:'快速访问。',tornado:'🌪️',t1:'内心有风暴。',t2:'风暴也会停息。',lightning:'⚡',l1:'电流。活着。',l2:'这能量是你的。',rain:'🌧️',r1:'让它落下。让它洗涤。',r2:'雨后会有生长。',sun:'☀️',s1:'你今天在发光。',s2:'有人需要这光芒。',night:'🌙',n1:'安静。',n2:'休息不是软弱。',rainbow:'🌈',rb1:'看你走过的路。',rb2:'依然站立。',fog:'🌫️',f1:'迷失雾中。',f2:'清晰会慢慢来。',snow:'❄️',s1:'冻结。静止。',s2:'春天会来。',wind:'💨',w1:'不安。',w2:'让风带你走。',heat:'🔥',h1:'内心火焰。',h2:'激情是力量。',empty:'🕳️',e1:'今天空虚。',e2:'空间在等待。',hope:'🌱',ho1:'微小火花。',ho2:'希望低语。',gratitude:'🙏',g1:'你说了谢谢。',g2:'感恩改变你。',streakToast:'天! 继续!',newEmotion:'新情绪!',collectionComplete:'13情绪! 传奇! 🏆'},
+tam:{discTitle:'தொடங்குவதற்கு முன்',discIntro:'Feelio உங்கள் தனிப்பட்ட இடம். படித்து ஏற்கவும்:',discLabel1:'Feelio மருத்துவ கருவி அல்ல',discLabel2:'எனது தரவு சாதனத்திலேயே இருக்கும்',discLabel3:'எனக்கு 13 வயது அல்லது அதற்கு மேல்',discLabel4:'சேவை விதிமுறைகள் & தனியுரிமைக் கொள்கையை ஏற்கிறேன்',discBtn:'தொடங்கு',onTitle0:'வரவேற்கிறோம்',onText0:'உங்கள் தனிப்பட்ட உணர்வு இடம்.',onTitle1:'மனநிலையை வரையவும்',onText1:'விரலால் வரையவும்.',onTitle2:'எப்படி வேலை செய்கிறது',onText2:'எதையும் வரையவும்.',privacy:'100% தனிப்பட்டது',tagline:'மூச்சு விடு. உணர்வதை வரை.',reset:'அழி',hint:'விரலைப் பயன்படுத்து',counter:'மனநிலைகள்',nav:['வரை','வாரம்','புள்ளிவிவரம்','தொகுப்பு','அமைப்புகள்'],dailyCounter:'இன்று வரைந்தனர்',streakText:'நாட்கள்!',collectionText:'/13',calmText:'அமைதி தேவையா?',askWant:'பேச விரும்புகிறீர்களா?',askYes:'ஆம்',askNo:'இல்லை',thanks:'கவனித்துக்கொள். 🌿',writeLabel:'எழுது',speakLabel:'பேசு',cookieText:'குக்கிகள் இல்லை.',crisisBarText:'உதவி உள்ளது.',installMobile:'முகப்பில் சேர்',installDesktop:'உலாவியில் சேர்',installSubMobile:'ஒரு தட்டலில்.',installSubDesktop:'விரைவான அணுகல்.',tornado:'🌪️',t1:'உள்ளே புயல்.',t2:'புயலும் ஓயும்.',lightning:'⚡',l1:'மின்சாரம்.',l2:'உங்கள் ஆற்றல்.',rain:'🌧️',r1:'விழட்டும்.',r2:'மழைக்குப் பின்.',sun:'☀️',s1:'பிரகாசிக்கிறீர்கள்.',s2:'ஒளி தேவைப்பட்டது.',night:'🌙',n1:'அமைதி.',n2:'ஓய்வு பலவீனம் அல்ல.',rainbow:'🌈',rb1:'கடந்ததைப் பார்.',rb2:'இன்னும் நிற்கிறாய்.',fog:'🌫️',f1:'மூடுபனியில்.',f2:'தெளிவு வரும்.',snow:'❄️',s1:'உறைந்தது.',s2:'வசந்தம் வரும்.',wind:'💨',w1:'அமைதியற்றது.',w2:'காற்று அழைத்துச் செல்லட்டும்.',heat:'🔥',h1:'உள் நெருப்பு.',h2:'ஆர்வம் சக்தி.',empty:'🕳️',e1:'வெறுமை.',e2:'இடம் காத்திருக்கிறது.',hope:'🌱',ho1:'சிறு தீப்பொறி.',ho2:'நம்பிக்கை முணுமுணுக்கிறது.',gratitude:'🙏',g1:'நன்றி சொன்னாய்.',g2:'நன்றி மாற்றும்.',streakToast:'நாட்கள்!',newEmotion:'புதிய உணர்வு!',collectionComplete:'13 உணர்வுகள்! 🏆'}};
 
+// ==================== GLOBAL PRIVACY/TERMS (GDPR, CCPA, LGPD, PIPEDA compliant) ====================
+var LEGAL_EN = '<h3>Privacy Policy</h3>'+
+'<p><strong>Effective Date:</strong> July 4, 2026</p>'+
+'<p>Feelio collects <strong>absolutely no personal data</strong>. Everything you draw, write, or speak stays exclusively on your device using localStorage. Nothing is transmitted to any server, third party, or cloud service.</p>'+
+'<h3>Your Rights</h3>'+
+'<p>Under GDPR (EU), CCPA (California), LGPD (Brazil), PIPEDA (Canada), and similar laws, you have the right to access, export, and delete your data. Since all data is local, you control it fully via Settings.</p>'+
+'<h3>Medical Disclaimer</h3>'+
+'<p>Feelio is <strong>not a medical device</strong>. It does not diagnose, treat, cure, or prevent any condition. It is a creative emotional outlet, not a substitute for professional help. If you are in crisis, contact a qualified professional or visit <a href="https://findahelpline.com" target="_blank" rel="noopener">findahelpline.com</a>.</p>'+
+'<h3>Terms of Service</h3>'+
+'<p>By using Feelio, you agree to use it for personal, non-commercial purposes. You must be 13 years or older. Feelio is provided "as is" without warranties. We are not liable for any damages arising from use.</p>'+
+'<h3>Cookies & Tracking</h3>'+
+'<p>Feelio uses <strong>no cookies, no trackers, no analytics, no advertising</strong>. Zero data collection.</p>'+
+'<h3>Children</h3>'+
+'<p>Feelio is not directed to children under 13. We do not knowingly collect data from anyone.</p>'+
+'<h3>Contact</h3>'+
+'<p>Ismail Belabbess<br><a href="mailto:calmewave2026@proton.me">calmewave2026@proton.me</a></p>';
+
+var LEGAL_FR = '<h3>Politique de Confidentialité</h3>'+
+'<p><strong>Date d\'effet :</strong> 4 juillet 2026</p>'+
+'<p>Feelio ne collecte <strong>absolument aucune donnée personnelle</strong>. Tout ce que vous dessinez, écrivez ou dites reste exclusivement sur votre appareil via localStorage. Rien n\'est transmis à un serveur, tiers ou cloud.</p>'+
+'<h3>Vos Droits</h3>'+
+'<p>Conformément au RGPD (UE), CCPA (Californie), LGPD (Brésil), PIPEDA (Canada) et lois similaires, vous avez le droit d\'accéder, exporter et supprimer vos données. Toutes les données étant locales, vous les contrôlez via les Paramètres.</p>'+
+'<h3>Disclaimer Médical</h3>'+
+'<p>Feelio n\'est <strong>pas un dispositif médical</strong>. Il ne diagnostique, ne traite, ne guérit ni ne prévient aucune condition. C\'est un exutoire émotionnel créatif, pas un substitut à l\'aide professionnelle. En cas de crise, contactez un professionnel ou visitez <a href="https://findahelpline.com" target="_blank" rel="noopener">findahelpline.com</a>.</p>'+
+'<h3>Conditions d\'Utilisation</h3>'+
+'<p>En utilisant Feelio, vous acceptez de l\'utiliser à des fins personnelles et non commerciales. Vous devez avoir 13 ans ou plus. Feelio est fourni "tel quel" sans garantie. Nous ne sommes pas responsables des dommages.</p>'+
+'<h3>Cookies & Pistage</h3>'+
+'<p>Feelio n\'utilise <strong>aucun cookie, traceur, analytique ou publicité</strong>. Zéro collecte de données.</p>'+
+'<h3>Enfants</h3>'+
+'<p>Feelio n\'est pas destiné aux moins de 13 ans. Nous ne collectons aucune donnée.</p>'+
+'<h3>Contact</h3>'+
+'<p>Ismail Belabbess<br><a href="mailto:calmewave2026@proton.me">calmewave2026@proton.me</a></p>';
+
+// ==================== STATE ====================
 var lang=(navigator.language||'en').split('-')[0];if(!LANGDATA[lang])lang='en';
-var TX=LANGDATA[lang],currentMood='',brushSize=7,voiceEnabled=false,strokeHistory=[],highContrast=false,notificationsEnabled=false,deferredPrompt=null,drawing=false,points=[],startTime=0,onStep=0,recognition=null,streakCount=0,emotionCollection=[];
+var TX=LANGDATA[lang],currentMood='',brushSize=3,voiceEnabled=false,strokeHistory=[],highContrast=false,notificationsEnabled=false,deferredPrompt=null,drawing=false,points=[],startTime=0,onStep=0,recognition=null,streakCount=0,emotionCollection=[],demoAnim=null,demoRunning=false;
 function $(id){return document.getElementById(id);}
 var canvas=$('canvas'),ctx=canvas.getContext('2d');
+var demoCanvas=$('demoCanvas'),demoCtx=demoCanvas.getContext('2d');
+
+// ==================== STORAGE ====================
 function safeGet(k,f){try{var v=localStorage.getItem(k);return v!==null?v:f;}catch(e){return f;}}
 function safeSet(k,v){try{localStorage.setItem(k,v);return true;}catch(e){return false;}}
 function safeGetJSON(k,f){try{return JSON.parse(safeGet(k,JSON.stringify(f)));}catch(e){return f;}}
 function safeSetJSON(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true;}catch(e){return false;}}
+
+// ==================== OVERLAYS ====================
 function showOverlay(id){var el=$(id);el.classList.add('show');el.style.pointerEvents='auto';}
 function hideOverlay(id){var el=$(id);el.classList.remove('show');el.style.pointerEvents='none';}
-function showToast(msg,icon){
-    var t=$('toast');t.textContent=(icon||'')+' '+msg;t.classList.add('show');
-    setTimeout(function(){t.classList.remove('show');},3000);
-}
+function showToast(msg,icon){var t=$('toast');t.textContent=(icon||'')+' '+msg;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},3000);}
+
+// ==================== LANG BUILD ====================
 function buildLangOptions(){
     var c=$('langOptions');c.innerHTML='';
     var langs={en:'🇬🇧 English',fr:'🇫🇷 Français',es:'🇪🇸 Español',ar:'🇸🇦 العربية',ja:'🇯🇵 日本語',zh:'🇨🇳 中文',tam:'🌍 தமிழ்'};
@@ -450,13 +429,13 @@ function setLang(l){
     lang=l;TX=LANGDATA[l]||LANGDATA.en;
     document.querySelectorAll('#langsTop span').forEach(function(s){s.classList.toggle('active',s.dataset.lang===l);});
     document.body.className=lang==='ar'?'ar':lang==='ja'?'ja':lang==='zh'?'zh':'';
-    updateUI();resetCanvas();buildHistory();buildStats();
+    updateUI();resetCanvas();buildHistory();buildStats();stopDemo();
 }
 function updateUI(){
     $('privacyText').textContent=TX.privacy;$('tagline').textContent=TX.tagline;
     $('btnReset').textContent=TX.reset;$('hint').textContent=TX.hint;
     document.querySelectorAll('.nav-label').forEach(function(n,i){if(TX.nav[i])n.textContent=TX.nav[i];});
-    $('trustContent').innerHTML=lang==='fr'?TRUST_FR:TRUST_EN;
+    $('trustContent').innerHTML=lang==='fr'?LEGAL_FR:LEGAL_EN;
     $('cookieText').textContent=TX.cookieText;$('crisisBarText').textContent=TX.crisisBarText;
     var total=parseInt(safeGet('feelio_total','0'))||0;$('counter').textContent=total.toLocaleString()+' '+TX.counter;
     var daily=parseInt(safeGet('feelio_daily','0'))||0;$('dailyCounter').textContent=daily.toLocaleString()+' '+TX.dailyCounter;
@@ -477,21 +456,116 @@ function initApp(){
     loadEmotionCollection();scheduleNotification();
 }
 function loadEmotionCollection(){emotionCollection=safeGetJSON('feelio_collection',[]);updateCollection();}
+
+// ==================== DEMO ANIMATION (canvas-based) ====================
+function startDemo(){
+    if(demoRunning)return;demoRunning=true;
+    demoCtx.clearRect(0,0,300,300);
+    $('demoLabel').classList.remove('show');$('demoLabel').textContent='';
+    var demoPoints=[];
+    // Generate a happy face-like path (sun emoji)
+    var cx=150,cy=150,r=80;
+    // Circle
+    for(var a=0;a<Math.PI*2;a+=0.05){demoPoints.push({x:cx+Math.cos(a)*r,y:cy+Math.sin(a)*r,delay:0});}
+    // Smile
+    for(var a=Math.PI*0.25;a<Math.PI*0.75;a+=0.05){demoPoints.push({x:cx+Math.cos(a)*r*0.6,y:cy+Math.sin(a)*r*0.6+20,delay:2000});}
+    // Eyes
+    demoPoints.push({x:cx-25,y:cy-20,delay:3000});demoPoints.push({x:cx+25,y:cy-20,delay:3100});
+    demoPoints.push({x:cx-28,y:cy-22,delay:3150});demoPoints.push({x:cx+22,y:cy-22,delay:3200});
+    
+    var i=0;var lastT=0;
+    function drawStep(ts){
+        if(!demoRunning)return;
+        if(i<demoPoints.length){
+            if(ts-lastT>15){
+                var p=demoPoints[i];
+                if(i===0||demoPoints[i].delay>demoPoints[i-1].delay+500){demoCtx.beginPath();demoCtx.moveTo(p.x,p.y);}
+                demoCtx.lineTo(p.x,p.y);
+                var g=demoCtx.createLinearGradient(p.x-8,p.y-8,p.x+8,p.y+8);
+                g.addColorStop(0,'rgba(200,180,255,0.9)');g.addColorStop(0.5,'rgba(240,220,255,0.7)');g.addColorStop(1,'rgba(160,140,255,0.5)');
+                demoCtx.strokeStyle=g;demoCtx.lineWidth=6;demoCtx.lineCap='round';demoCtx.lineJoin='round';
+                demoCtx.shadowColor='rgba(180,160,255,0.4)';demoCtx.shadowBlur=10;demoCtx.stroke();demoCtx.shadowBlur=0;
+                lastT=ts;i++;
+            }
+            demoAnim=requestAnimationFrame(drawStep);
+        }else{
+            // Show result
+            setTimeout(function(){
+                $('demoLabel').textContent='☀️ Happy';
+                $('demoLabel').classList.add('show');
+                // Spawn mini confetti
+                for(var j=0;j<15;j++){var c=document.createElement('div');c.className='confetti';c.style.left=(40+Math.random()*20)+'%';c.style.top=(40+Math.random()*10)+'%';c.style.width='4px';c.style.height='4px';c.style.background='#fbbf24';c.style.animationDuration='1.5s';document.body.appendChild(c);setTimeout(function(){c.remove();},1500);}
+                // Restart after 2s
+                setTimeout(function(){if(demoRunning)startDemo();},3000);
+            },400);
+        }
+    }
+    demoAnim=requestAnimationFrame(drawStep);
+}
+function stopDemo(){demoRunning=false;if(demoAnim)cancelAnimationFrame(demoAnim);demoCtx.clearRect(0,0,300,300);$('demoLabel').classList.remove('show');}
+
+// ==================== CANVAS ====================
 function setBrushSize(s){brushSize=s;document.querySelectorAll('.toolbar button[data-size]').forEach(function(b){b.classList.remove('active');});var btn=document.querySelector('.toolbar button[data-size="'+s+'"]');if(btn)btn.classList.add('active');}
 function undoLastStroke(){if(strokeHistory.length>0){var last=strokeHistory.pop();ctx.putImageData(last,0,0);}}
 function toggleHighContrast(){highContrast=!highContrast;document.body.classList.toggle('high-contrast',highContrast);}
 function toggleFullScreen(){if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen().catch(function(){});}
 function changeFontSize(dir){var root=document.documentElement;var fs=parseFloat(getComputedStyle(root).getPropertyValue('--font-size'))||1;fs=Math.max(0.7,Math.min(1.5,fs+dir*0.1));root.style.setProperty('--font-size',fs+'rem');}
 function getPos(e){var r=canvas.getBoundingClientRect();var sX=canvas.width/r.width,sY=canvas.height/r.height;var cX=e.touches?e.touches[0].clientX:e.clientX,cY=e.touches?e.touches[0].clientY:e.clientY;return{x:(cX-r.left)*sX,y:(cY-r.top)*sY};}
-function startDraw(e){e.preventDefault();drawing=true;points=[];startTime=Date.now();strokeHistory.push(ctx.getImageData(0,0,canvas.width,canvas.height));$('hint').style.opacity='0';$('canvasHint').style.opacity='0';canvas.classList.remove('breathe');var p=getPos(e);points.push({x:p.x,y:p.y,time:Date.now()});ctx.beginPath();ctx.moveTo(p.x,p.y);if(navigator.vibrate)navigator.vibrate(6);createRipple(e);}
-function moveDraw(e){e.preventDefault();if(!drawing)return;var p=getPos(e);points.push({x:p.x,y:p.y,time:Date.now()});ctx.lineTo(p.x,p.y);var g=ctx.createLinearGradient(p.x-12,p.y-12,p.x+12,p.y+12);g.addColorStop(0,'rgba(200,180,255,0.9)');g.addColorStop(0.5,'rgba(240,220,255,0.7)');g.addColorStop(1,'rgba(160,140,255,0.5)');ctx.strokeStyle=g;ctx.lineWidth=brushSize;ctx.lineCap='round';ctx.lineJoin='round';ctx.shadowColor='rgba(180,160,255,0.3)';ctx.shadowBlur=12;ctx.stroke();ctx.shadowBlur=0;if(navigator.vibrate&&points.length%20===0)navigator.vibrate(4);}
+function startDraw(e){e.preventDefault();drawing=true;points=[];startTime=Date.now();strokeHistory.push(ctx.getImageData(0,0,canvas.width,canvas.height));$('hint').style.opacity='0';$('canvasHint').style.opacity='0';canvas.classList.remove('breathe');var p=getPos(e);points.push({x:p.x,y:p.y,time:Date.now()});ctx.beginPath();ctx.moveTo(p.x,p.y);if(navigator.vibrate)navigator.vibrate(5);createRipple(e);}
+function moveDraw(e){e.preventDefault();if(!drawing)return;var p=getPos(e);points.push({x:p.x,y:p.y,time:Date.now()});ctx.lineTo(p.x,p.y);var g=ctx.createLinearGradient(p.x-12,p.y-12,p.x+12,p.y+12);g.addColorStop(0,'rgba(200,180,255,0.9)');g.addColorStop(0.5,'rgba(240,220,255,0.7)');g.addColorStop(1,'rgba(160,140,255,0.5)');ctx.strokeStyle=g;ctx.lineWidth=brushSize;ctx.lineCap='round';ctx.lineJoin='round';ctx.shadowColor='rgba(180,160,255,0.3)';ctx.shadowBlur=12;ctx.stroke();ctx.shadowBlur=0;if(navigator.vibrate&&points.length%15===0)navigator.vibrate(3);}
 function endDraw(){drawing=false;analyzeDrawing();canvas.classList.add('breathe');}
 canvas.addEventListener('touchstart',startDraw,{passive:false});canvas.addEventListener('touchmove',moveDraw,{passive:false});canvas.addEventListener('touchend',endDraw);canvas.addEventListener('mousedown',startDraw);canvas.addEventListener('mousemove',moveDraw);canvas.addEventListener('mouseup',endDraw);canvas.addEventListener('mouseleave',endDraw);
 function createRipple(e){var ripple=document.createElement('div');ripple.className='ripple';var x=e.touches?e.touches[0].clientX:e.clientX,y=e.touches?e.touches[0].clientY:e.clientY;ripple.style.left=x+'px';ripple.style.top=y+'px';ripple.style.width='20px';ripple.style.height='20px';ripple.style.marginLeft='-10px';ripple.style.marginTop='-10px';document.body.appendChild(ripple);setTimeout(function(){ripple.remove();},500);}
-function analyzeDrawing(){$('rainCt').style.opacity='0';document.body.style.background='var(--bg)';if(points.length<8)return;var endTime=Date.now(),duration=Math.max((endTime-startTime)/1000,0.1);var totalDistance=0;for(var i=1;i<points.length;i++){var dx=points[i].x-points[i-1].x,dy=points[i].y-points[i-1].y;totalDistance+=Math.sqrt(dx*dx+dy*dy);}var speed=totalDistance/duration;var sumX=0,sumY=0;points.forEach(function(p){sumX+=p.x;sumY+=p.y;});var cx=sumX/points.length,cy=sumY/points.length;var dispersion=0;points.forEach(function(p){dispersion+=Math.sqrt((p.x-cx)**2+(p.y-cy)**2);});dispersion/=points.length;var dc=countDC(points);var emoji,p1,p2,bg='';if(speed>6&&dispersion>90){emoji=TX.tornado;p1=TX.t1;p2=TX.t2;bg='#140a1e';}else if(speed>4&&dc>3){emoji=TX.lightning;p1=TX.l1;p2=TX.l2;bg='#0c0c22';}else if(speed<2&&dispersion<50){emoji=TX.rain;p1=TX.r1;p2=TX.r2;bg='#0a121c';$('rainCt').style.opacity='1';}else if(speed<1.2&&dispersion<25){emoji=TX.sun;p1=TX.s1;p2=TX.s2;bg='#12100a';}else if(speed<1&&dispersion<35){emoji=TX.night;p1=TX.n1;p2=TX.n2;bg='#080812';}else if(dc>4&&speed>2){emoji=TX.lightning;p1=TX.l1;p2=TX.l2;bg='#0c0c22';}else if(dispersion>60&&speed<3){emoji=TX.rainbow;p1=TX.rb1;p2=TX.rb2;bg='#0c0c16';}else if(speed<1.8&&dispersion<45){emoji=TX.fog;p1=TX.f1;p2=TX.f2;bg='#0f0f18';}else if(speed<0.5){emoji=TX.snow;p1=TX.s1;p2=TX.s2;bg='#0f0f1a';}else if(speed>3&&dispersion<40){emoji=TX.wind;p1=TX.w1;p2=TX.w2;bg='#0a0f14';}else if(totalDistance<50){emoji=TX.empty;p1=TX.e1;p2=TX.e2;bg='#0a0a10';}else{emoji=TX.hope;p1=TX.ho1;p2=TX.ho2;bg='#0a100a';}if(bg)document.body.style.background=bg;currentMood=emoji;var rel=$('result');rel.textContent=emoji;rel.classList.remove('pop');void rel.offsetWidth;rel.classList.add('pop');$('phrase').textContent=p1;$('phrase2').textContent=p2;$('shareBtns').style.display='flex';$('calmLink').style.display='block';$('speakBtn').style.display='inline-flex';checkCrisis();showAskBox();saveMood(emoji);updateCounter();addToCollection(emoji);spawnConfetti();playChime();if(voiceEnabled)speakPhrase();}
-function countDC(pts){var c=0;if(pts.length<3)return 0;for(var i=2;i<pts.length;i++){var dx1=pts[i-1].x-pts[i-2].x,dy1=pts[i-1].y-pts[i-2].y,dx2=pts[i].x-pts[i-1].x,dy2=pts[i].y-pts[i-1].y;var dot=dx1*dx2+dy1*dy2,m1=Math.sqrt(dx1*dx1+dy1*dy1),m2=Math.sqrt(dx2*dx2+dy2*dy2);if(m1>0&&m2>0&&dot/(m1*m2)<0.3)c++;}return c;}
+
+// ==================== ANALYZE (REFONDU - haute sensibilité) ====================
+function analyzeDrawing(){
+    $('rainCt').style.opacity='0';document.body.style.background='var(--bg)';
+    if(points.length<4)return;
+    var endTime=Date.now(),duration=Math.max((endTime-startTime)/1000,0.03);
+    var totalDist=0,minX=canvas.width,minY=canvas.height,maxX=0,maxY=0;
+    for(var i=1;i<points.length;i++){
+        var dx=points[i].x-points[i-1].x,dy=points[i].y-points[i-1].y;
+        totalDist+=Math.sqrt(dx*dx+dy*dy);
+        if(points[i].x<minX)minX=points[i].x;if(points[i].x>maxX)maxX=points[i].x;
+        if(points[i].y<minY)minY=points[i].y;if(points[i].y>maxY)maxY=points[i].y;
+    }
+    var avgSpeed=totalDist/duration;
+    var sumX=0,sumY=0;points.forEach(function(p){sumX+=p.x;sumY+=p.y;});
+    var cx=sumX/points.length,cy=sumY/points.length;
+    var dispersion=0;points.forEach(function(p){dispersion+=Math.sqrt((p.x-cx)**2+(p.y-cy)**2);});dispersion/=points.length;
+    var coveredArea=((maxX-minX)*(maxY-minY))/(canvas.width*canvas.height);
+    var dc=countDC(points);
+    var verticalBias=(cy/canvas.height-0.5)*2; // -1=top, 1=bottom
+    var speedVar=0;if(points.length>1){var speeds=[];for(var i=1;i<points.length;i++){var dt=(points[i].time-points[i-1].time)/1000;if(dt>0.001)speeds.push(Math.sqrt((points[i].x-points[i-1].x)**2+(points[i].y-points[i-1].y)**2)/dt);}if(speeds.length>0){var mean=speeds.reduce(function(a,b){return a+b;},0)/speeds.length;speeds.forEach(function(s){speedVar+=(s-mean)*(s-mean);});speedVar=Math.sqrt(speedVar/speeds.length);}}
+    
+    var emoji,p1,p2,bg='';
+    var vLow=avgSpeed<0.8,vHigh=avgSpeed>4.5,wide=coveredArea>0.35,compact=coveredArea<0.08,high=verticalBias<-0.25,low=verticalBias>0.25,tiny=totalDist<35,long=totalDist>400,jagged=dc>5,smooth=dc<1,erratic=speedVar>3,steady=speedVar<0.5;
+    
+    if(vHigh&&jagged&&wide){emoji=TX.tornado;p1=TX.t1;p2=TX.t2;bg='#140a1e';}
+    else if(vHigh&&erratic&&dc>=3){emoji=TX.lightning;p1=TX.l1;p2=TX.l2;bg='#0c0c22';}
+    else if(vLow&&!tiny&&compact&&low){emoji=TX.rain;p1=TX.r1;p2=TX.r2;bg='#0a121c';$('rainCt').style.opacity='1';}
+    else if(!vLow&&!vHigh&&smooth&&compact&&high){emoji=TX.sun;p1=TX.s1;p2=TX.s2;bg='#12100a';}
+    else if(vLow&&smooth&&compact&&!high&&!low){emoji=TX.night;p1=TX.n1;p2=TX.n2;bg='#080812';}
+    else if(vHigh&&erratic){emoji=TX.lightning;p1=TX.l1;p2=TX.l2;bg='#0c0c22';}
+    else if(wide&&!vHigh&&dc>=2){emoji=TX.rainbow;p1=TX.rb1;p2=TX.rb2;bg='#0c0c16';}
+    else if(vLow&&!compact&&!wide){emoji=TX.fog;p1=TX.f1;p2=TX.f2;bg='#0f0f18';}
+    else if(vLow&&tiny){emoji=TX.snow;p1=TX.s1;p2=TX.s2;bg='#0f0f1a';}
+    else if(vHigh&&!wide&&dc>=2){emoji=TX.wind;p1=TX.w1;p2=TX.w2;bg='#0a0f14';}
+    else if(vHigh&&compact){emoji=TX.heat;p1=TX.h1;p2=TX.h2;bg='#1a0a0a';}
+    else if(tiny&&vLow){emoji=TX.empty;p1=TX.e1;p2=TX.e2;bg='#0a0a10';}
+    else if(long&&smooth&&high){emoji=TX.gratitude;p1=TX.g1;p2=TX.g2;bg='#0a100a';}
+    else{emoji=TX.hope;p1=TX.ho1;p2=TX.ho2;bg='#0a100a';}
+    
+    if(bg)document.body.style.background=bg;currentMood=emoji;
+    var rel=$('result');rel.textContent=emoji;rel.classList.remove('pop');void rel.offsetWidth;rel.classList.add('pop');
+    $('phrase').textContent=p1;$('phrase2').textContent=p2;
+    $('shareBtns').style.display='flex';$('calmLink').style.display='block';$('speakBtn').style.display='inline-flex';
+    checkCrisis();showAskBox();saveMood(emoji);updateCounter();addToCollection(emoji);spawnConfetti();playChime();
+    if(voiceEnabled)speakPhrase();
+}
+function countDC(pts){var c=0;if(pts.length<3)return 0;for(var i=2;i<pts.length;i++){var dx1=pts[i-1].x-pts[i-2].x,dy1=pts[i-1].y-pts[i-2].y,dx2=pts[i].x-pts[i-1].x,dy2=pts[i].y-pts[i-1].y;var dot=dx1*dx2+dy1*dy2,m1=Math.sqrt(dx1*dx1+dy1*dy1),m2=Math.sqrt(dx2*dx2+dy2*dy2);if(m1>0&&m2>0&&dot/(m1*m2)<0.2)c++;}return c;}
 function checkCrisis(){var h=safeGetJSON('feelio_history',[]);var recent=h.slice(-5);var allStorm=recent.every(function(d){return d.emoji===TX.tornado||d.emoji===TX.rain||d.emoji===TX.empty;});$('crisisBar').style.display=(allStorm&&recent.length>=3)?'block':'none';}
-function spawnConfetti(){var cl={};cl[TX.tornado]=['#6b21a8','#4c1d95'];cl[TX.lightning]=['#fbbf24','#f59e0b'];cl[TX.rain]=['#3b82f6','#2563eb'];cl[TX.sun]=['#fbbf24','#fcd34d'];cl[TX.night]=['#6366f1','#4f46e5'];cl[TX.rainbow]=['#a78bfa','#f472b6'];var colors=cl[currentMood]||['#a78bfa','#7c3aed'];for(var i=0;i<25;i++){var c=document.createElement('div');c.className='confetti';c.style.left=Math.random()*100+'%';c.style.top='-30px';c.style.animationDuration=(1.5+Math.random()*2)+'s';c.style.width=(3+Math.random()*6)+'px';c.style.height=(3+Math.random()*6)+'px';c.style.background=colors[Math.floor(Math.random()*colors.length)];c.style.borderRadius=Math.random()>0.5?'50%':'2px';c.style.animationDelay=Math.random()*0.5+'s';document.body.appendChild(c);setTimeout(function(){c.remove();},2500);}}
+function spawnConfetti(){var cl={};cl[TX.tornado]=['#6b21a8','#4c1d95'];cl[TX.lightning]=['#fbbf24','#f59e0b'];cl[TX.rain]=['#3b82f6','#2563eb'];cl[TX.sun]=['#fbbf24','#fcd34d'];cl[TX.night]=['#6366f1','#4f46e5'];cl[TX.rainbow]=['#a78bfa','#f472b6'];cl[TX.heat]=['#ef4444','#f97316'];var colors=cl[currentMood]||['#a78bfa','#7c3aed'];for(var i=0;i<25;i++){var c=document.createElement('div');c.className='confetti';c.style.left=Math.random()*100+'%';c.style.top='-30px';c.style.animationDuration=(1.5+Math.random()*2)+'s';c.style.width=(3+Math.random()*6)+'px';c.style.height=(3+Math.random()*6)+'px';c.style.background=colors[Math.floor(Math.random()*colors.length)];c.style.borderRadius=Math.random()>0.5?'50%':'2px';c.style.animationDelay=Math.random()*0.5+'s';document.body.appendChild(c);setTimeout(function(){c.remove();},2500);}}
 function showAskBox(){var box=$('askBox');box.style.display='flex';$('askText').textContent=TX.askWant;$('askBtns').innerHTML='<button class="btn btn-primary btn-small" id="btnAskYesDyn">'+TX.askYes+'</button><button class="btn btn-outline btn-small" id="btnAskNoDyn">'+TX.askNo+'</button>';$('btnAskYesDyn').addEventListener('click',showWriteSpeak);$('btnAskNoDyn').addEventListener('click',sayThanks);}
 function showWriteSpeak(){$('askBtns').innerHTML='<button class="btn btn-primary btn-small" id="btnWriteDyn">✍️ '+TX.writeLabel+'</button><button class="btn btn-outline btn-small" id="btnSpeakDyn">🎙️ '+TX.speakLabel+'</button>';$('btnWriteDyn').addEventListener('click',openWrite);$('btnSpeakDyn').addEventListener('click',openSpeak);}
 function sayThanks(){$('askBox').innerHTML='<div id="askText">'+TX.thanks+'</div>';setTimeout(function(){$('askBox').style.display='none';},3000);}
@@ -521,31 +595,33 @@ function startSpeech(){var SR=window.SpeechRecognition||window.webkitSpeechRecog
 function stopSpeech(){if(recognition){try{recognition.stop();}catch(e){}recognition=null;}$('speechIndicator').style.display='none';$('btnStartSpeak').style.display='';$('btnStopSpeak').style.display='none';}
 function saveSpeech(){var text=$('speechResult').textContent.trim();if(!text)return;var entries=safeGetJSON('feelio_journal',[]);entries.push({text:text,date:new Date().toISOString()});safeSetJSON('feelio_journal',entries);closeModal('modalSpeak');openModal('modalSaved');}
 function toggleNotifications(){if(!notificationsEnabled){if('Notification' in window){Notification.requestPermission().then(function(p){if(p==='granted'){notificationsEnabled=true;$('notifBtn').textContent='Disable reminders';safeSet('feelio_notifications','1');scheduleNotification();showToast('Reminders enabled!','🔔');}});}else{showToast('Notifications not supported');}}else{notificationsEnabled=false;$('notifBtn').textContent='Enable reminders';safeSet('feelio_notifications','0');showToast('Reminders disabled','🔕');}}
-function scheduleNotification(){if(!notificationsEnabled&&safeGet('feelio_notifications','0')==='0')return;if(safeGet('feelio_notifications','0')==='1')notificationsEnabled=true;if(notificationsEnabled){var now=new Date();var night=new Date(now);night.setHours(20,0,0,0);if(now>night)night.setDate(night.getDate()+1);var delay=night-now;setTimeout(function(){var streak=parseInt(safeGet('feelio_streak','0'))||0;var msg='How are you feeling today? Take a moment to draw.';if(streak>=2)msg='🔥 '+streak+' day streak! Keep it going! Draw your mood.';new Notification('Feelio 💜',{body:msg});scheduleNotification();},delay);}}
+function scheduleNotification(){if(!notificationsEnabled&&safeGet('feelio_notifications','0')==='0')return;if(safeGet('feelio_notifications','0')==='1')notificationsEnabled=true;if(notificationsEnabled){var now=new Date();var night=new Date(now);night.setHours(20,0,0,0);if(now>night)night.setDate(night.getDate()+1);var delay=night-now;setTimeout(function(){var streak=parseInt(safeGet('feelio_streak','0'))||0;var msg='How are you feeling today? Take a moment to draw.';if(streak>=2)msg='🔥 '+streak+' day streak! Keep it going!';new Notification('Feelio 💜',{body:msg});scheduleNotification();},delay);}}
 function toggleSpeech(){voiceEnabled=!voiceEnabled;$('speechToggleBtn').textContent=voiceEnabled?'Disable voice':'Enable voice';}
 function playAmbient(){try{var ac=new(window.AudioContext||window.webkitAudioContext)();var o=ac.createOscillator();var g=ac.createGain();o.connect(g);g.connect(ac.destination);o.type='sine';o.frequency.value=180;g.gain.value=0.01;o.start();setTimeout(function(){g.gain.linearRampToValueAtTime(0,ac.currentTime+4);setTimeout(function(){o.stop();},4000);},1500);}catch(e){}}
-function playChime(){try{var ac=new(window.AudioContext||window.webkitAudioContext)();var notes={};notes[TX.tornado]=[220,277,330,220];notes[TX.lightning]=[440,554,659,440];notes[TX.rain]=[330,392,523,330];notes[TX.sun]=[523,659,784,1047];notes[TX.night]=[392,494,587,392];notes[TX.rainbow]=[523,659,784,1047];var n=notes[currentMood]||[523,659,784,1047];n.forEach(function(f,i){var o=ac.createOscillator();var g=ac.createGain();o.connect(g);g.connect(ac.destination);o.type=currentMood===TX.night?'triangle':'sine';o.frequency.value=f;g.gain.setValueAtTime(0.03,ac.currentTime+i*0.15);g.gain.exponentialRampToValueAtTime(0.001,ac.currentTime+i*0.15+0.6);o.start(ac.currentTime+i*0.15);o.stop(ac.currentTime+i*0.15+0.6);});}catch(e){}}
+function playChime(){try{var ac=new(window.AudioContext||window.webkitAudioContext)();var notes={};notes[TX.tornado]=[220,277,330,220];notes[TX.lightning]=[440,554,659,440];notes[TX.rain]=[330,392,523,330];notes[TX.sun]=[523,659,784,1047];notes[TX.night]=[392,494,587,392];notes[TX.rainbow]=[523,659,784,1047];notes[TX.heat]=[587,698,880,1047];var n=notes[currentMood]||[523,659,784,1047];n.forEach(function(f,i){var o=ac.createOscillator();var g=ac.createGain();o.connect(g);g.connect(ac.destination);o.type=currentMood===TX.night?'triangle':'sine';o.frequency.value=f;g.gain.setValueAtTime(0.03,ac.currentTime+i*0.15);g.gain.exponentialRampToValueAtTime(0.001,ac.currentTime+i*0.15+0.6);o.start(ac.currentTime+i*0.15);o.stop(ac.currentTime+i*0.15+0.6);});}catch(e){}}
 function installPWA(){if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then(function(){deferredPrompt=null;$('installBanner').classList.remove('show');});}else{showToast('Install from your browser menu','💜');}}
 window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferredPrompt=e;});
 
-// PARTICLES
+// ==================== PARTICLES ====================
 (function(){var c=$('rainCt');for(var i=0;i<80;i++){var d=document.createElement('div');d.className='drop';d.style.left=Math.random()*100+'%';d.style.height=(6+Math.random()*16)+'px';d.style.animationDuration=(0.4+Math.random()*0.8)+'s';d.style.animationDelay=Math.random()*3+'s';c.appendChild(d);}})();
 (function(){var c=$('particlesBg');for(var i=0;i<18;i++){var p=document.createElement('div');p.className='particle-bg';p.style.left=Math.random()*100+'%';p.style.animationDelay=Math.random()*8+'s';p.style.animationDuration=(6+Math.random()*10)+'s';c.appendChild(p);}})();
 
-// EVENT LISTENERS
+// ==================== EVENTS ====================
 $('btnStartSplash').addEventListener('click',function(){hideOverlay('splashOverlay');showOverlay('langOverlay');});
 buildLangOptions();buildLangTop();
 $('btnContinueLang').addEventListener('click',function(){hideOverlay('langOverlay');showOverlay('disclaimerOverlay');checkDisclaimer();});
 ['discCheck1','discCheck2','discCheck3','discCheck4'].forEach(function(id){$(id).addEventListener('change',checkDisclaimer);});
 $('discBtn').addEventListener('click',function(){hideOverlay('disclaimerOverlay');showOverlay('onboardingOverlay');playAmbient();});
 $('onBtn').addEventListener('click',function(){
-    onStep++;if(onStep>=3){hideOverlay('onboardingOverlay');safeSet('feelio_onboarding_done','1');initApp();}
-    else{document.querySelectorAll('.onboarding-slide').forEach(function(s){s.classList.remove('active');});$('onSlide'+onStep).classList.add('active');
+    onStep++;if(onStep>=3){hideOverlay('onboardingOverlay');stopDemo();safeSet('feelio_onboarding_done','1');initApp();}
+    else{
+        document.querySelectorAll('.onboarding-slide').forEach(function(s){s.classList.remove('active');});$('onSlide'+onStep).classList.add('active');
         for(var i=0;i<3;i++){$('seg'+i).classList.toggle('done',i<=onStep);}
         $('onBtn').textContent=onStep===2?'Begin':'Next';
+        if(onStep===2)startDemo();else stopDemo();
     }
 });
-$('btnSkipOnboarding').addEventListener('click',function(){hideOverlay('onboardingOverlay');safeSet('feelio_onboarding_done','1');initApp();});
+$('btnSkipOnboarding').addEventListener('click',function(){hideOverlay('onboardingOverlay');stopDemo();safeSet('feelio_onboarding_done','1');initApp();});
 $('btnCookieOk').addEventListener('click',function(){$('cookieBanner').classList.add('hidden');});
 document.querySelectorAll('.toolbar button[data-size]').forEach(function(b){b.addEventListener('click',function(){setBrushSize(parseInt(b.dataset.size));});});
 $('btnUndo').addEventListener('click',undoLastStroke);$('btnContrast').addEventListener('click',toggleHighContrast);$('btnFullscreen').addEventListener('click',toggleFullScreen);
@@ -569,7 +645,7 @@ $('btnInstall').addEventListener('click',installPWA);
 $('btnCloseInstall').addEventListener('click',function(){$('installBanner').classList.remove('show');safeSet('feelio_install_dismissed','1');});
 document.querySelectorAll('.nav-item').forEach(function(item){item.addEventListener('click',function(){showScreen(item.dataset.screen);});});
 
-// START
+// ==================== START ====================
 if(safeGet('feelio_onboarding_done')==='1'){
     hideOverlay('splashOverlay');hideOverlay('langOverlay');hideOverlay('disclaimerOverlay');hideOverlay('onboardingOverlay');
     initApp();
