@@ -2,357 +2,862 @@
 <html lang="mul" dir="ltr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no,viewport-fit=cover">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Feelio">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#0a0a18">
-    <meta name="description" content="Feelio — Your private emotional space. Draw your mood. No data collected. No judgment. Free forever.">
+    <meta name="description" content="Feelio — Draw your mood. Your private emotional space. No data collected. No judgment. Free forever. Draw how you feel and Feelio understands.">
     <meta property="og:title" content="Feelio — Draw your mood">
-    <meta property="og:description" content="A private space to draw what you feel. No ads. No data. No judgment.">
+    <meta property="og:description" content="Your private space to draw what you feel. No ads. No data. No judgment. Free forever.">
+    <meta property="og:type" content="website">
     <meta property="og:url" content="https://feelio.org">
+    <meta property="og:image" content="https://feelio.org/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%23a78bfa'/><stop offset='1' stop-color='%237c3aed'/></linearGradient></defs><circle cx='50' cy='50' r='45' fill='url(%23g)'/><text x='50' y='68' text-anchor='middle' font-size='40' fill='white' font-weight='200'>☁️</text></svg>">
+    <meta name="twitter:title" content="Feelio — Draw your mood">
+    <meta name="twitter:description" content="Your private space to draw what you feel. No ads. No data. No judgment.">
+    <meta name="twitter:image" content="https://feelio.org/og-image.png">
+    
+    <!-- Favicon SVG (compatible tous navigateurs) -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3CradialGradient id='g' cx='50%25' cy='50%25' r='50%25'%3E%3Cstop offset='0%25' stop-color='%23c4b5fd'/%3E%3Cstop offset='100%25' stop-color='%237c3aed'/%3E%3C/radialGradient%3E%3C/defs%3E%3Ccircle cx='50' cy='50' r='48' fill='url(%23g)'/%3E%3Ccircle cx='50' cy='50' r='40' fill='none' stroke='white' stroke-width='2' opacity='0.3'/%3E%3Cpath d='M30 48c0-6 8-12 20-12s20 6 20 12' stroke='white' stroke-width='3' stroke-linecap='round' fill='none' opacity='0.8'/%3E%3Ccircle cx='42' cy='42' r='3' fill='white' opacity='0.6'/%3E%3Ccircle cx='58' cy='42' r='3' fill='white' opacity='0.6'/%3E%3C/svg%3E">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3CradialGradient id='g' cx='50%25' cy='50%25' r='50%25'%3E%3Cstop offset='0%25' stop-color='%23c4b5fd'/%3E%3Cstop offset='100%25' stop-color='%237c3aed'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='20' fill='url(%23g)'/%3E%3Ccircle cx='50' cy='50' r='28' fill='none' stroke='white' stroke-width='2' opacity='0.3'/%3E%3Cpath d='M30 48c0-6 8-12 20-12s20 6 20 12' stroke='white' stroke-width='3' stroke-linecap='round' fill='none' opacity='0.8'/%3E%3Ccircle cx='42' cy='42' r='3' fill='white' opacity='0.6'/%3E%3Ccircle cx='58' cy='42' r='3' fill='white' opacity='0.6'/%3E%3C/svg%3E">
+    
+    <!-- Manifest PWA inline -->
+    <link rel="manifest" href="data:application/manifest+json,%7B%22name%22:%22Feelio%20-%20Draw%20your%20mood%22,%22short_name%22:%22Feelio%22,%22description%22:%22Your%20private%20emotional%20space.%20Draw%20your%20mood.%22,%22start_url%22:%22/%22,%22display%22:%22standalone%22,%22orientation%22:%22portrait%22,%22background_color%22:%22%230a0a18%22,%22theme_color%22:%22%230a0a18%22,%22icons%22:%5B%7B%22src%22:%22data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20192%20192'%3E%3Cdefs%3E%3CradialGradient%20id='g'%20cx='50%25'%20cy='50%25'%20r='50%25'%3E%3Cstop%20offset='0%25'%20stop-color='%23c4b5fd'/%3E%3Cstop%20offset='100%25'%20stop-color='%237c3aed'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect%20width='192'%20height='192'%20rx='38'%20fill='url(%23g)'/%3E%3Ccircle%20cx='96'%20cy='96'%20r='55'%20fill='none'%20stroke='white'%20stroke-width='3'%20opacity='0.3'/%3E%3Cpath%20d='M58%2092c0-12%2016-24%2038-24s38%2012%2038%2024'%20stroke='white'%20stroke-width='5'%20stroke-linecap='round'%20fill='none'%20opacity='0.8'/%3E%3Ccircle%20cx='80'%20cy='78'%20r='6'%20fill='white'%20opacity='0.6'/%3E%3Ccircle%20cx='112'%20cy='78'%20r='6'%20fill='white'%20opacity='0.6'/%3E%3C/svg%3E%22,%22sizes%22:%22192x192%22,%22type%22:%22image/svg+xml%22%7D,%7B%22src%22:%22data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20512%20512'%3E%3Cdefs%3E%3CradialGradient%20id='g'%20cx='50%25'%20cy='50%25'%20r='50%25'%3E%3Cstop%20offset='0%25'%20stop-color='%23c4b5fd'/%3E%3Cstop%20offset='100%25'%20stop-color='%237c3aed'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect%20width='512'%20height='512'%20rx='102'%20fill='url(%23g)'/%3E%3Ccircle%20cx='256'%20cy='256'%20r='140'%20fill='none'%20stroke='white'%20stroke-width='8'%20opacity='0.3'/%3E%3Cpath%20d='M150%20246c0-32%2042-64%20106-64s106%2032%20106%2064'%20stroke='white'%20stroke-width='12'%20stroke-linecap='round'%20fill='none'%20opacity='0.8'/%3E%3Ccircle%20cx='210'%20cy='210'%20r='14'%20fill='white'%20opacity='0.6'/%3E%3Ccircle%20cx='302'%20cy='210'%20r='14'%20fill='white'%20opacity='0.6'/%3E%3Ctext%20x='256'%20y='380'%20text-anchor='middle'%20font-size='80'%20font-weight='300'%20fill='white'%20opacity='0.9'%3E%E2%98%81%EF%B8%8F%3C/text%3E%3C/svg%3E%22,%22sizes%22:%22512x512%22,%22type%22:%22image/svg+xml%22%7D%5D%7D">
+    
     <title>Feelio — Draw your mood</title>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&family=Noto+Sans+Arabic:wght@300;400;500;700&family=Noto+Sans+JP:wght@300;400;500&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&family=Noto+Sans+Arabic:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
     <style>
-        :root{--accent:#a78bfa;--accent2:#7c3aed;--bg:#0a0a18;--surface:rgba(16,16,32,0.6);--text:#f0f0f0;--text2:#b0b0b0;--text3:#666;--font:'Inter',-apple-system,sans-serif;--radius:28px;--transition:0.35s cubic-bezier(0.4,0,0.2,1);--nav-h:56px;--font-size:1rem}
-        *{margin:0;padding:0;box-sizing:border-box}
-        html{font-size:var(--font-size)}
-        body{font-family:var(--font);background:var(--bg);color:var(--text);height:100vh;height:100dvh;overflow:hidden;position:relative;-webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased;transition:background 1.5s ease;user-select:none;-webkit-user-select:none}
-        body.ar{direction:rtl;font-family:'Noto Sans Arabic',var(--font)}body.ja{font-family:'Noto Sans JP',var(--font)}body.zh{font-family:'Noto Sans SC',var(--font)}
-        body.high-contrast{--bg:#000;--text:#fff;--text2:#fff;--text3:#ccc;--accent:#ffff00;--accent2:#ffff00;--surface:#111}
-        .bg-orb{position:fixed;width:500px;height:500px;border-radius:50%;filter:blur(160px);opacity:0.04;pointer-events:none;z-index:0;top:50%;left:50%;transform:translate(-50%,-50%);background:radial-gradient(circle,var(--accent) 0%,transparent 70%);transition:all 2s ease}
+        :root{
+            --accent:#a78bfa;--accent2:#7c3aed;--accent-glow:#c4b5fd;
+            --bg:#0a0a18;--surface:rgba(16,16,32,0.6);--surface2:rgba(22,22,44,0.8);
+            --text:#f0f0f0;--text2:#b0b0b0;--text3:#666;
+            --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+            --radius:28px;--radius-sm:16px;--radius-xs:12px;
+            --transition:0.35s cubic-bezier(0.4,0,0.2,1);
+            --nav-h:56px;--font-size:1rem;
+            --danger:#ef4444;--success:#34d399;--warning:#fbbf24;
+        }
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        html{font-size:var(--font-size);-webkit-text-size-adjust:100%}
+        body{
+            font-family:var(--font);background:var(--bg);color:var(--text);
+            height:100vh;height:100dvh;overflow:hidden;position:relative;
+            -webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased;
+            transition:background 1.5s ease;user-select:none;-webkit-user-select:none;
+            -webkit-overflow-scrolling:touch;
+        }
+        body.ar{direction:rtl;font-family:'Noto Sans Arabic',var(--font)}
+        body.high-contrast{
+            --bg:#000;--text:#fff;--text2:#fff;--text3:#ccc;
+            --accent:#ffff00;--accent2:#ffff00;--accent-glow:#ffff88;--surface:#111;--surface2:#1a1a1a;
+        }
+        
+        /* Background effects */
+        .bg-orb{
+            position:fixed;width:500px;height:500px;border-radius:50%;filter:blur(160px);
+            opacity:0.04;pointer-events:none;z-index:0;top:50%;left:50%;
+            transform:translate(-50%,-50%);background:radial-gradient(circle,var(--accent) 0%,transparent 70%);
+            transition:all 2s ease;
+        }
         .particles-bg{position:fixed;inset:0;z-index:0;pointer-events:none}
-        .particle-bg{position:absolute;width:2px;height:2px;border-radius:50%;background:var(--accent);animation:floatUp 8s linear infinite;opacity:0}
+        .particle-bg{
+            position:absolute;width:2px;height:2px;border-radius:50%;background:var(--accent);
+            animation:floatUp 8s linear infinite;opacity:0;
+        }
         @keyframes floatUp{0%{transform:translateY(100vh) scale(0);opacity:0}20%{opacity:0.6}100%{transform:translateY(-10vh) scale(1.5);opacity:0}}
+        
         .rain-layer{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity 1.2s}
-        .drop{position:absolute;width:1px;border-radius:2px;animation:dropFall linear infinite;background:linear-gradient(transparent,rgba(180,180,240,0.3))}
+        .drop{
+            position:absolute;width:1px;border-radius:2px;animation:dropFall linear infinite;
+            background:linear-gradient(transparent,rgba(180,180,240,0.3));
+        }
         @keyframes dropFall{0%{transform:translateY(-5vh);opacity:0}10%{opacity:1}100%{transform:translateY(105vh);opacity:0.12}}
-        .confetti{position:fixed;pointer-events:none;z-index:200;animation:confettiFall 2.5s ease-out forwards}
+        
+        .confetti{
+            position:fixed;pointer-events:none;z-index:200;
+            animation:confettiFall 2.5s ease-out forwards;
+        }
         @keyframes confettiFall{0%{transform:translateY(0) rotate(0deg) scale(1);opacity:1}100%{transform:translateY(100vh) rotate(720deg) scale(0.4);opacity:0}}
-        .ripple{position:fixed;border-radius:50%;background:rgba(167,139,250,0.3);transform:scale(0);animation:rippleEffect 0.6s ease-out forwards;pointer-events:none;z-index:250}
+        
+        .ripple{
+            position:fixed;border-radius:50%;background:rgba(167,139,250,0.3);
+            transform:scale(0);animation:rippleEffect 0.6s ease-out forwards;
+            pointer-events:none;z-index:250;
+        }
         @keyframes rippleEffect{100%{transform:scale(4);opacity:0}}
         
-        /* OVERLAYS - CORRIGÉS */
-        .overlay{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,0.95);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.5s ease}
+        /* Overlays */
+        .overlay{
+            position:fixed;inset:0;z-index:500;background:rgba(0,0,0,0.95);
+            display:flex;align-items:center;justify-content:center;
+            opacity:0;pointer-events:none;transition:opacity 0.5s ease;
+        }
         .overlay.show{opacity:1;pointer-events:auto}
-        .overlay-box{text-align:center;padding:30px;animation:fadeInUp 0.6s ease-out;max-width:380px;max-height:85vh;overflow-y:auto}
+        .overlay-box{
+            text-align:center;padding:30px 20px;animation:fadeInUp 0.6s ease-out;
+            max-width:400px;max-height:85vh;overflow-y:auto;width:100%;
+        }
         @keyframes fadeInUp{0%{opacity:0;transform:translateY(40px)}100%{opacity:1;transform:translateY(0)}}
-        .overlay-box h2{font-size:1.6rem;font-weight:300;margin-bottom:8px;color:#fff}
-        .overlay-box p{color:rgba(255,255,255,0.6);font-size:0.8rem;margin-bottom:20px;line-height:1.6}
+        .overlay-box h2{font-size:1.6rem;font-weight:300;margin-bottom:8px;color:#fff;letter-spacing:1px}
+        .overlay-box p{color:rgba(255,255,255,0.6);font-size:0.85rem;margin-bottom:20px;line-height:1.6}
         
+        /* Splash screen */
+        .splash-icon{font-size:4rem;margin-bottom:16px;animation:breatheSplash 3s ease-in-out infinite}
+        @keyframes breatheSplash{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+        .splash-logo{font-size:2.4rem;font-weight:200;letter-spacing:10px;color:#fff;margin-bottom:8px}
+        .splash-tagline{color:var(--accent);font-size:0.8rem;letter-spacing:2px;margin-bottom:24px;opacity:0.8}
+        
+        /* Langue */
         .lang-options{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:20px}
-        .lang-option{padding:14px;border-radius:14px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.03);color:var(--text);cursor:pointer;transition:all var(--transition);font-size:0.85rem;text-align:center}
+        .lang-option{
+            padding:14px;border-radius:14px;border:1px solid rgba(255,255,255,0.1);
+            background:rgba(255,255,255,0.03);color:var(--text);cursor:pointer;
+            transition:all var(--transition);font-size:0.85rem;text-align:center;
+        }
         .lang-option:active,.lang-option.active{border-color:var(--accent);background:rgba(139,92,246,0.15);color:var(--accent)}
         
-        .check-row{display:flex;align-items:center;gap:10px;margin:10px 0;text-align:left;color:rgba(255,255,255,0.8);font-size:0.7rem;padding:8px 0}
-        .check-row input[type=checkbox]{width:20px;height:20px;accent-color:var(--accent);flex-shrink:0;cursor:pointer}
+        /* Disclaimer */
+        .check-row{
+            display:flex;align-items:flex-start;gap:10px;margin:10px 0;text-align:left;
+            color:rgba(255,255,255,0.8);font-size:0.7rem;padding:6px 0;
+        }
+        .check-row input[type=checkbox]{
+            width:20px;height:20px;accent-color:var(--accent);flex-shrink:0;cursor:pointer;margin-top:2px;
+        }
         .check-row label{cursor:pointer;line-height:1.4}
         
-        .install-banner{position:fixed;bottom:calc(var(--nav-h) + 10px);left:12px;right:12px;z-index:650;background:rgba(22,22,44,0.97);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);padding:12px 16px;border-radius:18px;display:none;align-items:center;gap:10px;border:1px solid rgba(139,92,246,0.2);max-width:420px;margin:0 auto;animation:fadeInUp 0.4s ease-out}
-        .install-banner.show{display:flex}
-        .install-banner .install-icon{font-size:1.5rem;flex-shrink:0}
-        .install-banner p{font-size:0.55rem;color:var(--text2);line-height:1.4;flex:1}
-        .install-banner button{flex-shrink:0;padding:6px 14px;border-radius:16px;border:none;background:linear-gradient(135deg,var(--accent2),var(--accent));color:#fff;font-size:0.5rem;font-weight:500;cursor:pointer}
-        .install-banner .install-close{background:none;border:none;color:var(--text3);font-size:1rem;cursor:pointer;padding:4px}
-        
+        /* Onboarding */
+        .onboarding-slide{display:none}.onboarding-slide.active{display:block}
+        .onboarding-slide .on-icon{font-size:4.5rem;margin-bottom:20px;animation:breatheSplash 3s ease-in-out infinite}
         .onboarding-dots{display:flex;gap:8px;justify-content:center;margin-bottom:20px}
         .onboarding-dots .dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.2);transition:all 0.3s}
         .onboarding-dots .dot.active{background:var(--accent);width:24px;border-radius:4px}
-        .onboarding-slide{display:none}.onboarding-slide.active{display:block}
-        .onboarding-slide .on-icon{font-size:5rem;margin-bottom:20px;animation:breatheSplash 3s ease-in-out infinite}
-        @keyframes breatheSplash{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
         
+        /* Install banner */
+        .install-banner{
+            position:fixed;bottom:calc(var(--nav-h) + 10px);left:12px;right:12px;z-index:650;
+            background:rgba(22,22,44,0.97);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+            padding:12px 16px;border-radius:18px;display:none;align-items:center;gap:10px;
+            border:1px solid rgba(139,92,246,0.2);max-width:420px;margin:0 auto;
+            animation:fadeInUp 0.4s ease-out;
+        }
+        .install-banner.show{display:flex}
+        .install-banner .install-icon{font-size:1.5rem;flex-shrink:0}
+        .install-banner p{font-size:0.55rem;color:var(--text2);line-height:1.4;flex:1}
+        .install-banner button{
+            flex-shrink:0;padding:6px 14px;border-radius:16px;border:none;
+            background:linear-gradient(135deg,var(--accent2),var(--accent));color:#fff;
+            font-size:0.5rem;font-weight:500;cursor:pointer;
+        }
+        .install-banner .install-close{background:none;border:none;color:var(--text3);font-size:1rem;cursor:pointer;padding:4px}
+        
+        /* App layout */
         .app{position:relative;z-index:10;height:100%;display:flex;flex-direction:column;padding-bottom:var(--nav-h)}
-        .screen{flex:1;display:none;flex-direction:column;align-items:center;justify-content:center;padding:24px 20px;overflow-y:auto;-webkit-overflow-scrolling:touch;animation:screenIn 0.35s ease-out}
+        .screen{
+            flex:1;display:none;flex-direction:column;align-items:center;justify-content:center;
+            padding:24px 20px;overflow-y:auto;-webkit-overflow-scrolling:touch;
+            animation:screenIn 0.35s ease-out;
+        }
         .screen.active{display:flex}
         @keyframes screenIn{0%{opacity:0;transform:translateY(8px)}100%{opacity:1;transform:translateY(0)}}
         
-        .nav{position:fixed;bottom:0;left:0;right:0;z-index:100;display:flex;justify-content:space-around;align-items:center;height:var(--nav-h);padding:0 8px env(safe-area-inset-bottom,0px);background:rgba(10,10,22,0.95);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);border-top:0.5px solid rgba(255,255,255,0.05)}
-        .nav-item{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;padding:2px 10px;border-radius:14px;transition:all var(--transition);color:var(--text3);position:relative;min-width:44px}
-        .nav-item.active{color:var(--accent)}
-        .nav-item .icon-wrap{position:relative;display:flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;transition:all var(--transition);background:transparent}
-        .nav-item.active .icon-wrap{background:rgba(139,92,246,0.12)}
-        .nav-item .icon{width:1.2rem;height:1.2rem;transition:all var(--transition);position:relative;z-index:1;stroke:currentColor}
-        .nav-item .nav-label{font-size:0.46rem;font-weight:500;letter-spacing:0.2px;transition:all var(--transition);opacity:0.7}
-        .nav-item.active .nav-label{opacity:1;font-weight:600}
-        .nav-item .active-dot{position:absolute;top:-2px;width:3px;height:3px;border-radius:50%;background:var(--accent);opacity:0;transition:all var(--transition)}
-        .nav-item.active .active-dot{opacity:1;box-shadow:0 0 6px var(--accent)}
-        
-        .top-bar{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:8px 16px;background:rgba(8,8,18,0.5);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+        /* Top bar */
+        .top-bar{
+            position:fixed;top:0;left:0;right:0;z-index:100;display:flex;
+            justify-content:space-between;align-items:center;padding:8px 16px;
+            padding-top:max(8px,env(safe-area-inset-top));
+            background:rgba(8,8,18,0.5);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+        }
         .privacy-badge{display:flex;align-items:center;gap:5px;color:var(--accent);font-size:0.5rem;font-weight:500;letter-spacing:0.3px}
-        .privacy-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);box-shadow:0 0 6px var(--accent);animation:dotPulse 2s ease-in-out infinite;flex-shrink:0}
+        .privacy-dot{
+            width:5px;height:5px;border-radius:50%;background:var(--accent);
+            box-shadow:0 0 6px var(--accent);animation:dotPulse 2s ease-in-out infinite;flex-shrink:0;
+        }
         @keyframes dotPulse{0%,100%{opacity:0.4}50%{opacity:1}}
-        .langs{display:flex;gap:4px;flex-shrink:0}.langs span{color:#555;font-size:0.5rem;font-weight:500;cursor:pointer;padding:4px 7px;border-radius:5px;transition:all var(--transition);min-width:26px;text-align:center}.langs span.active{color:var(--accent);background:rgba(139,92,246,0.12)}
+        .langs{display:flex;gap:4px;flex-shrink:0}
+        .langs span{
+            color:#555;font-size:0.5rem;font-weight:500;cursor:pointer;padding:4px 7px;
+            border-radius:5px;transition:all var(--transition);min-width:26px;text-align:center;
+        }
+        .langs span.active{color:var(--accent);background:rgba(139,92,246,0.12)}
         
-        .cookie-banner{position:fixed;bottom:calc(var(--nav-h) + 10px);left:12px;right:12px;z-index:700;background:rgba(22,22,44,0.97);padding:10px 14px;border-radius:16px;display:flex;align-items:center;gap:8px;font-size:0.5rem;color:var(--text2);border:1px solid rgba(255,255,255,0.08);max-width:400px;margin:0 auto;transition:opacity 0.3s,transform 0.3s}
+        /* Cookie */
+        .cookie-banner{
+            position:fixed;bottom:calc(var(--nav-h) + 10px);left:12px;right:12px;z-index:700;
+            background:rgba(22,22,44,0.97);padding:10px 14px;border-radius:16px;
+            display:flex;align-items:center;gap:8px;font-size:0.5rem;color:var(--text2);
+            border:1px solid rgba(255,255,255,0.08);max-width:400px;margin:0 auto;
+            transition:opacity 0.3s,transform 0.3s;
+        }
         .cookie-banner.hidden{opacity:0;transform:translateY(30px);pointer-events:none}
-        .cookie-banner .cookie-dot{width:6px;height:6px;border-radius:50%;background:#34d399;flex-shrink:0}
-        .cookie-banner button{flex-shrink:0;padding:5px 12px;border-radius:14px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.05);color:var(--text);font-size:0.48rem;cursor:pointer}
+        .cookie-banner .cookie-dot{width:6px;height:6px;border-radius:50%;background:var(--success);flex-shrink:0}
+        .cookie-banner button{
+            flex-shrink:0;padding:5px 12px;border-radius:14px;border:1px solid rgba(255,255,255,0.15);
+            background:rgba(255,255,255,0.05);color:var(--text);font-size:0.48rem;cursor:pointer;
+        }
         
-        .crisis-bar{position:fixed;top:44px;left:0;right:0;z-index:99;background:rgba(239,68,68,0.12);padding:6px 14px;text-align:center;font-size:0.48rem;color:#ef4444;display:none;animation:slideDown 0.3s ease-out}
+        /* Crisis bar */
+        .crisis-bar{
+            position:fixed;top:44px;left:0;right:0;z-index:99;
+            background:rgba(239,68,68,0.12);padding:6px 14px;text-align:center;
+            font-size:0.48rem;color:var(--danger);display:none;animation:slideDown 0.3s ease-out;
+        }
         @keyframes slideDown{0%{transform:translateY(-100%)}100%{transform:translateY(0)}}
-        .crisis-bar a{color:#ef4444;text-decoration:underline}
+        .crisis-bar a{color:var(--danger);text-decoration:underline}
         
+        /* Logo */
         .logo-block{display:flex;flex-direction:column;align-items:center;margin-bottom:8px}
         .logo-svg-main{width:50px;height:50px;margin-bottom:4px;filter:drop-shadow(0 0 20px rgba(167,139,250,0.5))}
-        .logo-text-main{font-size:2.4rem;font-weight:200;letter-spacing:12px;color:#fff;text-shadow:0 0 30px rgba(167,139,250,0.7);animation:logoGlow 3s ease-in-out infinite}
+        .logo-text-main{
+            font-size:2.4rem;font-weight:200;letter-spacing:12px;color:#fff;
+            text-shadow:0 0 30px rgba(167,139,250,0.7);animation:logoGlow 3s ease-in-out infinite;
+        }
         @keyframes logoGlow{0%,100%{text-shadow:0 0 20px rgba(167,139,250,0.5)}50%{text-shadow:0 0 40px rgba(167,139,250,0.9)}}
         .tagline{color:var(--accent);font-size:0.72rem;font-weight:400;letter-spacing:3px;margin-bottom:24px;text-align:center;opacity:0.9}
         
+        /* Badges */
         .badge-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:10px}
-        .streak-badge{display:none;align-items:center;gap:6px;padding:6px 14px;background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.25);border-radius:16px;color:#fbbf24;font-size:0.6rem;font-weight:500;animation:popIn 0.5s cubic-bezier(0.34,1.56,0.64,1)}
+        .streak-badge{
+            display:none;align-items:center;gap:6px;padding:6px 14px;
+            background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.25);
+            border-radius:16px;color:var(--warning);font-size:0.6rem;font-weight:500;
+            animation:popIn 0.5s cubic-bezier(0.34,1.56,0.64,1);
+        }
         .streak-badge .fire{font-size:0.8rem;animation:firePulse 0.8s ease-in-out infinite}
         @keyframes firePulse{0%,100%{transform:scale(1)}50%{transform:scale(1.3)}}
         @keyframes popIn{0%{transform:scale(0)}100%{transform:scale(1)}}
-        .collection-badge{display:none;align-items:center;gap:4px;padding:6px 14px;background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.2);border-radius:16px;color:var(--accent);font-size:0.55rem;font-weight:500}
-        .daily-counter{color:var(--accent);font-size:0.58rem;font-weight:400;margin-bottom:12px;padding:5px 12px;background:rgba(139,92,246,0.06);border-radius:12px;display:inline-block}
+        .collection-badge{
+            display:none;align-items:center;gap:4px;padding:6px 14px;
+            background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.2);
+            border-radius:16px;color:var(--accent);font-size:0.55rem;font-weight:500;
+        }
+        .daily-counter{
+            color:var(--accent);font-size:0.58rem;font-weight:400;margin-bottom:12px;
+            padding:5px 12px;background:rgba(139,92,246,0.06);border-radius:12px;display:inline-block;
+        }
         
+        /* Canvas */
         .canvas-wrap{position:relative;margin-bottom:14px}
-        .canvas-wrap::after{content:'';position:absolute;inset:-2px;border-radius:calc(var(--radius) + 2px);background:linear-gradient(135deg,var(--accent),var(--accent2));opacity:0.2;filter:blur(6px);z-index:0;animation:glowPulse 3s ease-in-out infinite}
+        .canvas-wrap::after{
+            content:'';position:absolute;inset:-2px;border-radius:calc(var(--radius) + 2px);
+            background:linear-gradient(135deg,var(--accent),var(--accent2));opacity:0.2;
+            filter:blur(6px);z-index:0;animation:glowPulse 3s ease-in-out infinite;
+        }
         @keyframes glowPulse{0%,100%{opacity:0.15}50%{opacity:0.4}}
-        canvas{position:relative;z-index:1;width:300px;height:300px;border-radius:var(--radius);background:var(--surface);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);touch-action:none;cursor:crosshair;border:1.5px solid rgba(255,255,255,0.08);transition:transform var(--transition)}
+        canvas{
+            position:relative;z-index:1;width:300px;height:300px;border-radius:var(--radius);
+            background:var(--surface);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+            touch-action:none;cursor:crosshair;border:1.5px solid rgba(255,255,255,0.08);
+            transition:transform var(--transition);
+        }
         canvas:active{transform:scale(0.97)}
         canvas.breathe{animation:breathe 5s ease-in-out infinite}
         @keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.005)}}
-        .canvas-hint-overlay{position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;pointer-events:none;opacity:0.15;transition:opacity 0.4s;font-size:1.4rem;color:var(--text3)}
+        .canvas-hint-overlay{
+            position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;
+            pointer-events:none;opacity:0.15;transition:opacity 0.4s;font-size:1.4rem;color:var(--text3);
+        }
         
+        /* Toolbar */
         .toolbar{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;justify-content:center}
-        .toolbar button{width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.03);color:var(--text3);cursor:pointer;font-size:0.7rem;transition:all var(--transition)}
+        .toolbar button{
+            width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,0.1);
+            background:rgba(255,255,255,0.03);color:var(--text3);cursor:pointer;
+            font-size:0.7rem;transition:all var(--transition);
+        }
         .toolbar button.active{border-color:var(--accent);color:var(--accent);background:rgba(139,92,246,0.1)}
         
+        /* Result */
         #resultWrap{display:flex;flex-direction:column;align-items:center;min-height:80px;margin-top:4px;gap:8px;overflow:visible}
         #result{font-size:3.8rem;transition:all 0.5s cubic-bezier(0.34,1.56,0.64,1);filter:drop-shadow(0 0 40px rgba(200,200,240,0.3))}
         #result.pop{animation:popIn 0.5s cubic-bezier(0.34,1.56,0.64,1)}
         #phrase{color:var(--text);font-size:0.88rem;font-weight:400;text-align:center;max-width:340px;line-height:1.5;margin-bottom:2px}
         #phrase2{color:var(--text2);font-size:0.68rem;font-weight:300;text-align:center;max-width:340px;line-height:1.5}
-        .speak-btn{display:none;margin-top:4px;padding:6px 12px;border-radius:16px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.03);color:var(--text3);cursor:pointer;font-size:0.55rem;transition:all var(--transition)}
-        .speak-btn:active{background:rgba(139,92,246,0.1);color:var(--accent)}
+        .speak-btn{
+            display:none;margin-top:4px;padding:6px 12px;border-radius:16px;
+            border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.03);
+            color:var(--text3);cursor:pointer;font-size:0.55rem;transition:all var(--transition);
+        }
         
+        /* Ask box */
         #askBox{display:none;flex-direction:column;align-items:center;gap:12px;margin-top:14px;animation:fadeIn 0.5s ease-out}
         @keyframes fadeIn{0%{opacity:0;transform:translateY(8px)}100%{opacity:1;transform:translateY(0)}}
-        .calm-link{display:none;margin-top:6px;text-align:center}.calm-link a{text-decoration:none;color:var(--accent);font-size:0.58rem}
+        .calm-link{display:none;margin-top:6px;text-align:center}
+        .calm-link a{text-decoration:none;color:var(--accent);font-size:0.58rem}
         
-        .btn{display:inline-flex;align-items:center;gap:6px;padding:12px 26px;border-radius:50px;font-size:0.68rem;font-weight:400;letter-spacing:0.5px;cursor:pointer;transition:all var(--transition);border:none;position:relative;overflow:hidden}
+        /* Buttons */
+        .btn{
+            display:inline-flex;align-items:center;justify-content:center;gap:6px;
+            padding:12px 26px;border-radius:50px;font-size:0.68rem;font-weight:500;
+            letter-spacing:0.5px;cursor:pointer;transition:all var(--transition);border:none;
+            position:relative;overflow:hidden;text-decoration:none;
+        }
         .btn:active{transform:scale(0.96)}
         .btn:disabled{opacity:0.4;cursor:not-allowed;transform:none}
         .btn-primary{background:linear-gradient(135deg,var(--accent2),var(--accent));color:#fff;box-shadow:0 4px 20px rgba(124,58,237,0.25)}
+        .btn-primary:hover{box-shadow:0 6px 30px rgba(124,58,237,0.4)}
         .btn-outline{background:rgba(255,255,255,0.03);color:var(--text2);border:1px solid rgba(255,255,255,0.12)}
-        .btn-small{padding:8px 16px;font-size:0.58rem}.btn-icon{padding:10px 12px;border-radius:50%;font-size:0.95rem}
+        .btn-small{padding:8px 16px;font-size:0.58rem}
+        .btn-icon{padding:10px 12px;border-radius:50%;font-size:0.95rem}
         
         .share-btns{display:flex;gap:8px;margin-top:8px;animation:fadeIn 0.5s ease-out}
         .counter{color:var(--accent);font-size:0.62rem;font-weight:400;letter-spacing:1px;margin-top:16px;padding:6px 14px;background:rgba(139,92,246,0.08);border-radius:16px;display:inline-block}
         .hint{color:var(--text3);font-size:0.58rem;font-weight:200;margin-top:6px;letter-spacing:1px;transition:opacity 0.4s}
         
-        .section-title{font-size:1.1rem;font-weight:300;letter-spacing:4px;margin-bottom:4px}.section-sub{color:var(--text3);font-size:0.55rem;margin-bottom:14px}
+        /* Nav */
+        .nav{
+            position:fixed;bottom:0;left:0;right:0;z-index:100;display:flex;
+            justify-content:space-around;align-items:center;height:var(--nav-h);
+            padding:0 8px env(safe-area-inset-bottom,0px);
+            background:rgba(10,10,22,0.95);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);
+            border-top:0.5px solid rgba(255,255,255,0.05);
+        }
+        .nav-item{
+            display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;
+            padding:2px 10px;border-radius:14px;transition:all var(--transition);
+            color:var(--text3);position:relative;min-width:44px;
+        }
+        .nav-item.active{color:var(--accent)}
+        .nav-item .icon-wrap{
+            position:relative;display:flex;align-items:center;justify-content:center;
+            width:34px;height:34px;border-radius:50%;transition:all var(--transition);background:transparent;
+        }
+        .nav-item.active .icon-wrap{background:rgba(139,92,246,0.12)}
+        .nav-item .icon{width:1.2rem;height:1.2rem;transition:all var(--transition);position:relative;z-index:1;stroke:currentColor}
+        .nav-item.active .icon{filter:drop-shadow(0 0 4px rgba(139,92,246,0.5));animation:iconPop 0.3s ease-out}
+        @keyframes iconPop{0%{transform:scale(1)}50%{transform:scale(1.2)}100%{transform:scale(1.08)}}
+        .nav-item .nav-label{font-size:0.46rem;font-weight:500;letter-spacing:0.2px;transition:all var(--transition);opacity:0.7}
+        .nav-item.active .nav-label{opacity:1;font-weight:600}
+        .nav-item .active-dot{
+            position:absolute;top:-2px;width:3px;height:3px;border-radius:50%;
+            background:var(--accent);opacity:0;transition:all var(--transition);
+        }
+        .nav-item.active .active-dot{opacity:1;box-shadow:0 0 6px var(--accent)}
+        
+        /* Screens */
+        .section-title{font-size:1.1rem;font-weight:300;letter-spacing:4px;margin-bottom:4px}
+        .section-sub{color:var(--text3);font-size:0.55rem;margin-bottom:14px}
         .history-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:12px;width:100%;max-width:340px}
-        .history-day{display:flex;flex-direction:column;align-items:center;padding:14px 6px;background:rgba(255,255,255,0.03);border-radius:14px;font-size:0.48rem}.history-day .emoji{font-size:1.3rem}.history-day .label{color:var(--text3);margin-top:2px}
-        .stat-card{display:flex;align-items:center;gap:14px;padding:16px 20px;background:rgba(255,255,255,0.03);border-radius:18px;margin:4px 0;width:100%;max-width:320px}.stat-card .emoji{font-size:2.2rem}.stat-card .count{font-size:1.3rem;font-weight:600}.stat-card .label{color:var(--text3);font-size:0.58rem}
+        .history-day{
+            display:flex;flex-direction:column;align-items:center;padding:14px 6px;
+            background:rgba(255,255,255,0.03);border-radius:14px;font-size:0.48rem;
+        }
+        .history-day .emoji{font-size:1.3rem}.history-day .label{color:var(--text3);margin-top:2px}
+        .stat-card{
+            display:flex;align-items:center;gap:14px;padding:16px 20px;
+            background:rgba(255,255,255,0.03);border-radius:18px;margin:4px 0;
+            width:100%;max-width:320px;
+        }
+        .stat-card .emoji{font-size:2.2rem}.stat-card .count{font-size:1.3rem;font-weight:600}.stat-card .label{color:var(--text3);font-size:0.58rem}
+        .legal-text{text-align:left;max-width:400px;font-size:0.6rem;font-weight:300;line-height:1.9;color:var(--text2);width:100%}
+        .legal-text h3{color:var(--accent);font-size:0.72rem;font-weight:500;margin:16px 0 4px}.legal-text a{color:var(--accent)}
+        .resource-link{
+            display:flex;align-items:center;gap:12px;padding:16px 20px;
+            background:rgba(255,255,255,0.03);border-radius:18px;margin:5px 0;
+            width:100%;max-width:340px;text-decoration:none;color:var(--text2);
+            font-size:0.68rem;transition:all var(--transition);
+        }
+        .resource-link:active{background:rgba(139,92,246,0.08);color:var(--accent)}
+        .premium-card{
+            background:rgba(139,92,246,0.05);border:1px solid rgba(139,92,246,0.12);
+            border-radius:22px;padding:24px;margin-top:20px;text-align:center;
+            width:100%;max-width:320px;
+        }
+        .premium-card h3{color:var(--accent);font-size:0.95rem;font-weight:500;margin-bottom:6px}
+        .premium-card .price{font-size:1.7rem;font-weight:700;color:#fff;margin:6px 0}
+        .premium-card .period{color:var(--text3);font-size:0.52rem;margin-bottom:10px}
         
-        .legal-text{text-align:left;max-width:400px;font-size:0.6rem;font-weight:300;line-height:1.9;color:var(--text2);width:100%}.legal-text h3{color:var(--accent);font-size:0.72rem;font-weight:500;margin:16px 0 4px}.legal-text a{color:var(--accent)}
-        .resource-link{display:flex;align-items:center;gap:12px;padding:16px 20px;background:rgba(255,255,255,0.03);border-radius:18px;margin:5px 0;width:100%;max-width:340px;text-decoration:none;color:var(--text2);font-size:0.68rem;transition:all var(--transition)}.resource-link:active{background:rgba(139,92,246,0.08);color:var(--accent)}
-        
-        .premium-card{background:rgba(139,92,246,0.05);border:1px solid rgba(139,92,246,0.12);border-radius:22px;padding:24px;margin-top:20px;text-align:center;width:100%;max-width:320px}.premium-card h3{color:var(--accent);font-size:0.95rem;font-weight:500;margin-bottom:6px}.premium-card .price{font-size:1.7rem;font-weight:700;color:#fff;margin:6px 0}.premium-card .period{color:var(--text3);font-size:0.52rem;margin-bottom:10px}
-        
-        .modal-overlay{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,0.82);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.3s}.modal-overlay.open{opacity:1;pointer-events:auto}
-        .modal{background:rgba(22,22,44,0.97);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);border-radius:26px;padding:28px;width:90%;max-width:370px;text-align:center;border:1px solid rgba(255,255,255,0.05);position:relative;animation:modalIn 0.3s ease-out}
+        /* Modals */
+        .modal-overlay{
+            position:fixed;inset:0;z-index:300;background:rgba(0,0,0,0.82);
+            display:flex;align-items:center;justify-content:center;
+            opacity:0;pointer-events:none;transition:opacity 0.3s;
+        }
+        .modal-overlay.open{opacity:1;pointer-events:auto}
+        .modal{
+            background:rgba(22,22,44,0.97);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);
+            border-radius:26px;padding:28px;width:90%;max-width:370px;text-align:center;
+            border:1px solid rgba(255,255,255,0.05);position:relative;animation:modalIn 0.3s ease-out;
+        }
         @keyframes modalIn{0%{transform:scale(0.92);opacity:0}100%{transform:scale(1);opacity:1}}
-        .modal textarea{width:100%;height:110px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;color:var(--text);padding:14px;font-family:var(--font);font-size:0.72rem;resize:none;margin:12px 0;transition:border var(--transition)}.modal textarea:focus{outline:none;border-color:var(--accent)}
+        .modal textarea{
+            width:100%;height:110px;background:rgba(255,255,255,0.04);
+            border:1px solid rgba(255,255,255,0.08);border-radius:14px;
+            color:var(--text);padding:14px;font-family:var(--font);font-size:0.72rem;
+            resize:none;margin:12px 0;transition:border var(--transition);
+        }
+        .modal textarea:focus{outline:none;border-color:var(--accent)}
         .modal .close-x{position:absolute;top:12px;right:14px;cursor:pointer;color:var(--text3);font-size:1.2rem;background:none;border:none}
         .modal .btn-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
         
-        .story-preview{position:fixed;inset:0;z-index:600;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.4s}.story-preview.show{opacity:1;pointer-events:auto}
-        .story-preview .story-content{text-align:center;padding:40px}.story-preview .story-emoji{font-size:7rem}.story-preview .story-phrase{color:var(--text);font-size:1.1rem;font-weight:300;margin-top:14px;max-width:300px}.story-preview .story-logo{font-size:0.62rem;color:var(--accent);margin-top:18px;letter-spacing:3px}
+        /* Story */
+        .story-preview{
+            position:fixed;inset:0;z-index:600;background:var(--bg);
+            display:flex;flex-direction:column;align-items:center;justify-content:center;
+            opacity:0;pointer-events:none;transition:opacity 0.4s;
+        }
+        .story-preview.show{opacity:1;pointer-events:auto}
+        .story-preview .story-content{text-align:center;padding:40px}
+        .story-preview .story-emoji{font-size:7rem}
+        .story-preview .story-phrase{color:var(--text);font-size:1.1rem;font-weight:300;margin-top:14px;max-width:300px}
+        .story-preview .story-logo{font-size:0.62rem;color:var(--accent);margin-top:18px;letter-spacing:3px}
         
-        .gallery-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px;max-width:350px}.gallery-item{aspect-ratio:1;border-radius:14px;background:rgba(255,255,255,0.03);overflow:hidden}.gallery-item img{width:100%;height:100%;object-fit:cover}
+        /* Gallery */
+        .gallery-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px;max-width:350px}
+        .gallery-item{aspect-ratio:1;border-radius:14px;background:rgba(255,255,255,0.03);overflow:hidden}
+        .gallery-item img{width:100%;height:100%;object-fit:cover}
         
-        .settings-group{margin:8px 0;width:100%;max-width:320px}.settings-group .group-title{color:var(--text3);font-size:0.52rem;font-weight:500;letter-spacing:1px;margin-bottom:6px;text-transform:uppercase}
-        .speech-indicator{display:none;align-items:center;gap:6px;padding:6px 14px;background:rgba(239,68,68,0.15);border-radius:16px;color:#ef4444;font-size:0.55rem;margin-top:8px;animation:pulse 1.5s ease-in-out infinite}
+        /* Settings */
+        .settings-group{margin:8px 0;width:100%;max-width:320px}
+        .settings-group .group-title{color:var(--text3);font-size:0.52rem;font-weight:500;letter-spacing:1px;margin-bottom:6px;text-transform:uppercase}
+        .speech-indicator{
+            display:none;align-items:center;gap:6px;padding:6px 14px;
+            background:rgba(239,68,68,0.15);border-radius:16px;color:var(--danger);
+            font-size:0.55rem;margin-top:8px;animation:pulse 1.5s ease-in-out infinite;
+        }
         @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
         
+        /* Score toast */
+        .score-toast{
+            position:fixed;top:80px;left:50%;transform:translateX(-50%);z-index:400;
+            background:var(--surface2);backdrop-filter:blur(20px);
+            padding:10px 20px;border-radius:20px;color:var(--warning);
+            font-size:0.65rem;font-weight:500;opacity:0;pointer-events:none;
+            transition:opacity 0.3s,transform 0.3s;
+            border:1px solid rgba(251,191,36,0.3);
+        }
+        .score-toast.show{opacity:1;animation:toastIn 0.4s ease-out}
+        @keyframes toastIn{0%{transform:translateX(-50%) translateY(-20px);opacity:0}100%{transform:translateX(-50%) translateY(0);opacity:1}}
+        
         @media(min-width:768px){canvas{width:320px;height:320px}.logo-text-main{font-size:2.8rem}.screen{padding:28px}}
-        @media(max-width:767px){.screen{padding:24px 20px;padding-top:50px}.logo-text-main{font-size:2rem}.tagline{font-size:0.68rem;margin-bottom:28px}canvas{width:280px;height:280px}.canvas-wrap{margin-bottom:16px}#result{font-size:3.5rem}#phrase{font-size:0.82rem}#phrase2{font-size:0.64rem}.toolbar button{width:32px;height:32px}.btn{padding:11px 24px;font-size:0.65rem}.nav{--nav-h:52px;padding:0 4px}.nav-item{padding:2px 6px;min-width:38px}.nav-item .icon{width:1.1rem;height:1.1rem}.nav-item .icon-wrap{width:30px;height:30px}.nav-item .nav-label{font-size:0.42rem}.cookie-banner{bottom:calc(var(--nav-h) + 8px)}.install-banner{bottom:calc(var(--nav-h) + 8px)}}
+        @media(max-width:767px){
+            .screen{padding:24px 20px;padding-top:50px}
+            .logo-text-main{font-size:2rem}.tagline{font-size:0.68rem;margin-bottom:28px}
+            canvas{width:280px;height:280px}.canvas-wrap{margin-bottom:16px}
+            #result{font-size:3.5rem}#phrase{font-size:0.82rem}#phrase2{font-size:0.64rem}
+            .toolbar button{width:32px;height:32px}.btn{padding:11px 24px;font-size:0.65rem}
+            .nav{--nav-h:52px;padding:0 4px}.nav-item{padding:2px 6px;min-width:38px}
+            .nav-item .icon{width:1.1rem;height:1.1rem}.nav-item .icon-wrap{width:30px;height:30px}
+            .nav-item .nav-label{font-size:0.42rem}
+            .cookie-banner{bottom:calc(var(--nav-h) + 8px)}.install-banner{bottom:calc(var(--nav-h) + 8px)}
+            .overlay-box{padding:20px 16px}.overlay-box h2{font-size:1.3rem}
+            .splash-icon{font-size:3rem}.splash-logo{font-size:2rem}
+        }
         @media(prefers-reduced-motion:reduce){*,::before,::after{animation-duration:0.01ms!important;animation-iteration-count:1!important;transition-duration:0.01ms!important}}
     </style>
 </head>
 <body>
-<div class="bg-orb" id="bgOrb"></div><div class="particles-bg" id="particlesBg"></div><div class="rain-layer" id="rainCt"></div>
+    <!-- Background -->
+    <div class="bg-orb" id="bgOrb"></div>
+    <div class="particles-bg" id="particlesBg"></div>
+    <div class="rain-layer" id="rainCt"></div>
+    
+    <!-- Score toast -->
+    <div class="score-toast" id="scoreToast"></div>
 
-<!-- OVERLAY LANGUE -->
-<div class="overlay show" id="langOverlay">
-    <div class="overlay-box">
-        <h2>Choose your language</h2>
-        <p>Feelio speaks your language.</p>
-        <div class="lang-options" id="langOptions"></div>
-        <button class="btn btn-primary" id="btnContinueLang">Continue</button>
+    <!-- Splash screen -->
+    <div class="overlay show" id="splashOverlay">
+        <div class="overlay-box">
+            <div class="splash-icon">🧠</div>
+            <div class="splash-logo">Feelio</div>
+            <div class="splash-tagline">Draw your mood. Feelio listens.</div>
+            <p style="color:rgba(255,255,255,0.4);font-size:0.7rem;margin-bottom:24px">100% private • Free forever</p>
+            <button class="btn btn-primary" id="btnStartSplash">Begin →</button>
+        </div>
     </div>
-</div>
 
-<!-- OVERLAY DISCLAIMER -->
-<div class="overlay" id="disclaimerOverlay">
-    <div class="overlay-box">
-        <h2 id="discTitle">Before you begin</h2>
-        <p id="discIntro">Feelio is your private space. Please read and accept:</p>
-        <div class="check-row"><input type="checkbox" id="discCheck1"><label for="discCheck1" id="discLabel1">I understand Feelio is not a medical tool</label></div>
-        <div class="check-row"><input type="checkbox" id="discCheck2"><label for="discCheck2" id="discLabel2">I understand my data stays on my device</label></div>
-        <div class="check-row"><input type="checkbox" id="discCheck3"><label for="discCheck3" id="discLabel3">I am 13 years or older</label></div>
-        <div class="check-row"><input type="checkbox" id="discCheck4"><label for="discCheck4" id="discLabel4">I agree to use Feelio for personal, non-commercial purposes</label></div>
-        <button class="btn btn-primary" id="discBtn" disabled>Begin</button>
+    <!-- Langue -->
+    <div class="overlay" id="langOverlay">
+        <div class="overlay-box">
+            <h2>Choose your language</h2>
+            <p>Feelio speaks your language.</p>
+            <div class="lang-options" id="langOptions"></div>
+            <button class="btn btn-primary" id="btnContinueLang">Continue</button>
+        </div>
     </div>
-</div>
 
-<!-- OVERLAY ONBOARDING -->
-<div class="overlay" id="onboardingOverlay">
-    <div class="overlay-box">
-        <div class="onboarding-slide active" id="onSlide0"><div class="on-icon">🫁</div><h2 id="onTitle0">Welcome to Feelio</h2><p id="onText0">Your private emotional space.<br>No judgment. No data collected.</p></div>
-        <div class="onboarding-slide" id="onSlide1"><div class="on-icon">✍️</div><h2 id="onTitle1">Draw your mood</h2><p id="onText1">Use your finger to draw how you feel.<br>Feelio will listen.</p></div>
-        <div class="onboarding-slide" id="onSlide2"><div class="on-icon">💜</div><h2 id="onTitle2">You are not alone</h2><p id="onText2">Every storm passes.<br>Every sun rises again.</p></div>
-        <div class="onboarding-dots"><div class="dot active" id="dot0"></div><div class="dot" id="dot1"></div><div class="dot" id="dot2"></div></div>
-        <button class="btn btn-primary" id="onBtn">Next</button>
-        <button class="btn btn-outline btn-small" style="margin-top:8px" id="btnSkipOnboarding">Skip</button>
+    <!-- Disclaimer -->
+    <div class="overlay" id="disclaimerOverlay">
+        <div class="overlay-box">
+            <h2 id="discTitle">Before you begin</h2>
+            <p id="discIntro">Feelio is your private space. Please read and accept:</p>
+            <div class="check-row"><input type="checkbox" id="discCheck1"><label for="discCheck1" id="discLabel1">I understand Feelio is not a medical tool</label></div>
+            <div class="check-row"><input type="checkbox" id="discCheck2"><label for="discCheck2" id="discLabel2">I understand my data stays on my device</label></div>
+            <div class="check-row"><input type="checkbox" id="discCheck3"><label for="discCheck3" id="discLabel3">I am 13 years or older</label></div>
+            <div class="check-row"><input type="checkbox" id="discCheck4"><label for="discCheck4" id="discLabel4">I agree to use Feelio for personal, non-commercial purposes</label></div>
+            <button class="btn btn-primary" id="discBtn" disabled>Begin</button>
+        </div>
     </div>
-</div>
 
-<div class="install-banner" id="installBanner">
-    <span class="install-icon">💜</span><p><strong>Add Feelio to your home screen</strong><br>Access it in one tap, like an app.</p>
-    <button id="btnInstall">Install</button>
-    <button class="install-close" id="btnCloseInstall">✕</button>
-</div>
-
-<div class="cookie-banner" id="cookieBanner"><div class="cookie-dot"></div><span id="cookieText">Feelio uses no cookies and collects no personal data.</span><button id="btnCookieOk">OK</button></div>
-<div class="crisis-bar" id="crisisBar">🆘 <span id="crisisBarText">If you're in crisis, help is available.</span> <a href="https://findahelpline.com" target="_blank" rel="noopener">Find support →</a></div>
-
-<div class="story-preview" id="storyPreview"><div class="story-content"><div class="story-emoji" id="storyEmoji"></div><div class="story-phrase" id="storyPhrase"></div><div class="story-logo">feelio.org</div><button class="btn btn-primary btn-small" style="margin-top:16px" id="btnDownloadStory">💾 Download</button><button class="btn btn-outline btn-small" style="margin-top:6px" id="btnCloseStory">Close</button></div></div>
-
-<div class="top-bar"><div class="privacy-badge"><span class="privacy-dot"></span><span id="privacyText">100% Private</span></div><div class="langs" id="langsTop"><span class="active" data-lang="en">EN</span><span data-lang="fr">FR</span></div></div>
-
-<div class="app">
-    <div class="screen active" id="screen-draw">
-        <div class="logo-block"><svg class="logo-svg-main" viewBox="0 0 60 60" fill="none"><defs><radialGradient id="lg1" cx="50%" cy="50%"><stop stop-color="#c4b5fd"/><stop offset="1" stop-color="#7c3aed"/></radialGradient></defs><circle cx="30" cy="30" r="28" fill="url(#lg1)" opacity="0.15"/><circle cx="30" cy="30" r="28" stroke="url(#lg1)" stroke-width="1.5" fill="none"/><path d="M18 36c0-5 5-8 12-8s12 3 12 8" stroke="#c4b5fd" stroke-width="2.5" stroke-linecap="round" fill="none"/><circle cx="30" cy="30" r="6" fill="#a78bfa" opacity="0.6"/></svg><div class="logo-text-main">Feelio</div></div>
-        <div class="tagline" id="tagline">Take a deep breath. Draw what you feel.</div>
-        <div class="badge-row"><div class="streak-badge" id="streakBadge"><span class="fire">🔥</span> <span id="streakText">1 day streak</span></div><div class="collection-badge" id="collectionBadge">🎨 <span id="collectionText">0/13 emotions</span></div></div>
-        <div class="daily-counter" id="dailyCounter">0 people drew their mood today</div>
-        <div class="toolbar"><button data-size="4" class="active" title="Small">S</button><button data-size="7" title="Medium">M</button><button data-size="12" title="Large">L</button><button id="btnUndo" title="Undo">↩️</button><button id="btnContrast" title="Contrast">👁️</button><button id="btnFullscreen" title="Fullscreen">⛶</button></div>
-        <div class="canvas-wrap"><div class="canvas-hint-overlay" id="canvasHint">✍️</div><canvas id="canvas" width="600" height="600" class="breathe" aria-label="Draw your mood"></canvas></div>
-        <div id="resultWrap"><div id="result" aria-live="polite"></div><div id="phrase"></div><div id="phrase2"></div></div>
-        <button class="speak-btn" id="speakBtn">🔊 Listen</button>
-        <div class="speech-indicator" id="speechIndicator">🎙️ Listening...</div>
-        <div id="askBox"><div id="askText">Do you want to talk about it?</div><div id="askBtns"><button class="btn btn-primary btn-small" id="btnAskYes">Yes</button><button class="btn btn-outline btn-small" id="btnAskNo">No</button></div><div class="calm-link" id="calmLink"><a href="https://tiktok.com/@calm.chaos16" target="_blank" rel="noopener">🌿 Need a moment of calm? Watch Calm Chaos →</a></div><div class="share-btns" id="shareBtns" style="display:none"><button class="btn btn-outline btn-icon" id="btnShareCopy" title="Copy">📋</button><button class="btn btn-outline btn-icon" id="btnShareTwitter" title="Twitter">𝕏</button><button class="btn btn-outline btn-icon" id="btnShareWhatsapp" title="WhatsApp">💬</button><button class="btn btn-outline btn-small" id="btnStory">📱 Story</button></div></div>
-        <button class="btn btn-outline btn-small" id="btnReset" style="margin-top:10px">Clear</button>
-        <div class="counter" id="counter">0 moods drawn worldwide</div><div class="hint" id="hint">Use your finger to draw</div>
+    <!-- Onboarding -->
+    <div class="overlay" id="onboardingOverlay">
+        <div class="overlay-box">
+            <div class="onboarding-slide active" id="onSlide0"><div class="on-icon">🫁</div><h2 id="onTitle0">Welcome to Feelio</h2><p id="onText0">Your private emotional space.<br>No judgment. No data collected.</p></div>
+            <div class="onboarding-slide" id="onSlide1"><div class="on-icon">✍️</div><h2 id="onTitle1">Draw your mood</h2><p id="onText1">Use your finger to draw how you feel.<br>Feelio will listen.</p></div>
+            <div class="onboarding-slide" id="onSlide2"><div class="on-icon">💜</div><h2 id="onTitle2">You are not alone</h2><p id="onText2">Every storm passes.<br>Every sun rises again.</p></div>
+            <div class="onboarding-dots"><div class="dot active" id="dot0"></div><div class="dot" id="dot1"></div><div class="dot" id="dot2"></div></div>
+            <button class="btn btn-primary" id="onBtn">Next</button>
+            <button class="btn btn-outline btn-small" style="margin-top:8px" id="btnSkipOnboarding">Skip</button>
+        </div>
     </div>
-    <div class="screen" id="screen-history"><div class="section-title" id="weekTitle">Your Week</div><div class="section-sub" id="weekSub">7-day emotional weather</div><div class="history-grid" id="historyGrid"></div><button class="btn btn-outline btn-small" id="btnClearHistory" style="margin-top:12px">Clear history</button></div>
-    <div class="screen" id="screen-stats"><div class="section-title" id="statsTitle">Your Stats</div><div class="section-sub" id="statsSub">This month's emotions</div><div id="statsContainer"></div><div class="premium-card"><h3 id="premTitle">Feelio Premium</h3><p style="color:var(--text2);font-size:0.55rem;margin-bottom:6px;line-height:1.4" id="premDesc">30-day history • Export PDF • Custom themes<br>Support Feelio's mission</p><div class="price" id="premPrice">2€</div><div class="period" id="premPeriod">per month</div><div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-top:4px"><button class="btn btn-primary btn-small" id="btnPaypal">💛 PayPal</button><button class="btn btn-outline btn-small" id="btnKofi">☕ Ko-fi</button></div></div></div>
-    <div class="screen" id="screen-gallery"><div class="section-title" id="galleryTitle">Gallery</div><div class="gallery-grid" id="galleryGrid"></div></div>
-    <div class="screen" id="screen-trust"><div class="section-title" id="trustTitle">Trust & Safety</div><div class="legal-text" id="trustContent"></div></div>
-    <div class="screen" id="screen-settings"><div class="section-title">Settings</div>
-        <div class="settings-group"><div class="group-title">Data</div><button class="btn btn-outline btn-small" style="margin:3px;width:100%" id="btnExport">📤 Export my data</button><button class="btn btn-outline btn-small" style="margin:3px;width:100%" id="btnDelete">🗑️ Delete all my data</button></div>
-        <div class="settings-group"><div class="group-title">Preferences</div><button class="btn btn-outline btn-small" style="margin:3px;width:100%" id="btnNotifToggle">🔔 <span id="notifBtn">Enable daily reminders</span></button><button class="btn btn-outline btn-small" style="margin:3px;width:100%" id="btnSpeechToggle">🔊 <span id="speechToggleBtn">Enable voice</span></button><button class="btn btn-outline btn-small" style="margin:3px;width:100%" id="btnFontUp">🔤 Increase text size</button><button class="btn btn-outline btn-small" style="margin:3px;width:100%" id="btnFontDown">🔤 Decrease text size</button></div>
-        <div class="settings-group"><div class="group-title">More</div><button class="btn btn-outline btn-small" style="margin:3px;width:100%" id="btnGoTrust">🛡️ Trust & Safety</button><button class="btn btn-outline btn-small" style="margin:3px;width:100%" id="btnGoResources">🌿 Resources</button></div>
+
+    <!-- Install banner -->
+    <div class="install-banner" id="installBanner">
+        <span class="install-icon">💜</span>
+        <p><strong>Add Feelio to your home screen</strong><br>Access it in one tap, like an app.</p>
+        <button id="btnInstall">Install</button>
+        <button class="install-close" id="btnCloseInstall">✕</button>
     </div>
-    <div class="screen" id="screen-resources"><div class="section-title" id="resourcesTitle">Resources</div><a class="resource-link" href="https://www.youtube.com/results?search_query=guided+meditation+10+minutes" target="_blank" rel="noopener"><span>🧘</span><span id="resMeditation">Guided meditation</span></a><a class="resource-link" href="https://www.youtube.com/results?search_query=calm+nature+sounds" target="_blank" rel="noopener"><span>🌿</span><span id="resNature">Calm nature sounds</span></a><a class="resource-link" href="https://www.youtube.com/results?search_query=breathing+exercises+5+minutes" target="_blank" rel="noopener"><span>🫁</span><span id="resBreathing">Breathing exercises</span></a><a class="resource-link" href="https://tiktok.com/@calm.chaos16" target="_blank" rel="noopener"><span>🎨</span><span id="resCalmChaos">Calm Chaos videos</span></a><a class="resource-link" href="https://findahelpline.com" target="_blank" rel="noopener"><span>🆘</span><span id="resCrisis">Find a helpline</span></a></div>
-</div>
 
-<div class="nav">
-    <div class="nav-item active" data-screen="draw"><div class="icon-wrap"><div class="active-dot"></div><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg></div><span class="nav-label">Draw</span></div>
-    <div class="nav-item" data-screen="history"><div class="icon-wrap"><div class="active-dot"></div><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 14h.01M12 14h.01M16 14h.01"/></svg></div><span class="nav-label">Week</span></div>
-    <div class="nav-item" data-screen="stats"><div class="icon-wrap"><div class="active-dot"></div><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M18 20V10M12 20V4M6 20v-6"/></svg></div><span class="nav-label">Stats</span></div>
-    <div class="nav-item" data-screen="gallery"><div class="icon-wrap"><div class="active-dot"></div><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div><span class="nav-label">Gallery</span></div>
-    <div class="nav-item" data-screen="settings"><div class="icon-wrap"><div class="active-dot"></div><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg></div><span class="nav-label">Settings</span></div>
-</div>
+    <!-- Cookie -->
+    <div class="cookie-banner hidden" id="cookieBanner">
+        <div class="cookie-dot"></div>
+        <span id="cookieText">Feelio uses no cookies and collects no personal data.</span>
+        <button id="btnCookieOk">OK</button>
+    </div>
 
-<div class="modal-overlay" id="modalWrite"><div class="modal"><button class="close-x" id="btnCloseWrite">✕</button><div style="font-size:0.95rem;font-weight:400;margin-bottom:2px" id="modalWriteTitle">What's on your mind?</div><div style="color:var(--text3);font-size:0.48rem;margin-bottom:4px">Everything stays on your phone.</div><textarea id="journalText" placeholder="Write here..." aria-label="Journal"></textarea><div class="btn-row"><button class="btn btn-outline btn-small" id="btnCancelWrite">Cancel</button><button class="btn btn-primary btn-small" id="btnSaveJournal">💾 Save</button></div></div></div>
+    <!-- Crisis -->
+    <div class="crisis-bar" id="crisisBar">
+        🆘 <span id="crisisBarText">If you're in crisis, help is available.</span>
+        <a href="https://findahelpline.com" target="_blank" rel="noopener">Find support →</a>
+    </div>
 
-<div class="modal-overlay" id="modalSpeak"><div class="modal"><button class="close-x" id="btnCloseSpeak">✕</button><div style="font-size:0.95rem;font-weight:400;margin-bottom:2px" id="modalSpeakTitle">Speak freely</div><div style="color:var(--text3);font-size:0.48rem;margin-bottom:6px">Your voice stays on your phone.</div><div id="speechResult" style="min-height:45px;color:var(--text);font-size:0.65rem;padding:10px;background:rgba(255,255,255,0.03);border-radius:12px;margin-bottom:8px"></div><div class="btn-row"><button class="btn btn-outline btn-small" id="btnCancelSpeak">Cancel</button><button class="btn btn-primary btn-small" id="btnStartSpeak">🎙️ Start</button><button class="btn btn-outline btn-small" id="btnStopSpeak" style="display:none">⏹️ Stop</button><button class="btn btn-primary btn-small" id="btnSaveSpeech" style="display:none">💾 Save</button></div></div></div>
+    <!-- Story -->
+    <div class="story-preview" id="storyPreview">
+        <div class="story-content">
+            <div class="story-emoji" id="storyEmoji"></div>
+            <div class="story-phrase" id="storyPhrase"></div>
+            <div class="story-logo">feelio.org</div>
+            <button class="btn btn-primary btn-small" style="margin-top:16px" id="btnDownloadStory">💾 Save as image</button>
+            <button class="btn btn-outline btn-small" style="margin-top:6px" id="btnCloseStory">Close</button>
+        </div>
+    </div>
 
-<div class="modal-overlay" id="modalSaved"><div class="modal"><button class="close-x" id="btnCloseSaved">✕</button><div style="font-size:2.2rem;margin-bottom:10px">🔒</div><div style="font-size:0.9rem;font-weight:400;margin-bottom:3px" id="savedMsg">It's between you and you.</div><div style="color:var(--text3);font-size:0.5rem">No one will ever read this.</div><button class="btn btn-primary btn-small" style="margin-top:12px" id="btnOkSaved">OK</button></div></div>
+    <!-- Top bar -->
+    <div class="top-bar">
+        <div class="privacy-badge"><span class="privacy-dot"></span><span id="privacyText">100% Private</span></div>
+        <div class="langs" id="langsTop"><span class="active" data-lang="en">EN</span><span data-lang="fr">FR</span></div>
+    </div>
+
+    <!-- App -->
+    <div class="app">
+        <!-- Draw screen -->
+        <div class="screen active" id="screen-draw">
+            <div class="logo-block">
+                <svg class="logo-svg-main" viewBox="0 0 60 60" fill="none">
+                    <defs><radialGradient id="lg1" cx="50%" cy="50%"><stop stop-color="#c4b5fd"/><stop offset="1" stop-color="#7c3aed"/></radialGradient></defs>
+                    <circle cx="30" cy="30" r="28" fill="url(#lg1)" opacity="0.15"/>
+                    <circle cx="30" cy="30" r="28" stroke="url(#lg1)" stroke-width="1.5" fill="none"/>
+                    <path d="M18 36c0-5 5-8 12-8s12 3 12 8" stroke="#c4b5fd" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+                    <circle cx="30" cy="30" r="6" fill="#a78bfa" opacity="0.6"/>
+                </svg>
+                <div class="logo-text-main">Feelio</div>
+            </div>
+            <div class="tagline" id="tagline">Take a deep breath. Draw what you feel.</div>
+            <div class="badge-row">
+                <div class="streak-badge" id="streakBadge"><span class="fire">🔥</span> <span id="streakText">1 day streak</span></div>
+                <div class="collection-badge" id="collectionBadge">🎨 <span id="collectionText">0/13 emotions</span></div>
+            </div>
+            <div class="daily-counter" id="dailyCounter">0 people drew their mood today</div>
+            <div class="toolbar">
+                <button data-size="4" class="active" title="Small">S</button>
+                <button data-size="7" title="Medium">M</button>
+                <button data-size="12" title="Large">L</button>
+                <button id="btnUndo" title="Undo">↩️</button>
+                <button id="btnContrast" title="High contrast">👁️</button>
+                <button id="btnFullscreen" title="Fullscreen">⛶</button>
+            </div>
+            <div class="canvas-wrap">
+                <div class="canvas-hint-overlay" id="canvasHint">✍️</div>
+                <canvas id="canvas" width="600" height="600" class="breathe" aria-label="Draw your mood"></canvas>
+            </div>
+            <div id="resultWrap">
+                <div id="result" aria-live="polite"></div>
+                <div id="phrase"></div>
+                <div id="phrase2"></div>
+            </div>
+            <button class="speak-btn" id="speakBtn">🔊 Listen</button>
+            <div class="speech-indicator" id="speechIndicator">🎙️ Listening...</div>
+            <div id="askBox">
+                <div id="askText">Do you want to talk about it?</div>
+                <div id="askBtns">
+                    <button class="btn btn-primary btn-small" id="btnAskYes">Yes</button>
+                    <button class="btn btn-outline btn-small" id="btnAskNo">No</button>
+                </div>
+                <div class="calm-link" id="calmLink">
+                    <a href="https://tiktok.com/@calm.chaos16" target="_blank" rel="noopener">🌿 Need a moment of calm? Watch Calm Chaos →</a>
+                </div>
+                <div class="share-btns" id="shareBtns" style="display:none">
+                    <button class="btn btn-outline btn-icon" id="btnShareCopy" title="Copy">📋</button>
+                    <button class="btn btn-outline btn-icon" id="btnShareTwitter" title="Share on X">𝕏</button>
+                    <button class="btn btn-outline btn-icon" id="btnShareWhatsapp" title="Share on WhatsApp">💬</button>
+                    <button class="btn btn-outline btn-small" id="btnStory">📱 Story</button>
+                </div>
+            </div>
+            <button class="btn btn-outline btn-small" id="btnReset" style="margin-top:10px">Clear</button>
+            <div class="counter" id="counter">0 moods drawn worldwide</div>
+            <div class="hint" id="hint">Use your finger to draw</div>
+        </div>
+
+        <!-- History screen -->
+        <div class="screen" id="screen-history">
+            <div class="section-title" id="weekTitle">Your Week</div>
+            <div class="section-sub" id="weekSub">7-day emotional weather</div>
+            <div class="history-grid" id="historyGrid"></div>
+            <button class="btn btn-outline btn-small" id="btnClearHistory" style="margin-top:12px">Clear history</button>
+        </div>
+
+        <!-- Stats screen -->
+        <div class="screen" id="screen-stats">
+            <div class="section-title" id="statsTitle">Your Stats</div>
+            <div class="section-sub" id="statsSub">This month's emotions</div>
+            <div id="statsContainer"></div>
+            <div class="premium-card">
+                <h3 id="premTitle">Feelio Premium</h3>
+                <p style="color:var(--text2);font-size:0.55rem;margin-bottom:6px;line-height:1.4" id="premDesc">30-day history • Export PDF • Custom themes<br>Support Feelio's mission</p>
+                <div class="price" id="premPrice">2€</div>
+                <div class="period" id="premPeriod">per month</div>
+                <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-top:4px">
+                    <button class="btn btn-primary btn-small" id="btnPaypal">💛 PayPal</button>
+                    <button class="btn btn-outline btn-small" id="btnKofi">☕ Ko-fi</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gallery screen -->
+        <div class="screen" id="screen-gallery">
+            <div class="section-title" id="galleryTitle">Gallery</div>
+            <div class="gallery-grid" id="galleryGrid"></div>
+        </div>
+
+        <!-- Trust screen -->
+        <div class="screen" id="screen-trust">
+            <div class="section-title" id="trustTitle">Trust & Safety</div>
+            <div class="legal-text" id="trustContent"></div>
+        </div>
+
+        <!-- Settings screen -->
+        <div class="screen" id="screen-settings">
+            <div class="section-title">Settings</div>
+            <div class="settings-group">
+                <div class="group-title">Data</div>
+                <button class="btn btn-outline btn-small" style="margin:3px;width:100%" id="btnExport">📤 Export my data</button>
+                <button class="btn btn-outline btn-small" style="margin:3px;width:100%" id="btnDelete">🗑️ Delete all my data</button>
+            </div>
+            <div class="settings-group">
+                <div class="group-title">Preferences</div>
+                <button class="btn btn-outline btn-small" style="margin:3px;width:100%" id="btnNotifToggle">🔔 <span id="notifBtn">Enable daily reminders</span></button>
+                <button class="btn btn-outline btn-small" style="margin:3px;width:100%" id="btnSpeechToggle">🔊 <span id="speechToggleBtn">Enable voice</span></button>
+                <button class="btn btn-outline btn-small" style="margin:3px;width:100%" id="btnFontUp">🔤 Increase text size</button>
+                <button class="btn btn-outline btn-small" style="margin:3px;width:100%" id="btnFontDown">🔤 Decrease text size</button>
+            </div>
+            <div class="settings-group">
+                <div class="group-title">More</div>
+                <button class="btn btn-outline btn-small" style="margin:3px;width:100%" id="btnGoTrust">🛡️ Trust & Safety</button>
+                <button class="btn btn-outline btn-small" style="margin:3px;width:100%" id="btnGoResources">🌿 Resources</button>
+            </div>
+        </div>
+
+        <!-- Resources screen -->
+        <div class="screen" id="screen-resources">
+            <div class="section-title" id="resourcesTitle">Resources</div>
+            <a class="resource-link" href="https://www.youtube.com/results?search_query=guided+meditation+10+minutes" target="_blank" rel="noopener"><span>🧘</span><span id="resMeditation">Guided meditation</span></a>
+            <a class="resource-link" href="https://www.youtube.com/results?search_query=calm+nature+sounds" target="_blank" rel="noopener"><span>🌿</span><span id="resNature">Calm nature sounds</span></a>
+            <a class="resource-link" href="https://www.youtube.com/results?search_query=breathing+exercises+5+minutes" target="_blank" rel="noopener"><span>🫁</span><span id="resBreathing">Breathing exercises</span></a>
+            <a class="resource-link" href="https://tiktok.com/@calm.chaos16" target="_blank" rel="noopener"><span>🎨</span><span id="resCalmChaos">Calm Chaos videos</span></a>
+            <a class="resource-link" href="https://findahelpline.com" target="_blank" rel="noopener"><span>🆘</span><span id="resCrisis">Find a helpline</span></a>
+        </div>
+    </div>
+
+    <!-- Nav -->
+    <div class="nav">
+        <div class="nav-item active" data-screen="draw">
+            <div class="icon-wrap"><div class="active-dot"></div>
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>
+            </div><span class="nav-label">Draw</span>
+        </div>
+        <div class="nav-item" data-screen="history">
+            <div class="icon-wrap"><div class="active-dot"></div>
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 14h.01M12 14h.01M16 14h.01"/></svg>
+            </div><span class="nav-label">Week</span>
+        </div>
+        <div class="nav-item" data-screen="stats">
+            <div class="icon-wrap"><div class="active-dot"></div>
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+            </div><span class="nav-label">Stats</span>
+        </div>
+        <div class="nav-item" data-screen="gallery">
+            <div class="icon-wrap"><div class="active-dot"></div>
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+            </div><span class="nav-label">Gallery</span>
+        </div>
+        <div class="nav-item" data-screen="settings">
+            <div class="icon-wrap"><div class="active-dot"></div>
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+            </div><span class="nav-label">Settings</span>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div class="modal-overlay" id="modalWrite">
+        <div class="modal">
+            <button class="close-x" id="btnCloseWrite">✕</button>
+            <div style="font-size:0.95rem;font-weight:400;margin-bottom:2px" id="modalWriteTitle">What's on your mind?</div>
+            <div style="color:var(--text3);font-size:0.48rem;margin-bottom:4px">Everything stays on your phone.</div>
+            <textarea id="journalText" placeholder="Write here..." aria-label="Journal"></textarea>
+            <div class="btn-row">
+                <button class="btn btn-outline btn-small" id="btnCancelWrite">Cancel</button>
+                <button class="btn btn-primary btn-small" id="btnSaveJournal">💾 Save</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modalSpeak">
+        <div class="modal">
+            <button class="close-x" id="btnCloseSpeak">✕</button>
+            <div style="font-size:0.95rem;font-weight:400;margin-bottom:2px" id="modalSpeakTitle">Speak freely</div>
+            <div style="color:var(--text3);font-size:0.48rem;margin-bottom:6px">Your voice stays on your phone.</div>
+            <div id="speechResult" style="min-height:45px;color:var(--text);font-size:0.65rem;padding:10px;background:rgba(255,255,255,0.03);border-radius:12px;margin-bottom:8px"></div>
+            <div class="btn-row">
+                <button class="btn btn-outline btn-small" id="btnCancelSpeak">Cancel</button>
+                <button class="btn btn-primary btn-small" id="btnStartSpeak">🎙️ Start</button>
+                <button class="btn btn-outline btn-small" id="btnStopSpeak" style="display:none">⏹️ Stop</button>
+                <button class="btn btn-primary btn-small" id="btnSaveSpeech" style="display:none">💾 Save</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modalSaved">
+        <div class="modal">
+            <button class="close-x" id="btnCloseSaved">✕</button>
+            <div style="font-size:2.2rem;margin-bottom:10px">🔒</div>
+            <div style="font-size:0.9rem;font-weight:400;margin-bottom:3px" id="savedMsg">It's between you and you.</div>
+            <div style="color:var(--text3);font-size:0.5rem">No one will ever read this.</div>
+            <button class="btn btn-primary btn-small" style="margin-top:12px" id="btnOkSaved">OK</button>
+        </div>
+    </div>
 
 <script>
 (function(){
 'use strict';
 
 // ==================== LANGUES ====================
-const LANGDATA = {
-en:{discTitle:'Before you begin',discIntro:'Feelio is your private space. Please read and accept:',discLabel1:'I understand Feelio is not a medical tool',discLabel2:'I understand my data stays on my device',discLabel3:'I am 13 years or older',discLabel4:'I agree to use Feelio for personal, non-commercial purposes',discBtn:'Begin',
-onTitle0:'Welcome to Feelio',onText0:'Your private emotional space.<br>No judgment. No data collected.',onTitle1:'Draw your mood',onText1:'Use your finger to draw how you feel.<br>Feelio will listen.',onTitle2:'You are not alone',onText2:'Every storm passes.<br>Every sun rises again.',
-privacy:'100% Private',tagline:'Take a deep breath. Draw what you feel.',reset:'Clear',hint:'Use your finger to draw',counter:'moods drawn worldwide',nav:['Draw','Week','Stats','Gallery','Settings'],
-dailyCounter:'people drew their mood today',streakText:'day streak',collectionText:'/13 emotions',calmText:'Need a moment of calm? Watch Calm Chaos →',
-askWant:'Do you want to talk about it?',askYes:'Yes',askNo:'No',thanks:'Okay. Take care of yourself. 🌿',writeLabel:'Write',speakLabel:'Speak',
-cookieText:'Feelio uses no cookies and collects no personal data.',
-tornado:'🌪️',t1:'A storm is raging inside you.',t2:'Even storms run out of rain. Hold on.',
-lightning:'⚡',l1:'Electric. Alive.',l2:'This energy is yours.',
-rain:'🌧️',r1:'Let it fall. Let it wash over you.',r2:'Some things only grow after the rain.',
-sun:'☀️',s1:'You are shining today.',s2:'Someone needed exactly this light.',
-night:'🌙',n1:'Quiet now.',n2:'Rest is not weakness.',
-rainbow:'🌈',rb1:'Look what you\'ve crossed.',rb2:'Still standing.',
-fog:'🌫️',f1:'Lost in the fog.',f2:'Clarity comes slowly.',
-snow:'❄️',s1:'Frozen. Still.',s2:'Spring always comes.',
-wind:'💨',w1:'Restless.',w2:'Let the wind carry you.',
-heat:'🔥',h1:'A fire inside.',h2:'Passion is power.',
-empty:'🕳️',e1:'Empty today.',e2:'Space waiting.',
-hope:'🌱',ho1:'A tiny spark.',ho2:'Hope whispers.',
-gratitude:'🙏',g1:'You said thank you.',g2:'Gratitude changes you.'},
-fr:{discTitle:'Avant de commencer',discIntro:'Feelio est votre espace privé. Veuillez lire et accepter :',discLabel1:'Je comprends que Feelio n\'est pas un outil médical',discLabel2:'Je comprends que mes données restent sur mon appareil',discLabel3:'J\'ai 13 ans ou plus',discLabel4:'J\'accepte d\'utiliser Feelio à des fins personnelles et non commerciales',discBtn:'Commencer',
-onTitle0:'Bienvenue sur Feelio',onText0:'Votre espace émotionnel privé.<br>Sans jugement. Sans données collectées.',onTitle1:'Dessinez votre humeur',onText1:'Utilisez votre doigt pour dessiner.<br>Feelio vous écoutera.',onTitle2:'Vous n\'êtes pas seul',onText2:'Chaque tempête passe.<br>Chaque soleil se lève à nouveau.',
-privacy:'100% Privé',tagline:'Prends une grande respiration. Dessine ce que tu ressens.',reset:'Effacer',hint:'Utilise ton doigt',counter:'humeurs dessinées dans le monde',nav:['Dessiner','Semaine','Stats','Galerie','Réglages'],
-dailyCounter:'personnes ont dessiné aujourd\'hui',streakText:'jours de suite',collectionText:'/13 émotions',calmText:'Besoin de calme ? Voir Calm Chaos →',
-askWant:'Veux-tu en parler ?',askYes:'Oui',askNo:'Non',thanks:'Prends soin de toi. 🌿',writeLabel:'Écrire',speakLabel:'Parler',
-cookieText:'Feelio n\'utilise aucun cookie et ne collecte aucune donnée personnelle.',
-tornado:'🌪️',t1:'Une tempête fait rage en toi.',t2:'Même les tempêtes s\'épuisent.',
-lightning:'⚡',l1:'Électrique. Vivant.',l2:'Cette énergie est la tienne.',
-rain:'🌧️',r1:'Laisse tomber. Laisse laver.',r2:'Certaines choses poussent après la pluie.',
-sun:'☀️',s1:'Tu brilles aujourd\'hui.',s2:'Quelqu\'un avait besoin de cette lumière.',
-night:'🌙',n1:'Silence.',n2:'Le repos n\'est pas une faiblesse.',
-rainbow:'🌈',rb1:'Regarde tout ce que tu as traversé.',rb2:'Encore debout.',
-fog:'🌫️',f1:'Perdu dans le brouillard.',f2:'La clarté vient doucement.',
-snow:'❄️',s1:'Gelé. Immobile.',s2:'Le printemps revient.',
-wind:'💨',w1:'Agité.',w2:'Laisse le vent t\'emmener.',
-heat:'🔥',h1:'Un feu brûle en toi.',h2:'La passion est une force.',
-empty:'🕳️',e1:'Vide aujourd\'hui.',e2:'De l\'espace à remplir.',
-hope:'🌱',ho1:'Une petite étincelle.',ho2:'L\'espoir murmure.',
-gratitude:'🙏',g1:'Tu as dit merci.',g2:'La gratitude te change.'}};
+var LANGDATA = {
+en:{
+    discTitle:'Before you begin',discIntro:'Feelio is your private space. Please read and accept:',
+    discLabel1:'I understand Feelio is not a medical tool',discLabel2:'I understand my data stays on my device',
+    discLabel3:'I am 13 years or older',discLabel4:'I agree to use Feelio for personal, non-commercial purposes',
+    discBtn:'Begin',
+    onTitle0:'Welcome to Feelio',onText0:'Your private emotional space.<br>No judgment. No data collected.',
+    onTitle1:'Draw your mood',onText1:'Use your finger to draw how you feel.<br>Feelio will listen.',
+    onTitle2:'You are not alone',onText2:'Every storm passes.<br>Every sun rises again.',
+    privacy:'100% Private',tagline:'Take a deep breath. Draw what you feel.',
+    reset:'Clear',hint:'Use your finger to draw',counter:'moods drawn worldwide',
+    nav:['Draw','Week','Stats','Gallery','Settings'],
+    dailyCounter:'people drew their mood today',streakText:'day streak!',
+    collectionText:'/13 emotions collected',calmText:'Need a moment of calm? Watch Calm Chaos →',
+    askWant:'Do you want to talk about it?',askYes:'Yes',askNo:'No',
+    thanks:'Okay. Take care of yourself. 🌿',writeLabel:'Write',speakLabel:'Speak',
+    cookieText:'Feelio uses no cookies and collects no personal data.',
+    crisisBarText:'If you\'re in crisis, help is available.',
+    tornado:'🌪️',t1:'A storm is raging inside you.',t2:'Even storms run out of rain. Hold on.',
+    lightning:'⚡',l1:'Electric. Alive.',l2:'This energy is yours.',
+    rain:'🌧️',r1:'Let it fall. Let it wash over you.',r2:'Some things only grow after the rain.',
+    sun:'☀️',s1:'You are shining today.',s2:'Someone needed exactly this light.',
+    night:'🌙',n1:'Quiet now.',n2:'Rest is not weakness.',
+    rainbow:'🌈',rb1:'Look what you\'ve crossed.',rb2:'Still standing.',
+    fog:'🌫️',f1:'Lost in the fog.',f2:'Clarity comes slowly.',
+    snow:'❄️',s1:'Frozen. Still.',s2:'Spring always comes.',
+    wind:'💨',w1:'Restless.',w2:'Let the wind carry you.',
+    heat:'🔥',h1:'A fire inside.',h2:'Passion is power.',
+    empty:'🕳️',e1:'Empty today.',e2:'Space waiting.',
+    hope:'🌱',ho1:'A tiny spark.',ho2:'Hope whispers.',
+    gratitude:'🙏',g1:'You said thank you.',g2:'Gratitude changes you.',
+    streakToast:'🔥 Day streak continues! Come back tomorrow.',
+    newEmotion:'🎉 New emotion unlocked!'
+},
+fr:{
+    discTitle:'Avant de commencer',discIntro:'Feelio est votre espace privé. Veuillez lire et accepter :',
+    discLabel1:'Je comprends que Feelio n\'est pas un outil médical',discLabel2:'Je comprends que mes données restent sur mon appareil',
+    discLabel3:'J\'ai 13 ans ou plus',discLabel4:'J\'accepte d\'utiliser Feelio à des fins personnelles et non commerciales',
+    discBtn:'Commencer',
+    onTitle0:'Bienvenue sur Feelio',onText0:'Votre espace émotionnel privé.<br>Sans jugement. Sans données collectées.',
+    onTitle1:'Dessinez votre humeur',onText1:'Utilisez votre doigt pour dessiner.<br>Feelio vous écoutera.',
+    onTitle2:'Vous n\'êtes pas seul',onText2:'Chaque tempête passe.<br>Chaque soleil se lève à nouveau.',
+    privacy:'100% Privé',tagline:'Prends une grande respiration. Dessine ce que tu ressens.',
+    reset:'Effacer',hint:'Utilise ton doigt',counter:'humeurs dessinées dans le monde',
+    nav:['Dessiner','Semaine','Stats','Galerie','Réglages'],
+    dailyCounter:'personnes ont dessiné aujourd\'hui',streakText:'jours de suite !',
+    collectionText:'/13 émotions collectées',calmText:'Besoin de calme ? Voir Calm Chaos →',
+    askWant:'Veux-tu en parler ?',askYes:'Oui',askNo:'Non',
+    thanks:'Prends soin de toi. 🌿',writeLabel:'Écrire',speakLabel:'Parler',
+    cookieText:'Feelio n\'utilise aucun cookie et ne collecte aucune donnée personnelle.',
+    crisisBarText:'Si vous êtes en crise, de l\'aide est disponible.',
+    tornado:'🌪️',t1:'Une tempête fait rage en toi.',t2:'Même les tempêtes s\'épuisent.',
+    lightning:'⚡',l1:'Électrique. Vivant.',l2:'Cette énergie est la tienne.',
+    rain:'🌧️',r1:'Laisse tomber. Laisse laver.',r2:'Certaines choses poussent après la pluie.',
+    sun:'☀️',s1:'Tu brilles aujourd\'hui.',s2:'Quelqu\'un avait besoin de cette lumière.',
+    night:'🌙',n1:'Silence.',n2:'Le repos n\'est pas une faiblesse.',
+    rainbow:'🌈',rb1:'Regarde tout ce que tu as traversé.',rb2:'Encore debout.',
+    fog:'🌫️',f1:'Perdu dans le brouillard.',f2:'La clarté vient doucement.',
+    snow:'❄️',s1:'Gelé. Immobile.',s2:'Le printemps revient.',
+    wind:'💨',w1:'Agité.',w2:'Laisse le vent t\'emmener.',
+    heat:'🔥',h1:'Un feu brûle en toi.',h2:'La passion est une force.',
+    empty:'🕳️',e1:'Vide aujourd\'hui.',e2:'De l\'espace à remplir.',
+    hope:'🌱',ho1:'Une petite étincelle.',ho2:'L\'espoir murmure.',
+    gratitude:'🙏',g1:'Tu as dit merci.',g2:'La gratitude te change.',
+    streakToast:'🔥 Série de jours continue ! Reviens demain.',
+    newEmotion:'🎉 Nouvelle émotion débloquée !'
+}};
 
-const TRUST_EN = '<h3>Privacy Policy</h3><p>Feelio collects <strong>no personal data</strong>. Everything stays on your device.</p><h3>Medical Disclaimer</h3><p>Feelio is <strong>not a medical tool</strong>. If in crisis: <a href="https://findahelpline.com" target="_blank" rel="noopener">findahelpline.com</a></p><h3>Contact</h3><p>Ismail Belabbess — calmewave2026@proton.me</p>';
-const TRUST_FR = '<h3>Confidentialité</h3><p>Feelio ne collecte <strong>aucune donnée</strong>. Tout reste sur votre appareil.</p><h3>Disclaimer médical</h3><p>Feelio n\'est <strong>pas un outil médical</strong>. En cas de crise : <a href="https://findahelpline.com" target="_blank" rel="noopener">findahelpline.com</a></p><h3>Contact</h3><p>Ismail Belabbess — calmewave2026@proton.me</p>';
+var TRUST_EN = '<h3>Privacy Policy</h3><p>Feelio collects <strong>no personal data</strong>. Everything you draw, write, or say stays on your device. We use localStorage only. Nothing is sent to any server.</p><h3>Medical Disclaimer</h3><p>Feelio is <strong>not a medical tool</strong>. It does not diagnose, treat, or prevent any condition. If you are in crisis, please reach out: <a href="https://findahelpline.com" target="_blank" rel="noopener">findahelpline.com</a></p><h3>Contact</h3><p>Ismail Belabbess<br><a href="mailto:calmewave2026@proton.me">calmewave2026@proton.me</a></p><p style="margin-top:12px;color:var(--text3)">Feelio is free and will always be free. No ads. No tracking. No data collection.</p>';
+var TRUST_FR = '<h3>Confidentialité</h3><p>Feelio ne collecte <strong>aucune donnée personnelle</strong>. Tout ce que vous dessinez, écrivez ou dites reste sur votre appareil. Nous utilisons uniquement localStorage. Rien n\'est envoyé à un serveur.</p><h3>Disclaimer médical</h3><p>Feelio n\'est <strong>pas un outil médical</strong>. Il ne diagnostique, ne traite ni ne prévient aucune condition. En cas de crise : <a href="https://findahelpline.com" target="_blank" rel="noopener">findahelpline.com</a></p><h3>Contact</h3><p>Ismail Belabbess<br><a href="mailto:calmewave2026@proton.me">calmewave2026@proton.me</a></p><p style="margin-top:12px;color:var(--text3)">Feelio est gratuit et le restera toujours. Sans pub. Sans pistage. Sans collecte de données.</p>';
 
 // ==================== ÉTAT GLOBAL ====================
-let lang = (navigator.language||'en').split('-')[0];
+var lang = (navigator.language||'en').split('-')[0];
 if(!LANGDATA[lang]) lang='en';
-let TX = LANGDATA[lang];
-let currentMood = '', brushSize = 7, voiceEnabled = false;
-let strokeHistory = [], highContrast = false, notificationsEnabled = false;
-let deferredPrompt = null;
-let drawing = false, points = [], startTime = 0;
-let onStep = 0;
-let recognition = null;
+var TX = LANGDATA[lang];
+var currentMood = '', brushSize = 7, voiceEnabled = false;
+var strokeHistory = [], highContrast = false, notificationsEnabled = false;
+var deferredPrompt = null;
+var drawing = false, points = [], startTime = 0;
+var onStep = 0;
+var recognition = null;
+var streakCount = 0;
+var emotionCollection = [];
 
-// ==================== STORAGE SAFE ====================
-function safeGet(key, fallback=''){ try{ const v=localStorage.getItem(key); return v!==null?v:fallback; }catch(e){ return fallback; } }
+// ==================== STORAGE ====================
+function safeGet(key, fallback){ try{ var v=localStorage.getItem(key); return v!==null?v:fallback; }catch(e){ return fallback; } }
 function safeSet(key, value){ try{ localStorage.setItem(key,value); return true; }catch(e){ return false; } }
-function safeGetJSON(key, fallback='[]'){ try{ return JSON.parse(safeGet(key, fallback)); }catch(e){ return []; } }
+function safeGetJSON(key, fallback){ try{ return JSON.parse(safeGet(key, JSON.stringify(fallback))); }catch(e){ return fallback; } }
 function safeSetJSON(key, value){ try{ localStorage.setItem(key, JSON.stringify(value)); return true; }catch(e){ return false; } }
-function safeRemove(key){ try{ localStorage.removeItem(key); }catch(e){} }
 
-// ==================== ÉLÉMENTS DOM ====================
-const $ = id => document.getElementById(id);
-const canvas = $('canvas'), ctx = canvas.getContext('2d');
+// ==================== DOM ====================
+var $ = function(id){ return document.getElementById(id); };
+var canvas = $('canvas'), ctx = canvas.getContext('2d');
 
-// ==================== OVERLAYS (CORRIGÉS) ====================
-function showOverlay(id){ const el=$(id); el.classList.add('show'); el.style.pointerEvents='auto'; }
-function hideOverlay(id){ const el=$(id); el.classList.remove('show'); el.style.pointerEvents='none'; }
+// ==================== OVERLAYS ====================
+function showOverlay(id){ var el=$(id); el.classList.add('show'); el.style.pointerEvents='auto'; }
+function hideOverlay(id){ var el=$(id); el.classList.remove('show'); el.style.pointerEvents='none'; }
 
 // ==================== LANGUE ====================
 function buildLangOptions(){
-    const container = $('langOptions');
+    var container = $('langOptions');
     container.innerHTML = '';
-    const langs = {en:'🇬🇧 English',fr:'🇫🇷 Français'};
-    Object.entries(langs).forEach(([code,label])=>{
-        const div = document.createElement('div');
+    var langs = {en:'🇬🇧 English',fr:'🇫🇷 Français'};
+    Object.keys(langs).forEach(function(code){
+        var div = document.createElement('div');
         div.className = 'lang-option' + (code===lang?' active':'');
-        div.textContent = label;
-        div.addEventListener('click', ()=>{ lang=code; TX=LANGDATA[lang]||LANGDATA.en; buildLangOptions(); updateDisclaimerTexts(); });
+        div.textContent = langs[code];
+        div.addEventListener('click', function(){ lang=code; TX=LANGDATA[lang]||LANGDATA.en; buildLangOptions(); updateDisclaimerTexts(); });
         container.appendChild(div);
     });
 }
@@ -367,216 +872,128 @@ function updateDisclaimerTexts(){
     $('discBtn').textContent = TX.discBtn;
 }
 
-function confirmLang(){
-    hideOverlay('langOverlay');
-    showOverlay('disclaimerOverlay');
-    checkDisclaimer();
-}
-
 function checkDisclaimer(){
-    const c1 = $('discCheck1').checked;
-    const c2 = $('discCheck2').checked;
-    const c3 = $('discCheck3').checked;
-    const c4 = $('discCheck4').checked;
-    const btn = $('discBtn');
-    btn.disabled = !(c1 && c2 && c3 && c4);
-}
-
-function acceptDisclaimer(){
-    hideOverlay('disclaimerOverlay');
-    showOverlay('onboardingOverlay');
-    playAmbient();
-}
-
-function nextOnboarding(){
-    onStep++;
-    if(onStep >= 3){
-        hideOverlay('onboardingOverlay');
-        safeSet('feelio_onboarding_done','1');
-        initApp();
-    } else {
-        document.querySelectorAll('.onboarding-slide').forEach(s=>s.classList.remove('active'));
-        $('onSlide'+onStep).classList.add('active');
-        document.querySelectorAll('.onboarding-dots .dot').forEach((d,i)=>d.classList.toggle('active',i===onStep));
-        $('onBtn').textContent = onStep===2?'Begin':'Next';
-    }
-}
-
-function skipOnboarding(){
-    hideOverlay('onboardingOverlay');
-    safeSet('feelio_onboarding_done','1');
-    initApp();
+    var c1=$('discCheck1').checked,c2=$('discCheck2').checked,c3=$('discCheck3').checked,c4=$('discCheck4').checked;
+    $('discBtn').disabled = !(c1&&c2&&c3&&c4);
 }
 
 function setLang(l){
-    lang = l;
-    TX = LANGDATA[l] || LANGDATA.en;
-    document.querySelectorAll('#langsTop span').forEach(s=>s.classList.toggle('active', s.dataset.lang===l));
-    document.body.className = lang==='ar'?'ar':lang==='ja'?'ja':lang==='zh'?'zh':'';
-    updateUI();
-    resetCanvas();
-    buildHistory();
-    buildStats();
+    lang=l;TX=LANGDATA[l]||LANGDATA.en;
+    document.querySelectorAll('#langsTop span').forEach(function(s){ s.classList.toggle('active', s.dataset.lang===l); });
+    document.body.className = lang==='ar'?'ar':'';
+    updateUI();resetCanvas();buildHistory();buildStats();
 }
 
 function updateUI(){
-    $('privacyText').textContent = TX.privacy;
-    $('tagline').textContent = TX.tagline;
-    $('btnReset').textContent = TX.reset;
-    $('hint').textContent = TX.hint;
-    document.querySelectorAll('.nav-label').forEach((n,i)=>{ if(TX.nav[i]) n.textContent=TX.nav[i]; });
-    $('trustTitle').textContent = 'Trust & Safety';
-    $('trustContent').innerHTML = lang==='fr'?TRUST_FR:TRUST_EN;
-    $('cookieText').textContent = TX.cookieText;
-    const total = parseInt(safeGet('feelio_total','0')) || 0;
-    $('counter').textContent = total.toLocaleString()+' '+TX.counter;
-    const daily = parseInt(safeGet('feelio_daily','0')) || 0;
-    $('dailyCounter').textContent = daily.toLocaleString()+' '+TX.dailyCounter;
+    $('privacyText').textContent=TX.privacy;$('tagline').textContent=TX.tagline;
+    $('btnReset').textContent=TX.reset;$('hint').textContent=TX.hint;
+    document.querySelectorAll('.nav-label').forEach(function(n,i){ if(TX.nav[i])n.textContent=TX.nav[i]; });
+    $('trustContent').innerHTML=lang==='fr'?TRUST_FR:TRUST_EN;
+    $('cookieText').textContent=TX.cookieText;$('crisisBarText').textContent=TX.crisisBarText;
+    var total=parseInt(safeGet('feelio_total','0'))||0;
+    $('counter').textContent=total.toLocaleString()+' '+TX.counter;
+    var daily=parseInt(safeGet('feelio_daily','0'))||0;
+    $('dailyCounter').textContent=daily.toLocaleString()+' '+TX.dailyCounter;
     updateDisclaimerTexts();
-    document.getElementById('onTitle0').textContent=TX.onTitle0; document.getElementById('onText0').innerHTML=TX.onText0;
-    document.getElementById('onTitle1').textContent=TX.onTitle1; document.getElementById('onText1').innerHTML=TX.onText1;
-    document.getElementById('onTitle2').textContent=TX.onTitle2; document.getElementById('onText2').innerHTML=TX.onText2;
-    updateStreak(); updateCollection(); buildGallery();
+    $('onTitle0').textContent=TX.onTitle0;$('onText0').innerHTML=TX.onText0;
+    $('onTitle1').textContent=TX.onTitle1;$('onText1').innerHTML=TX.onText1;
+    $('onTitle2').textContent=TX.onTitle2;$('onText2').innerHTML=TX.onText2;
+    updateStreak();updateCollection();buildGallery();
 }
 
-// ==================== INIT APP ====================
+// ==================== INIT ====================
 function initApp(){
-    const onboardingDone = safeGet('feelio_onboarding_done');
-    if(onboardingDone==='1'){
-        hideOverlay('onboardingOverlay');
-    }
-    updateUI();
-    buildHistory();
-    buildStats();
-    buildGallery();
-    updateStreak();
+    updateUI();buildHistory();buildStats();buildGallery();updateStreak();updateCollection();
+    setTimeout(function(){ $('cookieBanner').classList.remove('hidden'); }, 2000);
+    loadEmotionCollection();
+    scheduleNotification();
+}
+
+function loadEmotionCollection(){
+    emotionCollection = safeGetJSON('feelio_collection', []);
     updateCollection();
-    // Cookie banner
-    setTimeout(()=>{ $('cookieBanner').classList.remove('hidden'); }, 2000);
 }
 
-// ==================== CANVAS & DESSIN ====================
+// ==================== CANVAS ====================
 function setBrushSize(s){
-    brushSize = s;
-    document.querySelectorAll('.toolbar button[data-size]').forEach(b=>b.classList.remove('active'));
-    document.querySelector('.toolbar button[data-size="'+s+'"]').classList.add('active');
+    brushSize=s;
+    document.querySelectorAll('.toolbar button[data-size]').forEach(function(b){ b.classList.remove('active'); });
+    var btn = document.querySelector('.toolbar button[data-size="'+s+'"]');
+    if(btn)btn.classList.add('active');
 }
-
-function undoLastStroke(){
-    if(strokeHistory.length>0){ const last=strokeHistory.pop(); ctx.putImageData(last,0,0); }
-}
-
+function undoLastStroke(){ if(strokeHistory.length>0){ var last=strokeHistory.pop(); ctx.putImageData(last,0,0); } }
 function toggleHighContrast(){ highContrast=!highContrast; document.body.classList.toggle('high-contrast',highContrast); }
-
 function toggleFullScreen(){
-    if(document.fullscreenElement) document.exitFullscreen();
-    else document.documentElement.requestFullscreen().catch(()=>{});
+    if(document.fullscreenElement)document.exitFullscreen();
+    else document.documentElement.requestFullscreen().catch(function(){});
 }
-
 function changeFontSize(dir){
-    const root = document.documentElement;
-    let fs = parseFloat(getComputedStyle(root).getPropertyValue('--font-size')) || 1;
-    fs = Math.max(0.7, Math.min(1.5, fs+dir*0.1));
-    root.style.setProperty('--font-size', fs+'rem');
+    var root=document.documentElement;
+    var fs=parseFloat(getComputedStyle(root).getPropertyValue('--font-size'))||1;
+    fs=Math.max(0.7,Math.min(1.5,fs+dir*0.1));
+    root.style.setProperty('--font-size',fs+'rem');
 }
 
 function getPos(e){
-    const r = canvas.getBoundingClientRect();
-    const sX = canvas.width / r.width;
-    const sY = canvas.height / r.height;
-    const cX = e.touches ? e.touches[0].clientX : e.clientX;
-    const cY = e.touches ? e.touches[0].clientY : e.clientY;
-    return {x:(cX-r.left)*sX, y:(cY-r.top)*sY};
+    var r=canvas.getBoundingClientRect();
+    var sX=canvas.width/r.width,sY=canvas.height/r.height;
+    var cX=e.touches?e.touches[0].clientX:e.clientX,cY=e.touches?e.touches[0].clientY:e.clientY;
+    return {x:(cX-r.left)*sX,y:(cY-r.top)*sY};
 }
 
 function startDraw(e){
-    e.preventDefault();
-    drawing = true;
-    points = [];
-    startTime = Date.now();
+    e.preventDefault();drawing=true;points=[];startTime=Date.now();
     strokeHistory.push(ctx.getImageData(0,0,canvas.width,canvas.height));
-    $('hint').style.opacity = '0';
-    $('canvasHint').style.opacity = '0';
+    $('hint').style.opacity='0';$('canvasHint').style.opacity='0';
     canvas.classList.remove('breathe');
-    const p = getPos(e);
-    points.push({x:p.x, y:p.y, time:Date.now()});
-    ctx.beginPath();
-    ctx.moveTo(p.x, p.y);
-    if(navigator.vibrate) navigator.vibrate(6);
+    var p=getPos(e);points.push({x:p.x,y:p.y,time:Date.now()});
+    ctx.beginPath();ctx.moveTo(p.x,p.y);
+    if(navigator.vibrate)navigator.vibrate(6);
     createRipple(e);
 }
-
 function moveDraw(e){
-    e.preventDefault();
-    if(!drawing) return;
-    const p = getPos(e);
-    points.push({x:p.x, y:p.y, time:Date.now()});
-    ctx.lineTo(p.x, p.y);
-    const g = ctx.createLinearGradient(p.x-12, p.y-12, p.x+12, p.y+12);
-    g.addColorStop(0,'rgba(200,180,255,0.9)');
-    g.addColorStop(0.5,'rgba(240,220,255,0.7)');
-    g.addColorStop(1,'rgba(160,140,255,0.5)');
-    ctx.strokeStyle = g;
-    ctx.lineWidth = brushSize;
-    ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
-    ctx.shadowColor = 'rgba(180,160,255,0.3)';
-    ctx.shadowBlur = 12;
-    ctx.stroke();
-    ctx.shadowBlur = 0;
-    if(navigator.vibrate && points.length%20===0) navigator.vibrate(4);
+    e.preventDefault();if(!drawing)return;
+    var p=getPos(e);points.push({x:p.x,y:p.y,time:Date.now()});
+    ctx.lineTo(p.x,p.y);
+    var g=ctx.createLinearGradient(p.x-12,p.y-12,p.x+12,p.y+12);
+    g.addColorStop(0,'rgba(200,180,255,0.9)');g.addColorStop(0.5,'rgba(240,220,255,0.7)');g.addColorStop(1,'rgba(160,140,255,0.5)');
+    ctx.strokeStyle=g;ctx.lineWidth=brushSize;ctx.lineCap='round';ctx.lineJoin='round';
+    ctx.shadowColor='rgba(180,160,255,0.3)';ctx.shadowBlur=12;ctx.stroke();ctx.shadowBlur=0;
+    if(navigator.vibrate&&points.length%20===0)navigator.vibrate(4);
 }
+function endDraw(){ drawing=false;analyzeDrawing();canvas.classList.add('breathe'); }
 
-function endDraw(){
-    drawing = false;
-    analyzeDrawing();
-    canvas.classList.add('breathe');
-}
-
-// Touch ET Mouse
-canvas.addEventListener('touchstart', startDraw, {passive:false});
-canvas.addEventListener('touchmove', moveDraw, {passive:false});
-canvas.addEventListener('touchend', endDraw);
-canvas.addEventListener('mousedown', startDraw);
-canvas.addEventListener('mousemove', moveDraw);
-canvas.addEventListener('mouseup', endDraw);
-canvas.addEventListener('mouseleave', endDraw);
+canvas.addEventListener('touchstart',startDraw,{passive:false});
+canvas.addEventListener('touchmove',moveDraw,{passive:false});
+canvas.addEventListener('touchend',endDraw);
+canvas.addEventListener('mousedown',startDraw);
+canvas.addEventListener('mousemove',moveDraw);
+canvas.addEventListener('mouseup',endDraw);
+canvas.addEventListener('mouseleave',endDraw);
 
 function createRipple(e){
-    const ripple = document.createElement('div');
-    ripple.className = 'ripple';
-    const x = e.touches ? e.touches[0].clientX : e.clientX;
-    const y = e.touches ? e.touches[0].clientY : e.clientY;
-    ripple.style.left = x+'px';
-    ripple.style.top = y+'px';
-    ripple.style.width = '20px';
-    ripple.style.height = '20px';
-    ripple.style.marginLeft = '-10px';
-    ripple.style.marginTop = '-10px';
-    document.body.appendChild(ripple);
-    setTimeout(()=>ripple.remove(), 600);
+    var ripple=document.createElement('div');ripple.className='ripple';
+    var x=e.touches?e.touches[0].clientX:e.clientX,y=e.touches?e.touches[0].clientY:e.clientY;
+    ripple.style.left=x+'px';ripple.style.top=y+'px';
+    ripple.style.width='20px';ripple.style.height='20px';
+    ripple.style.marginLeft='-10px';ripple.style.marginTop='-10px';
+    document.body.appendChild(ripple);setTimeout(function(){ripple.remove();},600);
 }
 
+// ==================== ANALYSE ====================
 function analyzeDrawing(){
-    $('rainCt').style.opacity = '0';
-    document.body.style.background = 'var(--bg)';
-    if(points.length < 8) return;
-    const endTime = Date.now(), duration = Math.max((endTime-startTime)/1000, 0.1);
-    let totalDistance = 0;
-    for(let i=1;i<points.length;i++){
-        const dx=points[i].x-points[i-1].x, dy=points[i].y-points[i-1].y;
-        totalDistance += Math.sqrt(dx*dx+dy*dy);
-    }
-    const speed = totalDistance/duration;
-    let sumX=0,sumY=0;
-    points.forEach(p=>{sumX+=p.x;sumY+=p.y;});
-    const cx=sumX/points.length, cy=sumY/points.length;
-    let dispersion=0;
-    points.forEach(p=>{dispersion+=Math.sqrt((p.x-cx)**2+(p.y-cy)**2);});
-    dispersion/=points.length;
-    const dc=countDirectionChanges(points);
+    $('rainCt').style.opacity='0';document.body.style.background='var(--bg)';
+    if(points.length<8)return;
+    var endTime=Date.now(),duration=Math.max((endTime-startTime)/1000,0.1);
+    var totalDistance=0;
+    for(var i=1;i<points.length;i++){var dx=points[i].x-points[i-1].x,dy=points[i].y-points[i-1].y;totalDistance+=Math.sqrt(dx*dx+dy*dy);}
+    var speed=totalDistance/duration;
+    var sumX=0,sumY=0;points.forEach(function(p){sumX+=p.x;sumY+=p.y;});
+    var cx=sumX/points.length,cy=sumY/points.length;
+    var dispersion=0;points.forEach(function(p){dispersion+=Math.sqrt((p.x-cx)**2+(p.y-cy)**2);});dispersion/=points.length;
+    var dc=countDirectionChanges(points);
     
-    let emoji,p1,p2,bg='';
+    var emoji,p1,p2,bg='';
     if(speed>6&&dispersion>90){emoji=TX.tornado;p1=TX.t1;p2=TX.t2;bg='#140a1e';}
     else if(speed>4&&dc>3){emoji=TX.lightning;p1=TX.l1;p2=TX.l2;bg='#0c0c22';}
     else if(speed<2&&dispersion<50){emoji=TX.rain;p1=TX.r1;p2=TX.r2;bg='#0a121c';$('rainCt').style.opacity='1';}
@@ -590,115 +1007,105 @@ function analyzeDrawing(){
     else if(totalDistance<50){emoji=TX.empty;p1=TX.e1;p2=TX.e2;bg='#0a0a10';}
     else{emoji=TX.hope;p1=TX.ho1;p2=TX.ho2;bg='#0a100a';}
     
-    if(bg) document.body.style.background = bg;
-    currentMood = emoji;
-    const rel = $('result'); rel.textContent = emoji;
-    rel.classList.remove('pop'); void rel.offsetWidth; rel.classList.add('pop');
-    $('phrase').textContent = p1;
-    $('phrase2').textContent = p2;
-    $('shareBtns').style.display = 'flex';
-    $('calmLink').style.display = 'block';
-    $('calmLink').querySelector('a').textContent = '🌿 '+TX.calmText;
-    $('speakBtn').style.display = 'inline-flex';
-    checkCrisis();
-    showAskBox();
-    saveMood(emoji);
-    updateCounter();
-    spawnConfetti();
-    playChime();
-    if(voiceEnabled) speakPhrase();
+    if(bg)document.body.style.background=bg;
+    currentMood=emoji;
+    var rel=$('result');rel.textContent=emoji;rel.classList.remove('pop');void rel.offsetWidth;rel.classList.add('pop');
+    $('phrase').textContent=p1;$('phrase2').textContent=p2;
+    $('shareBtns').style.display='flex';$('calmLink').style.display='block';
+    $('calmLink').querySelector('a').textContent='🌿 '+TX.calmText;
+    $('speakBtn').style.display='inline-flex';
+    checkCrisis();showAskBox();saveMood(emoji);updateCounter();
+    addToCollection(emoji);spawnConfetti();playChime();
+    if(voiceEnabled)speakPhrase();
 }
 
 function countDirectionChanges(pts){
-    let c=0; if(pts.length<3)return 0;
-    for(let i=2;i<pts.length;i++){
-        const dx1=pts[i-1].x-pts[i-2].x, dy1=pts[i-1].y-pts[i-2].y;
-        const dx2=pts[i].x-pts[i-1].x, dy2=pts[i].y-pts[i-1].y;
-        const dot=dx1*dx2+dy1*dy2, m1=Math.sqrt(dx1*dx1+dy1*dy1), m2=Math.sqrt(dx2*dx2+dy2*dy2);
+    var c=0;if(pts.length<3)return 0;
+    for(var i=2;i<pts.length;i++){
+        var dx1=pts[i-1].x-pts[i-2].x,dy1=pts[i-1].y-pts[i-2].y;
+        var dx2=pts[i].x-pts[i-1].x,dy2=pts[i].y-pts[i-1].y;
+        var dot=dx1*dx2+dy1*dy2,m1=Math.sqrt(dx1*dx1+dy1*dy1),m2=Math.sqrt(dx2*dx2+dy2*dy2);
         if(m1>0&&m2>0&&dot/(m1*m2)<0.3)c++;
     }
     return c;
 }
 
 function checkCrisis(){
-    const h = safeGetJSON('feelio_history');
-    const recent = h.slice(-5);
-    const allStorm = recent.every(d=>d.emoji===TX.tornado||d.emoji===TX.rain||d.emoji===TX.empty);
-    $('crisisBar').style.display = (allStorm&&recent.length>=3)?'block':'none';
+    var h=safeGetJSON('feelio_history',[]);
+    var recent=h.slice(-5);
+    var allStorm=recent.every(function(d){return d.emoji===TX.tornado||d.emoji===TX.rain||d.emoji===TX.empty;});
+    $('crisisBar').style.display=(allStorm&&recent.length>=3)?'block':'none';
 }
 
 function spawnConfetti(){
-    const cl={'🌪️':['#6b21a8','#4c1d95'],'⚡':['#fbbf24','#f59e0b'],'🌧️':['#3b82f6','#2563eb'],'☀️':['#fbbf24','#fcd34d'],'🌙':['#6366f1','#4f46e5'],'🌈':['#a78bfa','#f472b6']};
-    const colors=cl[currentMood]||['#a78bfa','#7c3aed'];
-    for(let i=0;i<30;i++){
-        const c=document.createElement('div');c.className='confetti';
+    var cl={'🌪️':['#6b21a8','#4c1d95'],'⚡':['#fbbf24','#f59e0b'],'🌧️':['#3b82f6','#2563eb'],'☀️':['#fbbf24','#fcd34d'],'🌙':['#6366f1','#4f46e5'],'🌈':['#a78bfa','#f472b6']};
+    var colors=cl[currentMood]||['#a78bfa','#7c3aed'];
+    for(var i=0;i<30;i++){
+        var c=document.createElement('div');c.className='confetti';
         c.style.left=Math.random()*100+'%';c.style.top='-30px';
         c.style.animationDuration=(1.5+Math.random()*2)+'s';
         c.style.width=(3+Math.random()*8)+'px';c.style.height=(3+Math.random()*8)+'px';
         c.style.background=colors[Math.floor(Math.random()*colors.length)];
-        c.style.borderRadius=Math.random()>0.5?'50%':'2px';
-        c.style.animationDelay=Math.random()*0.5+'s';
-        document.body.appendChild(c);setTimeout(()=>c.remove(),3000);
+        c.style.borderRadius=Math.random()>0.5?'50%':'2px';c.style.animationDelay=Math.random()*0.5+'s';
+        document.body.appendChild(c);setTimeout(function(){c.remove();},3000);
     }
 }
 
 function showAskBox(){
-    const box=$('askBox');box.style.display='flex';
+    var box=$('askBox');box.style.display='flex';
     $('askText').textContent=TX.askWant;
     $('askBtns').innerHTML='<button class="btn btn-primary btn-small" id="btnAskYesDyn">'+TX.askYes+'</button><button class="btn btn-outline btn-small" id="btnAskNoDyn">'+TX.askNo+'</button>';
-    $('btnAskYesDyn').addEventListener('click', showWriteSpeak);
-    $('btnAskNoDyn').addEventListener('click', sayThanks);
+    $('btnAskYesDyn').addEventListener('click',showWriteSpeak);
+    $('btnAskNoDyn').addEventListener('click',sayThanks);
 }
-
 function showWriteSpeak(){
     $('askBtns').innerHTML='<button class="btn btn-primary btn-small" id="btnWriteDyn">✍️ '+TX.writeLabel+'</button><button class="btn btn-outline btn-small" id="btnSpeakDyn">🎙️ '+TX.speakLabel+'</button>';
-    $('btnWriteDyn').addEventListener('click', openWrite);
-    $('btnSpeakDyn').addEventListener('click', openSpeak);
+    $('btnWriteDyn').addEventListener('click',openWrite);$('btnSpeakDyn').addEventListener('click',openSpeak);
 }
-
 function sayThanks(){
     $('askBox').innerHTML='<div id="askText">'+TX.thanks+'</div>';
-    setTimeout(()=>{$('askBox').style.display='none'},3000);
+    setTimeout(function(){$('askBox').style.display='none';},3000);
 }
 
 function speakPhrase(){
-    const phrase=$('phrase').textContent+' ... '+$('phrase2').textContent;
+    var phrase=$('phrase').textContent+' ... '+$('phrase2').textContent;
     if(window.speechSynthesis){
         window.speechSynthesis.cancel();
-        const u=new SpeechSynthesisUtterance(phrase);
-        const voices={'en':'en-US','fr':'fr-FR','es':'es-ES','ar':'ar-SA','ja':'ja-JP','zh':'zh-CN'};
-        u.lang=voices[lang]||'en-US';u.rate=0.85;u.pitch=1;u.volume=0.8;
-        window.speechSynthesis.speak(u);
+        var u=new SpeechSynthesisUtterance(phrase);
+        var voices={en:'en-US',fr:'fr-FR'};u.lang=voices[lang]||'en-US';
+        u.rate=0.85;u.pitch=1;u.volume=0.8;window.speechSynthesis.speak(u);
     }
 }
 
 function shareMood(platform){
-    const text=currentMood+' "'+$('phrase').textContent+'"\n\nDraw yours on feelio.org 💜';
+    var text=currentMood+' "'+$('phrase').textContent+'"\n\nDraw yours on feelio.org 💜';
     if(platform==='copy'){
-        if(navigator.clipboard){navigator.clipboard.writeText(text).then(()=>alert('Copied!')).catch(()=>{});}
-        else{alert('Copy not supported on this browser.');}
+        if(navigator.clipboard){navigator.clipboard.writeText(text).then(function(){alert('Copied!');}).catch(function(){});}
+        else{alert('Copy not supported.');}
         return;
     }
-    let link='';
+    var link='';
     if(platform==='twitter')link='https://twitter.com/intent/tweet?text='+encodeURIComponent(text);
     else if(platform==='whatsapp')link='https://wa.me/?text='+encodeURIComponent(text);
     if(link)window.open(link,'_blank');
 }
 
 function openStoryPreview(){
-    $('storyEmoji').textContent=currentMood;
-    $('storyPhrase').textContent=$('phrase').textContent;
-    $('storyPreview').classList.add('show');
-    $('storyPreview').style.pointerEvents='auto';
+    $('storyEmoji').textContent=currentMood;$('storyPhrase').textContent=$('phrase').textContent;
+    $('storyPreview').classList.add('show');$('storyPreview').style.pointerEvents='auto';
 }
-
 function downloadStory(){
-    alert('Story feature coming soon!');
+    if(typeof html2canvas !== 'undefined'){
+        html2canvas(document.querySelector('.story-content')).then(function(canvas2){
+            var a=document.createElement('a');a.download='feelio-story.png';a.href=canvas2.toDataURL();a.click();
+        });
+    }else{
+        alert('Image export loading... Try again in a moment.');
+    }
 }
 
 function resetCanvas(){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    strokeHistory=[];
+    ctx.clearRect(0,0,canvas.width,canvas.height);strokeHistory=[];
     $('result').textContent='';$('phrase').textContent='';$('phrase2').textContent='';
     document.body.style.background='var(--bg)';$('rainCt').style.opacity='0';
     $('askBox').style.display='none';$('shareBtns').style.display='none';
@@ -708,11 +1115,12 @@ function resetCanvas(){
     if(window.speechSynthesis)window.speechSynthesis.cancel();
 }
 
+// ==================== COUNTERS & STREAK ====================
 function updateCounter(){
-    let c=parseInt(safeGet('feelio_total','0'))||0;c++;safeSet('feelio_total',c.toString());
-    let d=parseInt(safeGet('feelio_daily','0'))||0;
-    const today=new Date().toISOString().split('T')[0];
-    const lastDate=safeGet('feelio_last_date','');
+    var c=parseInt(safeGet('feelio_total','0'))||0;c++;safeSet('feelio_total',c.toString());
+    var d=parseInt(safeGet('feelio_daily','0'))||0;
+    var today=new Date().toISOString().split('T')[0];
+    var lastDate=safeGet('feelio_last_date','');
     if(lastDate!==today){d=0;safeSet('feelio_last_date',today);}
     d++;safeSet('feelio_daily',d.toString());
     $('counter').textContent=c.toLocaleString()+' '+TX.counter;
@@ -721,91 +1129,116 @@ function updateCounter(){
 }
 
 function updateStreak(){
-    const h=safeGetJSON('feelio_history');let streak=0;const today=new Date();
-    for(let i=h.length-1;i>=0;i--){
-        const d=new Date(h[i].date);const diff=Math.floor((today-d)/86400000);
-        if(diff===streak)streak++;else break;
+    var h=safeGetJSON('feelio_history',[]);streakCount=0;
+    var today=new Date();today.setHours(0,0,0,0);
+    for(var i=h.length-1;i>=0;i--){
+        var d=new Date(h[i].date);d.setHours(0,0,0,0);
+        var diff=Math.floor((today-d)/86400000);
+        if(diff===streakCount)streakCount++;
+        else if(diff===streakCount+1){/* skip day */}else break;
     }
-    const badge=$('streakBadge');
-    if(streak>=2){badge.style.display='inline-flex';$('streakText').textContent=streak+' '+TX.streakText;}
-    else{badge.style.display='none';}
+    var badge=$('streakBadge');
+    if(streakCount>=2){
+        badge.style.display='inline-flex';$('streakText').textContent=streakCount+' '+TX.streakText;
+        showScoreToast('🔥 '+streakCount+' '+TX.streakText);
+    }else{badge.style.display='none';}
+    safeSet('feelio_streak',streakCount.toString());
 }
 
 function updateCollection(){
-    const h=safeGetJSON('feelio_history');const emotions=new Set(h.map(d=>d.emoji));const count=emotions.size;
-    const badge=$('collectionBadge');
+    var h=safeGetJSON('feelio_history',[]);var emotions=new Set();h.forEach(function(d){emotions.add(d.emoji);});
+    var count=emotions.size;var badge=$('collectionBadge');
     badge.style.display=count>0?'inline-flex':'none';
     $('collectionText').textContent=count+TX.collectionText;
 }
 
+function addToCollection(emoji){
+    if(emotionCollection.indexOf(emoji)===-1){
+        emotionCollection.push(emoji);safeSetJSON('feelio_collection',emotionCollection);
+        if(emotionCollection.length>1)showScoreToast(TX.newEmotion+' ('+emotionCollection.length+'/13)');
+    }
+}
+
+function showScoreToast(msg){
+    var toast=$('scoreToast');toast.textContent=msg;toast.classList.add('show');
+    setTimeout(function(){toast.classList.remove('show');},3000);
+}
+
 function saveMood(emoji){
-    const h=safeGetJSON('feelio_history');h.push({emoji,date:new Date().toISOString().split('T')[0]});
+    var h=safeGetJSON('feelio_history',[]);h.push({emoji:emoji,date:new Date().toISOString().split('T')[0]});
     if(h.length>30)h.shift();safeSetJSON('feelio_history',h);
     saveDrawingToGallery();
 }
 
 function saveDrawingToGallery(){
-    const data=canvas.toDataURL();const g=safeGetJSON('feelio_gallery');
-    g.unshift({data,date:new Date().toISOString(),mood:currentMood});
+    var data=canvas.toDataURL();var g=safeGetJSON('feelio_gallery',[]);
+    g.unshift({data:data,date:new Date().toISOString(),mood:currentMood});
     if(g.length>12)g.pop();safeSetJSON('feelio_gallery',g);
 }
 
+// ==================== GALLERY & HISTORY ====================
 function buildGallery(){
-    const g=safeGetJSON('feelio_gallery');const grid=$('galleryGrid');grid.innerHTML='';
+    var g=safeGetJSON('feelio_gallery',[]);var grid=$('galleryGrid');grid.innerHTML='';
     if(g.length===0){grid.innerHTML='<div style="color:var(--text3);text-align:center;grid-column:1/-1;padding:24px;font-size:0.65rem">Your drawings will appear here.<br>Draw your first mood! ✍️</div>';return;}
-    g.forEach(item=>{const div=document.createElement('div');div.className='gallery-item';const img=document.createElement('img');img.src=item.data;img.alt='Drawing';img.loading='lazy';div.appendChild(img);grid.appendChild(div);});
+    g.forEach(function(item){
+        var div=document.createElement('div');div.className='gallery-item';
+        var img=document.createElement('img');img.src=item.data;img.alt='Drawing';img.loading='lazy';
+        div.appendChild(img);grid.appendChild(div);
+    });
 }
 
 function buildHistory(){
-    const h=safeGetJSON('feelio_history'),last7=h.slice(-7).reverse(),g=$('historyGrid');g.innerHTML='';
+    var h=safeGetJSON('feelio_history',[]),last7=h.slice(-7).reverse(),g=$('historyGrid');g.innerHTML='';
     if(last7.length===0){g.innerHTML='<div style="color:var(--text3);text-align:center;grid-column:1/-1;padding:24px;font-size:0.65rem">No data yet.<br>Draw your first mood!</div>';return;}
-    last7.forEach(d=>{const div=document.createElement('div');div.className='history-day';const emoji=document.createElement('span');emoji.className='emoji';emoji.textContent=d.emoji;const label=document.createElement('span');label.className='label';label.textContent=d.date.slice(5);div.appendChild(emoji);div.appendChild(label);g.appendChild(div);});
+    last7.forEach(function(d){
+        var div=document.createElement('div');div.className='history-day';
+        var emoji=document.createElement('span');emoji.className='emoji';emoji.textContent=d.emoji;
+        var label=document.createElement('span');label.className='label';label.textContent=d.date.slice(5);
+        div.appendChild(emoji);div.appendChild(label);g.appendChild(div);
+    });
 }
 
-function clearHistory(){safeRemove('feelio_history');buildHistory();updateStreak();updateCollection();}
-
+function clearHistory(){ try{localStorage.removeItem('feelio_history');}catch(e){} buildHistory();updateStreak();updateCollection(); }
 function buildStats(){
-    const h=safeGetJSON('feelio_history'),counts={},c=$('statsContainer');h.forEach(d=>{counts[d.emoji]=(counts[d.emoji]||0)+1;});
+    var h=safeGetJSON('feelio_history',[]),counts={},c=$('statsContainer');h.forEach(function(d){counts[d.emoji]=(counts[d.emoji]||0)+1;});
     c.innerHTML='';
     if(Object.keys(counts).length===0){c.innerHTML='<div style="color:var(--text3);text-align:center;padding:24px;font-size:0.65rem">Draw your first mood to see stats.</div>';return;}
-    Object.entries(counts).sort((a,b)=>b[1]-a[1]).forEach(([emoji,count])=>{const div=document.createElement('div');div.className='stat-card';div.innerHTML='<span class="emoji">'+emoji+'</span><div><span class="count">'+count+'</span><br><span class="label">'+emoji+'</span></div>';c.appendChild(div);});
+    Object.entries(counts).sort(function(a,b){return b[1]-a[1];}).forEach(function(e){
+        var div=document.createElement('div');div.className='stat-card';
+        div.innerHTML='<span class="emoji">'+e[0]+'</span><div><span class="count">'+e[1]+'</span><br><span class="label">'+e[0]+'</span></div>';
+        c.appendChild(div);
+    });
 }
 
 function showScreen(name){
-    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+    document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});
     $('screen-'+name).classList.add('active');
-    document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-    const ni=document.querySelector('.nav-item[data-screen="'+name+'"]');
-    if(ni)ni.classList.add('active');
-    if(name==='history')buildHistory();
-    if(name==='stats')buildStats();
-    if(name==='gallery')buildGallery();
+    document.querySelectorAll('.nav-item').forEach(function(n){n.classList.remove('active');});
+    var ni=document.querySelector('.nav-item[data-screen="'+name+'"]');if(ni)ni.classList.add('active');
+    if(name==='history')buildHistory();if(name==='stats')buildStats();if(name==='gallery')buildGallery();
 }
 
-// ==================== MODALES ====================
-function openModal(id){ $(id).classList.add('open'); $(id).style.pointerEvents='auto'; }
-function closeModal(id){ $(id).classList.remove('open'); $(id).style.pointerEvents='none'; if(id==='modalSpeak')stopSpeech(); }
-
-function openWrite(){ $('journalText').value=''; openModal('modalWrite'); }
+// ==================== MODALS ====================
+function openModal(id){ $(id).classList.add('open');$(id).style.pointerEvents='auto'; }
+function closeModal(id){ $(id).classList.remove('open');$(id).style.pointerEvents='none';if(id==='modalSpeak')stopSpeech(); }
+function openWrite(){ $('journalText').value='';openModal('modalWrite'); }
 function openSpeak(){ $('speechResult').textContent='';$('btnStartSpeak').style.display='';$('btnStopSpeak').style.display='none';$('btnSaveSpeech').style.display='none';openModal('modalSpeak'); }
-
 function saveJournal(){
-    const text=$('journalText').value.trim();if(!text)return;
-    const entries=safeGetJSON('feelio_journal');entries.push({text,date:new Date().toISOString()});
+    var text=$('journalText').value.trim();if(!text)return;
+    var entries=safeGetJSON('feelio_journal',[]);entries.push({text:text,date:new Date().toISOString()});
     safeSetJSON('feelio_journal',entries);closeModal('modalWrite');openModal('modalSaved');
 }
-
 function exportData(){
-    const data={history:safeGet('feelio_history'),journal:safeGet('feelio_journal'),gallery:safeGet('feelio_gallery')};
-    const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
-    const a=document.createElement('a');a.download='feelio-data.json';a.href=URL.createObjectURL(blob);a.click();
+    var data={history:safeGet('feelio_history',''),journal:safeGet('feelio_journal',''),gallery:safeGet('feelio_gallery','')};
+    var blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+    var a=document.createElement('a');a.download='feelio-data.json';a.href=URL.createObjectURL(blob);a.click();
 }
-
 function deleteAllData(){
     if(confirm('Delete ALL your data? This cannot be undone.')){
         if(confirm('FINAL WARNING: Erase everything?')){
             try{localStorage.clear();}catch(e){}
-            resetCanvas();buildHistory();buildStats();buildGallery();$('counter').textContent='0 '+TX.counter;$('dailyCounter').textContent='0 '+TX.dailyCounter;
+            resetCanvas();buildHistory();buildStats();buildGallery();
+            $('counter').textContent='0 '+TX.counter;$('dailyCounter').textContent='0 '+TX.dailyCounter;
             alert('All data deleted.');
         }
     }
@@ -813,23 +1246,20 @@ function deleteAllData(){
 
 // ==================== SPEECH ====================
 function startSpeech(){
-    const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-    if(!SR){alert('Speech recognition not supported on this browser.');return;}
-    recognition=new SR();const m={ar:'ar',fr:'fr-FR',en:'en-US'};recognition.lang=m[lang]||'en-US';
+    var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+    if(!SR){alert('Speech recognition not supported.');return;}
+    recognition=new SR();var m={ar:'ar',fr:'fr-FR',en:'en-US'};recognition.lang=m[lang]||'en-US';
     recognition.interimResults=true;recognition.continuous=true;
-    recognition.onresult=e=>{let t='';for(let i=e.resultIndex;i<e.results.length;i++)t+=e.results[i][0].transcript;$('speechResult').textContent=t;};
-    recognition.onstart=()=>{$('speechIndicator').style.display='flex';};
-    recognition.onend=()=>{$('btnStartSpeak').style.display='';$('btnStopSpeak').style.display='none';$('btnSaveSpeech').style.display='';$('speechIndicator').style.display='none';};
-    recognition.onerror=()=>{stopSpeech();};
-    recognition.start();
-    $('btnStartSpeak').style.display='none';$('btnStopSpeak').style.display='';
+    recognition.onresult=function(e){var t='';for(var i=e.resultIndex;i<e.results.length;i++)t+=e.results[i][0].transcript;$('speechResult').textContent=t;};
+    recognition.onstart=function(){$('speechIndicator').style.display='flex';};
+    recognition.onend=function(){$('btnStartSpeak').style.display='';$('btnStopSpeak').style.display='none';$('btnSaveSpeech').style.display='';$('speechIndicator').style.display='none';};
+    recognition.onerror=function(){stopSpeech();};
+    recognition.start();$('btnStartSpeak').style.display='none';$('btnStopSpeak').style.display='';
 }
-
 function stopSpeech(){if(recognition){try{recognition.stop();}catch(e){}recognition=null;}$('speechIndicator').style.display='none';$('btnStartSpeak').style.display='';$('btnStopSpeak').style.display='none';}
-
 function saveSpeech(){
-    const text=$('speechResult').textContent.trim();if(!text)return;
-    const entries=safeGetJSON('feelio_journal');entries.push({text,date:new Date().toISOString()});
+    var text=$('speechResult').textContent.trim();if(!text)return;
+    var entries=safeGetJSON('feelio_journal',[]);entries.push({text:text,date:new Date().toISOString()});
     safeSetJSON('feelio_journal',entries);closeModal('modalSpeak');openModal('modalSaved');
 }
 
@@ -837,135 +1267,107 @@ function saveSpeech(){
 function toggleNotifications(){
     if(!notificationsEnabled){
         if('Notification' in window){
-            Notification.requestPermission().then(p=>{
-                if(p==='granted'){notificationsEnabled=true;$('notifBtn').textContent='Disable reminders';scheduleNotification();}
+            Notification.requestPermission().then(function(p){
+                if(p==='granted'){notificationsEnabled=true;$('notifBtn').textContent='Disable reminders';safeSet('feelio_notifications','1');scheduleNotification();}
             });
         }else{alert('Notifications not supported.');}
-    }else{notificationsEnabled=false;$('notifBtn').textContent='Enable daily reminders';}
+    }else{notificationsEnabled=false;$('notifBtn').textContent='Enable daily reminders';safeSet('feelio_notifications','0');}
 }
-
-function scheduleNotification(){if(notificationsEnabled){setTimeout(()=>{new Notification('Feelio 💜',{body:'How are you feeling today? Take a moment to draw.'});scheduleNotification();},24*60*60*1000);}}
-
-function toggleSpeech(){voiceEnabled=!voiceEnabled;$('speechToggleBtn').textContent=voiceEnabled?'Disable voice':'Enable voice';}
+function scheduleNotification(){
+    if(!notificationsEnabled && safeGet('feelio_notifications','0')==='0') return;
+    if(safeGet('feelio_notifications','0')==='1') notificationsEnabled=true;
+    if(notificationsEnabled){
+        var now=new Date();var night=new Date(now);night.setHours(20,0,0,0);
+        if(now>night)night.setDate(night.getDate()+1);
+        var delay=night-now;
+        setTimeout(function(){
+            var streak=parseInt(safeGet('feelio_streak','0'))||0;
+            var msg='How are you feeling today? Take a moment to draw.';
+            if(streak>=2)msg='🔥 '+streak+' day streak! Keep it going! Draw your mood.';
+            new Notification('Feelio 💜',{body:msg,icon:'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Ccircle cx=\'50\' cy=\'50\' r=\'45\' fill=\'%23a78bfa\'/%3E%3Ctext x=\'50\' y=\'68\' text-anchor=\'middle\' font-size=\'40\' fill=\'white\'%3E☁️%3C/text%3E%3C/svg%3E'});
+            scheduleNotification();
+        },delay);
+    }
+}
+function toggleSpeech(){ voiceEnabled=!voiceEnabled;$('speechToggleBtn').textContent=voiceEnabled?'Disable voice':'Enable voice'; }
 
 // ==================== AUDIO ====================
-function playAmbient(){try{const ac=new(window.AudioContext||window.webkitAudioContext)();const o=ac.createOscillator();const g=ac.createGain();o.connect(g);g.connect(ac.destination);o.type='sine';o.frequency.value=180;g.gain.value=0.012;o.start();setTimeout(()=>{g.gain.linearRampToValueAtTime(0,ac.currentTime+4);setTimeout(()=>o.stop(),4000);},1500);}catch(e){}}
-
-function playChime(){try{const ac=new(window.AudioContext||window.webkitAudioContext)();const notes={'🌪️':[220,277,330,220],'⚡':[440,554,659,440],'🌧️':[330,392,523,330],'☀️':[523,659,784,1047],'🌙':[392,494,587,392],'🌈':[523,659,784,1047]};const n=notes[currentMood]||[523,659,784,1047];n.forEach((f,i)=>{const o=ac.createOscillator();const g=ac.createGain();o.connect(g);g.connect(ac.destination);o.type=currentMood==='🌙'?'triangle':'sine';o.frequency.value=f;g.gain.setValueAtTime(0.04,ac.currentTime+i*0.15);g.gain.exponentialRampToValueAtTime(0.001,ac.currentTime+i*0.15+0.6);o.start(ac.currentTime+i*0.15);o.stop(ac.currentTime+i*0.15+0.6);});}catch(e){}}
-
-// ==================== PWA ====================
-window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;setTimeout(()=>{if(!safeGet('feelio_install_dismissed'))$('installBanner').classList.add('show');},10000);});
-
-function installPWA(){if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then(()=>{deferredPrompt=null;$('installBanner').classList.remove('show');});}else{alert('Installation not available. You can add Feelio from your browser menu.');}}
-
-// ==================== PARTICULES & PLUIE ====================
-(function(){const c=$('rainCt');for(let i=0;i<100;i++){const d=document.createElement('div');d.className='drop';d.style.left=Math.random()*100+'%';d.style.height=(6+Math.random()*20)+'px';d.style.animationDuration=(0.4+Math.random()*0.8)+'s';d.style.animationDelay=Math.random()*3+'s';c.appendChild(d);}})();
-(function(){const c=$('particlesBg');for(let i=0;i<20;i++){const p=document.createElement('div');p.className='particle-bg';p.style.left=Math.random()*100+'%';p.style.animationDelay=Math.random()*8+'s';p.style.animationDuration=(6+Math.random()*10)+'s';c.appendChild(p);}})();
-
-// ==================== EVENT LISTENERS ====================
-// Langue
-$('btnContinueLang').addEventListener('click', confirmLang);
-buildLangOptions();
-
-// Disclaimer checkboxes
-['discCheck1','discCheck2','discCheck3','discCheck4'].forEach(id=>{
-    $(id).addEventListener('change', checkDisclaimer);
-});
-$('discBtn').addEventListener('click', acceptDisclaimer);
-
-// Onboarding
-$('onBtn').addEventListener('click', nextOnboarding);
-$('btnSkipOnboarding').addEventListener('click', skipOnboarding);
-
-// Langue top bar
-document.querySelectorAll('#langsTop span').forEach(span=>{
-    span.addEventListener('click', ()=>{ setLang(span.dataset.lang); });
-});
-
-// Cookie
-$('btnCookieOk').addEventListener('click', ()=>{ $('cookieBanner').classList.add('hidden'); });
-
-// Toolbar
-document.querySelectorAll('.toolbar button[data-size]').forEach(btn=>{
-    btn.addEventListener('click', ()=>{ setBrushSize(parseInt(btn.dataset.size)); });
-});
-$('btnUndo').addEventListener('click', undoLastStroke);
-$('btnContrast').addEventListener('click', toggleHighContrast);
-$('btnFullscreen').addEventListener('click', toggleFullScreen);
-
-// Reset
-$('btnReset').addEventListener('click', resetCanvas);
-
-// Speak
-$('speakBtn').addEventListener('click', speakPhrase);
-
-// Share
-$('btnShareCopy').addEventListener('click', ()=>shareMood('copy'));
-$('btnShareTwitter').addEventListener('click', ()=>shareMood('twitter'));
-$('btnShareWhatsapp').addEventListener('click', ()=>shareMood('whatsapp'));
-$('btnStory').addEventListener('click', openStoryPreview);
-
-// Story
-$('btnDownloadStory').addEventListener('click', downloadStory);
-$('btnCloseStory').addEventListener('click', ()=>{ $('storyPreview').classList.remove('show'); $('storyPreview').style.pointerEvents='none'; });
-
-// Ask
-$('btnAskYes').addEventListener('click', showWriteSpeak);
-$('btnAskNo').addEventListener('click', sayThanks);
-
-// Modales
-$('btnCloseWrite').addEventListener('click', ()=>closeModal('modalWrite'));
-$('btnCancelWrite').addEventListener('click', ()=>closeModal('modalWrite'));
-$('btnSaveJournal').addEventListener('click', saveJournal);
-$('btnCloseSpeak').addEventListener('click', ()=>closeModal('modalSpeak'));
-$('btnCancelSpeak').addEventListener('click', ()=>closeModal('modalSpeak'));
-$('btnStartSpeak').addEventListener('click', startSpeech);
-$('btnStopSpeak').addEventListener('click', stopSpeech);
-$('btnSaveSpeech').addEventListener('click', saveSpeech);
-$('btnCloseSaved').addEventListener('click', ()=>closeModal('modalSaved'));
-$('btnOkSaved').addEventListener('click', ()=>closeModal('modalSaved'));
-
-// Settings
-$('btnExport').addEventListener('click', exportData);
-$('btnDelete').addEventListener('click', deleteAllData);
-$('btnNotifToggle').addEventListener('click', toggleNotifications);
-$('btnSpeechToggle').addEventListener('click', toggleSpeech);
-$('btnFontUp').addEventListener('click', ()=>changeFontSize(1));
-$('btnFontDown').addEventListener('click', ()=>changeFontSize(-1));
-$('btnGoTrust').addEventListener('click', ()=>showScreen('trust'));
-$('btnGoResources').addEventListener('click', ()=>showScreen('resources'));
-$('btnClearHistory').addEventListener('click', clearHistory);
-
-// Premium
-$('btnPaypal').addEventListener('click', ()=>window.open('https://www.paypal.com/ncp/payment/87EWJWTBTWXWS','_blank'));
-$('btnKofi').addEventListener('click', ()=>window.open('https://ko-fi.com/feelio','_blank'));
-
-// PWA
-$('btnInstall').addEventListener('click', installPWA);
-$('btnCloseInstall').addEventListener('click', ()=>{ $('installBanner').classList.remove('show'); safeSet('feelio_install_dismissed','1'); });
-
-// Nav
-document.querySelectorAll('.nav-item').forEach(item=>{
-    item.addEventListener('click', ()=>{ showScreen(item.dataset.screen); });
-});
-
-// ==================== DÉMARRAGE ====================
-// Si l'onboarding est déjà fait, on saute les overlays
-if(safeGet('feelio_onboarding_done')==='1'){
-    hideOverlay('langOverlay');
-    hideOverlay('disclaimerOverlay');
-    hideOverlay('onboardingOverlay');
-    initApp();
-} else {
-    // Affiche juste la langue
-    showOverlay('langOverlay');
+function playAmbient(){
+    try{var ac=new(window.AudioContext||window.webkitAudioContext)();var o=ac.createOscillator();var g=ac.createGain();o.connect(g);g.connect(ac.destination);o.type='sine';o.frequency.value=180;g.gain.value=0.012;o.start();setTimeout(function(){g.gain.linearRampToValueAtTime(0,ac.currentTime+4);setTimeout(function(){o.stop();},4000);},1500);}catch(e){}
+}
+function playChime(){
+    try{
+        var ac=new(window.AudioContext||window.webkitAudioContext)();
+        var notes={};notes[TX.tornado]=[220,277,330,220];notes[TX.lightning]=[440,554,659,440];notes[TX.rain]=[330,392,523,330];
+        notes[TX.sun]=[523,659,784,1047];notes[TX.night]=[392,494,587,392];notes[TX.rainbow]=[523,659,784,1047];
+        var n=notes[currentMood]||[523,659,784,1047];
+        n.forEach(function(f,i){
+            var o=ac.createOscillator();var g=ac.createGain();o.connect(g);g.connect(ac.destination);
+            o.type=currentMood===TX.night?'triangle':'sine';o.frequency.value=f;
+            g.gain.setValueAtTime(0.04,ac.currentTime+i*0.15);
+            g.gain.exponentialRampToValueAtTime(0.001,ac.currentTime+i*0.15+0.6);
+            o.start(ac.currentTime+i*0.15);o.stop(ac.currentTime+i*0.15+0.6);
+        });
+    }catch(e){}
 }
 
-// Initialisation compteurs
-const savedTotal = parseInt(safeGet('feelio_total','0'))||0;
-$('counter').textContent = savedTotal.toLocaleString()+' '+TX.counter;
-const savedDaily = parseInt(safeGet('feelio_daily','0'))||0;
-$('dailyCounter').textContent = savedDaily.toLocaleString()+' '+TX.dailyCounter;
+// ==================== PWA ====================
+window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferredPrompt=e;setTimeout(function(){if(!safeGet('feelio_install_dismissed'))$('installBanner').classList.add('show');},15000);});
+function installPWA(){
+    if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then(function(){deferredPrompt=null;$('installBanner').classList.remove('show');});}
+    else{alert('Installation not available. You can add Feelio from your browser menu.');}
+}
+
+// ==================== PARTICULES ====================
+(function(){var c=$('rainCt');for(var i=0;i<100;i++){var d=document.createElement('div');d.className='drop';d.style.left=Math.random()*100+'%';d.style.height=(6+Math.random()*20)+'px';d.style.animationDuration=(0.4+Math.random()*0.8)+'s';d.style.animationDelay=Math.random()*3+'s';c.appendChild(d);}})();
+(function(){var c=$('particlesBg');for(var i=0;i<20;i++){var p=document.createElement('div');p.className='particle-bg';p.style.left=Math.random()*100+'%';p.style.animationDelay=Math.random()*8+'s';p.style.animationDuration=(6+Math.random()*10)+'s';c.appendChild(p);}})();
+
+// ==================== EVENT LISTENERS ====================
+$('btnStartSplash').addEventListener('click',function(){hideOverlay('splashOverlay');showOverlay('langOverlay');});
+buildLangOptions();
+$('btnContinueLang').addEventListener('click',function(){hideOverlay('langOverlay');showOverlay('disclaimerOverlay');checkDisclaimer();});
+['discCheck1','discCheck2','discCheck3','discCheck4'].forEach(function(id){$(id).addEventListener('change',checkDisclaimer);});
+$('discBtn').addEventListener('click',function(){hideOverlay('disclaimerOverlay');showOverlay('onboardingOverlay');playAmbient();});
+$('onBtn').addEventListener('click',function(){
+    onStep++;if(onStep>=3){hideOverlay('onboardingOverlay');safeSet('feelio_onboarding_done','1');initApp();}
+    else{document.querySelectorAll('.onboarding-slide').forEach(function(s){s.classList.remove('active');});$('onSlide'+onStep).classList.add('active');document.querySelectorAll('.onboarding-dots .dot').forEach(function(d,i){d.classList.toggle('active',i===onStep);});$('onBtn').textContent=onStep===2?'Begin':'Next';}
+});
+$('btnSkipOnboarding').addEventListener('click',function(){hideOverlay('onboardingOverlay');safeSet('feelio_onboarding_done','1');initApp();});
+document.querySelectorAll('#langsTop span').forEach(function(s){s.addEventListener('click',function(){setLang(s.dataset.lang);});});
+$('btnCookieOk').addEventListener('click',function(){$('cookieBanner').classList.add('hidden');});
+document.querySelectorAll('.toolbar button[data-size]').forEach(function(b){b.addEventListener('click',function(){setBrushSize(parseInt(b.dataset.size));});});
+$('btnUndo').addEventListener('click',undoLastStroke);$('btnContrast').addEventListener('click',toggleHighContrast);$('btnFullscreen').addEventListener('click',toggleFullScreen);
+$('btnReset').addEventListener('click',resetCanvas);$('speakBtn').addEventListener('click',speakPhrase);
+$('btnShareCopy').addEventListener('click',function(){shareMood('copy');});$('btnShareTwitter').addEventListener('click',function(){shareMood('twitter');});$('btnShareWhatsapp').addEventListener('click',function(){shareMood('whatsapp');});
+$('btnStory').addEventListener('click',openStoryPreview);$('btnDownloadStory').addEventListener('click',downloadStory);
+$('btnCloseStory').addEventListener('click',function(){$('storyPreview').classList.remove('show');$('storyPreview').style.pointerEvents='none';});
+$('btnAskYes').addEventListener('click',showWriteSpeak);$('btnAskNo').addEventListener('click',sayThanks);
+$('btnCloseWrite').addEventListener('click',function(){closeModal('modalWrite');});$('btnCancelWrite').addEventListener('click',function(){closeModal('modalWrite');});$('btnSaveJournal').addEventListener('click',saveJournal);
+$('btnCloseSpeak').addEventListener('click',function(){closeModal('modalSpeak');});$('btnCancelSpeak').addEventListener('click',function(){closeModal('modalSpeak');});$('btnStartSpeak').addEventListener('click',startSpeech);$('btnStopSpeak').addEventListener('click',stopSpeech);$('btnSaveSpeech').addEventListener('click',saveSpeech);
+$('btnCloseSaved').addEventListener('click',function(){closeModal('modalSaved');});$('btnOkSaved').addEventListener('click',function(){closeModal('modalSaved');});
+$('btnExport').addEventListener('click',exportData);$('btnDelete').addEventListener('click',deleteAllData);
+$('btnNotifToggle').addEventListener('click',toggleNotifications);$('btnSpeechToggle').addEventListener('click',toggleSpeech);
+$('btnFontUp').addEventListener('click',function(){changeFontSize(1);});$('btnFontDown').addEventListener('click',function(){changeFontSize(-1);});
+$('btnGoTrust').addEventListener('click',function(){showScreen('trust');});$('btnGoResources').addEventListener('click',function(){showScreen('resources');});
+$('btnClearHistory').addEventListener('click',clearHistory);
+$('btnPaypal').addEventListener('click',function(){window.open('https://www.paypal.com/ncp/payment/87EWJWTBTWXWS','_blank');});
+$('btnKofi').addEventListener('click',function(){window.open('https://ko-fi.com/feelio','_blank');});
+$('btnInstall').addEventListener('click',installPWA);
+$('btnCloseInstall').addEventListener('click',function(){$('installBanner').classList.remove('show');safeSet('feelio_install_dismissed','1');});
+document.querySelectorAll('.nav-item').forEach(function(item){item.addEventListener('click',function(){showScreen(item.dataset.screen);});});
+
+// ==================== START ====================
+if(safeGet('feelio_onboarding_done')==='1'){
+    hideOverlay('splashOverlay');hideOverlay('langOverlay');hideOverlay('disclaimerOverlay');hideOverlay('onboardingOverlay');
+    initApp();
+}else{
+    showOverlay('splashOverlay');
+}
+
+var savedTotal=parseInt(safeGet('feelio_total','0'))||0;$('counter').textContent=savedTotal.toLocaleString()+' '+TX.counter;
+var savedDaily=parseInt(safeGet('feelio_daily','0'))||0;$('dailyCounter').textContent=savedDaily.toLocaleString()+' '+TX.dailyCounter;
+streakCount=parseInt(safeGet('feelio_streak','0'))||0;
+if(safeGet('feelio_notifications','0')==='1'){notificationsEnabled=true;$('notifBtn').textContent='Disable reminders';scheduleNotification();}
 
 })();
 </script>
