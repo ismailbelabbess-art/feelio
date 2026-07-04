@@ -43,6 +43,7 @@
         .lang-select-box p{color:rgba(255,255,255,0.6);font-size:0.8rem;margin-bottom:28px}
         .lang-options{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:24px}
         .lang-option{padding:16px;border-radius:16px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.03);color:var(--text);cursor:pointer;transition:all var(--transition);font-size:0.85rem;text-align:center}
+        .lang-option:hover{border-color:rgba(167,139,250,0.4);background:rgba(139,92,246,0.05)}
         .lang-option.active{border-color:var(--accent);background:rgba(139,92,246,0.1);color:var(--accent)}
         .disclaimer-overlay{position:fixed;inset:0;z-index:750;background:rgba(0,0,0,0.9);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.5s}
         .disclaimer-overlay.show{opacity:1;pointer-events:auto}
@@ -152,6 +153,7 @@
         .settings-group{margin:8px 0;width:100%;max-width:320px}.settings-group .group-title{color:var(--text3);font-size:0.52rem;font-weight:500;letter-spacing:1px;margin-bottom:6px;text-transform:uppercase}
         .speech-indicator{display:none;align-items:center;gap:6px;padding:6px 14px;background:rgba(239,68,68,0.15);border-radius:16px;color:#ef4444;font-size:0.55rem;margin-top:8px;animation:pulse 1.5s ease-in-out infinite}
         @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+        #discBtn{transition:opacity 0.3s ease}
         @media(min-width:768px){canvas{width:320px;height:320px}.logo-text-main{font-size:2.8rem}.screen{padding:28px}}
         @media(max-width:767px){.screen{padding:24px 20px;padding-top:50px}.logo-text-main{font-size:2rem}.tagline{font-size:0.68rem;margin-bottom:28px}canvas{width:280px;height:280px}.canvas-wrap{margin-bottom:16px}#result{font-size:3.5rem}#phrase{font-size:0.82rem}#phrase2{font-size:0.64rem}.toolbar button{width:32px;height:32px}.btn{padding:11px 24px;font-size:0.65rem}.nav{--nav-h:52px;padding:0 4px}.nav-item{padding:2px 6px;min-width:38px}.nav-item .icon{width:1.1rem;height:1.1rem}.nav-item .icon-wrap{width:30px;height:30px}.nav-item .nav-label{font-size:0.42rem}.cookie-banner{bottom:calc(var(--nav-h) + 8px)}.install-banner{bottom:calc(var(--nav-h) + 8px)}}
         @media(prefers-reduced-motion:reduce){*,::before,::after{animation-duration:0.01ms!important;animation-iteration-count:1!important;transition-duration:0.01ms!important}}
@@ -220,7 +222,8 @@
 </div>
 <div class="modal-overlay" id="modalWrite"><div class="modal"><span class="close-x" onclick="closeModal('modalWrite')">✕</span><div style="font-size:0.95rem;font-weight:400;margin-bottom:2px" id="modalWriteTitle">What's on your mind?</div><div style="color:var(--text3);font-size:0.48rem;margin-bottom:4px">Everything stays on your phone.</div><textarea id="journalText" placeholder="Write here..." aria-label="Journal"></textarea><div class="btn-row"><button class="btn btn-outline btn-small" onclick="closeModal('modalWrite')">Cancel</button><button class="btn btn-primary btn-small" onclick="saveJournal()">💾 Save</button></div></div></div>
 <div class="modal-overlay" id="modalSpeak"><div class="modal"><span class="close-x" onclick="closeModal('modalSpeak')">✕</span><div style="font-size:0.95rem;font-weight:400;margin-bottom:2px" id="modalSpeakTitle">Speak freely</div><div style="color:var(--text3);font-size:0.48rem;margin-bottom:6px">Your voice stays on your phone.</div><div id="speechResult" style="min-height:45px;color:var(--text);font-size:0.65rem;padding:10px;background:rgba(255,255,255,0.03);border-radius:12px;margin-bottom:8px"></div><div class="btn-row"><button class="btn btn-outline btn-small" onclick="closeModal('modalSpeak')">Cancel</button><button class="btn btn-primary btn-small" id="btnStartSpeak" onclick="startSpeech()">🎙️ Start</button><button class="btn btn-outline btn-small" id="btnStopSpeak" onclick="stopSpeech()" style="display:none">⏹️ Stop</button><button class="btn btn-primary btn-small" id="btnSaveSpeech" onclick="saveSpeech()" style="display:none">💾 Save</button></div></div></div>
-<div class="modal-overlay" id="modalSaved"><div class="modal"><span class="close-x" onclick="closeModal('modalSaved')">✕</span><div style="font-size:2.2rem;margin-bottom:10px">🔒</div><div style="font-size:0.9rem;font-weight:400;margin-bottom:3px" id="savedMsg">It's between you and you.</div><div style="color:var(--text3);font-size:0.5rem">No one will ever read this.</div><button class="btn btn-primary btn-small" style="margin-top:12px" onclick="closeModal('modalSaved')">OK</button></div></div><script>
+<div class="modal-overlay" id="modalSaved"><div class="modal"><span class="close-x" onclick="closeModal('modalSaved')">✕</span><div style="font-size:2.2rem;margin-bottom:10px">🔒</div><div style="font-size:0.9rem;font-weight:400;margin-bottom:3px" id="savedMsg">It's between you and you.</div><div style="color:var(--text3);font-size:0.5rem">No one will ever read this.</div><button class="btn btn-primary btn-small" style="margin-top:12px" onclick="closeModal('modalSaved')">OK</button></div></div>
+<script>
 const LANGDATA={
 en:{discTitle:'Before you begin',discIntro:'Feelio is your private space. Please read and accept:',discLabel1:'I understand Feelio is not a medical tool',discLabel2:'I understand my data stays on my device',discLabel3:'I am 13 years or older',discLabel4:'I agree to use Feelio for personal, non-commercial purposes',discBtn:'Begin',
 onTitle0:'Welcome to Feelio',onText0:'Your private emotional space.<br>No judgment. No data collected.',onTitle1:'Draw your mood',onText1:'Use your finger to draw how you feel.<br>Feelio will listen.',onTitle2:'You are not alone',onText2:'Every storm passes.<br>Every sun rises again.',
@@ -264,12 +267,21 @@ const TRUST_EN={content:`<h3>Privacy Policy</h3><p>Feelio collects <strong>no pe
 let lang=(navigator.language||'en').split('-')[0];if(!LANGDATA[lang])lang='en';let TX=LANGDATA[lang];
 let currentTheme={accent:'#a78bfa',accent2:'#7c3aed',bg:'#0a0a18'},currentMood='',brushSize=7,voiceEnabled=false;
 let strokeHistory=[],highContrast=false,notificationsEnabled=false,phrasesSpoken=0,deferredPrompt=null;
+
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;setTimeout(()=>{if(!localStorage.getItem('feelio_install_dismissed'))document.getElementById('installBanner').classList.add('show')},10000)});
 function installPWA(){if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then(()=>{deferredPrompt=null;document.getElementById('installBanner').classList.remove('show')})}else{alert('Installation not available right now. You can add Feelio from your browser menu.')}}
+
+// ✅✅✅ CORRIGÉ : buildLangOptions avec updateDisclaimerTexts
 function buildLangOptions(){const container=document.getElementById('langOptions');container.innerHTML='';const langs={en:'🇬🇧 English',fr:'🇫🇷 Français',es:'🇪🇸 Español',ar:'🇸🇦 العربية',ja:'🇯🇵 日本語',zh:'🇨🇳 中文',tam:'ⵜⴰⵎⴰⵣⵉⵖⵜ'};Object.entries(langs).forEach(([code,label])=>{const div=document.createElement('div');div.className='lang-option'+(code===lang?' active':'');div.innerHTML=label;div.onclick=()=>{lang=code;TX=LANGDATA[lang]||LANGDATA.en;buildLangOptions();updateDisclaimerTexts()}});container.appendChild(div)}
+
 function confirmLang(){document.getElementById('langSelectOverlay').classList.remove('show');document.getElementById('disclaimerOverlay').classList.add('show');checkDisclaimer()}
+
+// ✅✅✅ CORRIGÉ : checkDisclaimer avec gestion opacité
 function checkDisclaimer(){const c1=document.getElementById('discCheck1').checked;const c2=document.getElementById('discCheck2').checked;const c3=document.getElementById('discCheck3').checked;const c4=document.getElementById('discCheck4').checked;const btn=document.getElementById('discBtn');btn.disabled=!(c1&&c2&&c3&&c4);if(!btn.disabled){btn.style.opacity='1'}else{btn.style.opacity='0.4'}}
+
+// ✅✅✅ AJOUTÉ : updateDisclaimerTexts
 function updateDisclaimerTexts(){document.getElementById('discTitle').textContent=TX.discTitle;document.getElementById('discIntro').textContent=TX.discIntro;document.getElementById('discLabel1').textContent=TX.discLabel1;document.getElementById('discLabel2').textContent=TX.discLabel2;document.getElementById('discLabel3').textContent=TX.discLabel3;document.getElementById('discLabel4').textContent=TX.discLabel4;document.getElementById('discBtn').textContent=TX.discBtn;checkDisclaimer()}
+
 function acceptDisclaimer(){document.getElementById('disclaimerOverlay').classList.remove('show');document.getElementById('onboardingOverlay').classList.add('show');playAmbient()}
 let onStep=0;
 function nextOnboarding(){onStep++;if(onStep>=3){document.getElementById('onboardingOverlay').classList.remove('show');localStorage.setItem('feelio_onboarding_done','1')}else{document.querySelectorAll('.onboarding-slide').forEach(s=>s.classList.remove('active'));document.getElementById('onSlide'+onStep).classList.add('active');document.querySelectorAll('.onboarding-dots .dot').forEach((d,i)=>d.classList.toggle('active',i===onStep));document.getElementById('onBtn').textContent=onStep===2?'Begin':'Next'}}
@@ -280,19 +292,18 @@ function updateUI(){
     document.querySelectorAll('.nav-label').forEach((n,i)=>{if(TX.nav[i])n.textContent=TX.nav[i]});
     document.getElementById('trustTitle').textContent='Trust & Safety';document.getElementById('trustContent').innerHTML=lang==='fr'?TRUST_EN.fr:TRUST_EN.content;
     document.getElementById('cookieText').textContent=TX.cookieText;
-    document.getElementById('discTitle').textContent=TX.discTitle;document.getElementById('discIntro').textContent=TX.discIntro;document.getElementById('discLabel1').textContent=TX.discLabel1;document.getElementById('discLabel2').textContent=TX.discLabel2;document.getElementById('discLabel3').textContent=TX.discLabel3;document.getElementById('discLabel4').textContent=TX.discLabel4;document.getElementById('discBtn').textContent=TX.discBtn;
+    updateDisclaimerTexts();
     document.getElementById('onTitle0').textContent=TX.onTitle0;document.getElementById('onText0').innerHTML=TX.onText0;document.getElementById('onTitle1').textContent=TX.onTitle1;document.getElementById('onText1').innerHTML=TX.onText1;document.getElementById('onTitle2').textContent=TX.onTitle2;document.getElementById('onText2').innerHTML=TX.onText2;
     document.getElementById('counter').textContent=(parseInt(localStorage.getItem('feelio_total')||'0')).toLocaleString()+' '+TX.counter;
     document.getElementById('dailyCounter').textContent=(parseInt(localStorage.getItem('feelio_daily')||'0')).toLocaleString()+' '+TX.dailyCounter;updateStreak();updateCollection();buildGallery();
 }
 buildLangOptions();
-document.querySelectorAll('.disclaimer-overlay input[type=checkbox]').forEach(cb=>cb.addEventListener('change',checkDisclaimer));
 const canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');let drawing=false,points=[],startTime=0;
 function setBrushSize(s){brushSize=s;document.querySelectorAll('.toolbar button:first-child, .toolbar button:nth-child(2), .toolbar button:nth-child(3)').forEach(b=>b.classList.remove('active'));document.getElementById(s===4?'brushS':s===7?'brushM':'brushL').classList.add('active')}
 function undoLastStroke(){if(strokeHistory.length>0){const last=strokeHistory.pop();ctx.putImageData(last,0,0)}}
 function toggleHighContrast(){highContrast=!highContrast;document.body.classList.toggle('high-contrast',highContrast)}
 function toggleFullScreen(){if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen().catch(()=>{})}
-function changeFontSize(dir){const root=document.documentElement;let fs=parseFloat(getComputedStyle(root).getPropertyValue('--font-size'));fs=Math.max(0.7,Math.min(1.5,fs+dir*0.1));root.style.setProperty('--font-size',fs+'rem')}
+function changeFontSize(dir){const root=document.documentElement;let fs=parseFloat(getComputedStyle(root).getPropertyValue('--font-size')||'1');fs=Math.max(0.7,Math.min(1.5,fs+dir*0.1));root.style.setProperty('--font-size',fs+'rem')}
 function toggleNotifications(){if(!notificationsEnabled){Notification.requestPermission().then(p=>{if(p==='granted'){notificationsEnabled=true;document.getElementById('notifBtn').textContent='Disable reminders';scheduleNotification()}})}else{notificationsEnabled=false;document.getElementById('notifBtn').textContent='Enable daily reminders'}}
 function toggleSpeech(){voiceEnabled=!voiceEnabled;document.getElementById('speechToggleBtn').textContent=voiceEnabled?'Disable voice':'Enable voice'}
 function scheduleNotification(){if(notificationsEnabled){setTimeout(()=>{new Notification('Feelio 💜',{body:'How are you feeling today? Take a moment to draw.'});scheduleNotification()},24*60*60*1000)}}
@@ -341,6 +352,7 @@ function playChime(){try{const ac=new(window.AudioContext||window.webkitAudioCon
 (function(){const c=document.getElementById('particlesBg');for(let i=0;i<20;i++){const p=document.createElement('div');p.className='particle-bg';p.style.left=Math.random()*100+'%';p.style.animationDelay=Math.random()*8+'s';p.style.animationDuration=(6+Math.random()*10)+'s';c.appendChild(p)}})();
 const savedTheme=JSON.parse(localStorage.getItem('feelio_theme')||'null');if(savedTheme){currentTheme=savedTheme;document.documentElement.style.setProperty('--accent',savedTheme.accent);document.documentElement.style.setProperty('--accent2',savedTheme.accent2);document.body.style.background=savedTheme.bg}
 const hour=new Date().getHours();if(!savedTheme){if(hour>=6&&hour<12)setTheme('#fbbf24','#d97706','#1a1408');else if(hour>=12&&hour<18)setTheme('#60a5fa','#3b82f6','#0a0f1a');else if(hour>=18&&hour<22)setTheme('#f472b6','#db2777','#1a0a14');else setTheme('#a78bfa','#7c3aed','#0a0a18')}
+// ✅✅✅ AJOUTÉ : fonction setTheme manquante
 function setTheme(a,a2,bg){currentTheme={accent:a,accent2:a2,bg:bg};document.documentElement.style.setProperty('--accent',a);document.documentElement.style.setProperty('--accent2',a2);document.body.style.background=bg;localStorage.setItem('feelio_theme',JSON.stringify(currentTheme))}
 updateUI();
 function downloadStory(){if(typeof html2canvas==='undefined'){alert('Loading... please try again in a moment.');return}const el=document.getElementById('storyPreview').querySelector('.story-content');html2canvas(el,{backgroundColor:getComputedStyle(document.body).backgroundColor}).then(canvas=>{const a=document.createElement('a');a.download='feelio-story.png';a.href=canvas.toDataURL();a.click()})}
