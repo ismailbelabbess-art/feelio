@@ -129,7 +129,6 @@
         .btn{display:inline-flex;align-items:center;gap:6px;padding:12px 26px;border-radius:50px;font-size:0.68rem;font-weight:400;letter-spacing:0.5px;cursor:pointer;transition:all var(--transition);border:none;position:relative;overflow:hidden}
         .btn:active{transform:scale(0.96)}
         .btn-primary{background:linear-gradient(135deg,var(--accent2),var(--accent));color:#fff;box-shadow:0 4px 20px rgba(124,58,237,0.25)}
-        .btn-primary:disabled{opacity:0.4;cursor:not-allowed;box-shadow:none}
         .btn-outline{background:rgba(255,255,255,0.03);color:var(--text2);border:1px solid rgba(255,255,255,0.12)}
         .btn-small{padding:8px 16px;font-size:0.58rem}.btn-icon{padding:10px 12px;border-radius:50%;font-size:0.95rem}
         .share-btns{display:flex;gap:8px;margin-top:8px;animation:fadeIn 0.5s ease-out}
@@ -162,10 +161,10 @@
 <div class="lang-select-overlay show" id="langSelectOverlay"><div class="lang-select-box"><h2>Choose your language</h2><p>Feelio speaks your language.</p><div class="lang-options" id="langOptions"></div><button class="btn btn-primary" onclick="confirmLang()">Continue</button></div></div>
 <div class="disclaimer-overlay" id="disclaimerOverlay"><div class="disclaimer-box">
     <h2 id="discTitle">Before you begin</h2><p id="discIntro">Feelio is your private space. Please read and accept:</p>
-    <div class="check-row"><input type="checkbox" id="discCheck1" onchange="checkDisclaimer()"><label for="discCheck1" id="discLabel1">I understand Feelio is not a medical tool</label></div>
-    <div class="check-row"><input type="checkbox" id="discCheck2" onchange="checkDisclaimer()"><label for="discCheck2" id="discLabel2">I understand my data stays on my device</label></div>
-    <div class="check-row"><input type="checkbox" id="discCheck3" onchange="checkDisclaimer()"><label for="discCheck3" id="discLabel3">I am 13 years or older</label></div>
-    <div class="check-row"><input type="checkbox" id="discCheck4" onchange="checkDisclaimer()"><label for="discCheck4" id="discLabel4">I agree to use Feelio for personal, non-commercial purposes</label></div>
+    <div class="check-row"><input type="checkbox" id="discCheck1"><label for="discCheck1" id="discLabel1">I understand Feelio is not a medical tool</label></div>
+    <div class="check-row"><input type="checkbox" id="discCheck2"><label for="discCheck2" id="discLabel2">I understand my data stays on my device</label></div>
+    <div class="check-row"><input type="checkbox" id="discCheck3"><label for="discCheck3" id="discLabel3">I am 13 years or older</label></div>
+    <div class="check-row"><input type="checkbox" id="discCheck4"><label for="discCheck4" id="discLabel4">I agree to use Feelio for personal, non-commercial purposes</label></div>
     <button class="btn btn-primary" onclick="acceptDisclaimer()" id="discBtn" disabled>Begin</button>
 </div></div>
 <div class="install-banner" id="installBanner">
@@ -220,7 +219,8 @@
 </div>
 <div class="modal-overlay" id="modalWrite"><div class="modal"><span class="close-x" onclick="closeModal('modalWrite')">✕</span><div style="font-size:0.95rem;font-weight:400;margin-bottom:2px" id="modalWriteTitle">What's on your mind?</div><div style="color:var(--text3);font-size:0.48rem;margin-bottom:4px">Everything stays on your phone.</div><textarea id="journalText" placeholder="Write here..." aria-label="Journal"></textarea><div class="btn-row"><button class="btn btn-outline btn-small" onclick="closeModal('modalWrite')">Cancel</button><button class="btn btn-primary btn-small" onclick="saveJournal()">💾 Save</button></div></div></div>
 <div class="modal-overlay" id="modalSpeak"><div class="modal"><span class="close-x" onclick="closeModal('modalSpeak')">✕</span><div style="font-size:0.95rem;font-weight:400;margin-bottom:2px" id="modalSpeakTitle">Speak freely</div><div style="color:var(--text3);font-size:0.48rem;margin-bottom:6px">Your voice stays on your phone.</div><div id="speechResult" style="min-height:45px;color:var(--text);font-size:0.65rem;padding:10px;background:rgba(255,255,255,0.03);border-radius:12px;margin-bottom:8px"></div><div class="btn-row"><button class="btn btn-outline btn-small" onclick="closeModal('modalSpeak')">Cancel</button><button class="btn btn-primary btn-small" id="btnStartSpeak" onclick="startSpeech()">🎙️ Start</button><button class="btn btn-outline btn-small" id="btnStopSpeak" onclick="stopSpeech()" style="display:none">⏹️ Stop</button><button class="btn btn-primary btn-small" id="btnSaveSpeech" onclick="saveSpeech()" style="display:none">💾 Save</button></div></div></div>
-<div class="modal-overlay" id="modalSaved"><div class="modal"><span class="close-x" onclick="closeModal('modalSaved')">✕</span><div style="font-size:2.2rem;margin-bottom:10px">🔒</div><div style="font-size:0.9rem;font-weight:400;margin-bottom:3px" id="savedMsg">It's between you and you.</div><div style="color:var(--text3);font-size:0.5rem">No one will ever read this.</div><button class="btn btn-primary btn-small" style="margin-top:12px" onclick="closeModal('modalSaved')">OK</button></div></div><script>
+<div class="modal-overlay" id="modalSaved"><div class="modal"><span class="close-x" onclick="closeModal('modalSaved')">✕</span><div style="font-size:2.2rem;margin-bottom:10px">🔒</div><div style="font-size:0.9rem;font-weight:400;margin-bottom:3px" id="savedMsg">It's between you and you.</div><div style="color:var(--text3);font-size:0.5rem">No one will ever read this.</div><button class="btn btn-primary btn-small" style="margin-top:12px" onclick="closeModal('modalSaved')">OK</button></div></div>
+<script>
 const LANGDATA={
 en:{discTitle:'Before you begin',discIntro:'Feelio is your private space. Please read and accept:',discLabel1:'I understand Feelio is not a medical tool',discLabel2:'I understand my data stays on my device',discLabel3:'I am 13 years or older',discLabel4:'I agree to use Feelio for personal, non-commercial purposes',discBtn:'Begin',
 onTitle0:'Welcome to Feelio',onText0:'Your private emotional space.<br>No judgment. No data collected.',onTitle1:'Draw your mood',onText1:'Use your finger to draw how you feel.<br>Feelio will listen.',onTitle2:'You are not alone',onText2:'Every storm passes.<br>Every sun rises again.',
@@ -264,14 +264,15 @@ const TRUST_EN={content:`<h3>Privacy Policy</h3><p>Feelio collects <strong>no pe
 let lang=(navigator.language||'en').split('-')[0];if(!LANGDATA[lang])lang='en';let TX=LANGDATA[lang];
 let currentTheme={accent:'#a78bfa',accent2:'#7c3aed',bg:'#0a0a18'},currentMood='',brushSize=7,voiceEnabled=false;
 let strokeHistory=[],highContrast=false,notificationsEnabled=false,phrasesSpoken=0,deferredPrompt=null;
+
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;setTimeout(()=>{if(!localStorage.getItem('feelio_install_dismissed'))document.getElementById('installBanner').classList.add('show')},10000)});
 function installPWA(){if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then(()=>{deferredPrompt=null;document.getElementById('installBanner').classList.remove('show')})}else{alert('Installation not available right now. You can add Feelio from your browser menu.')}}
 function buildLangOptions(){const container=document.getElementById('langOptions');container.innerHTML='';const langs={en:'🇬🇧 English',fr:'🇫🇷 Français',es:'🇪🇸 Español',ar:'🇸🇦 العربية',ja:'🇯🇵 日本語',zh:'🇨🇳 中文',tam:'ⵜⴰⵎⴰⵣⵉⵖⵜ'};Object.entries(langs).forEach(([code,label])=>{const div=document.createElement('div');div.className='lang-option'+(code===lang?' active':'');div.innerHTML=label;div.onclick=()=>{lang=code;TX=LANGDATA[lang]||LANGDATA.en;buildLangOptions();updateDisclaimerTexts()}});container.appendChild(div)}
 function confirmLang(){document.getElementById('langSelectOverlay').classList.remove('show');document.getElementById('disclaimerOverlay').classList.add('show');checkDisclaimer()}
 function checkDisclaimer(){const c1=document.getElementById('discCheck1').checked;const c2=document.getElementById('discCheck2').checked;const c3=document.getElementById('discCheck3').checked;const c4=document.getElementById('discCheck4').checked;const btn=document.getElementById('discBtn');btn.disabled=!(c1&&c2&&c3&&c4);if(!btn.disabled){btn.style.opacity='1'}else{btn.style.opacity='0.4'}}
-function updateDisclaimerTexts(){document.getElementById('discTitle').textContent=TX.discTitle;document.getElementById('discIntro').textContent=TX.discIntro;document.getElementById('discLabel1').textContent=TX.discLabel1;document.getElementById('discLabel2').textContent=TX.discLabel2;document.getElementById('discLabel3').textContent=TX.discLabel3;document.getElementById('discLabel4').textContent=TX.discLabel4;document.getElementById('discBtn').textContent=TX.discBtn;checkDisclaimer()}
 function acceptDisclaimer(){document.getElementById('disclaimerOverlay').classList.remove('show');document.getElementById('onboardingOverlay').classList.add('show');playAmbient()}
 let onStep=0;
+function updateDisclaimerTexts(){document.getElementById('discTitle').textContent=TX.discTitle;document.getElementById('discIntro').textContent=TX.discIntro;document.getElementById('discLabel1').textContent=TX.discLabel1;document.getElementById('discLabel2').textContent=TX.discLabel2;document.getElementById('discLabel3').textContent=TX.discLabel3;document.getElementById('discLabel4').textContent=TX.discLabel4;document.getElementById('discBtn').textContent=TX.discBtn;checkDisclaimer()}
 function nextOnboarding(){onStep++;if(onStep>=3){document.getElementById('onboardingOverlay').classList.remove('show');localStorage.setItem('feelio_onboarding_done','1')}else{document.querySelectorAll('.onboarding-slide').forEach(s=>s.classList.remove('active'));document.getElementById('onSlide'+onStep).classList.add('active');document.querySelectorAll('.onboarding-dots .dot').forEach((d,i)=>d.classList.toggle('active',i===onStep));document.getElementById('onBtn').textContent=onStep===2?'Begin':'Next'}}
 function skipOnboarding(){document.getElementById('onboardingOverlay').classList.remove('show');localStorage.setItem('feelio_onboarding_done','1')}
 function setLang(l){lang=l;TX=LANGDATA[l]||LANGDATA.en;document.querySelectorAll('.langs span').forEach(s=>s.classList.remove('active'));const b=document.querySelector('.langs span[onclick="setLang(\''+l+'\')"]');if(b)b.classList.add('active');document.body.className=lang==='ar'?'ar':lang==='ja'?'ja':lang==='zh'?'zh':'';updateUI();resetCanvas();buildHistory();buildStats()}
@@ -285,8 +286,7 @@ function updateUI(){
     document.getElementById('counter').textContent=(parseInt(localStorage.getItem('feelio_total')||'0')).toLocaleString()+' '+TX.counter;
     document.getElementById('dailyCounter').textContent=(parseInt(localStorage.getItem('feelio_daily')||'0')).toLocaleString()+' '+TX.dailyCounter;updateStreak();updateCollection();buildGallery();
 }
-buildLangOptions();
-document.querySelectorAll('.disclaimer-overlay input[type=checkbox]').forEach(cb=>cb.addEventListener('change',checkDisclaimer));
+buildLangOptions();document.querySelectorAll('.disclaimer-overlay input[type=checkbox]').forEach(cb=>cb.addEventListener('change',checkDisclaimer));
 const canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');let drawing=false,points=[],startTime=0;
 function setBrushSize(s){brushSize=s;document.querySelectorAll('.toolbar button:first-child, .toolbar button:nth-child(2), .toolbar button:nth-child(3)').forEach(b=>b.classList.remove('active'));document.getElementById(s===4?'brushS':s===7?'brushM':'brushL').classList.add('active')}
 function undoLastStroke(){if(strokeHistory.length>0){const last=strokeHistory.pop();ctx.putImageData(last,0,0)}}
@@ -341,9 +341,7 @@ function playChime(){try{const ac=new(window.AudioContext||window.webkitAudioCon
 (function(){const c=document.getElementById('particlesBg');for(let i=0;i<20;i++){const p=document.createElement('div');p.className='particle-bg';p.style.left=Math.random()*100+'%';p.style.animationDelay=Math.random()*8+'s';p.style.animationDuration=(6+Math.random()*10)+'s';c.appendChild(p)}})();
 const savedTheme=JSON.parse(localStorage.getItem('feelio_theme')||'null');if(savedTheme){currentTheme=savedTheme;document.documentElement.style.setProperty('--accent',savedTheme.accent);document.documentElement.style.setProperty('--accent2',savedTheme.accent2);document.body.style.background=savedTheme.bg}
 const hour=new Date().getHours();if(!savedTheme){if(hour>=6&&hour<12)setTheme('#fbbf24','#d97706','#1a1408');else if(hour>=12&&hour<18)setTheme('#60a5fa','#3b82f6','#0a0f1a');else if(hour>=18&&hour<22)setTheme('#f472b6','#db2777','#1a0a14');else setTheme('#a78bfa','#7c3aed','#0a0a18')}
-function setTheme(a,a2,bg){currentTheme={accent:a,accent2:a2,bg:bg};document.documentElement.style.setProperty('--accent',a);document.documentElement.style.setProperty('--accent2',a2);document.body.style.background=bg;localStorage.setItem('feelio_theme',JSON.stringify(currentTheme))}
 updateUI();
-function downloadStory(){if(typeof html2canvas==='undefined'){alert('Loading... please try again in a moment.');return}const el=document.getElementById('storyPreview').querySelector('.story-content');html2canvas(el,{backgroundColor:getComputedStyle(document.body).backgroundColor}).then(canvas=>{const a=document.createElement('a');a.download='feelio-story.png';a.href=canvas.toDataURL();a.click()})}
 setTimeout(()=>{const s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';s.async=true;document.head.appendChild(s)},2000);
 </script>
 </body>
