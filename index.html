@@ -55,28 +55,23 @@ body{font-family:'Inter',-apple-system,sans-serif;background:#0a0a18;color:#f0f0
 footer{text-align:center;padding:30px 20px;border-top:1px solid rgba(255,255,255,0.05)}
 footer p{color:#555;font-size:0.65rem;line-height:1.8}
 footer a{color:#a78bfa;text-decoration:none}
-
-/* Preuve sociale dynamique */
 .social-proof-bar{position:fixed;bottom:0;left:0;right:0;z-index:100;background:rgba(16,16,32,0.95);backdrop-filter:blur(10px);padding:8px;text-align:center;font-size:0.65rem;color:rgba(255,255,255,0.6);animation:slideUp 0.5s ease-out;display:none}
 .social-proof-bar.show{display:block}
 @keyframes slideUp{0%{transform:translateY(100%)}100%{transform:translateY(0)}}
-
-/* Chatbot */
-.chatbot{position:fixed;bottom:20px;right:20px;z-index:200}
-.chatbot-btn{width:55px;height:55px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#a78bfa);border:none;cursor:pointer;box-shadow:0 4px 20px rgba(124,58,237,0.4);font-size:1.5rem;display:flex;align-items:center;justify-content:center}
-.chatbot-popup{position:absolute;bottom:70px;right:0;width:260px;background:rgba(22,22,44,0.97);border-radius:18px;padding:16px;border:1px solid rgba(139,92,246,0.2);display:none}
-.chatbot-popup.show{display:block}
-.chatbot-popup h4{font-size:0.8rem;margin-bottom:10px;color:#fff}
-.chatbot-options{display:flex;gap:8px;flex-wrap:wrap}
-.chatbot-option{background:rgba(139,92,246,0.15);border:1px solid rgba(139,92,246,0.3);border-radius:14px;padding:8px 12px;font-size:0.75rem;cursor:pointer;color:#fff;transition:all 0.2s}
-.chatbot-option:hover{background:rgba(139,92,246,0.3)}
-
-/* World feeling */
 .world-feeling{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-top:15px}
 .world-feeling-item{text-align:center;font-size:0.7rem;color:rgba(255,255,255,0.5)}
 .world-feeling-item .wf-emoji{font-size:1.5rem;display:block}
 .world-feeling-item .wf-pct{color:#a78bfa;font-weight:500}
 
+/* MASCOTTE */
+.mascot{position:fixed;bottom:20px;right:20px;z-index:200;display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.mascot-bubble{background:rgba(22,22,44,0.97);border:1px solid rgba(139,92,246,0.3);border-radius:18px;padding:12px 16px;max-width:220px;font-size:0.75rem;color:#fff;animation:fadeIn 0.4s ease-out;box-shadow:0 8px 30px rgba(0,0,0,0.4);cursor:pointer;transition:all 0.3s ease}
+.mascot-bubble:hover{background:rgba(139,92,246,0.15)}
+.mascot-bubble a{color:#a78bfa;text-decoration:none;font-weight:500}
+.mascot-avatar{width:55px;height:55px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#a78bfa);display:flex;align-items:center;justify-content:center;animation:mascotBounce 2s ease-in-out infinite;box-shadow:0 4px 20px rgba(124,58,237,0.5);cursor:pointer;font-size:1.5rem;color:#fff;font-weight:200;transition:all 0.3s ease}
+.mascot-avatar:hover{transform:scale(1.1)}
+@keyframes mascotBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes fadeIn{0%{opacity:0;transform:translateY(10px)}100%{opacity:1;transform:translateY(0)}}
 @media(min-width:768px){.landing h1{font-size:2.2rem}.benefits-grid{grid-template-columns:repeat(3,1fr)}}
 </style>
 </head>
@@ -141,33 +136,28 @@ footer a{color:#a78bfa;text-decoration:none}
 
 <!-- Barre de preuve sociale -->
 <div class="social-proof-bar" id="socialBar">
-  <span id="socialText">Someone in 🇺🇸 just drew ☀️</span>
+  <span id="socialText">Someone just drew ☀️</span>
 </div>
 
-<!-- Chatbot -->
-<div class="chatbot" id="chatbot">
-  <button class="chatbot-btn" id="chatbotBtn" onclick="toggleChatbot()">💬</button>
-  <div class="chatbot-popup" id="chatbotPopup">
-    <h4 id="chatbotQuestion">How are you feeling today?</h4>
-    <div class="chatbot-options">
-      <span class="chatbot-option" onclick="chatbotAnswer('happy')" id="chatHappy">😊 Happy</span>
-      <span class="chatbot-option" onclick="chatbotAnswer('okay')" id="chatOkay">😐 Okay</span>
-      <span class="chatbot-option" onclick="chatbotAnswer('bad')" id="chatBad">😔 Not great</span>
-    </div>
+<!-- MASCOTTE -->
+<div class="mascot" id="mascot">
+  <div class="mascot-bubble" id="mascotBubble" onclick="mascotClick()">
+    <span id="mascotText">How are you feeling today?</span>
   </div>
+  <div class="mascot-avatar" onclick="mascotClick()">M</div>
 </div>
 
 <script>
 (function(){
   // ==================== LANGUES ====================
   var LANGS = {
-    en:{hero:"Someone just drew their mood.<br>Now it's your turn.",counter:"people drew their mood today",btn:"✍️ Draw your mood →",footnote:"10 seconds · Free · 100% Private",why:"Why Mewonen",b1t:"100% Private",b1p:"Everything stays on your phone.",b2t:"No Sign Up",b2p:"Open. Draw. Feel.",b3t:"7 Languages",b3p:"Speaks your language.",world:"What the world is feeling",happy:"Happy",rain:"Thoughtful",storm:"Stormy",join:"Join people worldwide",cta:"How do you feel<br>right now?",ctaNote:"No ads. No data. No judgment. Forever free.",chatQuestion:"How are you feeling today?",chatHappy:"😊 Happy",chatOkay:"😐 Okay",chatBad:"😔 Not great",chatReply:"Draw it on Mewonen. It helps. 💜",social:["🇺🇸 just drew ☀️","🇯🇵 just drew 🌧️","🇧🇷 just drew 🌈","🇫🇷 just drew 🌙","🇮🇳 just drew 🔥"]},
-    fr:{hero:"Quelqu'un vient de dessiner son humeur.<br>À ton tour.",counter:"personnes ont dessiné aujourd'hui",btn:"✍️ Dessine ton humeur →",footnote:"10 secondes · Gratuit · 100% Privé",why:"Pourquoi Mewonen",b1t:"100% Privé",b1p:"Tout reste sur ton téléphone.",b2t:"Sans inscription",b2p:"Ouvre. Dessine. Ressens.",b3t:"7 Langues",b3p:"Parle ta langue.",world:"Ce que le monde ressent",happy:"Heureux",rain:"Pensif",storm:"Agité",join:"Rejoins le monde",cta:"Comment te sens-tu<br>maintenant ?",ctaNote:"Sans pub. Sans données. Sans jugement. Gratuit pour toujours.",chatQuestion:"Comment te sens-tu aujourd'hui ?",chatHappy:"😊 Heureux",chatOkay:"😐 Ça va",chatBad:"😔 Pas top",chatReply:"Dessine-le sur Mewonen. Ça aide. 💜",social:["🇫🇷 vient de dessiner ☀️","🇺🇸 vient de dessiner 🌧️","🇯🇵 vient de dessiner 🌈","🇧🇷 vient de dessiner 🌙","🇮🇳 vient de dessiner 🔥"]},
-    es:{hero:"Alguien acaba de dibujar su estado.<br>Ahora es tu turno.",counter:"personas dibujaron hoy",btn:"✍️ Dibuja tu estado →",footnote:"10 segundos · Gratis · 100% Privado",why:"Por qué Mewonen",b1t:"100% Privado",b1p:"Todo se queda en tu teléfono.",b2t:"Sin registro",b2p:"Abre. Dibuja. Siente.",b3t:"7 Idiomas",b3p:"Habla tu idioma.",world:"Lo que el mundo siente",happy:"Feliz",rain:"Pensativo",storm:"Tormentoso",join:"Únete al mundo",cta:"¿Cómo te sientes<br>ahora?",ctaNote:"Sin anuncios. Sin datos. Sin juicios. Gratis para siempre.",chatQuestion:"¿Cómo te sientes hoy?",chatHappy:"😊 Feliz",chatOkay:"😐 Normal",chatBad:"😔 Mal",chatReply:"Dibújalo en Mewonen. Ayuda. 💜",social:["🇪🇸 acaba de dibujar ☀️","🇺🇸 acaba de dibujar 🌧️","🇯🇵 acaba de dibujar 🌈","🇧🇷 acaba de dibujar 🌙","🇫🇷 acaba de dibujar 🔥"]},
-    ar:{hero:"شخص ما رسم مزاجه للتو.<br>الآن دورك.",counter:"شخص رسموا اليوم",btn:"✍️ ارسم مزاجك →",footnote:"10 ثوان · مجاني · خصوصية 100%",why:"لماذا ميونن",b1t:"خصوصية 100%",b1p:"كل شيء يبقى على هاتفك.",b2t:"بدون تسجيل",b2p:"افتح. ارسم. اشعر.",b3t:"7 لغات",b3p:"تتحدث لغتك.",world:"ما يشعر به العالم",happy:"سعيد",rain:"متأمل",storm:"عاصف",join:"انضم للعالم",cta:"كيف تشعر<br>الآن؟",ctaNote:"بدون إعلانات. بدون بيانات. بدون حكم. مجاني للأبد.",chatQuestion:"كيف تشعر اليوم؟",chatHappy:"😊 سعيد",chatOkay:"😐 عادي",chatBad:"😔 سيء",chatReply:"ارسمه على ميونن. يساعد. 💜",social:["🇸🇦 رسم ☀️","🇺🇸 رسم 🌧️","🇯🇵 رسم 🌈","🇧🇷 رسم 🌙","🇫🇷 رسم 🔥"]},
-    ja:{hero:"誰かが今、気持ちを描いた。<br>次はあなたの番です。",counter:"人が今日描きました",btn:"✍️ 気持ちを描く →",footnote:"10秒 · 無料 · 100%プライベート",why:"Mewonenとは",b1t:"100%プライベート",b1p:"すべてはあなたの端末に。",b2t:"登録不要",b2p:"開く。描く。感じる。",b3t:"7言語",b3p:"あなたの言語で。",world:"世界の気持ち",happy:"幸せ",rain:"考え中",storm:"嵐",join:"世界中の人々と",cta:"今の気分は？",ctaNote:"広告なし。データなし。判断なし。永遠に無料。",chatQuestion:"今日の気分は？",chatHappy:"😊 幸せ",chatOkay:"😐 まあまあ",chatBad:"😔 良くない",chatReply:"Mewonenに描いてみて。助けになるよ。💜",social:["🇯🇵 が ☀️ を描いた","🇺🇸 が 🌧️ を描いた","🇧🇷 が 🌈 を描いた","🇫🇷 が 🌙 を描いた","🇮🇳 が 🔥 を描いた"]},
-    zh:{hero:"有人刚刚画出了心情。<br>现在轮到你了。",counter:"人今天画了心情",btn:"✍️ 画出你的心情 →",footnote:"10秒 · 免费 · 100%私密",why:"为什么选择Mewonen",b1t:"100%私密",b1p:"一切留在你的手机上。",b2t:"无需注册",b2p:"打开。画。感受。",b3t:"7种语言",b3p:"说你的语言。",world:"世界的心情",happy:"开心",rain:"沉思",storm:"风暴",join:"加入世界",cta:"你现在<br>感觉如何？",ctaNote:"无广告。无数据。无评判。永远免费。",chatQuestion:"今天感觉如何？",chatHappy:"😊 开心",chatOkay:"😐 还行",chatBad:"😔 不好",chatReply:"在Mewonen上画出来。有帮助的。💜",social:["🇨🇳 刚刚画了 ☀️","🇺🇸 刚刚画了 🌧️","🇯🇵 刚刚画了 🌈","🇧🇷 刚刚画了 🌙","🇫🇷 刚刚画了 🔥"]},
-    tam:{hero:"யாரோ இப்போது தங்கள் மனநிலையை வரைந்தனர்.<br>இப்போது உங்கள் முறை.",counter:"பேர் இன்று வரைந்தனர்",btn:"✍️ உங்கள் மனநிலையை வரையவும் →",footnote:"10 வினாடிகள் · இலவசம் · 100% தனிப்பட்டது",why:"ஏன் Mewonen",b1t:"100% தனிப்பட்டது",b1p:"அனைத்தும் உங்கள் தொலைபேசியில் இருக்கும்.",b2t:"பதிவு தேவையில்லை",b2p:"திற. வரை. உணர்.",b3t:"7 மொழிகள்",b3p:"உங்கள் மொழியில் பேசுகிறது.",world:"உலகம் உணர்வது",happy:"மகிழ்ச்சி",rain:"சிந்தனை",storm:"புயல்",join:"உலகத்துடன் இணையுங்கள்",cta:"இப்போது எப்படி<br>உணர்கிறீர்கள்?",ctaNote:"விளம்பரங்கள் இல்லை. தரவு இல்லை. தீர்ப்பு இல்லை. எப்போதும் இலவசம்.",chatQuestion:"இன்று எப்படி உணர்கிறீர்கள்?",chatHappy:"😊 மகிழ்ச்சி",chatOkay:"😐 பரவாயில்லை",chatBad:"😔 நன்றாக இல்லை",chatReply:"Mewonen-ல் வரையுங்கள். உதவும். 💜",social:["🇮🇳 ☀️ வரைந்தார்","🇺🇸 🌧️ வரைந்தார்","🇯🇵 🌈 வரைந்தார்","🇧🇷 🌙 வரைந்தார்","🇫🇷 🔥 வரைந்தார்"]}
+    en:{hero:"Someone just drew their mood.<br>Now it's your turn.",counter:"people drew their mood today",btn:"✍️ Draw your mood →",footnote:"10 seconds · Free · 100% Private",why:"Why Mewonen",b1t:"100% Private",b1p:"Everything stays on your phone.",b2t:"No Sign Up",b2p:"Open. Draw. Feel.",b3t:"7 Languages",b3p:"Speaks your language.",world:"What the world is feeling",happy:"Happy",rain:"Thoughtful",storm:"Stormy",join:"Join people worldwide",cta:"How do you feel<br>right now?",ctaNote:"No ads. No data. No judgment. Forever free.",mascotTexts:["How are you feeling today?","Draw your mood. It helps. 💜","Someone just drew ☀️. Your turn?","You're not alone. Draw it.","What's on your mind right now?"],social:["🇺🇸 just drew ☀️","🇯🇵 just drew 🌧️","🇧🇷 just drew 🌈","🇫🇷 just drew 🌙","🇮🇳 just drew 🔥"]},
+    fr:{hero:"Quelqu'un vient de dessiner son humeur.<br>À ton tour.",counter:"personnes ont dessiné aujourd'hui",btn:"✍️ Dessine ton humeur →",footnote:"10 secondes · Gratuit · 100% Privé",why:"Pourquoi Mewonen",b1t:"100% Privé",b1p:"Tout reste sur ton téléphone.",b2t:"Sans inscription",b2p:"Ouvre. Dessine. Ressens.",b3t:"7 Langues",b3p:"Parle ta langue.",world:"Ce que le monde ressent",happy:"Heureux",rain:"Pensif",storm:"Agité",join:"Rejoins le monde",cta:"Comment te sens-tu<br>maintenant ?",ctaNote:"Sans pub. Sans données. Sans jugement. Gratuit pour toujours.",mascotTexts:["Comment te sens-tu aujourd'hui ?","Dessine ton humeur. Ça aide. 💜","Quelqu'un vient de dessiner ☀️. À toi ?","Tu n'es pas seul. Dessine-le.","Qu'est-ce qui te passe par la tête ?"],social:["🇫🇷 vient de dessiner ☀️","🇺🇸 vient de dessiner 🌧️","🇯🇵 vient de dessiner 🌈","🇧🇷 vient de dessiner 🌙","🇮🇳 vient de dessiner 🔥"]},
+    es:{hero:"Alguien acaba de dibujar su estado.<br>Ahora es tu turno.",counter:"personas dibujaron hoy",btn:"✍️ Dibuja tu estado →",footnote:"10 segundos · Gratis · 100% Privado",why:"Por qué Mewonen",b1t:"100% Privado",b1p:"Todo se queda en tu teléfono.",b2t:"Sin registro",b2p:"Abre. Dibuja. Siente.",b3t:"7 Idiomas",b3p:"Habla tu idioma.",world:"Lo que el mundo siente",happy:"Feliz",rain:"Pensativo",storm:"Tormentoso",join:"Únete al mundo",cta:"¿Cómo te sientes<br>ahora?",ctaNote:"Sin anuncios. Sin datos. Sin juicios. Gratis para siempre.",mascotTexts:["¿Cómo te sientes hoy?","Dibuja tu estado. Ayuda. 💜","Alguien acaba de dibujar ☀️. ¿Tu turno?","No estás solo. Dibújalo.","¿Qué tienes en mente?"],social:["🇪🇸 acaba de dibujar ☀️","🇺🇸 acaba de dibujar 🌧️","🇯🇵 acaba de dibujar 🌈","🇧🇷 acaba de dibujar 🌙","🇫🇷 acaba de dibujar 🔥"]},
+    ar:{hero:"شخص ما رسم مزاجه للتو.<br>الآن دورك.",counter:"شخص رسموا اليوم",btn:"✍️ ارسم مزاجك →",footnote:"10 ثوان · مجاني · خصوصية 100%",why:"لماذا ميونن",b1t:"خصوصية 100%",b1p:"كل شيء يبقى على هاتفك.",b2t:"بدون تسجيل",b2p:"افتح. ارسم. اشعر.",b3t:"7 لغات",b3p:"تتحدث لغتك.",world:"ما يشعر به العالم",happy:"سعيد",rain:"متأمل",storm:"عاصف",join:"انضم للعالم",cta:"كيف تشعر<br>الآن؟",ctaNote:"بدون إعلانات. بدون بيانات. بدون حكم. مجاني للأبد.",mascotTexts:["كيف تشعر اليوم؟","ارسم مزاجك. يساعد. 💜","شخص ما رسم ☀️. دورك؟","لست وحدك. ارسمه.","ما الذي يدور في ذهنك؟"],social:["🇸🇦 رسم ☀️","🇺🇸 رسم 🌧️","🇯🇵 رسم 🌈","🇧🇷 رسم 🌙","🇫🇷 رسم 🔥"]},
+    ja:{hero:"誰かが今、気持ちを描いた。<br>次はあなたの番です。",counter:"人が今日描きました",btn:"✍️ 気持ちを描く →",footnote:"10秒 · 無料 · 100%プライベート",why:"Mewonenとは",b1t:"100%プライベート",b1p:"すべてはあなたの端末に。",b2t:"登録不要",b2p:"開く。描く。感じる。",b3t:"7言語",b3p:"あなたの言語で。",world:"世界の気持ち",happy:"幸せ",rain:"考え中",storm:"嵐",join:"世界中の人々と",cta:"今の気分は？",ctaNote:"広告なし。データなし。判断なし。永遠に無料。",mascotTexts:["今日の気分は？","気持ちを描いて。助けになるよ。💜","誰かが☀️を描いた。あなたは？","一人じゃないよ。描いてみて。","何を考えてる？"],social:["🇯🇵 が ☀️ を描いた","🇺🇸 が 🌧️ を描いた","🇧🇷 が 🌈 を描いた","🇫🇷 が 🌙 を描いた","🇮🇳 が 🔥 を描いた"]},
+    zh:{hero:"有人刚刚画出了心情。<br>现在轮到你了。",counter:"人今天画了心情",btn:"✍️ 画出你的心情 →",footnote:"10秒 · 免费 · 100%私密",why:"为什么选择Mewonen",b1t:"100%私密",b1p:"一切留在你的手机上。",b2t:"无需注册",b2p:"打开。画。感受。",b3t:"7种语言",b3p:"说你的语言。",world:"世界的心情",happy:"开心",rain:"沉思",storm:"风暴",join:"加入世界",cta:"你现在<br>感觉如何？",ctaNote:"无广告。无数据。无评判。永远免费。",mascotTexts:["今天感觉如何？","画出你的心情。有帮助的。💜","有人刚画了☀️。你呢？","你不孤单。画出来。","你在想什么？"],social:["🇨🇳 刚刚画了 ☀️","🇺🇸 刚刚画了 🌧️","🇯🇵 刚刚画了 🌈","🇧🇷 刚刚画了 🌙","🇫🇷 刚刚画了 🔥"]},
+    tam:{hero:"யாரோ இப்போது தங்கள் மனநிலையை வரைந்தனர்.<br>இப்போது உங்கள் முறை.",counter:"பேர் இன்று வரைந்தனர்",btn:"✍️ உங்கள் மனநிலையை வரையவும் →",footnote:"10 வினாடிகள் · இலவசம் · 100% தனிப்பட்டது",why:"ஏன் Mewonen",b1t:"100% தனிப்பட்டது",b1p:"அனைத்தும் உங்கள் தொலைபேசியில் இருக்கும்.",b2t:"பதிவு தேவையில்லை",b2p:"திற. வரை. உணர்.",b3t:"7 மொழிகள்",b3p:"உங்கள் மொழியில் பேசுகிறது.",world:"உலகம் உணர்வது",happy:"மகிழ்ச்சி",rain:"சிந்தனை",storm:"புயல்",join:"உலகத்துடன் இணையுங்கள்",cta:"இப்போது எப்படி<br>உணர்கிறீர்கள்?",ctaNote:"விளம்பரங்கள் இல்லை. தரவு இல்லை. தீர்ப்பு இல்லை. எப்போதும் இலவசம்.",mascotTexts:["இன்று எப்படி உணர்கிறீர்கள்?","உங்கள் மனநிலையை வரையுங்கள். உதவும். 💜","யாரோ ☀️ வரைந்தார். உங்கள் முறை?","நீங்கள் தனியாக இல்லை. வரையுங்கள்.","உங்கள் மனதில் என்ன இருக்கிறது?"],social:["🇮🇳 ☀️ வரைந்தார்","🇺🇸 🌧️ வரைந்தார்","🇯🇵 🌈 வரைந்தார்","🇧🇷 🌙 வரைந்தார்","🇫🇷 🔥 வரைந்தார்"]}
   };
   
   var day = new Date().getDay();
@@ -175,7 +165,6 @@ footer a{color:#a78bfa;text-decoration:none}
   var lang = langCodes[day];
   var TX = LANGS[lang];
   
-  // Appliquer la langue
   document.getElementById('heroText').innerHTML = TX.hero;
   document.getElementById('counterLabel').textContent = TX.counter;
   document.getElementById('btnDraw').textContent = TX.btn;
@@ -195,12 +184,7 @@ footer a{color:#a78bfa;text-decoration:none}
   document.getElementById('ctaTitle').innerHTML = TX.cta;
   document.getElementById('btnDraw2').textContent = TX.btn;
   document.getElementById('ctaNote').textContent = TX.ctaNote;
-  document.getElementById('chatbotQuestion').textContent = TX.chatQuestion;
-  document.getElementById('chatHappy').textContent = TX.chatHappy;
-  document.getElementById('chatOkay').textContent = TX.chatOkay;
-  document.getElementById('chatBad').textContent = TX.chatBad;
   
-  // Compteur live
   var count = parseInt(localStorage.getItem('mw_landing_count') || '487');
   count = Math.max(count, 400) + Math.floor(Math.random() * 7);
   localStorage.setItem('mw_landing_count', count.toString());
@@ -211,7 +195,16 @@ footer a{color:#a78bfa;text-decoration:none}
     document.getElementById('liveCounter').textContent = count.toLocaleString();
   }, 30000);
   
-  // Preuve sociale dynamique
+  // Mascotte : changer le texte toutes les 5 secondes
+  var mascotIdx = 0;
+  var mascotEl = document.getElementById('mascotText');
+  setInterval(function(){
+    mascotIdx = (mascotIdx + 1) % TX.mascotTexts.length;
+    mascotEl.textContent = TX.mascotTexts[mascotIdx];
+  }, 5000);
+  mascotEl.textContent = TX.mascotTexts[0];
+  
+  // Preuve sociale
   function showSocial(){
     var bar = document.getElementById('socialBar');
     var txt = document.getElementById('socialText');
@@ -223,7 +216,6 @@ footer a{color:#a78bfa;text-decoration:none}
   showSocial();
   setInterval(showSocial, 15000);
   
-  // Referer detection
   var ref = document.referrer || '';
   var h1 = document.getElementById('heroText');
   if(ref.includes('telegram') || ref.includes('t.me')){h1.innerHTML = 'You came from Mewonen.<br>Now draw YOUR mood.';}
@@ -231,13 +223,9 @@ footer a{color:#a78bfa;text-decoration:none}
   else if(ref.includes('instagram')){h1.innerHTML = 'Welcome from Instagram.<br>Draw your mood in 10 seconds.';}
 })();
 
-// Chatbot
-function toggleChatbot(){
-  document.getElementById('chatbotPopup').classList.toggle('show');
-}
-function chatbotAnswer(mood){
-  var replies = {happy:"Draw it on Mewonen. It helps. 💜",okay:"Draw it on Mewonen. It helps. 💜",bad:"Draw it on Mewonen. It helps. 💜"};
-  document.getElementById('chatbotPopup').innerHTML = '<p style="color:#fff;font-size:0.8rem">'+replies[mood]+'</p><br><a href="app.html" style="color:#a78bfa;font-size:0.75rem">Open Mewonen →</a>';
+function mascotClick(){
+  var bubble = document.getElementById('mascotBubble');
+  bubble.innerHTML = '<span>Draw it on Mewonen. It helps. 💜</span><br><a href="app.html" style="color:#a78bfa;font-size:0.75rem;margin-top:4px;display:inline-block">Open Mewonen →</a>';
 }
 </script>
 </body>
