@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>Mewonen Play — Demo</title>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{
+    font-family:'Inter',-apple-system,sans-serif;
+    background:#0a0a18;color:#f0f0f0;
+    min-height:100dvh;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;
+    -webkit-font-smoothing:antialiased;text-align:center;padding:20px;
+    overflow:hidden;
+}
+.container{max-width:420px;width:100%;position:relative}
+.logo{font-size:2rem;font-weight:100;letter-spacing:10px;color:#fff;text-shadow:0 0 30px rgba(167,139,250,0.5);margin-bottom:4px}
+.subtitle{color:#a78bfa;font-size:0.7rem;letter-spacing:3px;margin-bottom:20px}
+.streak-bar{color:#fbbf24;font-size:0.7rem;margin-bottom:10px}
+
+.canvas-box{position:relative;margin-bottom:15px}
+.canvas-box canvas{
+    width:260px;height:260px;border-radius:28px;
+    background:rgba(16,16,32,0.8);border:2px solid rgba(139,92,246,0.3);
+    box-shadow:0 0 40px rgba(139,92,246,0.15);display:block;margin:0 auto;
+}
+.timer{position:absolute;top:8px;right:60px;color:#fbbf24;font-size:1.5rem;font-weight:700}
+
+.question{font-size:1rem;font-weight:300;margin-bottom:15px;color:#fff}
+.options{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:15px}
+.option-btn{
+    padding:14px;border-radius:16px;border:2px solid rgba(255,255,255,0.1);
+    background:rgba(255,255,255,0.03);color:#fff;font-size:1.3rem;
+    transition:all 0.2s ease;pointer-events:none;
+}
+.option-btn.correct{background:rgba(52,211,153,0.2);border-color:#34d399}
+.option-btn.wrong{background:rgba(239,68,68,0.2);border-color:#ef4444}
+
+.score-display{font-size:2rem;font-weight:700;color:#a78bfa;margin-bottom:2px}
+.score-label{color:rgba(255,255,255,0.4);font-size:0.6rem;margin-bottom:15px}
+
+.final-screen{display:none;text-align:center;animation:fadeIn 0.5s ease}
+.final-screen .final-emoji{font-size:4rem;margin-bottom:10px}
+.final-screen h2{font-size:1.3rem;font-weight:200;margin-bottom:4px}
+.final-screen .final-score{font-size:2.5rem;font-weight:700;color:#a78bfa;margin-bottom:2px}
+.final-screen .share-box{background:rgba(22,22,44,0.9);border-radius:16px;padding:14px;margin:12px 0;border:1px solid rgba(139,92,246,0.2);font-size:0.7rem;line-height:1.6}
+.final-screen .cta-btn{
+    display:inline-block;padding:12px 24px;border-radius:50px;
+    background:linear-gradient(135deg,#7c3aed,#a78bfa);color:#fff;
+    font-size:0.85rem;font-weight:500;text-decoration:none;margin-top:8px;
+    box-shadow:0 6px 25px rgba(124,58,237,0.3);animation:pulse 2s ease-in-out infinite;
+}
+
+@keyframes fadeIn{0%{opacity:0;transform:translateY(10px)}100%{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+</style>
+</head>
+<body>
+<div class="container" id="gameScreen">
+    <div class="logo">MEWONEN</div>
+    <div class="subtitle">DAILY CHALLENGE</div>
+    <div class="streak-bar">🔥 7 day streak</div>
+    <div class="canvas-box">
+        <canvas id="drawCanvas" width="400" height="400"></canvas>
+        <div class="timer" id="timer">5</div>
+    </div>
+    <div class="question">What emotion is this drawing?</div>
+    <div class="options" id="optionsContainer"></div>
+    <div class="score-display" id="score">30</div>
+    <div class="score-label">POINTS</div>
+</div>
+
+<div class="final-screen" id="finalScreen">
+    <div class="final-emoji">🎯</div>
+    <h2>Game Over!</h2>
+    <div class="final-score">50</div>
+    <div style="color:rgba(255,255,255,0.4);font-size:0.6rem;margin-bottom:10px">FINAL SCORE</div>
+    <div class="share-box">
+        🧠 Mewonen Play<br><br>
+        ⬜🟩⬜🟩🟩<br>
+        Score: 50 pts<br>
+        Streak: 🔥 7 days<br><br>
+        Can you beat me?<br>
+        mewonen.com/play<br><br>
+        #MewonenPlay
+    </div>
+    <a href="play.html" class="cta-btn">🎮 Play Now →</a>
+</div>
+
+<script>
+var canvas = document.getElementById('drawCanvas');
+var ctx = canvas.getContext('2d');
+var demoEmotions = ['☀️','🌧️','🌪️','☀️'];
+var demoNames = {'☀️':'Happy','🌧️':'Rainy','🌪️':'Stormy'};
+var demoStep = 0;
+var timeLeft = 5;
+
+function drawDemo(emotion){
+    ctx.clearRect(0,0,400,400);
+    ctx.fillStyle = '#0a0a18';ctx.fillRect(0,0,400,400);
+    ctx.strokeStyle = 'rgba(200,180,255,0.8)';ctx.lineWidth = 4;ctx.lineCap = 'round';
+    var cx=200,cy=200;
+    if(emotion==='☀️'){
+        for(var i=0;i<12;i++){var a=(i/12)*Math.PI*2;ctx.beginPath();ctx.moveTo(cx+Math.cos(a)*55,cy+Math.sin(a)*55);ctx.lineTo(cx+Math.cos(a)*85,cy+Math.sin(a)*85);ctx.stroke();}
+        ctx.beginPath();ctx.arc(cx,cy,45,0,Math.PI*2);ctx.stroke();
+    } else if(emotion==='🌧️'){
+        for(var i=0;i<30;i++){var x=Math.random()*300+50,y=Math.random()*300+50;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x-15,y+20);ctx.stroke();}
+    } else if(emotion==='🌪️'){
+        ctx.beginPath();for(var i=0;i<200;i++){var a=i*0.15,r=i*1.2;var sx=cx+Math.cos(a)*r,sy=cy+Math.sin(a)*r;if(i===0)ctx.moveTo(sx,sy);else ctx.lineTo(sx,sy);}ctx.stroke();
+    }
+}
+
+function showOptions(correct){
+    var container = document.getElementById('optionsContainer');
+    var opts = [correct];
+    var all = ['☀️ Happy','🌧️ Rainy','🌪️ Stormy','🌈 Hopeful'];
+    while(opts.length < 4){
+        var o = all[Math.floor(Math.random()*4)];
+        if(opts.indexOf(o)===-1) opts.push(o);
+    }
+    for(var i=opts.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var tmp=opts[i];opts[i]=opts[j];opts[j]=tmp;}
+    container.innerHTML = '';
+    opts.forEach(function(o){
+        var btn = document.createElement('div');btn.className='option-btn';btn.textContent=o;
+        if(demoStep<3 && o.includes(correct)) btn.classList.add('correct');
+        if(demoStep===3 && !o.includes(correct) && Math.random()>0.5) btn.classList.add('wrong');
+        if(demoStep===3 && o.includes(correct)) btn.classList.add('correct');
+        container.appendChild(btn);
+    });
+}
+
+function runDemo(){
+    if(demoStep >= 4){
+        document.getElementById('gameScreen').style.display='none';
+        document.getElementById('finalScreen').style.display='block';
+        return;
+    }
+    var em = demoEmotions[demoStep];
+    drawDemo(em);
+    showOptions(em);
+    document.getElementById('timer').textContent = '5';
+    document.getElementById('score').textContent = (demoStep*10+10);
+    
+    var count = 5;
+    var countdown = setInterval(function(){
+        count--;
+        document.getElementById('timer').textContent = count;
+        if(count <= 1){
+            clearInterval(countdown);
+            demoStep++;
+            setTimeout(runDemo, 600);
+        }
+    }, 600);
+}
+
+runDemo();
+</script>
+</body>
+</html>
