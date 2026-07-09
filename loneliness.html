@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="theme-color" content="#0a0a18">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Mewonen — You Are Not Alone">
+<title>Mewonen — You Are Not Alone</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{
+    font-family:'Inter',-apple-system,sans-serif;
+    background:#0a0a18;color:#f0f0f0;
+    min-height:100dvh;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;
+    -webkit-font-smoothing:antialiased;text-align:center;padding:20px;
+}
+.container{max-width:500px;width:100%}
+.logo{font-size:2.5rem;font-weight:100;letter-spacing:12px;color:#fff;text-shadow:0 0 40px rgba(167,139,250,0.4);margin-bottom:30px}
+h1{font-size:1.8rem;font-weight:200;line-height:1.4;margin-bottom:20px}
+.message-box{background:rgba(22,22,44,0.8);border-radius:20px;padding:25px;margin-bottom:25px;border:1px solid rgba(139,92,246,0.15)}
+.message{font-size:1rem;font-weight:300;line-height:1.8;color:rgba(255,255,255,0.8);font-style:italic}
+.message-author{color:#a78bfa;font-size:0.8rem;margin-top:15px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-bottom:25px}
+.stat{background:rgba(139,92,246,0.06);border-radius:16px;padding:20px;border:1px solid rgba(139,92,246,0.1)}
+.stat-number{font-size:2rem;font-weight:600;color:#a78bfa}
+.stat-label{font-size:0.65rem;color:rgba(255,255,255,0.5);margin-top:4px}
+.voices{margin-bottom:25px}
+.voice{display:inline-block;background:rgba(139,92,246,0.08);padding:8px 16px;border-radius:20px;margin:4px;font-size:0.7rem;color:rgba(255,255,255,0.6)}
+.btn{display:inline-block;padding:16px 32px;border-radius:50px;font-size:1rem;font-weight:500;cursor:pointer;text-decoration:none;letter-spacing:0.5px;transition:all 0.3s ease}
+.btn-primary{background:linear-gradient(135deg,#7c3aed,#a78bfa);color:#fff;box-shadow:0 8px 30px rgba(124,58,237,0.3)}
+.btn-primary:active{transform:scale(0.96)}
+.quote-cycle{font-size:0.65rem;color:rgba(255,255,255,0.3);margin-top:20px}
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="logo">MEWONEN</div>
+    <h1>You are not alone.</h1>
+    
+    <div class="message-box">
+        <div class="message" id="dailyMessage">"The loneliness epidemic is real. But so is this: millions of people feel exactly like you do right now."</div>
+        <div class="message-author">— Mewonen</div>
+    </div>
+    
+    <div class="stats">
+        <div class="stat">
+            <div class="stat-number">1 in 4</div>
+            <div class="stat-label">adults feel lonely regularly</div>
+        </div>
+        <div class="stat">
+            <div class="stat-number">73%</div>
+            <div class="stat-label">of Gen Z report feeling alone</div>
+        </div>
+    </div>
+    
+    <div class="voices">
+        <p style="font-size:0.7rem;color:rgba(255,255,255,0.4);margin-bottom:10px">People are drawing their loneliness:</p>
+        <span class="voice">🌧️ "I feel invisible"</span>
+        <span class="voice">🕳️ "Empty inside"</span>
+        <span class="voice">🌙 "Alone in the crowd"</span>
+        <span class="voice">❄️ "Frozen. Numb."</span>
+        <span class="voice">🌫️ "Lost in the fog"</span>
+    </div>
+    
+    <a href="app.html" class="btn btn-primary">✍️ Draw how YOU feel →</a>
+    <div class="quote-cycle" id="quoteCycle">"Everyone feels. Mewonen listens."</div>
+</div>
+
+<script>
+var messages = [
+    "\"The loneliness epidemic is real. But so is this: millions of people feel exactly like you do right now.\"",
+    "\"You can have 1000 followers and still feel alone. Connection is not a number.\"",
+    "\"Someone in your city just drew 🌧️. Someone else drew 🕳️. You're not the only one.\"",
+    "\"The opposite of loneliness isn't company. It's being understood.\"",
+    "\"Mewonen doesn't judge. Mewonen just listens. Like we all need someone to do.\""
+];
+var idx = 0;
+setInterval(function(){
+    idx = (idx + 1) % messages.length;
+    document.getElementById('dailyMessage').textContent = messages[idx];
+}, 8000);
+</script>
+</body>
+</html>
