@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="theme-color" content="#0a0a18">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Mewonen Play">
+<title>Mewonen Play — Daily Emotion Challenge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{
+    font-family:'Inter',-apple-system,sans-serif;
+    background:#0a0a18;color:#f0f0f0;
+    min-height:100dvh;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;
+    -webkit-font-smoothing:antialiased;text-align:center;padding:20px;
+}
+.container{max-width:420px;width:100%}
+
+/* Header */
+.header{margin-bottom:30px}
+.logo{font-size:2rem;font-weight:100;letter-spacing:10px;color:#fff;text-shadow:0 0 30px rgba(167,139,250,0.5);margin-bottom:4px}
+.subtitle{color:#a78bfa;font-size:0.7rem;letter-spacing:3px;margin-bottom:6px}
+.streak-bar{display:flex;align-items:center;justify-content:center;gap:6px;color:#fbbf24;font-size:0.7rem;margin-top:8px}
+.streak-fire{font-size:1rem}
+
+/* Canvas */
+.canvas-box{position:relative;margin-bottom:20px}
+.canvas-box canvas{
+    width:280px;height:280px;border-radius:28px;
+    background:rgba(16,16,32,0.8);border:2px solid rgba(139,92,246,0.3);
+    box-shadow:0 0 40px rgba(139,92,246,0.15);display:block;margin:0 auto;
+}
+.timer{position:absolute;top:10px;right:20px;color:#fbbf24;font-size:1.2rem;font-weight:600}
+
+/* Question */
+.question{font-size:1.1rem;font-weight:300;margin-bottom:20px;color:#fff}
+
+/* Options */
+.options{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
+.option-btn{
+    padding:16px;border-radius:18px;border:2px solid rgba(255,255,255,0.1);
+    background:rgba(255,255,255,0.03);color:#fff;font-size:1.5rem;
+    cursor:pointer;transition:all 0.2s ease
+}
+.option-btn:active{transform:scale(0.95)}
+.option-btn.correct{background:rgba(52,211,153,0.2);border-color:#34d399;animation:correctPulse 0.5s ease}
+.option-btn.wrong{background:rgba(239,68,68,0.2);border-color:#ef4444;animation:shake 0.5s ease}
+@keyframes correctPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+
+/* Score */
+.score-display{font-size:2rem;font-weight:700;color:#a78bfa;margin-bottom:4px}
+.score-label{color:rgba(255,255,255,0.4);font-size:0.7rem;margin-bottom:20px}
+.points-animation{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:3rem;font-weight:800;color:#fbbf24;pointer-events:none;animation:pointsUp 1s ease-out forwards;z-index:100}
+@keyframes pointsUp{0%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-120%) scale(1.5)}}
+
+/* Share screen */
+.share-screen{display:none;text-align:center}
+.share-screen h2{font-size:1.5rem;font-weight:200;margin-bottom:10px}
+.share-screen .final-score{font-size:3rem;font-weight:700;color:#a78bfa;margin-bottom:4px}
+.share-screen .final-label{color:rgba(255,255,255,0.4);font-size:0.7rem;margin-bottom:20px}
+.share-box{background:rgba(22,22,44,0.9);border-radius:18px;padding:20px;margin-bottom:20px;border:1px solid rgba(139,92,246,0.2)}
+.share-box .share-text{font-size:0.8rem;color:#fff;line-height:1.8}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border-radius:50px;font-size:0.9rem;font-weight:500;cursor:pointer;border:none;transition:all 0.2s ease;text-decoration:none;letter-spacing:0.5px}
+.btn-primary{background:linear-gradient(135deg,#7c3aed,#a78bfa);color:#fff;box-shadow:0 6px 25px rgba(124,58,237,0.3)}
+.btn-outline{background:transparent;color:#a78bfa;border:1px solid rgba(139,92,246,0.3)}
+.btn:active{transform:scale(0.95)}
+.share-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+
+/* Game over */
+.game-over{display:none;text-align:center}
+.game-over h2{font-size:1.5rem;font-weight:200;margin-bottom:6px}
+.game-over .final-emoji{font-size:5rem;margin-bottom:10px}
+
+/* Countdown bar */
+.countdown-bar{height:3px;background:rgba(255,255,255,0.1);border-radius:3px;margin-bottom:15px;overflow:hidden}
+.countdown-fill{height:100%;background:linear-gradient(90deg,#7c3aed,#a78bfa);transition:width 0.1s linear;width:100%}
+</style>
+</head>
+<body>
+<div class="container" id="gameScreen">
+    <div class="header">
+        <div class="logo">MEWONEN</div>
+        <div class="subtitle">DAILY CHALLENGE</div>
+        <div class="streak-bar" id="streakBar">
+            <span class="streak-fire">🔥</span> <span id="streakCount">1</span> day streak
+        </div>
+    </div>
+    <div class="countdown-bar"><div class="countdown-fill" id="countdownFill"></div></div>
+    <div class="canvas-box">
+        <canvas id="drawCanvas" width="400" height="400"></canvas>
+        <div class="timer" id="timer">5</div>
+    </div>
+    <div class="question">What emotion is this drawing?</div>
+    <div class="options" id="optionsContainer"></div>
+    <div class="score-display" id="score">0</div>
+    <div class="score-label">POINTS</div>
+</div>
+
+<div class="game-over" id="gameOverScreen">
+    <div class="final-emoji" id="finalEmoji">🎯</div>
+    <h2 id="gameOverTitle">Game Over!</h2>
+    <div class="final-score" id="finalScore">0</div>
+    <div class="final-label">FINAL SCORE</div>
+    <div class="share-box">
+        <div class="share-text" id="shareText"></div>
+    </div>
+    <div class="share-btns">
+        <button class="btn btn-primary" onclick="shareResult()">📤 Share</button>
+        <button class="btn btn-primary" onclick="copyResult()">📋 Copy</button>
+        <button class="btn btn-outline" onclick="playAgain()">🔄 Play Again</button>
+    </div>
+    <a href="app.html" class="btn btn-primary" style="margin-top:12px">✍️ Draw your mood →</a>
+</div>
+
+<script>
+(function(){
+var canvas = document.getElementById('drawCanvas');
+var ctx = canvas.getContext('2d');
+var score = 0, streak = 0, timeLeft = 5, timerInterval, gameActive = true;
+var correctEmotion = '', questionsAnswered = 0;
+var emotions = ['☀️','🌧️','🌪️','🌈','⚡','🌙','🔥','🌱','🙏','💨','🌫️','❄️','🕳️'];
+var emotionNames = {en:{'☀️':'Happy','🌧️':'Rainy','🌪️':'Stormy','🌈':'Hopeful','⚡':'Electric','🌙':'Calm','🔥':'Passionate','🌱':'Growing','🙏':'Grateful','💨':'Restless','🌫️':'Foggy','❄️':'Frozen','🕳️':'Empty'}};
+var TX = emotionNames.en;
+
+// Charger le streak
+var userStreak = parseInt(localStorage.getItem('mw_play_streak') || '0');
+var lastPlayDate = localStorage.getItem('mw_play_date') || '';
+var today = new Date().toISOString().split('T')[0];
+
+if(lastPlayDate !== today) {
+    userStreak = 0;
+}
+document.getElementById('streakCount').textContent = userStreak;
+if(userStreak >= 3) document.getElementById('streakBar').style.display = 'flex';
+
+function generateDrawing(emotion){
+    ctx.clearRect(0,0,400,400);
+    ctx.fillStyle = '#0a0a18';
+    ctx.fillRect(0,0,400,400);
+    
+    // Draw based on emotion
+    var cx = 200, cy = 200;
+    ctx.strokeStyle = 'rgba(200,180,255,0.8)';
+    ctx.lineWidth = 4;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    
+    if(emotion === '☀️'){
+        // Happy - circle with rays
+        for(var i=0;i<12;i++){
+            var a = (i/12)*Math.PI*2;
+            ctx.beginPath();
+            ctx.moveTo(cx+Math.cos(a)*55, cy+Math.sin(a)*55);
+            ctx.lineTo(cx+Math.cos(a)*85, cy+Math.sin(a)*85);
+            ctx.stroke();
+        }
+        ctx.beginPath();ctx.arc(cx,cy,45,0,Math.PI*2);ctx.stroke();
+        ctx.beginPath();ctx.arc(cx,cy+10,20,Math.PI*0.2,Math.PI*0.8);ctx.stroke();
+    } else if(emotion === '🌧️'){
+        // Rainy - diagonal lines
+        for(var i=0;i<30;i++){
+            var x = Math.random()*300+50, y = Math.random()*300+50;
+            ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x-15,y+20);ctx.stroke();
+        }
+    } else if(emotion === '🌪️'){
+        // Stormy - spiral
+        ctx.beginPath();
+        for(var i=0;i<200;i++){
+            var a = i*0.15, r = i*1.2;
+            var sx = cx + Math.cos(a)*r, sy = cy + Math.sin(a)*r;
+            if(i===0) ctx.moveTo(sx,sy); else ctx.lineTo(sx,sy);
+        }
+        ctx.stroke();
+    } else if(emotion === '🌈'){
+        // Rainbow - arcs
+        var colors = ['#ef4444','#f97316','#fbbf24','#34d399','#3b82f6','#6366f1','#a78bfa'];
+        for(var c=0;c<colors.length;c++){
+            ctx.strokeStyle = colors[c];
+            ctx.beginPath();ctx.arc(cx, cy+100, 40+c*15, Math.PI, Math.PI*1.8);ctx.stroke();
+        }
+        ctx.strokeStyle = 'rgba(200,180,255,0.8)';
+    } else {
+        // Random abstract drawing for other emotions
+        ctx.beginPath();
+        var sx = 100+Math.random()*200, sy = 100+Math.random()*200;
+        ctx.moveTo(sx,sy);
+        for(var i=0;i<8;i++){
+            var ex = 100+Math.random()*200, ey = 100+Math.random()*200;
+            ctx.lineTo(ex,ey);
+        }
+        ctx.stroke();
+    }
+    
+    correctEmotion = emotion;
+}
+
+function generateOptions(correct){
+    var opts = [correct];
+    while(opts.length < 4){
+        var e = emotions[Math.floor(Math.random()*13)];
+        if(opts.indexOf(e) === -1) opts.push(e);
+    }
+    // Shuffle
+    for(var i=opts.length-1;i>0;i--){
+        var j = Math.floor(Math.random()*(i+1));
+        var tmp = opts[i]; opts[i] = opts[j]; opts[j] = tmp;
+    }
+    
+    var container = document.getElementById('optionsContainer');
+    container.innerHTML = '';
+    opts.forEach(function(opt){
+        var btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.textContent = opt + ' ' + (TX[opt] || '');
+        btn.addEventListener('click', function(){ checkAnswer(opt, btn); });
+        container.appendChild(btn);
+    });
+}
+
+function checkAnswer(chosen, btn){
+    if(!gameActive) return;
+    gameActive = false;
+    clearInterval(timerInterval);
+    
+    var allBtns = document.querySelectorAll('.option-btn');
+    allBtns.forEach(function(b){ b.style.pointerEvents = 'none'; });
+    
+    if(chosen === correctEmotion){
+        btn.classList.add('correct');
+        score += 10;
+        questionsAnswered++;
+        document.getElementById('score').textContent = score;
+        spawnPoints('+10');
+        
+        setTimeout(function(){
+            nextRound();
+        }, 800);
+    } else {
+        btn.classList.add('wrong');
+        // Show correct answer
+        allBtns.forEach(function(b){
+            if(b.textContent.includes(correctEmotion)) b.classList.add('correct');
+        });
+        gameOver();
+    }
+}
+
+function nextRound(){
+    gameActive = true;
+    var e = emotions[Math.floor(Math.random()*13)];
+    generateDrawing(e);
+    generateOptions(e);
+    timeLeft = 5;
+    document.getElementById('timer').textContent = timeLeft;
+    startTimer();
+}
+
+function startTimer(){
+    document.getElementById('countdownFill').style.width = '100%';
+    timerInterval = setInterval(function(){
+        timeLeft--;
+        document.getElementById('timer').textContent = timeLeft;
+        document.getElementById('countdownFill').style.width = (timeLeft/5*100)+'%';
+        if(timeLeft <= 0){
+            clearInterval(timerInterval);
+            gameActive = false;
+            gameOver();
+        }
+    }, 1000);
+}
+
+function gameOver(){
+    document.getElementById('gameScreen').style.display = 'none';
+    document.getElementById('gameOverScreen').style.display = 'block';
+    document.getElementById('finalScore').textContent = score;
+    
+    // Update streak
+    var today = new Date().toISOString().split('T')[0];
+    var lastDate = localStorage.getItem('mw_play_date') || '';
+    var currentStreak = parseInt(localStorage.getItem('mw_play_streak') || '0');
+    
+    if(lastDate !== today){
+        if(lastDate === new Date(Date.now()-86400000).toISOString().split('T')[0]){
+            currentStreak++;
+        } else {
+            currentStreak = 1;
+        }
+        localStorage.setItem('mw_play_date', today);
+        localStorage.setItem('mw_play_streak', currentStreak.toString());
+    }
+    
+    // Build share text
+    var shareText = '🧠 Mewonen Play\n\n';
+    shareText += 'Score: ' + score + ' pts\n';
+    shareText += 'Streak: 🔥 ' + currentStreak + ' days\n';
+    shareText += 'Emotions: ' + (score > 20 ? '🎨' : '✍️') + '\n\n';
+    shareText += 'Can you beat me?\n';
+    shareText += 'mewonen.com/play\n\n';
+    shareText += '#MewonenPlay';
+    
+    document.getElementById('shareText').innerText = shareText;
+    window._shareText = shareText;
+}
+
+function spawnPoints(text){
+    var el = document.createElement('div');
+    el.className = 'points-animation';
+    el.textContent = text;
+    document.body.appendChild(el);
+    setTimeout(function(){ el.remove(); }, 1000);
+}
+
+function shareResult(){
+    if(navigator.share){
+        navigator.share({text: window._shareText});
+    } else {
+        copyResult();
+    }
+}
+
+function copyResult(){
+    if(navigator.clipboard){
+        navigator.clipboard.writeText(window._shareText);
+        alert('Copied! Share it on your social networks.');
+    }
+}
+
+function playAgain(){
+    score = 0; questionsAnswered = 0;
+    document.getElementById('score').textContent = '0';
+    document.getElementById('gameScreen').style.display = 'block';
+    document.getElementById('gameOverScreen').style.display = 'none';
+    nextRound();
+}
+
+// Start
+var e = emotions[Math.floor(Math.random()*13)];
+generateDrawing(e);
+generateOptions(e);
+startTimer();
+})();
+</script>
+</body>
+</html>
