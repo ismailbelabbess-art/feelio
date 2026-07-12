@@ -63,13 +63,12 @@ footer a{color:#a78bfa;text-decoration:none}
 .world-feeling-item .wf-emoji{font-size:1.5rem;display:block}
 .world-feeling-item .wf-pct{color:#a78bfa;font-weight:500}
 
-/* MASCOTTE */
+/* MASCOTTE ANIMÉE */
 .mascot{position:fixed;bottom:20px;right:20px;z-index:200;display:flex;flex-direction:column;align-items:flex-end;gap:8px}
 .mascot-bubble{background:rgba(22,22,44,0.97);border:1px solid rgba(139,92,246,0.3);border-radius:18px;padding:12px 16px;max-width:220px;font-size:0.75rem;color:#fff;animation:fadeIn 0.4s ease-out;box-shadow:0 8px 30px rgba(0,0,0,0.4);cursor:pointer;transition:all 0.3s ease}
 .mascot-bubble:hover{background:rgba(139,92,246,0.15)}
 .mascot-bubble a{color:#a78bfa;text-decoration:none;font-weight:500}
-.mascot-avatar{width:55px;height:55px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#a78bfa);display:flex;align-items:center;justify-content:center;animation:mascotBounce 2s ease-in-out infinite;box-shadow:0 4px 20px rgba(124,58,237,0.5);cursor:pointer;font-size:1.5rem;color:#fff;font-weight:200;transition:all 0.3s ease}
-.mascot-avatar:hover{transform:scale(1.1)}
+.mascot-avatar-img{width:65px;height:65px;border-radius:50%;cursor:pointer;box-shadow:0 4px 20px rgba(124,58,237,0.5);animation:mascotBounce 2s ease-in-out infinite}
 @keyframes mascotBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 @keyframes fadeIn{0%{opacity:0;transform:translateY(10px)}100%{opacity:1;transform:translateY(0)}}
 @media(min-width:768px){.landing h1{font-size:2.2rem}.benefits-grid{grid-template-columns:repeat(3,1fr)}}
@@ -139,17 +138,16 @@ footer a{color:#a78bfa;text-decoration:none}
   <span id="socialText">Someone just drew ☀️</span>
 </div>
 
-<!-- MASCOTTE -->
+<!-- MASCOTTE ANIMÉE -->
 <div class="mascot" id="mascot">
   <div class="mascot-bubble" id="mascotBubble" onclick="mascotClick()">
     <span id="mascotText">How are you feeling today?</span>
   </div>
-  <div class="mascot-avatar" onclick="mascotClick()">M</div>
+  <img src="mascot.gif" class="mascot-avatar-img" onclick="mascotClick()" alt="Mewonen">
 </div>
 
 <script>
 (function(){
-  // ==================== LANGUES ====================
   var LANGS = {
     en:{hero:"Someone just drew their mood.<br>Now it's your turn.",counter:"people drew their mood today",btn:"✍️ Draw your mood →",footnote:"10 seconds · Free · 100% Private",why:"Why Mewonen",b1t:"100% Private",b1p:"Everything stays on your phone.",b2t:"No Sign Up",b2p:"Open. Draw. Feel.",b3t:"7 Languages",b3p:"Speaks your language.",world:"What the world is feeling",happy:"Happy",rain:"Thoughtful",storm:"Stormy",join:"Join people worldwide",cta:"How do you feel<br>right now?",ctaNote:"No ads. No data. No judgment. Forever free.",mascotTexts:["How are you feeling today?","Draw your mood. It helps. 💜","Someone just drew ☀️. Your turn?","You're not alone. Draw it.","What's on your mind right now?"],social:["🇺🇸 just drew ☀️","🇯🇵 just drew 🌧️","🇧🇷 just drew 🌈","🇫🇷 just drew 🌙","🇮🇳 just drew 🔥"]},
     fr:{hero:"Quelqu'un vient de dessiner son humeur.<br>À ton tour.",counter:"personnes ont dessiné aujourd'hui",btn:"✍️ Dessine ton humeur →",footnote:"10 secondes · Gratuit · 100% Privé",why:"Pourquoi Mewonen",b1t:"100% Privé",b1p:"Tout reste sur ton téléphone.",b2t:"Sans inscription",b2p:"Ouvre. Dessine. Ressens.",b3t:"7 Langues",b3p:"Parle ta langue.",world:"Ce que le monde ressent",happy:"Heureux",rain:"Pensif",storm:"Agité",join:"Rejoins le monde",cta:"Comment te sens-tu<br>maintenant ?",ctaNote:"Sans pub. Sans données. Sans jugement. Gratuit pour toujours.",mascotTexts:["Comment te sens-tu aujourd'hui ?","Dessine ton humeur. Ça aide. 💜","Quelqu'un vient de dessiner ☀️. À toi ?","Tu n'es pas seul. Dessine-le.","Qu'est-ce qui te passe par la tête ?"],social:["🇫🇷 vient de dessiner ☀️","🇺🇸 vient de dessiner 🌧️","🇯🇵 vient de dessiner 🌈","🇧🇷 vient de dessiner 🌙","🇮🇳 vient de dessiner 🔥"]},
@@ -195,7 +193,6 @@ footer a{color:#a78bfa;text-decoration:none}
     document.getElementById('liveCounter').textContent = count.toLocaleString();
   }, 30000);
   
-  // Mascotte : changer le texte toutes les 5 secondes
   var mascotIdx = 0;
   var mascotEl = document.getElementById('mascotText');
   setInterval(function(){
@@ -204,7 +201,6 @@ footer a{color:#a78bfa;text-decoration:none}
   }, 5000);
   mascotEl.textContent = TX.mascotTexts[0];
   
-  // Preuve sociale
   function showSocial(){
     var bar = document.getElementById('socialBar');
     var txt = document.getElementById('socialText');
