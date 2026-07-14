@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>Mewonen Story</title>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{
+    font-family:'Inter','Noto Sans JP',-apple-system,sans-serif;
+    background:#000;color:#fff;
+    height:100dvh;display:flex;align-items:center;justify-content:center;
+    overflow:hidden;text-align:center;
+}
+.screen{width:100%;max-width:450px;height:100%;position:relative}
+.bg-img{
+    position:absolute;inset:0;background-size:cover;background-position:center;
+    opacity:0;transition:opacity 0.5s ease;
+}
+.bg-img.show{opacity:0.7}
+.overlay{position:absolute;inset:0;background:rgba(0,0,0,0.4);opacity:0;transition:opacity 0.5s ease}
+.overlay.show{opacity:1}
+.text-block{
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    font-size:2.5rem;font-weight:800;letter-spacing:2px;text-align:center;
+    width:90%;opacity:0;transition:opacity 0.3s ease;z-index:10;
+    text-shadow:0 0 20px rgba(0,0,0,0.8);
+}
+.text-block.show{opacity:1}
+.text-block.hook{font-size:2.8rem;color:#fff}
+.text-block.reveal{font-size:2.3rem;color:#ef4444}
+.text-block.cta{font-size:2rem;color:#a78bfa}
+.text-block.url{font-size:1.5rem;color:#fff}
+
+.watermark{
+    position:absolute;bottom:15px;right:15px;z-index:50;
+    font-size:0.7rem;color:rgba(255,255,255,0.4);
+    font-weight:500;letter-spacing:1px;
+    text-shadow:0 0 6px rgba(0,0,0,0.5);
+}
+</style>
+</head>
+<body>
+
+<div class="screen" id="screen">
+    <div class="bg-img" id="bgImage"></div>
+    <div class="overlay" id="overlay"></div>
+    <div class="text-block hook" id="hook"></div>
+    <div class="text-block reveal" id="reveal"></div>
+    <div class="text-block cta" id="cta"></div>
+    <div class="text-block url" id="url">mewonen.com 💜</div>
+    <div class="watermark">© Mewonen</div>
+</div>
+
+<script>
+var stories = [
+    {hook:"返信しなかった", reveal:"彼は次の日、亡くなった", cta:"今日、伝えよう", bg:"https://images.pexels.com/photos/3394650/pexels-photo-3394650.jpeg?auto=compress&cs=tinysrgb&w=600"},
+    {hook:"大丈夫と言った", reveal:"本当は大丈夫じゃなかった", cta:"もう一度聞いて", bg:"https://images.pexels.com/photos/670720/pexels-photo-670720.jpeg?auto=compress&cs=tinysrgb&w=600"},
+    {hook:"毎週日曜日に電話した", reveal:"でもその日曜日は来なかった", cta:"お母さんに電話して", bg:"https://images.pexels.com/photos/3768142/pexels-photo-3768142.jpeg?auto=compress&cs=tinysrgb&w=600"},
+    {hook:"彼女が泣いていた", reveal:"アレルギーだと言った", cta:"誰かを抱きしめて", bg:"https://images.pexels.com/photos/3812733/pexels-photo-3812733.jpeg?auto=compress&cs=tinysrgb&w=600"},
+    {hook:"毎日働いた", reveal:"彼女の子供時代を見逃した", cta:"時間がすべて", bg:"https://images.pexels.com/photos/2451645/pexels-photo-2451645.jpeg?auto=compress&cs=tinysrgb&w=600"},
+    {hook:"笑顔を投稿した", reveal:"1時間後に削除した", cta:"友達を気にかけて", bg:"https://images.pexels.com/photos/4050413/pexels-photo-4050413.jpeg?auto=compress&cs=tinysrgb&w=600"},
+    {hook:"戻ると言った", reveal:"戻らなかった", cta:"約束を守ろう", bg:"https://images.pexels.com/photos/2102431/pexels-photo-2102431.jpeg?auto=compress&cs=tinysrgb&w=600"},
+    {hook:"ドアの前で待っていた", reveal:"来ない誰かを", cta:"待たせないで", bg:"https://images.pexels.com/photos/271618/pexels-photo-271618.jpeg?auto=compress&cs=tinysrgb&w=600"}
+];
+
+var day = new Date().getDate();
+var story = stories[day % stories.length];
+
+document.getElementById('hook').textContent = story.hook;
+document.getElementById('reveal').textContent = story.reveal;
+document.getElementById('cta').textContent = story.cta;
+document.getElementById('bgImage').style.backgroundImage = 'url(' + story.bg + ')';
+
+var bgImage = document.getElementById('bgImage');
+var overlay = document.getElementById('overlay');
+var hook = document.getElementById('hook');
+var reveal = document.getElementById('reveal');
+var cta = document.getElementById('cta');
+var url = document.getElementById('url');
+
+function animate(){
+    bgImage.classList.add('show');
+    overlay.classList.add('show');
+    hook.classList.add('show');
+    reveal.classList.remove('show');
+    cta.classList.remove('show');
+    url.classList.remove('show');
+    
+    setTimeout(function(){
+        hook.classList.remove('show');
+        reveal.classList.add('show');
+    }, 2000);
+    
+    setTimeout(function(){
+        reveal.classList.remove('show');
+        cta.classList.add('show');
+    }, 4000);
+    
+    setTimeout(function(){
+        cta.classList.remove('show');
+        url.classList.add('show');
+    }, 6000);
+    
+    setTimeout(function(){
+        url.classList.remove('show');
+        bgImage.classList.remove('show');
+        overlay.classList.remove('show');
+        animate();
+    }, 8000);
+}
+
+animate();
+</script>
+</body>
+</html>
