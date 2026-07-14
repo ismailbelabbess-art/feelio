@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>The Mirror</title>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{
+    font-family:'Inter',-apple-system,sans-serif;
+    background:#000;color:#fff;
+    height:100dvh;display:flex;align-items:center;justify-content:center;
+    overflow:hidden;text-align:center;
+}
+.screen{width:100%;max-width:450px;height:100%;position:relative;display:flex}
+.left{
+    width:50%;height:100%;
+    background:linear-gradient(to bottom,#0a1a2e,#051020);
+    display:flex;align-items:center;justify-content:center;
+    position:relative;
+}
+.right{
+    width:50%;height:100%;
+    background:linear-gradient(to bottom,#2e0a1a,#200510);
+    display:flex;align-items:center;justify-content:center;
+    position:relative;
+}
+.divider{
+    position:absolute;left:50%;top:0;bottom:0;width:2px;
+    background:rgba(255,255,255,0.2);z-index:10;
+}
+.side-text{
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    font-size:0.85rem;font-weight:300;line-height:1.6;
+    width:85%;opacity:0;transition:opacity 0.5s ease;
+    padding:10px;
+}
+.side-text.show{opacity:1}
+.side-label{
+    position:absolute;top:30px;font-size:0.65rem;
+    letter-spacing:3px;opacity:0;transition:opacity 0.5s ease;
+}
+.side-label.show{opacity:0.7}
+.his-label{color:#60a5fa}
+.her-label{color:#f472b6}
+.watermark{
+    position:absolute;bottom:12px;left:50%;transform:translateX(-50%);
+    font-size:0.55rem;color:rgba(255,255,255,0.25);z-index:20;
+    letter-spacing:2px;
+}
+.final-text{
+    position:absolute;bottom:60px;left:50%;transform:translateX(-50%);
+    font-size:0.7rem;font-weight:300;letter-spacing:2px;
+    color:rgba(255,255,255,0.6);opacity:0;transition:opacity 0.5s ease;
+    z-index:20;
+}
+.final-text.show{opacity:1}
+</style>
+</head>
+<body>
+
+<div class="screen" id="screen">
+    <div class="divider"></div>
+    <div class="left">
+        <div class="side-label his-label" id="hisLabel">HIS SIDE</div>
+        <div class="side-text" id="hisText"></div>
+    </div>
+    <div class="right">
+        <div class="side-label her-label" id="herLabel">HER SIDE</div>
+        <div class="side-text" id="herText"></div>
+    </div>
+    <div class="watermark">© The Mirror</div>
+    <div class="final-text" id="finalText">Two sides. Same pain.</div>
+</div>
+
+<script>
+var stories = [
+    {
+        male: "I don't approach women anymore. Not because I don't want to. Because I'm afraid of being called a creep. Of being filmed. So I stay silent.",
+        female: "I don't make the first move anymore. Not because I don't want to. Because every time I did, he stopped trying. So I wait."
+    },
+    {
+        male: "I pretend I'm fine being single. Truth is, I'm terrified I'll die alone. But I'll never say it out loud.",
+        female: "I pretend I'm fine being single. Truth is, I'm tired of giving everything and getting nothing back."
+    },
+    {
+        male: "I was taught not to cry. Not to show weakness. So I smile. And I'm breaking inside.",
+        female: "I was taught to be nice. To not make waves. So I say nothing. And I'm screaming inside."
+    },
+    {
+        male: "I work 60 hours a week. Not for me. For them. And they don't even know.",
+        female: "I do everything for everyone. Work. Home. Kids. And nobody asks if I'm okay."
+    },
+    {
+        male: "I still think about her. 3 years later. I never told anyone. I just... wonder.",
+        female: "I still think about him. 3 years later. I pretend I've moved on. I haven't."
+    }
+];
+
+var day = new Date().getDate();
+var story = stories[day % stories.length];
+
+document.getElementById('hisText').textContent = story.male;
+document.getElementById('herText').textContent = story.female;
+
+var hisLabel = document.getElementById('hisLabel');
+var hisText = document.getElementById('hisText');
+var herLabel = document.getElementById('herLabel');
+var herText = document.getElementById('herText');
+var finalText = document.getElementById('finalText');
+
+function animate(){
+    hisLabel.classList.add('show');
+    herLabel.classList.add('show');
+    hisText.classList.add('show');
+    herText.classList.add('show');
+    finalText.classList.remove('show');
+    
+    setTimeout(function(){
+        finalText.classList.add('show');
+    }, 6000);
+    
+    setTimeout(function(){
+        hisLabel.classList.remove('show');
+        herLabel.classList.remove('show');
+        hisText.classList.remove('show');
+        herText.classList.remove('show');
+        finalText.classList.remove('show');
+        setTimeout(animate, 500);
+    }, 10000);
+}
+
+animate();
+</script>
+</body>
+</html>
