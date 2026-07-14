@@ -31,6 +31,14 @@ body{
 .text-block.reveal{font-size:2.3rem;color:#ef4444}
 .text-block.cta{font-size:2rem;color:#a78bfa}
 .text-block.url{font-size:1.5rem;color:#fff}
+
+/* Watermark permanent */
+.watermark{
+    position:absolute;bottom:15px;right:15px;z-index:50;
+    font-size:0.7rem;color:rgba(255,255,255,0.4);
+    font-weight:500;letter-spacing:1px;
+    text-shadow:0 0 6px rgba(0,0,0,0.5);
+}
 </style>
 </head>
 <body>
@@ -42,6 +50,7 @@ body{
     <div class="text-block reveal" id="reveal">HE DIED THE NEXT DAY</div>
     <div class="text-block cta" id="cta">TELL THEM TODAY</div>
     <div class="text-block url" id="url">mewonen.com 💜</div>
+    <div class="watermark">© Mewonen</div>
 </div>
 
 <script>
