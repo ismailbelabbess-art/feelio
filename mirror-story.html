@@ -13,28 +13,31 @@ body{
     overflow:hidden;text-align:center;
 }
 .screen{width:100%;max-width:450px;height:100%;position:relative;display:flex}
-.left{width:50%;height:100%;background:linear-gradient(to bottom,#0d3b66,#051a2e);position:relative}
-.right{width:50%;height:100%;background:linear-gradient(to bottom,#661d3b,#2e0a1a);position:relative}
+.left{width:50%;height:100%;background:linear-gradient(to bottom,#0d3b66,#051a2e);position:relative;display:flex;align-items:center;justify-content:center}
+.right{width:50%;height:100%;background:linear-gradient(to bottom,#661d3b,#2e0a1a);position:relative;display:flex;align-items:center;justify-content:center}
 .divider{position:absolute;left:50%;top:0;bottom:0;width:3px;background:rgba(255,255,255,0.3);z-index:10}
 
 .main-title{
     position:absolute;top:25%;left:50%;transform:translate(-50%,-50%);
     font-size:1.6rem;font-weight:800;letter-spacing:3px;z-index:20;display:none;
+    text-shadow:0 0 30px rgba(255,255,255,0.5);
 }
 .main-title .his{color:#60a5fa}.main-title .her{color:#f472b6}
 
-.message{
-    position:absolute;top:55%;left:50%;transform:translate(-50%,-50%);
-    font-size:0.8rem;font-weight:300;line-height:1.6;width:75%;display:none;z-index:15;
+.side-text{
+    font-size:0.8rem;font-weight:300;line-height:1.6;width:80%;
+    display:none;padding:20px;
 }
 
 .final-msg{
     position:absolute;bottom:80px;left:50%;transform:translateX(-50%);
     font-size:1.2rem;font-weight:700;letter-spacing:2px;z-index:20;display:none;
+    text-shadow:0 0 25px rgba(255,255,255,0.6);
 }
 .account{
     position:absolute;bottom:40px;left:50%;transform:translateX(-50%);
     font-size:0.6rem;color:rgba(255,255,255,0.4);z-index:20;display:none;
+    letter-spacing:2px;
 }
 .watermark{
     position:absolute;bottom:10px;right:12px;
@@ -46,8 +49,8 @@ body{
 <div class="screen" id="screen">
     <div class="divider"></div>
     <div class="main-title" id="mainTitle"><span class="his">HIS</span> SIDE / <span class="her">HER</span> SIDE</div>
-    <div class="message" id="hisMsg"></div>
-    <div class="message" id="herMsg"></div>
+    <div class="left"><div class="side-text" id="hisMsg"></div></div>
+    <div class="right"><div class="side-text" id="herMsg"></div></div>
     <div class="final-msg" id="finalMsg">TWO SIDES. SAME PAIN.</div>
     <div class="account" id="account">@the.mirror.two</div>
     <div class="watermark">© The Mirror</div>
@@ -56,9 +59,9 @@ body{
 <script>
 var stories = [
     {male:"I don't approach women anymore. Because I'm afraid of being called a creep.", female:"I don't make the first move anymore. Because every time I did, he stopped trying."},
-    {male:"I pretend I'm fine being single. Truth is, I'm terrified I'll die alone.", female:"I pretend I'm fine being single. Truth is, I'm tired of giving everything and getting nothing back."},
+    {male:"I pretend I'm fine. Truth is, I'm terrified I'll die alone.", female:"I pretend I'm fine. Truth is, I'm tired of giving everything and getting nothing back."},
     {male:"I was taught not to cry. So I smile. And I'm breaking inside.", female:"I was taught to be nice. So I say nothing. And I'm screaming inside."},
-    {male:"I work 60 hours a week. Not for me. For them. And they don't even know.", female:"I do everything for everyone. And nobody asks if I'm okay."},
+    {male:"I work 60 hours a week. Not for me. For them.", female:"I do everything for everyone. And nobody asks if I'm okay."},
     {male:"I still think about her. 3 years later. I never told anyone.", female:"I still think about him. 3 years later. I pretend I've moved on."}
 ];
 
@@ -74,28 +77,24 @@ var mainTitle = document.getElementById('mainTitle');
 var finalMsg = document.getElementById('finalMsg');
 var account = document.getElementById('account');
 
-function show(el, display){ el.style.display = display || 'block'; }
+function show(el){ el.style.display = 'block'; }
 function hide(el){ el.style.display = 'none'; }
 
 function animate(){
     hide(mainTitle); hide(his); hide(her); hide(finalMsg); hide(account);
     
-    // 1. Titre (0-3s)
     setTimeout(function(){ show(mainTitle); }, 300);
     
-    // 2. Messages (3-8s)
     setTimeout(function(){
         hide(mainTitle);
         show(his); show(her);
     }, 3000);
     
-    // 3. Final (8-12s)
     setTimeout(function(){
         hide(his); hide(her);
         show(finalMsg); show(account);
     }, 8000);
     
-    // 4. Restart (14s)
     setTimeout(function(){ animate(); }, 14000);
 }
 
