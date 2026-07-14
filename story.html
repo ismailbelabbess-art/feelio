@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>Mewonen Story</title>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{
+    font-family:'Inter',-apple-system,sans-serif;
+    background:#000;color:#fff;
+    height:100dvh;display:flex;align-items:center;justify-content:center;
+    overflow:hidden;text-align:center;
+}
+.screen{width:100%;max-width:450px;position:relative}
+.text-block{
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    font-size:3rem;font-weight:800;letter-spacing:2px;text-align:center;
+    width:90%;opacity:0;transition:opacity 0.3s ease;
+}
+.text-block.show{opacity:1}
+.text-block.hook{font-size:3rem;color:#fff}
+.text-block.reveal{font-size:2.5rem;color:#ef4444}
+.text-block.cta{font-size:2rem;color:#a78bfa}
+.text-block.url{font-size:1.5rem;color:#fff}
+.bg{position:absolute;inset:0;transition:background 0.5s ease}
+.bg.dark{background:radial-gradient(circle,#1a1025,#000)}
+.bg.red{background:radial-gradient(circle,#2a1015,#000)}
+.bg.purple{background:radial-gradient(circle,#1a1030,#000)}
+.bg.black{background:#000}
+</style>
+</head>
+<body>
+
+<div class="screen" id="screen">
+    <div class="bg dark" id="bg"></div>
+    <div class="text-block hook" id="hook">I DIDN'T REPLY</div>
+    <div class="text-block reveal" id="reveal">HE DIED THE NEXT DAY</div>
+    <div class="text-block cta" id="cta">TELL THEM TODAY</div>
+    <div class="text-block url" id="url">mewonen.com 💜</div>
+</div>
+
+<script>
+var stories = [
+    {hook:"I DIDN'T REPLY", reveal:"HE DIED THE NEXT DAY", cta:"TELL THEM TODAY"},
+    {hook:"SHE SAID SHE WAS FINE", reveal:"SHE WASN'T", cta:"ASK TWICE"},
+    {hook:"HE CALLED EVERY SUNDAY", reveal:"THEN ONE SUNDAY HE DIDN'T", cta:"CALL YOUR MOM"},
+    {hook:"I SAW HER CRYING", reveal:"SHE SAID IT WAS ALLERGIES", cta:"HUG SOMEONE TODAY"},
+    {hook:"HE WORKED EVERY DAY", reveal:"HE MISSED HER CHILDHOOD", cta:"TIME IS EVERYTHING"},
+    {hook:"SHE POSTED A SMILE", reveal:"SHE DELETED IT AN HOUR LATER", cta:"CHECK ON YOUR FRIENDS"},
+    {hook:"HE SAID HE'D COME BACK", reveal:"HE NEVER DID", cta:"KEEP YOUR PROMISES"},
+    {hook:"SHE WAITED BY THE DOOR", reveal:"FOR SOMEONE WHO NEVER CAME", cta:"DON'T MAKE PEOPLE WAIT"}
+];
+
+// Choisir une histoire aléatoire selon le jour
+var day = new Date().getDate();
+var story = stories[day % stories.length];
+
+document.getElementById('hook').textContent = story.hook;
+document.getElementById('reveal').textContent = story.reveal;
+document.getElementById('cta').textContent = story.cta;
+
+var bg = document.getElementById('bg');
+var hook = document.getElementById('hook');
+var reveal = document.getElementById('reveal');
+var cta = document.getElementById('cta');
+var url = document.getElementById('url');
+
+function animate(){
+    // Hook (0-2s)
+    bg.className = 'bg dark';
+    hook.classList.add('show');
+    reveal.classList.remove('show');
+    cta.classList.remove('show');
+    url.classList.remove('show');
+    
+    setTimeout(function(){
+        // Reveal (2-4s)
+        bg.className = 'bg red';
+        hook.classList.remove('show');
+        reveal.classList.add('show');
+    }, 2000);
+    
+    setTimeout(function(){
+        // CTA (4-6s)
+        bg.className = 'bg purple';
+        reveal.classList.remove('show');
+        cta.classList.add('show');
+    }, 4000);
+    
+    setTimeout(function(){
+        // URL (6-8s)
+        bg.className = 'bg black';
+        cta.classList.remove('show');
+        url.classList.add('show');
+    }, 6000);
+    
+    setTimeout(function(){
+        // Restart
+        url.classList.remove('show');
+        animate();
+    }, 8000);
+}
+
+animate();
+</script>
+</body>
+</html>
