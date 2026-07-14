@@ -3,101 +3,157 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>The Mirror — Send your message</title>
+<title>The Mirror</title>
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 body{
     font-family:'Inter',-apple-system,sans-serif;
     background:#000;color:#fff;
-    min-height:100dvh;display:flex;align-items:center;justify-content:center;
-    padding:20px;
+    height:100dvh;display:flex;align-items:center;justify-content:center;
+    overflow:hidden;text-align:center;
 }
-.container{max-width:450px;width:100%;text-align:center}
-h1{font-size:2rem;font-weight:200;letter-spacing:4px;margin-bottom:4px}
-.subtitle{color:rgba(255,255,255,0.4);font-size:0.8rem;margin-bottom:20px}
-.form-group{margin-bottom:15px;text-align:left}
-label{display:block;font-size:0.7rem;color:rgba(255,255,255,0.5);margin-bottom:4px}
-select,textarea{
-    width:100%;padding:12px;border-radius:12px;
-    border:1px solid rgba(255,255,255,0.15);
-    background:rgba(255,255,255,0.05);color:#fff;
-    font-family:'Inter',sans-serif;font-size:0.85rem;
+.screen{width:100%;max-width:450px;height:100%;position:relative;display:flex}
+.left{width:50%;height:100%;background:linear-gradient(to bottom,#0d3b66,#051a2e);position:relative}
+.right{width:50%;height:100%;background:linear-gradient(to bottom,#661d3b,#2e0a1a);position:relative}
+.divider{position:absolute;left:50%;top:0;bottom:0;width:3px;background:rgba(255,255,255,0.3);z-index:10}
+
+/* Titre principal */
+.main-title{
+    position:absolute;top:25%;left:50%;transform:translate(-50%,-50%);
+    font-size:1.8rem;font-weight:800;letter-spacing:3px;z-index:20;
+    opacity:0;transition:opacity 0.4s ease;
+    text-shadow:0 0 30px rgba(255,255,255,0.5);
 }
-textarea{height:120px;resize:none}
-select{appearance:none}
-.radio-group{display:flex;gap:15px}
-.radio-group label{display:flex;align-items:center;gap:6px;color:#fff;font-size:0.8rem}
-.btn{
-    width:100%;padding:14px;border-radius:50px;border:none;
-    background:linear-gradient(135deg,#3b82f6,#ec4899);color:#fff;
-    font-size:0.9rem;font-weight:500;cursor:pointer;letter-spacing:0.5px;
-    transition:all 0.2s ease;
+.main-title.show{opacity:1}
+.main-title .his{color:#60a5fa}
+.main-title .her{color:#f472b6}
+
+/* Message */
+.message{
+    position:absolute;top:55%;left:50%;transform:translate(-50%,-50%);
+    font-size:0.85rem;font-weight:300;line-height:1.6;width:80%;
+    opacity:0;transition:opacity 0.5s ease;z-index:15;
 }
-.btn:active{transform:scale(0.96)}
-.note{color:rgba(255,255,255,0.3);font-size:0.6rem;margin-top:12px}
-.success{display:none;color:#34d399;font-size:0.9rem;margin-top:15px}
+.message.show{opacity:1}
+.message.left-side{color:#fff}
+.message.right-side{color:#fff}
+
+/* Label */
+.label{
+    position:absolute;top:15px;font-size:0.6rem;letter-spacing:3px;
+    opacity:0;transition:opacity 0.5s ease;
+}
+.label.show{opacity:0.8}
+.label.his{left:50%;transform:translateX(-100%);color:#60a5fa}
+.label.her{left:50%;color:#f472b6}
+
+/* Final */
+.final-msg{
+    position:absolute;bottom:80px;left:50%;transform:translateX(-50%);
+    font-size:1.3rem;font-weight:700;letter-spacing:2px;
+    color:#fff;opacity:0;transition:opacity 0.5s ease;z-index:20;
+    text-shadow:0 0 25px rgba(255,255,255,0.6);
+}
+.final-msg.show{opacity:1}
+
+/* Account */
+.account{
+    position:absolute;bottom:35px;left:50%;transform:translateX(-50%);
+    font-size:0.6rem;color:rgba(255,255,255,0.4);z-index:20;
+    letter-spacing:2px;opacity:0;transition:opacity 0.5s ease;
+}
+.account.show{opacity:1}
+
+.watermark{
+    position:absolute;bottom:10px;right:12px;
+    font-size:0.5rem;color:rgba(255,255,255,0.2);z-index:20;
+}
 </style>
 </head>
 <body>
-<div class="container">
-    <h1>THE MIRROR</h1>
-    <div class="subtitle">Anonymous message. Read tomorrow.</div>
+
+<div class="screen" id="screen">
+    <div class="divider"></div>
     
-    <div id="formArea">
-        <div class="form-group">
-            <label>Theme</label>
-            <select id="theme">
-                <option value="first-move">Why I don't make the first move</option>
-                <option value="unspoken">What I don't say to my partner</option>
-                <option value="stay">Why I stay in a relationship</option>
-                <option value="fear">What scares me about the other gender</option>
-                <option value="regret">What I regret saying</option>
-                <option value="understand">What I wish you understood</option>
-                <option value="alone">Why I prefer being alone</option>
-            </select>
-        </div>
-        
-        <div class="form-group">
-            <label>Your message (anonymous)</label>
-            <textarea id="message" placeholder="Write what you never dared to say..." maxlength="500"></textarea>
-        </div>
-        
-        <div class="form-group">
-            <label>Your voice</label>
-            <div class="radio-group">
-                <label><input type="radio" name="gender" value="male" checked> Male</label>
-                <label><input type="radio" name="gender" value="female"> Female</label>
-            </div>
-        </div>
-        
-        <button class="btn" onclick="submitMessage()">Send anonymously →</button>
+    <div class="main-title" id="mainTitle">
+        <span class="his">HIS</span> SIDE / <span class="her">HER</span> SIDE
     </div>
     
-    <div class="success" id="successMsg">✓ Message sent. It may be read tomorrow.</div>
-    <div class="note">No name. No email. No data stored. Just a message.</div>
+    <div class="label his" id="hisLabel">HIS SIDE</div>
+    <div class="label her" id="herLabel">HER SIDE</div>
+    
+    <div class="message left-side" id="hisMsg"></div>
+    <div class="message right-side" id="herMsg"></div>
+    
+    <div class="final-msg" id="finalMsg">TWO SIDES. SAME PAIN.</div>
+    <div class="account" id="account">@the.mirror.two</div>
+    <div class="watermark">© The Mirror</div>
 </div>
 
 <script>
-function submitMessage(){
-    var theme = document.getElementById('theme').value;
-    var message = document.getElementById('message').value.trim();
-    var gender = document.querySelector('input[name="gender"]:checked').value;
+var stories = [
+    {male:"I don't approach women anymore. Not because I don't want to. Because I'm afraid of being called a creep.", female:"I don't make the first move anymore. Not because I don't want to. Because every time I did, he stopped trying."},
+    {male:"I pretend I'm fine being single. Truth is, I'm terrified I'll die alone.", female:"I pretend I'm fine being single. Truth is, I'm tired of giving everything and getting nothing back."},
+    {male:"I was taught not to cry. So I smile. And I'm breaking inside.", female:"I was taught to be nice. So I say nothing. And I'm screaming inside."},
+    {male:"I work 60 hours a week. Not for me. For them. And they don't even know.", female:"I do everything for everyone. And nobody asks if I'm okay."},
+    {male:"I still think about her. 3 years later. I never told anyone.", female:"I still think about him. 3 years later. I pretend I've moved on."}
+];
+
+var day = new Date().getDate();
+var story = stories[day % stories.length];
+
+document.getElementById('hisMsg').textContent = story.male;
+document.getElementById('herMsg').textContent = story.female;
+
+var mainTitle = document.getElementById('mainTitle');
+var hisLabel = document.getElementById('hisLabel');
+var herLabel = document.getElementById('herLabel');
+var hisMsg = document.getElementById('hisMsg');
+var herMsg = document.getElementById('herMsg');
+var finalMsg = document.getElementById('finalMsg');
+var account = document.getElementById('account');
+
+function animate(){
+    // Cacher tout
+    mainTitle.classList.remove('show');
+    hisLabel.classList.remove('show');
+    herLabel.classList.remove('show');
+    hisMsg.classList.remove('show');
+    herMsg.classList.remove('show');
+    finalMsg.classList.remove('show');
+    account.classList.remove('show');
     
-    if(!message) return alert('Please write a message.');
+    // 1. Titre principal (0-3s)
+    setTimeout(function(){ mainTitle.classList.add('show'); }, 200);
     
-    // Store in localStorage (all local, no server)
-    var messages = JSON.parse(localStorage.getItem('mirror_messages') || '[]');
-    messages.push({
-        theme: theme,
-        message: message,
-        gender: gender,
-        date: new Date().toISOString().split('T')[0]
-    });
-    localStorage.setItem('mirror_messages', JSON.stringify(messages));
+    // 2. Labels + messages (3-8s)
+    setTimeout(function(){
+        mainTitle.classList.remove('show');
+        hisLabel.classList.add('show');
+        herLabel.classList.add('show');
+        hisMsg.classList.add('show');
+        herMsg.classList.add('show');
+    }, 3000);
     
-    document.getElementById('formArea').style.display = 'none';
-    document.getElementById('successMsg').style.display = 'block';
+    // 3. Final (8-12s)
+    setTimeout(function(){
+        hisLabel.classList.remove('show');
+        herLabel.classList.remove('show');
+        hisMsg.classList.remove('show');
+        herMsg.classList.remove('show');
+        finalMsg.classList.add('show');
+        account.classList.add('show');
+    }, 8000);
+    
+    // 4. Redémarrer (14s)
+    setTimeout(function(){
+        finalMsg.classList.remove('show');
+        account.classList.remove('show');
+        animate();
+    }, 14000);
 }
+
+animate();
 </script>
 </body>
 </html>
