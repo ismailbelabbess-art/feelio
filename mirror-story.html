@@ -13,121 +13,90 @@ body{
     overflow:hidden;text-align:center;
 }
 .screen{width:100%;max-width:450px;height:100%;position:relative;display:flex}
-.left{
-    width:50%;height:100%;
-    background:linear-gradient(to bottom,#0a1a2e,#051020);
-    display:flex;align-items:center;justify-content:center;
-    position:relative;
+.left{width:50%;height:100%;background:linear-gradient(to bottom,#0d3b66,#051a2e);position:relative}
+.right{width:50%;height:100%;background:linear-gradient(to bottom,#661d3b,#2e0a1a);position:relative}
+.divider{position:absolute;left:50%;top:0;bottom:0;width:3px;background:rgba(255,255,255,0.3);z-index:10}
+
+.main-title{
+    position:absolute;top:25%;left:50%;transform:translate(-50%,-50%);
+    font-size:1.6rem;font-weight:800;letter-spacing:3px;z-index:20;display:none;
 }
-.right{
-    width:50%;height:100%;
-    background:linear-gradient(to bottom,#2e0a1a,#200510);
-    display:flex;align-items:center;justify-content:center;
-    position:relative;
+.main-title .his{color:#60a5fa}.main-title .her{color:#f472b6}
+
+.message{
+    position:absolute;top:55%;left:50%;transform:translate(-50%,-50%);
+    font-size:0.8rem;font-weight:300;line-height:1.6;width:75%;display:none;z-index:15;
 }
-.divider{
-    position:absolute;left:50%;top:0;bottom:0;width:2px;
-    background:rgba(255,255,255,0.2);z-index:10;
+
+.final-msg{
+    position:absolute;bottom:80px;left:50%;transform:translateX(-50%);
+    font-size:1.2rem;font-weight:700;letter-spacing:2px;z-index:20;display:none;
 }
-.side-text{
-    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-    font-size:0.85rem;font-weight:300;line-height:1.6;
-    width:85%;opacity:0;transition:opacity 0.5s ease;
-    padding:10px;
+.account{
+    position:absolute;bottom:40px;left:50%;transform:translateX(-50%);
+    font-size:0.6rem;color:rgba(255,255,255,0.4);z-index:20;display:none;
 }
-.side-text.show{opacity:1}
-.side-label{
-    position:absolute;top:30px;font-size:0.65rem;
-    letter-spacing:3px;opacity:0;transition:opacity 0.5s ease;
-}
-.side-label.show{opacity:0.7}
-.his-label{color:#60a5fa}
-.her-label{color:#f472b6}
 .watermark{
-    position:absolute;bottom:12px;left:50%;transform:translateX(-50%);
-    font-size:0.55rem;color:rgba(255,255,255,0.25);z-index:20;
-    letter-spacing:2px;
+    position:absolute;bottom:10px;right:12px;
+    font-size:0.5rem;color:rgba(255,255,255,0.2);z-index:20;
 }
-.final-text{
-    position:absolute;bottom:60px;left:50%;transform:translateX(-50%);
-    font-size:0.7rem;font-weight:300;letter-spacing:2px;
-    color:rgba(255,255,255,0.6);opacity:0;transition:opacity 0.5s ease;
-    z-index:20;
-}
-.final-text.show{opacity:1}
 </style>
 </head>
 <body>
-
 <div class="screen" id="screen">
     <div class="divider"></div>
-    <div class="left">
-        <div class="side-label his-label" id="hisLabel">HIS SIDE</div>
-        <div class="side-text" id="hisText"></div>
-    </div>
-    <div class="right">
-        <div class="side-label her-label" id="herLabel">HER SIDE</div>
-        <div class="side-text" id="herText"></div>
-    </div>
+    <div class="main-title" id="mainTitle"><span class="his">HIS</span> SIDE / <span class="her">HER</span> SIDE</div>
+    <div class="message" id="hisMsg"></div>
+    <div class="message" id="herMsg"></div>
+    <div class="final-msg" id="finalMsg">TWO SIDES. SAME PAIN.</div>
+    <div class="account" id="account">@the.mirror.two</div>
     <div class="watermark">© The Mirror</div>
-    <div class="final-text" id="finalText">Two sides. Same pain.</div>
 </div>
 
 <script>
 var stories = [
-    {
-        male: "I don't approach women anymore. Not because I don't want to. Because I'm afraid of being called a creep. Of being filmed. So I stay silent.",
-        female: "I don't make the first move anymore. Not because I don't want to. Because every time I did, he stopped trying. So I wait."
-    },
-    {
-        male: "I pretend I'm fine being single. Truth is, I'm terrified I'll die alone. But I'll never say it out loud.",
-        female: "I pretend I'm fine being single. Truth is, I'm tired of giving everything and getting nothing back."
-    },
-    {
-        male: "I was taught not to cry. Not to show weakness. So I smile. And I'm breaking inside.",
-        female: "I was taught to be nice. To not make waves. So I say nothing. And I'm screaming inside."
-    },
-    {
-        male: "I work 60 hours a week. Not for me. For them. And they don't even know.",
-        female: "I do everything for everyone. Work. Home. Kids. And nobody asks if I'm okay."
-    },
-    {
-        male: "I still think about her. 3 years later. I never told anyone. I just... wonder.",
-        female: "I still think about him. 3 years later. I pretend I've moved on. I haven't."
-    }
+    {male:"I don't approach women anymore. Because I'm afraid of being called a creep.", female:"I don't make the first move anymore. Because every time I did, he stopped trying."},
+    {male:"I pretend I'm fine being single. Truth is, I'm terrified I'll die alone.", female:"I pretend I'm fine being single. Truth is, I'm tired of giving everything and getting nothing back."},
+    {male:"I was taught not to cry. So I smile. And I'm breaking inside.", female:"I was taught to be nice. So I say nothing. And I'm screaming inside."},
+    {male:"I work 60 hours a week. Not for me. For them. And they don't even know.", female:"I do everything for everyone. And nobody asks if I'm okay."},
+    {male:"I still think about her. 3 years later. I never told anyone.", female:"I still think about him. 3 years later. I pretend I've moved on."}
 ];
 
 var day = new Date().getDate();
 var story = stories[day % stories.length];
 
-document.getElementById('hisText').textContent = story.male;
-document.getElementById('herText').textContent = story.female;
+var his = document.getElementById('hisMsg');
+var her = document.getElementById('herMsg');
+his.textContent = story.male;
+her.textContent = story.female;
 
-var hisLabel = document.getElementById('hisLabel');
-var hisText = document.getElementById('hisText');
-var herLabel = document.getElementById('herLabel');
-var herText = document.getElementById('herText');
-var finalText = document.getElementById('finalText');
+var mainTitle = document.getElementById('mainTitle');
+var finalMsg = document.getElementById('finalMsg');
+var account = document.getElementById('account');
+
+function show(el, display){ el.style.display = display || 'block'; }
+function hide(el){ el.style.display = 'none'; }
 
 function animate(){
-    hisLabel.classList.add('show');
-    herLabel.classList.add('show');
-    hisText.classList.add('show');
-    herText.classList.add('show');
-    finalText.classList.remove('show');
+    hide(mainTitle); hide(his); hide(her); hide(finalMsg); hide(account);
     
-    setTimeout(function(){
-        finalText.classList.add('show');
-    }, 6000);
+    // 1. Titre (0-3s)
+    setTimeout(function(){ show(mainTitle); }, 300);
     
+    // 2. Messages (3-8s)
     setTimeout(function(){
-        hisLabel.classList.remove('show');
-        herLabel.classList.remove('show');
-        hisText.classList.remove('show');
-        herText.classList.remove('show');
-        finalText.classList.remove('show');
-        setTimeout(animate, 500);
-    }, 10000);
+        hide(mainTitle);
+        show(his); show(her);
+    }, 3000);
+    
+    // 3. Final (8-12s)
+    setTimeout(function(){
+        hide(his); hide(her);
+        show(finalMsg); show(account);
+    }, 8000);
+    
+    // 4. Restart (14s)
+    setTimeout(function(){ animate(); }, 14000);
 }
 
 animate();
