@@ -7,113 +7,132 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Mewonen">
 <title>Mewonen — Draw your mood</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-/* ========== RESET & BASE ========== */
+/* ========== RESET ========== */
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 html{font-size:16px;-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}
 body{
-  font-family:'Inter',-apple-system,sans-serif;
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
   background:#0a0a18;color:#f0f0f0;
   min-height:100dvh;overflow:hidden;
   -webkit-font-smoothing:antialiased;
   user-select:none;-webkit-user-select:none;
 }
-body.fr,body.es{font-family:'Inter',-apple-system,sans-serif}
-body.ja{font-family:'Hiragino Sans',-apple-system,sans-serif}
-body.zh{font-family:'PingFang SC',-apple-system,sans-serif}
-body.ko{font-family:'Apple SD Gothic Neo',-apple-system,sans-serif}
-body.ar{font-family:'Noto Sans Arabic',-apple-system,sans-serif}
 :root{
-  --p: #7c3aed;
-  --p2: #a78bfa;
-  --gold: #fbbf24;
-  --bg: #0a0a18;
-  --surface: rgba(16,16,32,0.8);
-  --surface2: rgba(22,22,44,0.95);
-  --radius: 28px;
-  --nav-h: 60px;
+  --p:#7c3aed;--p2:#a78bfa;--g:#fbbf24;--bg:#0a0a18;
+  --s:rgba(16,16,32,0.8);--s2:rgba(22,22,44,0.95);
+  --r:28px;--nav:60px;
 }
-
 /* ========== SPLASH ========== */
 #splash{
   position:fixed;inset:0;z-index:1000;
-  background:radial-gradient(ellipse at 50% 30%, #1a1030, #0a0a18);
+  background:radial-gradient(ellipse at 50% 30%,#1a1030,#0a0a18);
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  transition:opacity 0.9s ease, transform 0.9s ease;
+  transition:opacity 0.9s ease;
 }
-#splash.hidden{opacity:0;transform:scale(1.05);pointer-events:none}
-.splash-isme{
-  font-size:5rem;margin-bottom:8px;
-  animation:splashFloat 2s ease-in-out infinite, splashGlow 2s ease-in-out infinite;
-  text-shadow:0 0 60px rgba(124,58,237,0.6);
+#splash.hidden{opacity:0;pointer-events:none}
+.splash-isme{font-size:4.5rem;margin-bottom:6px;animation:sf 2s ease-in-out infinite;text-shadow:0 0 60px rgba(124,58,237,0.5)}
+@keyframes sf{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+.splash-logo{font-size:2.8rem;font-weight:100;letter-spacing:18px;color:#fff;text-shadow:0 0 60px rgba(167,139,250,0.3)}
+.splash-sub{color:#a78bfa;font-size:0.65rem;letter-spacing:6px;margin-top:8px;opacity:0.5}
+.splash-bar{width:50px;height:2px;background:rgba(255,255,255,0.05);border-radius:2px;margin-top:16px;overflow:hidden}
+.splash-bar span{display:block;height:100%;width:0%;background:linear-gradient(90deg,#7c3aed,#a78bfa);animation:pb 2s ease-in-out forwards}
+@keyframes pb{0%{width:0%}100%{width:100%}}
+
+/* ========== GLOBE ========== */
+#globeScreen{
+  position:fixed;inset:0;z-index:800;
+  background:#0a0a18;
+  display:none;flex-direction:column;align-items:center;justify-content:center;
+  overflow:hidden;
 }
-@keyframes splashFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
-@keyframes splashGlow{0%,100%{text-shadow:0 0 40px rgba(124,58,237,0.3)}50%{text-shadow:0 0 80px rgba(124,58,237,0.8)}}
-.splash-logo{
-  font-size:3.2rem;font-weight:100;letter-spacing:20px;color:#fff;
-  text-shadow:0 0 60px rgba(167,139,250,0.4);
+#globeScreen.active{display:flex}
+.globe-wrap{
+  position:relative;width:280px;height:280px;margin-bottom:10px;
+  perspective:800px;
 }
-.splash-sub{
-  color:#a78bfa;font-size:0.7rem;letter-spacing:6px;margin-top:10px;opacity:0.6;
-  animation:splashFade 2s ease-in-out infinite;
+.globe{
+  width:100%;height:100%;border-radius:50%;
+  position:relative;
+  transform-style:preserve-3d;
+  animation:spin 25s linear infinite;
+  background:radial-gradient(circle at 35% 35%,#1a3a5c,#0a1a2a);
+  box-shadow:0 0 80px rgba(124,58,237,0.08);
+  cursor:grab;
 }
-@keyframes splashFade{0%,100%{opacity:0.4}50%{opacity:0.9}}
-.splash-loader{
-  width:40px;height:3px;background:rgba(255,255,255,0.05);border-radius:3px;margin-top:20px;overflow:hidden;
+.globe:active{cursor:grabbing}
+@keyframes spin{0%{transform:rotateY(0deg)}100%{transform:rotateY(360deg)}}
+.globe-ping{
+  position:absolute;width:100%;height:100%;border-radius:50%;
+  border:1.5px solid rgba(167,139,250,0.08);
+  animation:pingPulse 3s ease-in-out infinite;
 }
-.splash-loader span{
-  display:block;height:100%;width:0%;background:linear-gradient(90deg,#7c3aed,#a78bfa);
-  border-radius:3px;animation:loaderProgress 1.8s ease-in-out forwards;
+@keyframes pingPulse{0%,100%{transform:scale(1);opacity:0.3}50%{transform:scale(1.04);opacity:0}}
+.globe-dots{position:absolute;inset:0;border-radius:50%;overflow:hidden}
+.dot{
+  position:absolute;width:5px;height:5px;border-radius:50%;
+  background:rgba(167,139,250,0.3);
+  animation:dotFloat 3s ease-in-out infinite;
 }
-@keyframes loaderProgress{0%{width:0%}100%{width:100%}}
+@keyframes dotFloat{0%,100%{transform:translateY(0);opacity:0.3}50%{transform:translateY(-8px);opacity:0.8}}
+.globe-emojis{position:absolute;inset:0;border-radius:50%;pointer-events:none}
+.ge{
+  position:absolute;font-size:0.9rem;animation:geFloat 4s ease-in-out infinite;
+}
+@keyframes geFloat{0%,100%{transform:translateY(0) scale(1);opacity:0.6}50%{transform:translateY(-12px) scale(1.1);opacity:1}}
+.globe-flag{
+  position:absolute;bottom:-10px;left:50%;transform:translateX(-50%);
+  font-size:2.5rem;animation:flagPop 0.6s cubic-bezier(0.34,1.56,0.64,1);
+  display:none;
+}
+@keyframes flagPop{0%{opacity:0;transform:translateX(-50%) scale(0.3)}100%{opacity:1;transform:translateX(-50%) scale(1)}}
+.globe-msg{
+  color:rgba(255,255,255,0.6);font-size:0.7rem;text-align:center;max-width:300px;line-height:1.6;padding:0 16px;margin-top:6px;
+}
+.globe-msg strong{color:#a78bfa;font-weight:400}
+.globe-btn{margin-top:12px}
+.globe-btn .btn{padding:10px 24px;font-size:0.65rem}
 
 /* ========== ONBOARDING ========== */
 #onboarding{
   position:fixed;inset:0;z-index:900;
   background:rgba(10,10,24,0.98);backdrop-filter:blur(30px);
   display:none;flex-direction:column;align-items:center;justify-content:center;
-  padding:20px;text-align:center;
+  padding:20px;
 }
 #onboarding.active{display:flex}
-.on-slide{display:none;animation:slideUp 0.7s cubic-bezier(0.22,1,0.36,1);max-width:400px;width:100%}
+.on-slide{display:none;animation:os 0.6s ease-out;max-width:360px;text-align:center}
 .on-slide.active{display:block}
-@keyframes slideUp{0%{opacity:0;transform:translateY(40px)}100%{opacity:1;transform:translateY(0)}}
-.on-slide .icon{font-size:4.5rem;margin-bottom:12px;display:block}
-.on-slide h2{font-size:1.6rem;font-weight:200;color:#fff;margin-bottom:6px}
-.on-slide p{color:rgba(255,255,255,0.55);font-size:0.85rem;line-height:1.6}
-.on-progress{display:flex;gap:8px;margin:16px 0}
-.on-progress .dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,0.08);transition:all 0.4s ease}
-.on-progress .dot.active{background:#a78bfa;transform:scale(1.25);box-shadow:0 0 20px rgba(167,139,250,0.3)}
-.on-slide .isme-demo{font-size:3rem;margin:6px 0;animation:ismeFloat 2s ease-in-out infinite}
-.on-slide .isme-msg{background:rgba(22,22,44,0.8);border:1px solid rgba(139,92,246,0.15);border-radius:16px;padding:12px 16px;max-width:280px;margin:8px auto;font-size:0.7rem;color:rgba(255,255,255,0.8);backdrop-filter:blur(8px)}
-.on-slide .isme-msg::before{content:"💬 "}
+@keyframes os{0%{opacity:0;transform:translateY(30px)}100%{opacity:1;transform:translateY(0)}}
+.on-slide .icon{font-size:4rem;margin-bottom:10px}
+.on-slide h2{font-size:1.4rem;font-weight:200;color:#fff;margin-bottom:4px}
+.on-slide p{color:rgba(255,255,255,0.5);font-size:0.8rem;line-height:1.6}
+.on-dots{display:flex;gap:8px;margin:16px 0}
+.on-dots span{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.06);transition:all 0.3s}
+.on-dots span.active{background:#a78bfa;transform:scale(1.2)}
 
 /* ========== APP ========== */
-#app{display:none;flex-direction:column;height:100dvh;position:relative;background:#0a0a18}
+#app{display:none;flex-direction:column;height:100dvh;background:#0a0a18}
 #app.active{display:flex}
 
 /* ========== TOP BAR ========== */
 .top-bar{
   display:flex;justify-content:space-between;align-items:center;
-  padding:10px 14px;padding-top:calc(10px + env(safe-area-inset-top,0));
-  background:rgba(10,10,24,0.7);backdrop-filter:blur(20px);
-  border-bottom:0.5px solid rgba(255,255,255,0.04);
-  z-index:50;flex-shrink:0;
+  padding:8px 12px;padding-top:calc(8px + env(safe-area-inset-top,0));
+  background:rgba(10,10,24,0.6);backdrop-filter:blur(16px);
+  border-bottom:0.5px solid rgba(255,255,255,0.03);
+  flex-shrink:0;z-index:50;
 }
-.top-bar .privacy{display:flex;align-items:center;gap:6px;color:rgba(255,255,255,0.25);font-size:0.45rem;letter-spacing:1px;font-weight:300}
-.top-bar .privacy .dot{width:4px;height:4px;border-radius:50%;background:#34d399;animation:dotPulse 2s infinite}
-@keyframes dotPulse{0%,100%{opacity:0.2}50%{opacity:1}}
+.top-bar .l{display:flex;align-items:center;gap:6px;color:rgba(255,255,255,0.2);font-size:0.4rem;letter-spacing:1px}
+.top-bar .l .d{width:4px;height:4px;border-radius:50%;background:#34d399;animation:dp 2s infinite}
+@keyframes dp{0%,100%{opacity:0.2}50%{opacity:1}}
 .top-bar .langs{display:flex;gap:3px}
 .top-bar .langs button{
-  background:none;border:none;color:rgba(255,255,255,0.2);
-  font-size:0.5rem;cursor:pointer;padding:3px 6px;border-radius:4px;
-  transition:all 0.2s;font-weight:400;letter-spacing:0.3px;
+  background:none;border:none;color:rgba(255,255,255,0.15);
+  font-size:0.45rem;cursor:pointer;padding:2px 6px;border-radius:4px;
+  transition:all 0.2s;font-weight:400;
 }
-.top-bar .langs button.active{color:#a78bfa;background:rgba(139,92,246,0.08)}
-.top-bar .langs button:active{transform:scale(0.9)}
+.top-bar .langs button.active{color:#a78bfa;background:rgba(139,92,246,0.06)}
 
 /* ========== MAIN ========== */
 .main{
@@ -122,207 +141,209 @@ body.ar{font-family:'Noto Sans Arabic',-apple-system,sans-serif}
 }
 
 /* ========== CANVAS ========== */
-.canvas-wrap{position:relative;margin-bottom:6px;border-radius:var(--radius);box-shadow:0 8px 40px rgba(124,58,237,0.06)}
-canvas#canvas{
-  width:280px;height:280px;border-radius:var(--radius);
-  background:var(--surface);backdrop-filter:blur(12px);
-  border:1.5px solid rgba(139,92,246,0.12);
-  touch-action:none;cursor:crosshair;
-  display:block;transition:transform 0.15s ease;
+.cwrap{position:relative;margin-bottom:4px;border-radius:var(--r);box-shadow:0 8px 40px rgba(124,58,237,0.04)}
+canvas#c{
+  width:270px;height:270px;border-radius:var(--r);
+  background:var(--s);backdrop-filter:blur(12px);
+  border:1.5px solid rgba(139,92,246,0.08);
+  touch-action:none;cursor:crosshair;display:block;
 }
-canvas#canvas:active{transform:scale(0.97)}
-@media(min-width:500px){canvas#canvas{width:320px;height:320px}}
-@media(max-width:380px){canvas#canvas{width:240px;height:240px}}
-
-/* ========== TOOLBAR ========== */
-.toolbar{display:flex;gap:4px;margin-bottom:4px;flex-wrap:wrap;justify-content:center}
-.toolbar button{
-  width:30px;height:30px;border-radius:50%;
-  border:1px solid rgba(255,255,255,0.04);
-  background:rgba(255,255,255,0.02);
-  color:rgba(255,255,255,0.3);cursor:pointer;font-size:0.6rem;
-  transition:all 0.2s;display:flex;align-items:center;justify-content:center;
-}
-.toolbar button:active{transform:scale(0.85)}
-.toolbar button.active{border-color:var(--p2);color:var(--p2);background:rgba(139,92,246,0.06)}
+@media(min-width:500px){canvas#c{width:310px;height:310px}}
+@media(max-width:380px){canvas#c{width:230px;height:230px}}
 
 /* ========== RESULT ========== */
-#resultWrap{display:flex;flex-direction:column;align-items:center;min-height:60px;gap:1px;margin-top:4px}
-#resultEmoji{font-size:3rem;animation:popIn 0.6s cubic-bezier(0.34,1.56,0.64,1)}
-#resultPhrase{color:rgba(255,255,255,0.85);font-size:0.7rem;font-weight:300;text-align:center;max-width:300px}
-#resultPhrase2{color:rgba(255,255,255,0.3);font-size:0.55rem;font-weight:200;text-align:center;max-width:300px}
-@keyframes popIn{0%{opacity:0;transform:scale(0.4)}100%{opacity:1;transform:scale(1)}}
+#rw{display:flex;flex-direction:column;align-items:center;min-height:50px;gap:1px;margin-top:4px}
+#re{font-size:2.6rem;animation:pi 0.5s cubic-bezier(0.34,1.56,0.64,1)}
+#rp{color:rgba(255,255,255,0.8);font-size:0.7rem;font-weight:300;text-align:center;max-width:280px}
+#rp2{color:rgba(255,255,255,0.25);font-size:0.5rem;font-weight:200;text-align:center;max-width:280px}
+@keyframes pi{0%{opacity:0;transform:scale(0.4)}100%{opacity:1;transform:scale(1)}}
+
+/* ========== BUBBLES ========== */
+#bubbleBox{
+  display:none;flex-direction:column;align-items:center;gap:6px;
+  margin-top:6px;width:100%;max-width:280px;animation:bb 0.5s ease-out;
+}
+@keyframes bb{0%{opacity:0;transform:translateY(10px)}100%{opacity:1;transform:translateY(0)}}
+#bubbleBox.show{display:flex}
+.bubble-msg{
+  background:var(--s2);border:1px solid rgba(139,92,246,0.1);
+  border-radius:16px;padding:10px 14px;text-align:center;
+  font-size:0.65rem;color:rgba(255,255,255,0.85);line-height:1.5;
+  backdrop-filter:blur(12px);width:100%;
+}
+.bubble-msg .b-icon{font-size:1.2rem;display:block;margin-bottom:2px}
+.bubble-btns{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.bubble-btns button{padding:6px 14px;border-radius:50px;font-size:0.5rem;border:none;cursor:pointer;transition:all 0.2s;font-family:inherit}
+.bubble-btns button:active{transform:scale(0.92)}
+.bubble-btns .bb-p{background:linear-gradient(135deg,#7c3aed,#a78bfa);color:#fff}
+.bubble-btns .bb-s{background:transparent;border:1px solid rgba(255,255,255,0.06);color:rgba(255,255,255,0.5)}
+
+/* ========== TOOLBAR ========== */
+.tb{display:flex;gap:4px;margin-bottom:3px;flex-wrap:wrap;justify-content:center}
+.tb button{
+  width:28px;height:28px;border-radius:50%;
+  border:1px solid rgba(255,255,255,0.04);
+  background:rgba(255,255,255,0.02);
+  color:rgba(255,255,255,0.25);cursor:pointer;font-size:0.55rem;
+  transition:all 0.2s;display:flex;align-items:center;justify-content:center;
+}
+.tb button:active{transform:scale(0.85)}
+.tb button.active{border-color:#a78bfa;color:#a78bfa;background:rgba(139,92,246,0.06)}
 
 /* ========== BUTTONS ========== */
-.btn-group{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-top:4px}
+.btn-g{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-top:3px}
 .btn{
   display:inline-flex;align-items:center;gap:4px;
   padding:6px 14px;border-radius:50px;
-  font-size:0.55rem;font-weight:500;letter-spacing:0.3px;
+  font-size:0.5rem;font-weight:500;letter-spacing:0.3px;
   cursor:pointer;transition:all 0.2s;border:none;font-family:inherit;
 }
 .btn:active{transform:scale(0.92)}
-.btn-primary{background:linear-gradient(135deg,#7c3aed,#a78bfa);color:#fff;box-shadow:0 4px 20px rgba(124,58,237,0.25)}
-.btn-outline{background:transparent;color:#a78bfa;border:1px solid rgba(139,92,246,0.15)}
-.btn-small{padding:4px 10px;font-size:0.48rem}
-.btn-icon{padding:6px 8px;border-radius:50%;min-width:32px;min-height:32px}
+.btn-p{background:linear-gradient(135deg,#7c3aed,#a78bfa);color:#fff;box-shadow:0 4px 20px rgba(124,58,237,0.2)}
+.btn-o{background:transparent;color:#a78bfa;border:1px solid rgba(139,92,246,0.1)}
+.btn-s{padding:4px 10px;font-size:0.45rem}
+.btn-i{padding:6px 8px;border-radius:50%;min-width:30px;min-height:30px}
 
 /* ========== STREAK ========== */
-.streak-badge{
+.sb{
   display:none;align-items:center;gap:4px;
-  padding:3px 10px;border-radius:12px;
-  font-size:0.48rem;font-weight:500;margin-bottom:2px;
-  animation:badgeIn 0.5s cubic-bezier(0.34,1.56,0.64,1);
+  padding:2px 10px;border-radius:12px;
+  font-size:0.45rem;font-weight:500;margin-bottom:2px;
+  animation:bi 0.5s cubic-bezier(0.34,1.56,0.64,1);
 }
-@keyframes badgeIn{0%{opacity:0;transform:scale(0.5)}100%{opacity:1;transform:scale(1)}}
-.streak-badge.show{display:inline-flex}
-.streak-badge.bronze{background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.15);color:#fbbf24}
-.streak-badge.silver{background:rgba(203,213,225,0.08);border:1px solid rgba(203,213,225,0.15);color:#cbd5e1}
-.streak-badge.diamond{background:rgba(96,165,250,0.08);border:1px solid rgba(96,165,250,0.15);color:#60a5fa}
-.streak-badge.legendary{background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.3);color:#fbbf24;box-shadow:0 0 30px rgba(251,191,36,0.1)}
+@keyframes bi{0%{opacity:0;transform:scale(0.5)}100%{opacity:1;transform:scale(1)}}
+.sb.show{display:inline-flex}
+.sb.bz{background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.12);color:#fbbf24}
+.sb.sv{background:rgba(203,213,225,0.08);border:1px solid rgba(203,213,225,0.12);color:#cbd5e1}
+.sb.dm{background:rgba(96,165,250,0.08);border:1px solid rgba(96,165,250,0.12);color:#60a5fa}
+.sb.lg{background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.25);color:#fbbf24;box-shadow:0 0 30px rgba(251,191,36,0.05)}
 
-/* ========== COUNTER ========== */
-.counter{color:rgba(255,255,255,0.15);font-size:0.45rem;margin-top:4px}
-.counter span{color:var(--p2)}
+.counter{color:rgba(255,255,255,0.12);font-size:0.4rem;margin-top:3px}
+.counter span{color:#a78bfa}
 
 /* ========== NAV ========== */
 .nav{
   position:fixed;bottom:0;left:0;right:0;z-index:100;
   display:flex;justify-content:space-around;align-items:center;
-  height:var(--nav-h);padding:0 4px env(safe-area-inset-bottom,0);
+  height:var(--nav);padding:0 4px env(safe-area-inset-bottom,0);
   background:rgba(10,10,22,0.97);backdrop-filter:blur(30px);
-  border-top:0.5px solid rgba(255,255,255,0.03);
+  border-top:0.5px solid rgba(255,255,255,0.02);
 }
 .nav-item{
   display:flex;flex-direction:column;align-items:center;gap:1px;
-  cursor:pointer;padding:4px 8px;border-radius:12px;
-  color:rgba(255,255,255,0.2);transition:all 0.2s;
-  min-width:40px;min-height:40px;justify-content:center;
-  background:none;border:none;font-family:inherit;
-  position:relative;
+  cursor:pointer;padding:4px 6px;border-radius:12px;
+  color:rgba(255,255,255,0.15);transition:all 0.2s;
+  min-width:36px;min-height:36px;justify-content:center;
+  background:none;border:none;font-family:inherit;position:relative;
 }
-.nav-item .nav-icon{font-size:1rem;transition:transform 0.2s}
-.nav-item.active .nav-icon{transform:translateY(-1px)}
-.nav-item.active{color:var(--p2)}
-.nav-item .nav-label{font-size:0.38rem;font-weight:400;opacity:0.5}
-.nav-item.active .nav-label{opacity:1}
-.nav-item .nav-dot{position:absolute;top:4px;width:3px;height:3px;border-radius:50%;background:var(--p2);opacity:0;transition:opacity 0.3s}
-.nav-item.active .nav-dot{opacity:1}
+.nav-item .ni{font-size:0.9rem}
+.nav-item .nl{font-size:0.35rem;font-weight:400;opacity:0.4}
+.nav-item.active{color:#a78bfa}
+.nav-item.active .nl{opacity:1}
+.nav-item .nd{position:absolute;top:3px;width:3px;height:3px;border-radius:50%;background:#a78bfa;opacity:0}
+.nav-item.active .nd{opacity:1}
 
 /* ========== SCREENS ========== */
-.screen{
-  display:none;flex-direction:column;align-items:center;justify-content:flex-start;
-  padding:8px 12px 70px;width:100%;height:100%;overflow-y:auto;
-  animation:screenIn 0.4s ease-out;
+.scr{
+  display:none;flex-direction:column;align-items:center;
+  padding:6px 12px 70px;width:100%;height:100%;overflow-y:auto;
+  animation:si 0.35s ease-out;
 }
-@keyframes screenIn{0%{opacity:0;transform:translateY(6px)}100%{opacity:1;transform:translateY(0)}}
-.screen.active{display:flex}
-.screen-title{font-size:1.1rem;font-weight:200;letter-spacing:2px;margin-bottom:2px;color:#fff}
-.screen-sub{color:rgba(255,255,255,0.2);font-size:0.5rem;margin-bottom:8px}
+@keyframes si{0%{opacity:0;transform:translateY(4px)}100%{opacity:1;transform:translateY(0)}}
+.scr.active{display:flex}
+.st{font-size:1rem;font-weight:200;letter-spacing:2px;margin-bottom:1px;color:#fff}
+.ss{color:rgba(255,255,255,0.15);font-size:0.45rem;margin-bottom:6px}
 
 /* ========== GALLERY ========== */
-.gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;width:100%;max-width:300px;margin-top:4px}
-.gallery-item{aspect-ratio:1;border-radius:12px;background:rgba(255,255,255,0.02);overflow:hidden;border:1px solid rgba(255,255,255,0.03);transition:transform 0.2s}
-.gallery-item:active{transform:scale(0.92)}
-.gallery-item img{width:100%;height:100%;object-fit:cover}
+.gg{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;width:100%;max-width:280px;margin-top:4px}
+.gi{aspect-ratio:1;border-radius:10px;background:rgba(255,255,255,0.02);overflow:hidden;border:1px solid rgba(255,255,255,0.02)}
+.gi img{width:100%;height:100%;object-fit:cover}
 
 /* ========== STATS ========== */
-.stat-card{
-  display:flex;align-items:center;gap:10px;
-  padding:8px 12px;background:rgba(255,255,255,0.02);
-  border-radius:12px;width:100%;max-width:260px;margin:2px 0;
+.scard{
+  display:flex;align-items:center;gap:8px;
+  padding:6px 12px;background:rgba(255,255,255,0.02);
+  border-radius:10px;width:100%;max-width:240px;margin:2px 0;
 }
-.stat-card .emoji{font-size:1.2rem}
-.stat-card .info{display:flex;flex-direction:column;flex:1}
-.stat-card .info .count{font-size:0.7rem;font-weight:500;color:#fff}
-.stat-card .info .label{font-size:0.45rem;color:rgba(255,255,255,0.2)}
-.stat-card .bar{height:3px;border-radius:3px;background:rgba(139,92,246,0.15);margin-top:2px;width:100%}
-.stat-card .bar span{display:block;height:100%;border-radius:3px;background:linear-gradient(90deg,#7c3aed,#a78bfa);transition:width 0.8s ease}
+.scard .e{font-size:1rem}
+.scard .inf{display:flex;flex-direction:column;flex:1}
+.scard .inf .n{font-size:0.65rem;font-weight:500;color:#fff}
+.scard .inf .l{font-size:0.4rem;color:rgba(255,255,255,0.15)}
+.scard .bar{height:2px;border-radius:2px;background:rgba(139,92,246,0.08);margin-top:1px;width:100%}
+.scard .bar span{display:block;height:100%;border-radius:2px;background:linear-gradient(90deg,#7c3aed,#a78bfa);transition:width 0.8s ease}
 
 /* ========== MAP ========== */
-.map-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;width:100%;max-width:300px;margin:4px 0}
-.map-country{
+.mg{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;width:100%;max-width:280px;margin:4px 0}
+.mc{
   display:flex;flex-direction:column;align-items:center;
-  padding:8px 4px;background:rgba(255,255,255,0.02);
-  border-radius:12px;font-size:0.45rem;border:1px solid rgba(255,255,255,0.02);
+  padding:6px 4px;background:rgba(255,255,255,0.02);
+  border-radius:10px;font-size:0.4rem;border:1px solid rgba(255,255,255,0.02);
 }
-.map-country .flag{font-size:1.2rem}
-.map-country .name{color:rgba(255,255,255,0.3);margin-top:2px}
-.map-country .mood{font-size:0.9rem;margin-top:1px}
+.mc .f{font-size:1rem}
+.mc .n{color:rgba(255,255,255,0.2);margin-top:1px}
+.mc .m{font-size:0.8rem;margin-top:1px}
 
 /* ========== LEGAL ========== */
-.legal-content{
-  max-width:380px;width:100%;padding:4px 0;font-size:0.55rem;line-height:1.8;color:rgba(255,255,255,0.5);text-align:left;
+.lc{
+  max-width:360px;width:100%;padding:4px 0;font-size:0.5rem;line-height:1.8;color:rgba(255,255,255,0.4);text-align:left;
 }
-.legal-content h3{color:var(--p2);font-size:0.6rem;font-weight:500;margin:10px 0 3px}
-.legal-content a{color:var(--p2);text-decoration:none}
-.legal-content .legal-divider{height:0.5px;background:rgba(255,255,255,0.03);margin:10px 0}
+.lc h3{color:#a78bfa;font-size:0.55rem;font-weight:500;margin:8px 0 2px}
+.lc a{color:#a78bfa;text-decoration:none}
+.lc .ld{height:0.5px;background:rgba(255,255,255,0.03);margin:8px 0}
 
 /* ========== ISME ========== */
 #isme{
-  position:fixed;bottom:70px;right:10px;z-index:200;
-  display:flex;flex-direction:column;align-items:flex-end;gap:4px;
-  pointer-events:auto;
+  position:fixed;bottom:70px;right:8px;z-index:200;
+  display:flex;flex-direction:column;align-items:flex-end;gap:3px;
 }
-#isme .avatar{
-  width:48px;height:48px;border-radius:50%;
+#isme .av{
+  width:44px;height:44px;border-radius:50%;
   background:linear-gradient(135deg,#7c3aed,#a78bfa);
-  box-shadow:0 4px 30px rgba(124,58,237,0.35);
+  box-shadow:0 4px 30px rgba(124,58,237,0.3);
   display:flex;align-items:center;justify-content:center;
-  font-size:1.3rem;color:#fff;
-  animation:ismeFloat 2.5s ease-in-out infinite;
+  font-size:1.2rem;color:#fff;
+  animation:if 2.5s ease-in-out infinite;
   cursor:pointer;transition:transform 0.2s;position:relative;
 }
-#isme .avatar:active{transform:scale(0.85)}
-#isme .avatar .i-mark{
-  position:absolute;bottom:2px;right:4px;
-  font-size:0.4rem;font-weight:800;color:rgba(255,255,255,0.5);
-  font-family:'Times New Roman',serif;
-}
-@keyframes ismeFloat{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-5px) scale(1.02)}}
-
-#isme .bubble{
-  background:var(--surface2);
-  border:1px solid rgba(139,92,246,0.12);
-  border-radius:16px;padding:8px 12px;
-  max-width:180px;
-  font-size:0.55rem;color:rgba(255,255,255,0.9);
-  backdrop-filter:blur(20px);
-  box-shadow:0 8px 40px rgba(0,0,0,0.5);
-  display:none;animation:bubbleIn 0.4s cubic-bezier(0.34,1.56,0.64,1);
+#isme .av:active{transform:scale(0.85)}
+@keyframes if{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+#isme .av .im{position:absolute;bottom:1px;right:3px;font-size:0.35rem;font-weight:800;color:rgba(255,255,255,0.4)}
+#isme .bub{
+  background:var(--s2);border:1px solid rgba(139,92,246,0.08);
+  border-radius:14px;padding:6px 12px;
+  max-width:160px;font-size:0.5rem;color:rgba(255,255,255,0.85);
+  backdrop-filter:blur(16px);box-shadow:0 8px 30px rgba(0,0,0,0.5);
+  display:none;animation:bi2 0.4s cubic-bezier(0.34,1.56,0.64,1);
   line-height:1.4;text-align:left;
 }
-#isme .bubble.show{display:block}
-@keyframes bubbleIn{0%{opacity:0;transform:translateY(6px) scale(0.9)}100%{opacity:1;transform:translateY(0) scale(1)}}
-#isme .bubble .bubble-close{background:none;border:none;color:rgba(255,255,255,0.15);cursor:pointer;font-size:0.5rem;margin-left:6px}
+#isme .bub.show{display:block}
+@keyframes bi2{0%{opacity:0;transform:translateY(6px) scale(0.9)}100%{opacity:1;transform:translateY(0) scale(1)}}
+#isme .bub .bc{background:none;border:none;color:rgba(255,255,255,0.1);cursor:pointer;font-size:0.4rem;margin-left:4px}
 
 /* ========== TOAST ========== */
 #toast{
-  position:fixed;top:70px;left:50%;transform:translateX(-50%);
-  z-index:400;background:var(--surface2);
-  padding:6px 16px;border-radius:14px;
-  color:#fff;font-size:0.5rem;
-  opacity:0;pointer-events:none;transition:all 0.3s;
-  border:1px solid rgba(139,92,246,0.08);
-  backdrop-filter:blur(12px);
+  position:fixed;top:60px;left:50%;transform:translateX(-50%);
+  z-index:400;background:var(--s2);padding:5px 14px;border-radius:12px;
+  color:#fff;font-size:0.45rem;opacity:0;pointer-events:none;transition:all 0.3s;
+  border:1px solid rgba(139,92,246,0.06);backdrop-filter:blur(12px);
   white-space:nowrap;max-width:85%;overflow:hidden;text-overflow:ellipsis;
 }
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
 /* ========== CONFETTI ========== */
-.confetti{position:fixed;pointer-events:none;z-index:300;animation:confettiFall 2.2s ease-out forwards}
-@keyframes confettiFall{0%{transform:translateY(0) rotate(0deg) scale(1);opacity:1}100%{transform:translateY(100vh) rotate(720deg) scale(0);opacity:0}}
+.confetti{position:fixed;pointer-events:none;z-index:300;animation:cf 2s ease-out forwards}
+@keyframes cf{0%{transform:translateY(0) rotate(0deg);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
 
-/* ========== RESPONSIVE ========== */
 @media(min-width:600px){
-  .gallery-grid{grid-template-columns:repeat(4,1fr);max-width:400px}
-  .map-grid{grid-template-columns:repeat(4,1fr);max-width:400px}
-  canvas#canvas{width:340px;height:340px}
+  .gg{grid-template-columns:repeat(4,1fr);max-width:360px}
+  .mg{grid-template-columns:repeat(4,1fr);max-width:360px}
+  .globe-wrap{width:340px;height:340px}
+  canvas#c{width:340px;height:340px}
 }
 @media(max-width:380px){
-  #isme .avatar{width:40px;height:40px;font-size:1rem}
-  #isme .bubble{max-width:140px;font-size:0.5rem;padding:6px 10px}
-  .nav-item .nav-icon{font-size:0.85rem}
+  .globe-wrap{width:220px;height:220px}
+  #isme .av{width:38px;height:38px;font-size:1rem}
+  #isme .bub{max-width:130px;font-size:0.45rem;padding:5px 10px}
 }
 </style>
 </head>
@@ -333,124 +354,110 @@ canvas#canvas:active{transform:scale(0.97)}
   <div class="splash-isme">✦</div>
   <div class="splash-logo">MEWONEN</div>
   <div class="splash-sub">Draw your mood</div>
-  <div class="splash-loader"><span></span></div>
+  <div class="splash-bar"><span></span></div>
+</div>
+
+<!-- ===== GLOBE ===== -->
+<div id="globeScreen">
+  <div class="globe-wrap" id="globeWrap">
+    <div class="globe" id="globe">
+      <div class="globe-ping"></div>
+      <div class="globe-dots" id="globeDots"></div>
+      <div class="globe-emojis" id="globeEmojis"></div>
+    </div>
+    <div class="globe-flag" id="globeFlag">🌍</div>
+  </div>
+  <div class="globe-msg" id="globeMsg">🌍 <strong>Tap to connect</strong> · See the world's mood</div>
+  <div class="globe-btn"><button class="btn btn-p" id="globeBtn">🌍 Explore the world</button></div>
 </div>
 
 <!-- ===== ONBOARDING ===== -->
 <div id="onboarding">
-  <div class="on-progress">
-    <div class="dot active" data-i="0"></div>
-    <div class="dot" data-i="1"></div>
-    <div class="dot" data-i="2"></div>
+  <div class="on-dots"><span class="active"></span><span></span><span></span></div>
+  <div class="on-slide active">
+    <div class="icon">🧠</div>
+    <h2 id="ot0">Welcome to Mewonen</h2>
+    <p id="op0">Your private space to draw what you feel.</p>
   </div>
-  <div class="on-slide active" data-i="0">
-    <span class="icon">🧠</span>
-    <h2 id="onTitle0">Welcome to Mewonen</h2>
-    <p id="onText0">Your private space to draw what you feel. No judgment, no data collected.</p>
-    <div class="isme-demo">✦</div>
-    <div class="isme-msg" id="onMsg0">"Hi, I'm ISME. I'm here to listen. 💜"</div>
+  <div class="on-slide">
+    <div class="icon">✍️</div>
+    <h2 id="ot1">Draw freely</h2>
+    <p id="op1">Use your finger. Mewonen listens to your mood.</p>
   </div>
-  <div class="on-slide" data-i="1">
-    <span class="icon">✍️</span>
-    <h2 id="onTitle1">Draw freely</h2>
-    <p id="onText1">Use your finger. Mewonen listens to your mood.</p>
-    <div class="isme-demo">✦</div>
-    <div class="isme-msg" id="onMsg1">"Draw what you feel. I'll understand. ✨"</div>
+  <div class="on-slide">
+    <div class="icon">🌍</div>
+    <h2 id="ot2">Connect with the world</h2>
+    <p id="op2">Share your mood and see how others feel.</p>
   </div>
-  <div class="on-slide" data-i="2">
-    <span class="icon">💜</span>
-    <h2 id="onTitle2">ISME is with you</h2>
-    <p id="onText2">Always by your side, every day.</p>
-    <div class="isme-demo">✦</div>
-    <div class="isme-msg" id="onMsg2">"Let's go. Draw your mood. 🚀"</div>
-  </div>
-  <button class="btn btn-primary" id="onBtn">Next</button>
+  <button class="btn btn-p" id="onBtn">Next</button>
 </div>
 
 <!-- ===== APP ===== -->
 <div id="app">
-  <!-- Top Bar -->
   <div class="top-bar">
-    <div class="privacy"><span class="dot"></span><span id="privacyLabel">100% Private</span></div>
+    <div class="l"><span class="d"></span><span id="prLabel">100% Private</span></div>
     <div class="langs" id="langBar"></div>
   </div>
 
-  <!-- Main -->
   <div class="main">
     <!-- Screen: Draw -->
-    <div class="screen active" id="screen-draw">
-      <div class="streak-badge" id="streakBadge"><span>🔥</span> <span id="streakText">0</span></div>
-      <div class="canvas-wrap">
-        <canvas id="canvas" width="500" height="500"></canvas>
-      </div>
-      <div id="resultWrap">
-        <div id="resultEmoji"></div>
-        <div id="resultPhrase"></div>
-        <div id="resultPhrase2"></div>
-      </div>
-      <div class="toolbar">
-        <button data-size="3" class="active">S</button>
-        <button data-size="6">M</button>
-        <button data-size="14">L</button>
+    <div class="scr active" id="sc-draw">
+      <div class="sb" id="sb"><span>🔥</span> <span id="st">0</span></div>
+      <div class="cwrap"><canvas id="c" width="500" height="500"></canvas></div>
+      <div id="rw"><div id="re"></div><div id="rp"></div><div id="rp2"></div></div>
+      <div id="bubbleBox"><div class="bubble-msg" id="bubbleMsg"></div><div class="bubble-btns" id="bubbleBtns"></div></div>
+      <div class="tb">
+        <button data-s="3" class="active">S</button>
+        <button data-s="6">M</button>
+        <button data-s="14">L</button>
         <button id="btnUndo">↩</button>
         <button id="btnClear">✕</button>
       </div>
-      <div class="btn-group">
-        <button class="btn btn-primary btn-small" id="btnShare">📤 Share</button>
-        <button class="btn btn-outline btn-small" id="btnDownload">💾 Save</button>
+      <div class="btn-g">
+        <button class="btn btn-p btn-s" id="btnShare">📤 Share</button>
+        <button class="btn btn-o btn-s" id="btnDownload">💾 Save</button>
       </div>
-      <div class="counter"><span id="totalCounter">0</span> <span id="counterLabel">moods drawn</span></div>
+      <div class="counter"><span id="tc">0</span> <span id="cl">moods drawn</span></div>
     </div>
 
     <!-- Screen: Gallery -->
-    <div class="screen" id="screen-gallery">
-      <div class="screen-title">Gallery</div>
-      <div class="screen-sub">Your drawings</div>
-      <div class="gallery-grid" id="galleryGrid"></div>
+    <div class="scr" id="sc-gallery">
+      <div class="st">Gallery</div><div class="ss">Your drawings</div>
+      <div class="gg" id="gg"></div>
     </div>
 
     <!-- Screen: Stats -->
-    <div class="screen" id="screen-stats">
-      <div class="screen-title">Stats</div>
-      <div class="screen-sub">Your emotions</div>
-      <div id="statsContainer"></div>
+    <div class="scr" id="sc-stats">
+      <div class="st">Stats</div><div class="ss">Your emotions</div>
+      <div id="scContainer"></div>
     </div>
 
     <!-- Screen: Map -->
-    <div class="screen" id="screen-map">
-      <div class="screen-title">World Mood</div>
-      <div class="screen-sub">How others feel</div>
-      <div class="map-grid" id="mapGrid"></div>
+    <div class="scr" id="sc-map">
+      <div class="st">World Mood</div><div class="ss">How others feel</div>
+      <div class="mg" id="mg"></div>
     </div>
 
     <!-- Screen: Legal -->
-    <div class="screen" id="screen-legal">
-      <div class="screen-title">Privacy &amp; Legal</div>
-      <div class="screen-sub">Your data stays on your device</div>
-      <div class="legal-content" id="legalContent"></div>
+    <div class="scr" id="sc-legal">
+      <div class="st">Privacy &amp; Legal</div><div class="ss">Your data stays on your device</div>
+      <div class="lc" id="lc"></div>
     </div>
   </div>
 
-  <!-- Navigation -->
   <div class="nav">
-    <button class="nav-item active" data-screen="draw"><span class="nav-dot"></span><span class="nav-icon">✍️</span><span class="nav-label">Draw</span></button>
-    <button class="nav-item" data-screen="gallery"><span class="nav-dot"></span><span class="nav-icon">🖼️</span><span class="nav-label">Gallery</span></button>
-    <button class="nav-item" data-screen="stats"><span class="nav-dot"></span><span class="nav-icon">📊</span><span class="nav-label">Stats</span></button>
-    <button class="nav-item" data-screen="map"><span class="nav-dot"></span><span class="nav-icon">🌍</span><span class="nav-label">World</span></button>
-    <button class="nav-item" data-screen="legal"><span class="nav-dot"></span><span class="nav-icon">⚖️</span><span class="nav-label">Legal</span></button>
+    <button class="nav-item active" data-sc="draw"><span class="nd"></span><span class="ni">✍️</span><span class="nl">Draw</span></button>
+    <button class="nav-item" data-sc="gallery"><span class="nd"></span><span class="ni">🖼️</span><span class="nl">Gallery</span></button>
+    <button class="nav-item" data-sc="stats"><span class="nd"></span><span class="ni">📊</span><span class="nl">Stats</span></button>
+    <button class="nav-item" data-sc="map"><span class="nd"></span><span class="ni">🌍</span><span class="nl">World</span></button>
+    <button class="nav-item" data-sc="legal"><span class="nd"></span><span class="ni">⚖️</span><span class="nl">Legal</span></button>
   </div>
 </div>
 
 <!-- ===== ISME ===== -->
 <div id="isme">
-  <div class="bubble" id="ismeBubble">
-    <span id="ismeText">Hello. I'm ISME. 💜</span>
-    <button class="bubble-close" id="ismeClose">✕</button>
-  </div>
-  <div class="avatar" id="ismeAvatar">
-    ✦
-    <span class="i-mark">I</span>
-  </div>
+  <div class="bub" id="ismeBub"><span id="ismeText">Hello. I'm ISME. 💜</span><button class="bc" id="ismeClose">✕</button></div>
+  <div class="av" id="ismeAv">✦<span class="im">I</span></div>
 </div>
 
 <!-- ===== TOAST ===== -->
@@ -458,449 +465,388 @@ canvas#canvas:active{transform:scale(0.97)}
 
 <script>
 // ============================================================
-//  LANGUAGES (7 langues : EN, FR, ES, AR, JA, ZH, KO)
+// LANGUAGES
 // ============================================================
-var LANG = {
-  en: {
-    name:'English', privacy:'100% Private',
-    onTitle:['Welcome to Mewonen','Draw freely','ISME is with you'],
-    onText:['Your private space to draw what you feel.','Use your finger. Mewonen listens.','Always by your side, every day.'],
-    onMsg:['"Hi, I\'m ISME. I\'m here to listen. 💜"','"Draw what you feel. I\'ll understand. ✨"','"Let\'s go. Draw your mood. 🚀"'],
-    onBtn:'Next', counter:'moods drawn',
-    clear:'Clear', share:'Share', download:'Save',
+var L = {
+  en:{
+    pr:'100% Private',cl:'moods drawn',
+    ot:['Welcome to Mewonen','Draw freely','Connect with the world'],
+    op:['Your private space to draw what you feel.','Use your finger. Mewonen listens.','Share your mood and see how others feel.'],
+    on:'Next',clr:'Clear',sh:'Share',sv:'Save',
     nav:['Draw','Gallery','Stats','World','Legal'],
-    legalTitle:'Privacy & Legal',
-    legalSub:'Your data stays on your device',
+    globe:'🌍 Tap to connect · See the world\'s mood',
+    globeBtn:'🌍 Explore the world',
+    isme:{h:'Hello. I\'m ISME. 💜',d:'Draw what you feel. I\'m here.',j:'You\'re shining today ✨',s:'I\'m here. Let it flow 🌊',a:'This energy is yours 🔥',c:'Stillness is strength 🌙',e:'Space is waiting for you 🕳️',sh:'Share your mood with the world 🌍',st:'🔥 {n} day streak! Keep going!',w:'Welcome back! 💜',ch:'Daily challenge: {challenge}'},
     legal:`
 <h3>© 2026 Mewonen — All rights reserved</h3>
 <p><strong>Mewonen</strong> is an original creation by <strong>Ismail Belabbess</strong>.</p>
 <p>The name <strong>Mewonen</strong>, the logo, the concept, the design, the source code, and all content are the exclusive property of their creator.</p>
 <p>Any reproduction, copying, or adaptation without prior written permission is strictly prohibited.</p>
 <p><strong>Contact:</strong> calmewave2026@proton.me</p>
-<div class="legal-divider"></div>
+<div class="ld"></div>
 <h3>Privacy Policy</h3>
 <p><strong>Last updated:</strong> July 19, 2026</p>
 <p>Mewonen is designed with privacy at its core. <strong>We collect absolutely no personal data.</strong> Everything you draw, write, or say remains exclusively on your device.</p>
-<p>Mewonen uses your browser's <strong>localStorage</strong> to save your mood history and drawings. This data never leaves your device. You can delete it at any time from Settings.</p>
+<p>Mewonen uses your browser's <strong>localStorage</strong> to save your mood history and drawings. This data never leaves your device.</p>
 <p>Under <strong>GDPR</strong> (EU), <strong>CCPA</strong> (California), <strong>LGPD</strong> (Brazil), and <strong>PIPEDA</strong> (Canada), you have the right to access, export, and delete your data.</p>
 <p><strong>Mewonen uses zero cookies, zero trackers, zero analytics, and zero advertising.</strong></p>
-<div class="legal-divider"></div>
+<div class="ld"></div>
 <h3>Medical Disclaimer</h3>
 <p><strong>Mewonen is not a medical device.</strong> It does not diagnose, treat, or prevent any mental health condition. If you are in crisis, please contact a qualified healthcare provider or visit <a href="https://findahelpline.com" target="_blank">findahelpline.com</a>.</p>
-<div class="legal-divider"></div>
+<div class="ld"></div>
 <h3>Terms of Service</h3>
 <p>By using Mewonen, you agree to use it for personal, non-commercial purposes only. You must be at least 13 years of age.</p>
-<p style="margin-top:12px;color:var(--p2);text-align:center;">© 2026 Mewonen. Free. Forever. No ads. No data. No judgment.</p>
-`,
-    isme: {
-      hello:'Hello. I\'m ISME. 💜',
-      draw:'Draw what you feel. I\'m here.',
-      joy:'You\'re shining today. ✨',
-      sad:'I\'m here. Let it flow. 🌊',
-      angry:'This energy is yours. 🔥',
-      calm:'Stillness is strength. 🌙',
-      empty:'Space is waiting for you. 🕳️',
-      share:'Share your mood with the world! 🌍',
-      streak:'🔥 {n} day streak! Keep going!',
-      welcome:'Welcome back! How are you today? 💜',
-      challenge:'Daily challenge: {challenge}',
-      map:'See how others feel around the world.',
-      gallery:'Your drawings are here. 🖼️',
-      stats:'Look at your emotional journey.',
-    }
+<p style="margin-top:10px;color:#a78bfa;text-align:center;">© 2026 Mewonen. Free. Forever. No ads. No data. No judgment.</p>`
   },
-  fr: {
-    name:'Français', privacy:'100% Privé',
-    onTitle:['Bienvenue sur Mewonen','Dessine librement','ISME est avec toi'],
-    onText:['Ton espace privé pour dessiner ce que tu ressens.','Utilise ton doigt. Mewonen écoute.','Toujours à tes côtés, chaque jour.'],
-    onMsg:['"Bonjour. Je suis ISME. Je suis là pour écouter. 💜"','"Dessine ce que tu ressens. Je comprendrai. ✨"','"C\'est parti. Dessine ton humeur. 🚀"'],
-    onBtn:'Suivant', counter:'humeurs dessinées',
-    clear:'Effacer', share:'Partager', download:'Sauvegarder',
+  fr:{
+    pr:'100% Privé',cl:'humeurs dessinées',
+    ot:['Bienvenue sur Mewonen','Dessine librement','Connecte-toi au monde'],
+    op:['Ton espace privé pour dessiner ce que tu ressens.','Utilise ton doigt. Mewonen écoute.','Partage ton humeur et vois comment les autres se sentent.'],
+    on:'Suivant',clr:'Effacer',sh:'Partager',sv:'Sauvegarder',
     nav:['Dessiner','Galerie','Stats','Monde','Légal'],
-    legalTitle:'Confidentialité & Légal',
-    legalSub:'Tes données restent sur ton appareil',
+    globe:'🌍 Appuie pour te connecter · Vois l\'humeur du monde',
+    globeBtn:'🌍 Explorer le monde',
+    isme:{h:'Bonjour. Je suis ISME. 💜',d:'Dessine ce que tu ressens. Je suis là.',j:'Tu rayonnes aujourd\'hui ✨',s:'Je suis là. Laisse couler 🌊',a:'Cette énergie est tienne 🔥',c:'L\'immobilité est force 🌙',e:'L\'espace t\'attend 🕳️',sh:'Partage ton humeur avec le monde 🌍',st:'🔥 {n} jours de suite ! Continue !',w:'Bon retour ! 💜',ch:'Défi du jour : {challenge}'},
     legal:`
 <h3>© 2026 Mewonen — Tous droits réservés</h3>
 <p><strong>Mewonen</strong> est une création originale de <strong>Ismail Belabbess</strong>.</p>
 <p>Le nom <strong>Mewonen</strong>, le logo, le concept, le design, le code source et tout le contenu sont la propriété exclusive de leur créateur.</p>
 <p>Toute reproduction, copie ou adaptation sans autorisation écrite préalable est strictement interdite.</p>
 <p><strong>Contact :</strong> calmewave2026@proton.me</p>
-<div class="legal-divider"></div>
+<div class="ld"></div>
 <h3>Politique de Confidentialité</h3>
 <p><strong>Dernière mise à jour :</strong> 19 juillet 2026</p>
 <p>Mewonen est conçu avec la confidentialité au cœur. <strong>Nous ne collectons absolument aucune donnée personnelle.</strong> Tout ce que vous dessinez, écrivez ou dites reste exclusivement sur votre appareil.</p>
 <p>Mewonen utilise le <strong>localStorage</strong> de votre navigateur pour sauvegarder votre historique et vos dessins. Ces données ne quittent jamais votre appareil.</p>
 <p>Conformément au <strong>RGPD</strong> (UE), <strong>CCPA</strong> (Californie), <strong>LGPD</strong> (Brésil) et <strong>PIPEDA</strong> (Canada), vous avez le droit d\'accéder, exporter et supprimer vos données.</p>
 <p><strong>Mewonen n\'utilise aucun cookie, traceur, outil analytique ou publicité.</strong></p>
-<div class="legal-divider"></div>
+<div class="ld"></div>
 <h3>Disclaimer Médical</h3>
 <p><strong>Mewonen n\'est pas un dispositif médical.</strong> Il ne diagnostique, ne traite ni ne prévient aucune condition. En cas de crise, contactez un professionnel de santé ou visitez <a href="https://findahelpline.com" target="_blank">findahelpline.com</a>.</p>
-<div class="legal-divider"></div>
+<div class="ld"></div>
 <h3>Conditions d\'Utilisation</h3>
 <p>En utilisant Mewonen, vous acceptez de l\'utiliser à des fins personnelles et non commerciales. Vous devez avoir au moins 13 ans.</p>
-<p style="margin-top:12px;color:var(--p2);text-align:center;">© 2026 Mewonen. Gratuit. Pour toujours. Sans pub. Sans données. Sans jugement.</p>
-`,
-    isme: {
-      hello:'Bonjour. Je suis ISME. 💜',
-      draw:'Dessine ce que tu ressens. Je suis là.',
-      joy:'Tu rayonnes aujourd\'hui. ✨',
-      sad:'Je suis là. Laisse couler. 🌊',
-      angry:'Cette énergie est tienne. 🔥',
-      calm:'L\'immobilité est force. 🌙',
-      empty:'L\'espace t\'attend. 🕳️',
-      share:'Partage ton humeur avec le monde ! 🌍',
-      streak:'🔥 {n} jours de suite ! Continue !',
-      welcome:'Bon retour ! Comment te sens-tu ? 💜',
-      challenge:'Défi du jour : {challenge}',
-      map:'Vois comment les autres se sentent dans le monde.',
-      gallery:'Tes dessins sont ici. 🖼️',
-      stats:'Regarde ton parcours émotionnel.',
-    }
+<p style="margin-top:10px;color:#a78bfa;text-align:center;">© 2026 Mewonen. Gratuit. Pour toujours. Sans pub. Sans données. Sans jugement.</p>`
   },
-  es: {
-    name:'Español', privacy:'100% Privado',
-    onTitle:['Bienvenido a Mewonen','Dibuja libremente','ISME está contigo'],
-    onText:['Tu espacio privado para dibujar lo que sientes.','Usa tu dedo. Mewonen escucha.','Siempre a tu lado, cada día.'],
-    onMsg:['"Hola. Soy ISME. Estoy aquí para escuchar. 💜"','"Dibuja lo que sientes. Entenderé. ✨"','"Vamos. Dibuja tu estado de ánimo. 🚀"'],
-    onBtn:'Siguiente', counter:'estados dibujados',
-    clear:'Limpiar', share:'Compartir', download:'Guardar',
+  es:{
+    pr:'100% Privado',cl:'estados dibujados',
+    ot:['Bienvenido a Mewonen','Dibuja libremente','Conéctate con el mundo'],
+    op:['Tu espacio privado para dibujar lo que sientes.','Usa tu dedo. Mewonen escucha.','Comparte tu estado de ánimo y ve cómo se sienten los demás.'],
+    on:'Siguiente',clr:'Limpiar',sh:'Compartir',sv:'Guardar',
     nav:['Dibujar','Galería','Estadísticas','Mundo','Legal'],
-    legalTitle:'Privacidad & Legal',
-    legalSub:'Tus datos permanecen en tu dispositivo',
+    globe:'🌍 Toca para conectar · Ve el estado de ánimo del mundo',
+    globeBtn:'🌍 Explorar el mundo',
+    isme:{h:'Hola. Soy ISME. 💜',d:'Dibuja lo que sientes. Estoy aquí.',j:'Estás brillando hoy ✨',s:'Estoy aquí. Déjalo fluir 🌊',a:'Esta energía es tuya 🔥',c:'La quietud es fuerza 🌙',e:'El espacio te espera 🕳️',sh:'Comparte tu estado de ánimo con el mundo 🌍',st:'🔥 {n} días seguidos! ¡Sigue!',w:'¡Bienvenido de nuevo! 💜',ch:'Desafío diario: {challenge}'},
     legal:`
 <h3>© 2026 Mewonen — Todos los derechos reservados</h3>
 <p><strong>Mewonen</strong> es una creación original de <strong>Ismail Belabbess</strong>.</p>
 <p>El nombre <strong>Mewonen</strong>, el logo, el concepto, el diseño, el código fuente y todo el contenido son propiedad exclusiva de su creador.</p>
 <p>Queda prohibida cualquier reproducción, copia o adaptación sin autorización previa por escrito.</p>
 <p><strong>Contacto:</strong> calmewave2026@proton.me</p>
-<div class="legal-divider"></div>
+<div class="ld"></div>
 <h3>Política de Privacidad</h3>
 <p><strong>Última actualización:</strong> 19 de julio de 2026</p>
 <p>Mewonen está diseñado con la privacidad en el centro. <strong>No recopilamos absolutamente ningún dato personal.</strong> Todo lo que dibujas, escribes o dices permanece exclusivamente en tu dispositivo.</p>
 <p>Mewonen utiliza el <strong>localStorage</strong> de tu navegador para guardar tu historial y dibujos. Estos datos nunca salen de tu dispositivo.</p>
 <p>Según el <strong>RGPD</strong> (UE), <strong>CCPA</strong> (California), <strong>LGPD</strong> (Brasil) y <strong>PIPEDA</strong> (Canadá), tienes derecho a acceder, exportar y eliminar tus datos.</p>
 <p><strong>Mewonen no utiliza cookies, rastreadores, análisis ni publicidad.</strong></p>
-<div class="legal-divider"></div>
+<div class="ld"></div>
 <h3>Aviso Médico</h3>
 <p><strong>Mewonen no es un dispositivo médico.</strong> No diagnostica, trata ni previene ninguna condición. Si estás en crisis, contacta a un profesional de salud o visita <a href="https://findahelpline.com" target="_blank">findahelpline.com</a>.</p>
-<div class="legal-divider"></div>
+<div class="ld"></div>
 <h3>Términos de Servicio</h3>
 <p>Al usar Mewonen, aceptas usarlo solo con fines personales y no comerciales. Debes tener al menos 13 años.</p>
-<p style="margin-top:12px;color:var(--p2);text-align:center;">© 2026 Mewonen. Gratis. Para siempre. Sin anuncios. Sin datos. Sin juicios.</p>
-`,
-    isme: {
-      hello:'Hola. Soy ISME. 💜',
-      draw:'Dibuja lo que sientes. Estoy aquí.',
-      joy:'Estás brillando hoy. ✨',
-      sad:'Estoy aquí. Déjalo fluir. 🌊',
-      angry:'Esta energía es tuya. 🔥',
-      calm:'La quietud es fuerza. 🌙',
-      empty:'El espacio te espera. 🕳️',
-      share:'¡Comparte tu estado de ánimo con el mundo! 🌍',
-      streak:'🔥 {n} días seguidos! ¡Sigue!',
-      welcome:'¡Bienvenido de nuevo! ¿Cómo estás hoy? 💜',
-      challenge:'Desafío diario: {challenge}',
-      map:'Mira cómo se sienten los demás en el mundo.',
-      gallery:'Tus dibujos están aquí. 🖼️',
-      stats:'Mira tu viaje emocional.',
-    }
+<p style="margin-top:10px;color:#a78bfa;text-align:center;">© 2026 Mewonen. Gratis. Para siempre. Sin anuncios. Sin datos. Sin juicios.</p>`
   },
-  ar: {
-    name:'العربية', privacy:'خصوصية 100%',
-    onTitle:['مرحباً بك في Mewonen','ارسم بحرية','ISME معك'],
-    onText:['مساحتك الخاصة لرسم ما تشعر به.','استخدم إصبعك. Mewonen يستمع.','دائماً بجانبك، كل يوم.'],
-    onMsg:['"مرحباً. أنا ISME. أنا هنا لأستمع. 💜"','"ارسم ما تشعر به. سأفهم. ✨"','"هيا بنا. ارسم مزاجك. 🚀"'],
-    onBtn:'التالي', counter:'حالة مرسومة',
-    clear:'مسح', share:'مشاركة', download:'حفظ',
+  ar:{
+    pr:'خصوصية 100%',cl:'حالة مرسومة',
+    ot:['مرحباً بك في Mewonen','ارسم بحرية','تواصل مع العالم'],
+    op:['مساحتك الخاصة لرسم ما تشعر به.','استخدم إصبعك. Mewonen يستمع.','شارك مزاجك وانظر كيف يشعر الآخرون.'],
+    on:'التالي',clr:'مسح',sh:'مشاركة',sv:'حفظ',
     nav:['رسم','معرض','إحصائيات','العالم','قانوني'],
-    legalTitle:'الخصوصية والقانوني',
-    legalSub:'بياناتك تبقى على جهازك',
+    globe:'🌍 اضغط للاتصال · شاهد مزاج العالم',
+    globeBtn:'🌍 استكشف العالم',
+    isme:{h:'مرحباً. أنا ISME. 💜',d:'ارسم ما تشعر به. أنا هنا.',j:'أنت مشرق اليوم ✨',s:'أنا هنا. دعه يتدفق 🌊',a:'هذه الطاقة لك 🔥',c:'السكون قوة 🌙',e:'الفضاء ينتظرك 🕳️',sh:'شارك مزاجك مع العالم 🌍',st:'🔥 {n} أيام متتالية! استمر!',w:'مرحباً بعودتك! 💜',ch:'تحدي اليوم: {challenge}'},
     legal:`
 <h3>© 2026 Mewonen — جميع الحقوق محفوظة</h3>
 <p><strong>Mewonen</strong> هو إبداع أصلي لـ <strong>Ismail Belabbess</strong>.</p>
 <p>الاسم <strong>Mewonen</strong>، الشعار، المفهوم، التصميم، الكود المصدري وجميع المحتويات هي ملكية حصرية لمنشئها.</p>
 <p>أي نسخ أو تكييف دون إذن كتابي مسبق محظور تماماً.</p>
 <p><strong>للتواصل:</strong> calmewave2026@proton.me</p>
-<div class="legal-divider"></div>
+<div class="ld"></div>
 <h3>سياسة الخصوصية</h3>
 <p><strong>آخر تحديث:</strong> 19 يوليو 2026</p>
 <p>تم تصميم Mewonen مع الخصوصية في جوهره. <strong>نحن لا نجمع أي بيانات شخصية على الإطلاق.</strong> كل ما ترسمه أو تكتبه أو تقوله يبقى حصرياً على جهازك.</p>
 <p>يستخدم Mewonen <strong>localStorage</strong> في متصفحك لحفظ تاريخك ورسوماتك. هذه البيانات لا تغادر جهازك أبداً.</p>
 <p>بموجب <strong>GDPR</strong> (الاتحاد الأوروبي)، <strong>CCPA</strong> (كاليفورنيا)، <strong>LGPD</strong> (البرازيل) و <strong>PIPEDA</strong> (كندا)، لديك الحق في الوصول وتصدير وحذف بياناتك.</p>
 <p><strong>Mewonen لا يستخدم الكوكيز أو أدوات التتبع أو التحليلات أو الإعلانات.</strong></p>
-<div class="legal-divider"></div>
+<div class="ld"></div>
 <h3>إخلاء مسؤولية طبي</h3>
 <p><strong>Mewonen ليس جهازاً طبياً.</strong> لا يشخص أو يعالج أو يمنع أي حالة صحية. إذا كنت في أزمة، اتصل بأخصائي صحي أو زر <a href="https://findahelpline.com" target="_blank">findahelpline.com</a>.</p>
-<div class="legal-divider"></div>
+<div class="ld"></div>
 <h3>شروط الخدمة</h3>
 <p>باستخدام Mewonen، أنت توافق على استخدامه للأغراض الشخصية وغير التجارية فقط. يجب أن تكون على الأقل 13 عاماً.</p>
-<p style="margin-top:12px;color:var(--p2);text-align:center;">© 2026 Mewonen. مجاني. للأبد. بدون إعلانات. بدون بيانات. بدون أحكام.</p>
-`,
-    isme: {
-      hello:'مرحباً. أنا ISME. 💜',
-      draw:'ارسم ما تشعر به. أنا هنا.',
-      joy:'أنت مشرق اليوم. ✨',
-      sad:'أنا هنا. دعه يتدفق. 🌊',
-      angry:'هذه الطاقة لك. 🔥',
-      calm:'السكون قوة. 🌙',
-      empty:'الفضاء ينتظرك. 🕳️',
-      share:'شارك مزاجك مع العالم! 🌍',
-      streak:'🔥 {n} أيام متتالية! استمر!',
-      welcome:'مرحباً بعودتك! كيف حالك اليوم؟ 💜',
-      challenge:'تحدي اليوم: {challenge}',
-      map:'انظر كيف يشعر الآخرون في العالم.',
-      gallery:'رسوماتك هنا. 🖼️',
-      stats:'انظر رحلتك العاطفية.',
-    }
+<p style="margin-top:10px;color:#a78bfa;text-align:center;">© 2026 Mewonen. مجاني. للأبد. بدون إعلانات. بدون بيانات. بدون أحكام.</p>`
   },
-  ja: {
-    name:'日本語', privacy:'100% プライベート',
-    onTitle:['Mewonenへようこそ','自由に描く','ISMEはあなたと共に'],
-    onText:['あなたのプライベートな感情スペース。','指で描いてください。Mewonenが聞きます。','いつもあなたのそばに。'],
-    onMsg:['"こんにちは。ISMEです。話を聞きます。💜"','"感じたことを描いて。理解します。✨"','"さあ、気分を描きましょう。🚀"'],
-    onBtn:'次へ', counter:'描かれた気分',
-    clear:'クリア', share:'シェア', download:'保存',
+  ja:{
+    pr:'100% プライベート',cl:'描かれた気分',
+    ot:['Mewonenへようこそ','自由に描く','世界とつながる'],
+    op:['あなたのプライベートな感情スペース。','指で描いてください。Mewonenが聞きます。','気分を共有し、他の人の気持ちを見ましょう。'],
+    on:'次へ',clr:'クリア',sh:'シェア',sv:'保存',
     nav:['描く','ギャラリー','統計','世界','法的'],
-    legalTitle:'プライバシーと法的情報',
-    legalSub:'あなたのデータはデバイスに残ります',
+    globe:'🌍 タップして接続 · 世界の気分を見る',
+    globeBtn:'🌍 世界を探索する',
+    isme:{h:'こんにちは。ISMEです。💜',d:'感じたことを描いて。ここにいるよ。',j:'今日は輝いているね ✨',s:'ここにいるよ。流して 🌊',a:'このエネルギーはあなたのもの 🔥',c:'静けさは力 🌙',e:'スペースがあなたを待っている 🕳️',sh:'気分を世界と共有しよう 🌍',st:'🔥 {n}日連続！続けて！',w:'おかえり！💜',ch:'今日のチャレンジ：{challenge}'},
     legal:`
 <h3>© 2026 Mewonen — 全著作権所有</h3>
 <p><strong>Mewonen</strong> は <strong>Ismail Belabbess</strong> によるオリジナル作品です。</p>
 <p>名前 <strong>Mewonen</strong>、ロゴ、コンセプト、デザイン、ソースコード、およびすべてのコンテンツは作成者の独占的財産です。</p>
 <p>事前の書面による許可なく複製、コピー、または翻案することを禁じます。</p>
 <p><strong>連絡先：</strong> calmewave2026@proton.me</p>
-<div class="legal-divider"></div>
+<div class="ld"></div>
 <h3>プライバシーポリシー</h3>
 <p><strong>最終更新日：</strong> 2026年7月19日</p>
 <p>Mewonenはプライバシーを中心に設計されています。 <strong>個人データは一切収集しません。</strong> 描いたり書いたりしたものはすべてデバイスにのみ保存されます。</p>
 <p>Mewonenはブラウザの <strong>localStorage</strong> を使用して履歴と描画を保存します。このデータがデバイスから外部に出ることはありません。</p>
 <p><strong>GDPR</strong>（EU）、<strong>CCPA</strong>（カリフォルニア）、<strong>LGPD</strong>（ブラジル）、<strong>PIPEDA</strong>（カナダ）に基づき、データへのアクセス、エクスポート、削除の権利があります。</p>
 <p><strong>Mewonenはクッキー、トラッカー、分析、広告を一切使用しません。</strong></p>
-<div class="legal-divider"></div>
+<div class="ld"></div>
 <h3>医療免責事項</h3>
 <p><strong>Mewonenは医療機器ではありません。</strong> いかなる症状も診断、治療、予防しません。危機的状況にある場合は、資格のある医療提供者に連絡するか、<a href="https://findahelpline.com" target="_blank">findahelpline.com</a> をご覧ください。</p>
-<div class="legal-divider"></div>
+<div class="ld"></div>
 <h3>利用規約</h3>
 <p>Mewonenを使用することにより、個人的かつ非商業的な目的でのみ使用することに同意したものとします。13歳以上である必要があります。</p>
-<p style="margin-top:12px;color:var(--p2);text-align:center;">© 2026 Mewonen. 無料。永遠に。広告なし。データなし。判断なし。</p>
-`,
-    isme: {
-      hello:'こんにちは。ISMEです。💜',
-      draw:'感じたことを描いて。ここにいるよ。',
-      joy:'今日は輝いているね。✨',
-      sad:'ここにいるよ。流して。🌊',
-      angry:'このエネルギーはあなたのもの。🔥',
-      calm:'静けさは力。🌙',
-      empty:'スペースがあなたを待っている。🕳️',
-      share:'気分を世界と共有しよう！🌍',
-      streak:'🔥 {n}日連続！続けて！',
-      welcome:'おかえり！今日はどう？💜',
-      challenge:'今日のチャレンジ：{challenge}',
-      map:'世界の人々がどう感じているか見てみよう。',
-      gallery:'あなたの描画はここにあります。🖼️',
-      stats:'感情の旅を見てみましょう。',
-    }
+<p style="margin-top:10px;color:#a78bfa;text-align:center;">© 2026 Mewonen. 無料。永遠に。広告なし。データなし。判断なし。</p>`
   },
-  zh: {
-    name:'中文', privacy:'100% 私密',
-    onTitle:['欢迎来到 Mewonen','自由绘画','ISME 与你同在'],
-    onText:['你的私人情感空间。','用你的手指画画。Mewonen 倾听。','每一天都陪伴在你身边。'],
-    onMsg:['"你好。我是 ISME。我来倾听。💜"','"画出你的感受。我会理解。✨"','"开始吧。画出你的心情。🚀"'],
-    onBtn:'下一步', counter:'心情已绘制',
-    clear:'清除', share:'分享', download:'保存',
+  zh:{
+    pr:'100% 私密',cl:'心情已绘制',
+    ot:['欢迎来到 Mewonen','自由绘画','与世界连接'],
+    op:['你的私人情感空间。','用你的手指画画。Mewonen 倾听。','分享你的心情，看看别人的感受。'],
+    on:'下一步',clr:'清除',sh:'分享',sv:'保存',
     nav:['绘画','画廊','统计','世界','法律'],
-    legalTitle:'隐私与法律',
-    legalSub:'您的数据保留在您的设备上',
+    globe:'🌍 点击连接 · 看看世界的心情',
+    globeBtn:'🌍 探索世界',
+    isme:{h:'你好。我是 ISME。💜',d:'画出你的感受。我在这里。',j:'你今天在发光 ✨',s:'我在这里。让它流走 🌊',a:'这能量是你的 🔥',c:'静止是力量 🌙',e:'空间在等你 🕳️',sh:'与世界分享你的心情 🌍',st:'🔥 连续 {n} 天！继续！',w:'欢迎回来！💜',ch:'今日挑战：{challenge}'},
     legal:`
 <h3>© 2026 Mewonen — 保留所有权利</h3>
 <p><strong>Mewonen</strong> 是 <strong>Ismail Belabbess</strong> 的原创作品。</p>
 <p>名称 <strong>Mewonen</strong>、徽标、概念、设计、源代码及所有内容均为其创建者的独家财产。</p>
 <p>未经事先书面许可，禁止任何复制、拷贝或改编。</p>
 <p><strong>联系方式：</strong> calmewave2026@proton.me</p>
-<div class="legal-divider"></div>
+<div class="ld"></div>
 <h3>隐私政策</h3>
 <p><strong>最后更新：</strong> 2026年7月19日</p>
 <p>Mewonen 以隐私为核心设计。 <strong>我们绝对不收集任何个人数据。</strong> 您绘制、书写或说的所有内容都仅保留在您的设备上。</p>
 <p>Mewonen 使用浏览器的 <strong>localStorage</strong> 保存您的历史和绘图。这些数据永远不会离开您的设备。</p>
 <p>根据 <strong>GDPR</strong>（欧盟）、<strong>CCPA</strong>（加州）、<strong>LGPD</strong>（巴西）和 <strong>PIPEDA</strong>（加拿大），您有权访问、导出和删除您的数据。</p>
 <p><strong>Mewonen 不使用任何 cookie、跟踪器、分析工具或广告。</strong></p>
-<div class="legal-divider"></div>
+<div class="ld"></div>
 <h3>医疗免责声明</h3>
 <p><strong>Mewonen 不是医疗设备。</strong> 它不诊断、治疗或预防任何健康状况。如果您处于危机中，请联系合格的医疗保健提供者或访问 <a href="https://findahelpline.com" target="_blank">findahelpline.com</a>。</p>
-<div class="legal-divider"></div>
+<div class="ld"></div>
 <h3>服务条款</h3>
 <p>使用 Mewonen 即表示您同意仅将其用于个人非商业目的。您必须年满13岁。</p>
-<p style="margin-top:12px;color:var(--p2);text-align:center;">© 2026 Mewonen. 免费。永远。无广告。无数据。无评判。</p>
-`,
-    isme: {
-      hello:'你好。我是 ISME。💜',
-      draw:'画出你的感受。我在这里。',
-      joy:'你今天在发光。✨',
-      sad:'我在这里。让它流走。🌊',
-      angry:'这能量是你的。🔥',
-      calm:'静止是力量。🌙',
-      empty:'空间在等你。🕳️',
-      share:'与世界分享你的心情！🌍',
-      streak:'🔥 连续 {n} 天！继续！',
-      welcome:'欢迎回来！今天怎么样？💜',
-      challenge:'今日挑战：{challenge}',
-      map:'看看世界上其他人的感受。',
-      gallery:'你的绘图在这里。🖼️',
-      stats:'看看你的情感之旅。',
-    }
+<p style="margin-top:10px;color:#a78bfa;text-align:center;">© 2026 Mewonen. 免费。永远。无广告。无数据。无评判。</p>`
   },
-  ko: {
-    name:'한국어', privacy:'100% 비공개',
-    onTitle:['Mewonen에 오신 것을 환영합니다','자유롭게 그리기','ISME가 당신과 함께합니다'],
-    onText:['당신의 개인적인 감정 공간입니다.','손가락으로 그려보세요. Mewonen이 듣습니다.','항상 당신 곁에, 매일.'],
-    onMsg:['"안녕하세요. 저는 ISME입니다. 들어드릴게요. 💜"','"느낌을 그려보세요. 이해할게요. ✨"','"자, 기분을 그려봅시다. 🚀"'],
-    onBtn:'다음', counter:'그려진 기분',
-    clear:'지우기', share:'공유', download:'저장',
+  ko:{
+    pr:'100% 비공개',cl:'그려진 기분',
+    ot:['Mewonen에 오신 것을 환영합니다','자유롭게 그리기','세계와 연결하기'],
+    op:['당신의 개인적인 감정 공간입니다.','손가락으로 그려보세요. Mewonen이 듣습니다.','기분을 공유하고 다른 사람들의 기분을 보세요.'],
+    on:'다음',clr:'지우기',sh:'공유',sv:'저장',
     nav:['그리기','갤러리','통계','세계','법률'],
-    legalTitle:'개인정보 및 법률',
-    legalSub:'귀하의 데이터는 기기에 남아 있습니다',
+    globe:'🌍 탭하여 연결 · 세계의 기분 보기',
+    globeBtn:'🌍 세계 탐험하기',
+    isme:{h:'안녕하세요. 저는 ISME입니다. 💜',d:'느낌을 그려보세요. 제가 여기 있어요.',j:'오늘 당신은 빛나고 있어요 ✨',s:'제가 여기 있어요. 흘려보내요 🌊',a:'이 에너지는 당신의 것입니다 🔥',c:'고요함은 힘입니다 🌙',e:'공간이 당신을 기다리고 있어요 🕳️',sh:'당신의 기분을 세계와 공유하세요 🌍',st:'🔥 {n}일 연속! 계속하세요!',w:'돌아오신 것을 환영합니다! 💜',ch:'오늘의 도전: {challenge}'},
     legal:`
 <h3>© 2026 Mewonen — 모든 권리 보유</h3>
 <p><strong>Mewonen</strong>은 <strong>Ismail Belabbess</strong>의 독창적인 창작물입니다.</p>
 <p>이름 <strong>Mewonen</strong>, 로고, 개념, 디자인, 소스 코드 및 모든 콘텐츠는 창작자의 독점 재산입니다.</p>
 <p>사전 서면 허가 없이 복제, 복사 또는 각색하는 것을 금지합니다.</p>
 <p><strong>연락처:</strong> calmewave2026@proton.me</p>
-<div class="legal-divider"></div>
+<div class="ld"></div>
 <h3>개인정보 보호정책</h3>
 <p><strong>마지막 업데이트:</strong> 2026년 7월 19일</p>
 <p>Mewonen은 개인정보 보호를 핵심으로 설계되었습니다. <strong>개인 데이터를 절대 수집하지 않습니다.</strong> 귀하가 그리고, 쓰고, 말하는 모든 것은 귀하의 기기에만 남습니다.</p>
 <p>Mewonen은 브라우저의 <strong>localStorage</strong>를 사용하여 귀하의 기록과 그림을 저장합니다. 이 데이터는 절대 기기를 떠나지 않습니다.</p>
 <p><strong>GDPR</strong>(EU), <strong>CCPA</strong>(캘리포니아), <strong>LGPD</strong>(브라질), <strong>PIPEDA</strong>(캐나다)에 따라 귀하는 데이터에 액세스하고 내보내고 삭제할 권리가 있습니다.</p>
 <p><strong>Mewonen은 쿠키, 추적기, 분석 도구 또는 광고를 전혀 사용하지 않습니다.</strong></p>
-<div class="legal-divider"></div>
+<div class="ld"></div>
 <h3>의료 면책 조항</h3>
 <p><strong>Mewonen은 의료 기기가 아닙니다.</strong> 어떤 건강 상태도 진단, 치료 또는 예방하지 않습니다. 위기 상황인 경우 자격을 갖춘 의료 제공자에게 연락하거나 <a href="https://findahelpline.com" target="_blank">findahelpline.com</a>을 방문하세요.</p>
-<div class="legal-divider"></div>
+<div class="ld"></div>
 <h3>서비스 이용약관</h3>
 <p>Mewonen을 사용함으로써 귀하는 개인적이고 비상업적인 목적으로만 사용하는 데 동의합니다. 만 13세 이상이어야 합니다.</p>
-<p style="margin-top:12px;color:var(--p2);text-align:center;">© 2026 Mewonen. 무료. 영원히. 광고 없음. 데이터 없음. 판단 없음.</p>
-`,
-    isme: {
-      hello:'안녕하세요. 저는 ISME입니다. 💜',
-      draw:'느낌을 그려보세요. 제가 여기 있어요.',
-      joy:'오늘 당신은 빛나고 있어요. ✨',
-      sad:'제가 여기 있어요. 흘려보내요. 🌊',
-      angry:'이 에너지는 당신의 것입니다. 🔥',
-      calm:'고요함은 힘입니다. 🌙',
-      empty:'공간이 당신을 기다리고 있어요. 🕳️',
-      share:'당신의 기분을 세계와 공유하세요! 🌍',
-      streak:'🔥 {n}일 연속! 계속하세요!',
-      welcome:'돌아오신 것을 환영합니다! 오늘 기분이 어떠신가요? 💜',
-      challenge:'오늘의 도전: {challenge}',
-      map:'세계 다른 사람들의 기분을 보세요.',
-      gallery:'당신의 그림이 여기 있습니다. 🖼️',
-      stats:'당신의 감정 여정을 보세요.',
-    }
+<p style="margin-top:10px;color:#a78bfa;text-align:center;">© 2026 Mewonen. 무료. 영원히. 광고 없음. 데이터 없음. 판단 없음.</p>`
   }
 };
 
 // ============================================================
-//  STATE
+// STATE
 // ============================================================
 var lang = 'en';
-var TX = LANG[lang];
-var brushSize = 3;
-var currentMood = '';
-var points = [];
+var TX = L[lang];
+var brush = 3;
+var mood = '';
+var pts = [];
 var drawing = false;
 var streak = 0;
 var history = [];
 var gallery = [];
 var isDrawing = false;
-var pts = [];
 var ismeTimer = null;
+var globeAngle = 0;
+var globeDragging = false;
+var globeStartX = 0;
+var globeStartY = 0;
 
 // ============================================================
-//  DOM REFS
+// DOM REFS
 // ============================================================
-var $ = function(id){ return document.getElementById(id); };
-var canvas = $('canvas');
+var $ = function(i){ return document.getElementById(i); };
+var canvas = $('c');
 var ctx = canvas.getContext('2d');
 
 // ============================================================
-//  LANGUAGE
+// LANGUAGE
 // ============================================================
 function setLang(l) {
   lang = l;
-  TX = LANG[lang] || LANG.en;
-  document.body.className = lang === 'ar' ? 'ar' : lang === 'ja' ? 'ja' : lang === 'zh' ? 'zh' : lang === 'ko' ? 'ko' : lang === 'es' ? 'es' : '';
+  TX = L[lang] || L.en;
+  document.body.className = lang === 'ar' ? 'ar' : lang === 'ja' ? 'ja' : lang === 'zh' ? 'zh' : lang === 'ko' ? 'ko' : '';
   updateUI();
-  showIsmeMessage(TX.isme.hello, 3000);
+  showIsme(TX.isme.h, 3000);
 }
 
 function updateUI() {
-  $('privacyLabel').textContent = TX.privacy;
-  for(var i=0;i<3;i++){ $('onTitle'+i).textContent = TX.onTitle[i]; $('onText'+i).textContent = TX.onText[i]; $('onMsg'+i).textContent = TX.onMsg[i]; }
-  $('onBtn').textContent = TX.onBtn;
-  $('counterLabel').textContent = TX.counter;
-  $('btnClear').textContent = TX.clear;
-  $('btnShare').innerHTML = '📤 ' + TX.share;
-  $('btnDownload').innerHTML = '💾 ' + TX.download;
-  document.querySelectorAll('.nav-item').forEach(function(el){
-    var label = el.querySelector('.nav-label');
-    var key = el.dataset.screen;
-    var labels = TX.nav;
-    if(label && labels) {
-      var idx = {draw:0, gallery:1, stats:2, map:3, legal:4}[key];
-      if(idx !== undefined) label.textContent = labels[idx];
-    }
-  });
-  $('legalContent').innerHTML = TX.legal;
-  renderLangBar();
+  $('prLabel').textContent = TX.pr;
+  $('cl').textContent = TX.cl;
+  for(var i=0;i<3;i++){ $('ot'+i).textContent = TX.ot[i]; $('op'+i).textContent = TX.op[i]; }
+  $('onBtn').textContent = TX.on;
+  $('btnClear').textContent = TX.clr;
+  $('btnShare').innerHTML = '📤 ' + TX.sh;
+  $('btnDownload').innerHTML = '💾 ' + TX.sv;
+  $('globeMsg').innerHTML = TX.globe;
+  $('globeBtn').textContent = TX.globeBtn;
+  var navs = document.querySelectorAll('.nav-item .nl');
+  if(navs.length) { navs[0].textContent = TX.nav[0]; navs[1].textContent = TX.nav[1]; navs[2].textContent = TX.nav[2]; navs[3].textContent = TX.nav[3]; navs[4].textContent = TX.nav[4]; }
+  $('lc').innerHTML = TX.legal;
+  renderLang();
 }
 
-function renderLangBar() {
+function renderLang() {
   var bar = $('langBar');
   bar.innerHTML = '';
   var codes = ['en','fr','es','ar','ja','zh','ko'];
-  codes.forEach(function(code){
-    var btn = document.createElement('button');
-    btn.textContent = code.toUpperCase();
-    if(code === lang) btn.className = 'active';
-    btn.addEventListener('click', function(){ setLang(code); });
-    bar.appendChild(btn);
+  codes.forEach(function(c){
+    var b = document.createElement('button');
+    b.textContent = c.toUpperCase();
+    if(c === lang) b.className = 'active';
+    b.addEventListener('click', function(){ setLang(c); });
+    bar.appendChild(b);
   });
 }
 
 // ============================================================
-//  SPLASH / ONBOARDING
+// SPLASH
 // ============================================================
 setTimeout(function(){
   $('splash').classList.add('hidden');
   setTimeout(function(){
-    $('onboarding').classList.add('active');
-  }, 400);
+    $('globeScreen').classList.add('active');
+    initGlobe();
+  }, 300);
 }, 2200);
 
+// ============================================================
+// GLOBE
+// ============================================================
+function initGlobe() {
+  // Dots on globe
+  var dots = $('globeDots');
+  for(var i=0;i<30;i++){
+    var d = document.createElement('div');
+    d.className = 'dot';
+    var a = Math.random()*Math.PI*2;
+    var r = 40 + Math.random()*45;
+    var x = 50 + Math.cos(a)*r;
+    var y = 50 + Math.sin(a)*r;
+    d.style.left = x+'%';
+    d.style.top = y+'%';
+    d.style.animationDelay = (Math.random()*3)+'s';
+    d.style.width = (2+Math.random()*4)+'px';
+    d.style.height = d.style.width;
+    dots.appendChild(d);
+  }
+
+  // Emojis on globe
+  var emojis = $('globeEmojis');
+  var emojiList = ['☀️','🌧️','🌈','⚡','🌙','🔥','🌱','💨','❄️','🕳️'];
+  for(var i=0;i<15;i++){
+    var e = document.createElement('div');
+    e.className = 'ge';
+    e.textContent = emojiList[Math.floor(Math.random()*emojiList.length)];
+    var a = Math.random()*Math.PI*2;
+    var r = 25 + Math.random()*35;
+    var x = 50 + Math.cos(a)*r;
+    var y = 50 + Math.sin(a)*r;
+    e.style.left = x+'%';
+    e.style.top = y+'%';
+    e.style.animationDelay = (Math.random()*4)+'s';
+    e.style.fontSize = (0.6+Math.random()*0.6)+'rem';
+    emojis.appendChild(e);
+  }
+
+  // Globe drag
+  var globe = $('globe');
+  globe.addEventListener('mousedown', function(e){ globeDragging=true; globeStartX=e.clientX; });
+  document.addEventListener('mousemove', function(e){ if(globeDragging){ var dx=e.clientX-globeStartX; globe.style.transform='rotateY('+(parseFloat(globe.style.transform?.replace(/[^0-9.]/g,'')||0)+dx*0.5)+'deg)'; globeStartX=e.clientX; } });
+  document.addEventListener('mouseup', function(){ globeDragging=false; });
+  globe.addEventListener('touchstart', function(e){ globeDragging=true; globeStartX=e.touches[0].clientX; });
+  globe.addEventListener('touchmove', function(e){ if(globeDragging){ var dx=e.touches[0].clientX-globeStartX; globe.style.transform='rotateY('+(parseFloat(globe.style.transform?.replace(/[^0-9.]/g,'')||0)+dx*0.5)+'deg)'; globeStartX=e.touches[0].clientX; } });
+  globe.addEventListener('touchend', function(){ globeDragging=false; });
+
+  // Globe button
+  $('globeBtn').addEventListener('click', function(){
+    $('globeScreen').classList.remove('active');
+    $('onboarding').classList.add('active');
+  });
+
+  // Auto-rotation
+  setInterval(function(){
+    if(!globeDragging){
+      var current = parseFloat(globe.style.transform?.replace(/[^0-9.]/g,'')||0);
+      globe.style.transform = 'rotateY('+(current+1)+'deg)';
+    }
+  }, 80);
+}
+
+// ============================================================
+// ONBOARDING
+// ============================================================
 var onStep = 0;
 $('onBtn').addEventListener('click', function(){
   onStep++;
-  if(onStep >= 3) {
+  if(onStep >= 3){
     $('onboarding').classList.remove('active');
     $('app').classList.add('active');
     initApp();
     return;
   }
-  document.querySelectorAll('.on-slide').forEach(function(el){ el.classList.remove('active'); });
-  document.querySelector('.on-slide[data-i="'+onStep+'"]').classList.add('active');
-  document.querySelectorAll('.on-progress .dot').forEach(function(dot, i){
-    dot.classList.toggle('active', i <= onStep);
-  });
-  if(onStep === 2) $('onBtn').textContent = TX.onBtn === 'Next' ? 'Start' : TX.onBtn === 'Suivant' ? 'Commencer' : '시작';
+  var slides = document.querySelectorAll('.on-slide');
+  slides.forEach(function(s){ s.classList.remove('active'); });
+  slides[onStep].classList.add('active');
+  var dots = document.querySelectorAll('.on-dots span');
+  dots.forEach(function(d,i){ d.classList.toggle('active', i<=onStep); });
+  if(onStep === 2) $('onBtn').textContent = 'Start';
 });
 
 // ============================================================
-//  INIT APP
+// INIT APP
 // ============================================================
 function initApp() {
   loadData();
   setupCanvas();
-  setupNavigation();
+  setupNav();
   setupToolbar();
   setupButtons();
   updateStreak();
@@ -909,34 +855,32 @@ function initApp() {
   buildStats();
   buildMap();
   setupIsme();
-  showIsmeMessage(TX.isme.hello, 3000);
+  showIsme(TX.isme.h, 3000);
   startIsmeTimer();
+  checkDailyChallenge();
 }
 
 // ============================================================
-//  DATA
+// DATA
 // ============================================================
 function loadData() {
   try {
-    var h = localStorage.getItem('mewonen_history');
-    history = h ? JSON.parse(h) : [];
-    var g = localStorage.getItem('mewonen_gallery');
-    gallery = g ? JSON.parse(g) : [];
-    var s = localStorage.getItem('mewonen_streak');
-    streak = s ? parseInt(s) : 0;
-  } catch(e) { history=[]; gallery=[]; streak=0; }
+    history = JSON.parse(localStorage.getItem('mw_h')||'[]');
+    gallery = JSON.parse(localStorage.getItem('mw_g')||'[]');
+    streak = parseInt(localStorage.getItem('mw_s')||'0');
+  } catch(e){ history=[]; gallery=[]; streak=0; }
 }
 
 function saveData() {
   try {
-    localStorage.setItem('mewonen_history', JSON.stringify(history));
-    localStorage.setItem('mewonen_gallery', JSON.stringify(gallery));
-    localStorage.setItem('mewonen_streak', streak.toString());
-  } catch(e) {}
+    localStorage.setItem('mw_h', JSON.stringify(history));
+    localStorage.setItem('mw_g', JSON.stringify(gallery));
+    localStorage.setItem('mw_s', streak.toString());
+  } catch(e){}
 }
 
 // ============================================================
-//  CANVAS
+// CANVAS
 // ============================================================
 function setupCanvas() {
   function getPos(e) {
@@ -964,21 +908,21 @@ function setupCanvas() {
     pts.push(p);
     ctx.lineTo(p.x, p.y);
     ctx.strokeStyle = 'rgba(200,180,255,0.85)';
-    ctx.lineWidth = brushSize;
+    ctx.lineWidth = brush;
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
-    ctx.shadowColor = 'rgba(139,92,246,0.2)';
+    ctx.shadowColor = 'rgba(139,92,246,0.15)';
     ctx.shadowBlur = 8;
     ctx.stroke();
     ctx.shadowBlur = 0;
-    if(navigator.vibrate && pts.length % 10 === 0) navigator.vibrate(3);
+    if(navigator.vibrate && pts.length % 8 === 0) navigator.vibrate(3);
   }
 
   function end() {
     if(!isDrawing) return;
     isDrawing = false;
     if(pts.length < 4) return;
-    analyzeDrawing(pts);
+    analyze(pts);
   }
 
   canvas.addEventListener('touchstart', start, {passive:false});
@@ -991,50 +935,50 @@ function setupCanvas() {
 }
 
 // ============================================================
-//  ANALYZE DRAWING
+// ANALYZE
 // ============================================================
-function analyzeDrawing(pts) {
-  var totalDist = 0;
+function analyze(pts) {
+  var dist = 0;
   for(var i=1;i<pts.length;i++){
     var dx=pts[i].x-pts[i-1].x, dy=pts[i].y-pts[i-1].y;
-    totalDist += Math.sqrt(dx*dx+dy*dy);
+    dist += Math.sqrt(dx*dx+dy*dy);
   }
   var idx = 0;
-  if(totalDist > 400) idx = 0;
-  else if(totalDist > 250) idx = 4;
-  else if(totalDist > 120) idx = 1;
-  else if(totalDist < 20) idx = 12;
+  if(dist > 400) idx = 0;
+  else if(dist > 250) idx = 4;
+  else if(dist > 120) idx = 1;
+  else if(dist < 20) idx = 12;
   else idx = 2;
 
-  var emotions = [
-    { emoji:'☀️', phrase:'You are shining today.', phrase2:'Your light is contagious.', mood:'joy' },
-    { emoji:'🌧️', phrase:'Let it wash over you.', phrase2:'Rain feeds the roots.', mood:'sad' },
-    { emoji:'🌪️', phrase:'Even storms run out of rain.', phrase2:'This too shall pass.', mood:'angry' },
-    { emoji:'🌈', phrase:'Look what you crossed.', phrase2:'Still standing.', mood:'calm' },
-    { emoji:'⚡', phrase:'This energy is yours.', phrase2:'Use it wisely.', mood:'angry' },
-    { emoji:'🌙', phrase:'Rest is not weakness.', phrase2:'Stillness is strength.', mood:'calm' },
-    { emoji:'🔥', phrase:'Passion is power.', phrase2:'You are alive.', mood:'angry' },
-    { emoji:'🌱', phrase:'Hope whispers.', phrase2:'Growth takes time.', mood:'calm' },
-    { emoji:'🙏', phrase:'Gratitude changes you.', phrase2:'You said thank you.', mood:'joy' },
-    { emoji:'💨', phrase:'Let the wind carry you.', phrase2:'Freedom is near.', mood:'calm' },
-    { emoji:'🌫️', phrase:'Clarity comes slowly.', phrase2:'The fog will lift.', mood:'sad' },
-    { emoji:'❄️', phrase:'Spring always comes.', phrase2:'You are frozen, not broken.', mood:'sad' },
-    { emoji:'🕳️', phrase:'Space waiting for you.', phrase2:'Fill it when you\'re ready.', mood:'empty' }
+  var emos = [
+    { e:'☀️', p:'You are shining today.', p2:'Your light is contagious.', m:'joy' },
+    { e:'🌧️', p:'Let it wash over you.', p2:'Rain feeds the roots.', m:'sad' },
+    { e:'🌪️', p:'Even storms run out of rain.', p2:'This too shall pass.', m:'angry' },
+    { e:'🌈', p:'Look what you crossed.', p2:'Still standing.', m:'calm' },
+    { e:'⚡', p:'This energy is yours.', p2:'Use it wisely.', m:'angry' },
+    { e:'🌙', p:'Rest is not weakness.', p2:'Stillness is strength.', m:'calm' },
+    { e:'🔥', p:'Passion is power.', p2:'You are alive.', m:'angry' },
+    { e:'🌱', p:'Hope whispers.', p2:'Growth takes time.', m:'calm' },
+    { e:'🙏', p:'Gratitude changes you.', p2:'You said thank you.', m:'joy' },
+    { e:'💨', p:'Let the wind carry you.', p2:'Freedom is near.', m:'calm' },
+    { e:'🌫️', p:'Clarity comes slowly.', p2:'The fog will lift.', m:'sad' },
+    { e:'❄️', p:'Spring always comes.', p2:'You are frozen, not broken.', m:'sad' },
+    { e:'🕳️', p:'Space waiting for you.', p2:'Fill it when you\'re ready.', m:'empty' }
   ];
 
-  var e = emotions[idx];
-  currentMood = e.mood;
-  $('resultEmoji').textContent = e.emoji;
-  $('resultPhrase').textContent = e.phrase;
-  $('resultPhrase2').textContent = e.phrase2;
+  var emo = emos[idx];
+  mood = emo.m;
+  $('re').textContent = emo.e;
+  $('rp').textContent = emo.p;
+  $('rp2').textContent = emo.p2;
 
   // Save
   var today = new Date().toISOString().split('T')[0];
-  history.push({ date: today, emoji: e.emoji, mood: e.mood });
+  history.push({ date: today, emoji: emo.e, mood: emo.m });
   if(history.length > 30) history.shift();
 
   var dataUrl = canvas.toDataURL('image/png');
-  gallery.unshift({ data: dataUrl, date: today, mood: e.mood });
+  gallery.unshift({ data: dataUrl, date: today, mood: emo.m });
   if(gallery.length > 12) gallery.pop();
 
   saveData();
@@ -1044,92 +988,119 @@ function analyzeDrawing(pts) {
   buildStats();
 
   // ISME reaction
-  reactIsme(e.mood, e.emoji);
+  reactIsme(emo.m, emo.e);
 
   // Confetti on joy
-  if(e.mood === 'joy') spawnConfetti();
+  if(emo.m === 'joy') spawnConfetti();
+
+  // Show bubbles
+  showBubbles(emo);
 
   // Share prompt
   setTimeout(function(){
-    showIsmeMessage(TX.isme.share, 4000);
-  }, 2000);
+    showIsme(TX.isme.sh, 4000);
+  }, 3000);
 
   // Challenge
   checkDailyChallenge();
 }
 
 // ============================================================
-//  COUNTER & STREAK
+// BUBBLES
+// ============================================================
+function showBubbles(emo) {
+  var box = $('bubbleBox');
+  var msg = $('bubbleMsg');
+  var btns = $('bubbleBtns');
+
+  var icon = emo.e;
+  var msgs = {
+    'joy': 'You\'re radiating happiness! ❤️ How are you feeling?',
+    'sad': 'I\'m here for you. ❤️ Do you want to talk about it?',
+    'angry': 'This energy is powerful. 🔥 Channel it into your art.',
+    'calm': 'Peace surrounds you. 🌙 Keep this moment.',
+    'empty': 'Space is waiting for you. 🕳️ Fill it with what you love.'
+  };
+  var m = msgs[emo.m] || 'How are you feeling today? 💜';
+
+  msg.innerHTML = '<span class="b-icon">'+icon+'</span>'+m;
+  btns.innerHTML = `
+    <button class="bb-p" data-action="share">📤 Share</button>
+    <button class="bb-p" data-action="globe">🌍 See on globe</button>
+    <button class="bb-s" data-action="ok">💜 OK</button>
+  `;
+  box.classList.add('show');
+
+  btns.querySelectorAll('button').forEach(function(b){
+    b.addEventListener('click', function(){
+      var action = this.dataset.action;
+      if(action === 'share') { $('btnShare').click(); }
+      else if(action === 'globe') { showGlobe(); }
+      else if(action === 'ok') { box.classList.remove('show'); }
+    });
+  });
+}
+
+function showGlobe() {
+  $('globeScreen').classList.add('active');
+  $('app').classList.remove('active');
+  setTimeout(function(){
+    $('globeScreen').classList.remove('active');
+    $('app').classList.add('active');
+    showIsme('🌍 Your mood is now on the globe!', 3000);
+  }, 3000);
+}
+
+// ============================================================
+// COUNTER & STREAK
 // ============================================================
 function updateCounter() {
-  $('totalCounter').textContent = history.length;
+  $('tc').textContent = history.length;
 }
 
 function updateStreak() {
-  if(history.length === 0) { streak=0; $('streakBadge').classList.remove('show'); return; }
+  if(history.length === 0) { streak=0; $('sb').classList.remove('show'); return; }
   var today = new Date().toISOString().split('T')[0];
-  var lastDate = history[history.length-1].date;
-  if(lastDate === today) {
-    var count = 0;
-    var d = new Date(today);
-    for(var i=history.length-1; i>=0; i--) {
-      var hd = new Date(history[i].date);
-      var diff = Math.floor((d - hd) / 86400000);
-      if(diff === count) count++;
-      else break;
-    }
-    streak = count;
+  var last = history[history.length-1].date;
+  if(last === today) {
+    var c=0, d=new Date(today);
+    for(var i=history.length-1;i>=0;i--){ var hd=new Date(history[i].date); var diff=Math.floor((d-hd)/86400000); if(diff===c)c++; else break; }
+    streak=c;
   } else {
-    var yesterday = new Date();
-    yesterday.setDate(yesterday.getDate()-1);
-    var yStr = yesterday.toISOString().split('T')[0];
-    if(lastDate === yStr) {
-      var count2 = 0;
-      var d2 = new Date(today);
-      for(var j=history.length-1; j>=0; j--) {
-        var hd2 = new Date(history[j].date);
-        var diff2 = Math.floor((d2 - hd2) / 86400000);
-        if(diff2 === count2) count2++;
-        else break;
-      }
-      streak = count2;
-    } else {
-      streak = 0;
-    }
+    var y = new Date(); y.setDate(y.getDate()-1); var ys=y.toISOString().split('T')[0];
+    if(last === ys) {
+      var c2=0, d2=new Date(today);
+      for(var j=history.length-1;j>=0;j--){ var hd2=new Date(history[j].date); var diff2=Math.floor((d2-hd2)/86400000); if(diff2===c2)c2++; else break; }
+      streak=c2;
+    } else { streak=0; }
   }
   saveData();
 
-  var badge = $('streakBadge');
-  var text = $('streakText');
-  if(streak >= 2) {
-    badge.classList.add('show');
-    text.textContent = streak + ' day' + (streak>1?'s':'') + ' 🔥';
-    if(streak >= 100) badge.className = 'streak-badge show legendary';
-    else if(streak >= 30) badge.className = 'streak-badge show diamond';
-    else if(streak >= 7) badge.className = 'streak-badge show silver';
-    else if(streak >= 3) badge.className = 'streak-badge show bronze';
-    else badge.className = 'streak-badge show';
-    if(streak > 1 && streak % 5 === 0) {
-      showIsmeMessage(TX.isme.streak.replace('{n}', streak), 4000);
-    }
-  } else {
-    badge.classList.remove('show');
-  }
+  var badge=$('sb'), text=$('st');
+  if(streak>=2){
+    badge.classList.add('show'); text.textContent=streak+' day'+(streak>1?'s':'')+' 🔥';
+    if(streak>=100) badge.className='sb show lg';
+    else if(streak>=30) badge.className='sb show dm';
+    else if(streak>=7) badge.className='sb show sv';
+    else if(streak>=3) badge.className='sb show bz';
+    else badge.className='sb show';
+    if(streak>1 && streak%5===0) showIsme(TX.isme.st.replace('{n}',streak),4000);
+  } else { badge.classList.remove('show'); }
 }
 
 // ============================================================
-//  GALLERY
+// GALLERY
 // ============================================================
 function buildGallery() {
-  var grid = $('galleryGrid');
+  var grid = $('gg');
   grid.innerHTML = '';
   if(gallery.length === 0) {
-    grid.innerHTML = '<div style="color:rgba(255,255,255,0.15);grid-column:1/-1;padding:20px;font-size:0.55rem;text-align:center">No drawings yet.<br>Draw your first mood!</div>';
+    grid.innerHTML = '<div style="color:rgba(255,255,255,0.1);grid-column:1/-1;padding:16px;font-size:0.5rem;text-align:center">No drawings yet.<br>Draw your first mood!</div>';
     return;
   }
   gallery.forEach(function(item){
     var div = document.createElement('div');
-    div.className = 'gallery-item';
+    div.className = 'gi';
     var img = document.createElement('img');
     img.src = item.data;
     img.alt = 'Drawing';
@@ -1140,13 +1111,13 @@ function buildGallery() {
 }
 
 // ============================================================
-//  STATS
+// STATS
 // ============================================================
 function buildStats() {
-  var container = $('statsContainer');
-  container.innerHTML = '';
+  var c = $('scContainer');
+  c.innerHTML = '';
   if(history.length === 0) {
-    container.innerHTML = '<div style="color:rgba(255,255,255,0.15);padding:20px;font-size:0.55rem">No data yet.</div>';
+    c.innerHTML = '<div style="color:rgba(255,255,255,0.1);padding:16px;font-size:0.5rem">No data yet.</div>';
     return;
   }
   var counts = {};
@@ -1155,92 +1126,94 @@ function buildStats() {
   var max = sorted.length ? counts[sorted[0]] : 1;
   sorted.slice(0,6).forEach(function(emoji){
     var div = document.createElement('div');
-    div.className = 'stat-card';
+    div.className = 'scard';
     var pct = (counts[emoji]/max)*100;
-    div.innerHTML = '<span class="emoji">'+emoji+'</span><div class="info"><span class="count">'+counts[emoji]+'</span><span class="label">'+emoji+'</span><div class="bar"><span style="width:'+pct+'%"></span></div></div>';
-    container.appendChild(div);
+    div.innerHTML = '<span class="e">'+emoji+'</span><div class="inf"><span class="n">'+counts[emoji]+'</span><span class="l">'+emoji+'</span><div class="bar"><span style="width:'+pct+'%"></span></div></div>';
+    c.appendChild(div);
   });
 }
 
 // ============================================================
-//  MAP
+// MAP
 // ============================================================
 function buildMap() {
-  var grid = $('mapGrid');
+  var grid = $('mg');
   grid.innerHTML = '';
   var countries = [
-    { flag: '🇺🇸', name: 'USA', mood: '☀️' },
-    { flag: '🇫🇷', name: 'France', mood: '🌙' },
-    { flag: '🇯🇵', name: 'Japan', mood: '🌱' },
-    { flag: '🇲🇦', name: 'Morocco', mood: '☀️' },
-    { flag: '🇨🇳', name: 'China', mood: '🌧️' },
-    { flag: '🇰🇷', name: 'Korea', mood: '⚡' },
-    { flag: '🇪🇸', name: 'Spain', mood: '🌈' },
-    { flag: '🇧🇷', name: 'Brazil', mood: '🔥' },
-    { flag: '🇮🇳', name: 'India', mood: '🌫️' },
+    { f:'🇺🇸', n:'USA', m:'☀️' },
+    { f:'🇫🇷', n:'France', m:'🌙' },
+    { f:'🇯🇵', n:'Japan', m:'🌱' },
+    { f:'🇲🇦', n:'Morocco', m:'☀️' },
+    { f:'🇨🇳', n:'China', m:'🌧️' },
+    { f:'🇰🇷', n:'Korea', m:'⚡' },
+    { f:'🇪🇸', n:'Spain', m:'🌈' },
+    { f:'🇧🇷', n:'Brazil', m:'🔥' },
+    { f:'🇮🇳', n:'India', m:'🌫️' }
   ];
   countries.forEach(function(c){
     var div = document.createElement('div');
-    div.className = 'map-country';
-    div.innerHTML = '<span class="flag">'+c.flag+'</span><span class="name">'+c.name+'</span><span class="mood">'+c.mood+'</span>';
+    div.className = 'mc';
+    div.innerHTML = '<span class="f">'+c.f+'</span><span class="n">'+c.n+'</span><span class="m">'+c.m+'</span>';
     grid.appendChild(div);
   });
 }
 
 // ============================================================
-//  NAVIGATION
+// NAV
 // ============================================================
-function setupNavigation() {
+function setupNav() {
   document.querySelectorAll('.nav-item').forEach(function(btn){
     btn.addEventListener('click', function(){
-      var screen = this.dataset.screen;
-      document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
-      var target = $('screen-'+screen);
+      var sc = this.dataset.sc;
+      document.querySelectorAll('.scr').forEach(function(s){ s.classList.remove('active'); });
+      var target = $('sc-'+sc);
       if(target) target.classList.add('active');
       document.querySelectorAll('.nav-item').forEach(function(n){ n.classList.remove('active'); });
       this.classList.add('active');
-      if(screen === 'gallery') buildGallery();
-      if(screen === 'stats') buildStats();
-      if(screen === 'map') buildMap();
+      if(sc === 'gallery') buildGallery();
+      if(sc === 'stats') buildStats();
+      if(sc === 'map') buildMap();
     });
   });
 }
 
 // ============================================================
-//  TOOLBAR
+// TOOLBAR
 // ============================================================
 function setupToolbar() {
-  document.querySelectorAll('.toolbar button[data-size]').forEach(function(btn){
+  document.querySelectorAll('.tb button[data-s]').forEach(function(btn){
     btn.addEventListener('click', function(){
-      brushSize = parseInt(this.dataset.size);
-      document.querySelectorAll('.toolbar button[data-size]').forEach(function(b){ b.classList.remove('active'); });
+      brush = parseInt(this.dataset.s);
+      document.querySelectorAll('.tb button[data-s]').forEach(function(b){ b.classList.remove('active'); });
       this.classList.add('active');
     });
   });
   $('btnUndo').addEventListener('click', function(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
-    $('resultEmoji').textContent = '';
-    $('resultPhrase').textContent = '';
-    $('resultPhrase2').textContent = '';
-    showIsmeMessage('Let\'s try again. You got this. 💜', 2500);
+    $('re').textContent = '';
+    $('rp').textContent = '';
+    $('rp2').textContent = '';
+    $('bubbleBox').classList.remove('show');
+    showIsme('Try again. You got this. 💜', 2500);
   });
 }
 
 // ============================================================
-//  BUTTONS
+// BUTTONS
 // ============================================================
 function setupButtons() {
   $('btnClear').addEventListener('click', function(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
-    $('resultEmoji').textContent = '';
-    $('resultPhrase').textContent = '';
-    $('resultPhrase2').textContent = '';
-    showIsmeMessage('Clear. Start fresh. ✨', 2500);
+    $('re').textContent = '';
+    $('rp').textContent = '';
+    $('rp2').textContent = '';
+    $('bubbleBox').classList.remove('show');
+    showIsme('Clear. Start fresh. ✨', 2500);
   });
 
   $('btnShare').addEventListener('click', function(){
     var dataUrl = canvas.toDataURL('image/png');
-    var phrase = $('resultPhrase').textContent || 'I drew my mood on Mewonen. 💜';
+    var phrase = $('rp').textContent || 'I drew my mood on Mewonen. 💜';
     if(navigator.share) {
       var blob = dataURLToBlob(dataUrl);
       navigator.share({
@@ -1250,14 +1223,14 @@ function setupButtons() {
       }).catch(function(){});
     } else {
       downloadImage(dataUrl);
-      showIsmeMessage('📤 Saved! Share it with your friends.', 3000);
+      showIsme('📤 Saved! Share it with your friends.', 3000);
     }
   });
 
   $('btnDownload').addEventListener('click', function(){
     var dataUrl = canvas.toDataURL('image/png');
     downloadImage(dataUrl);
-    showIsmeMessage('💾 Saved to your device.', 2500);
+    showIsme('💾 Saved to your device.', 2500);
   });
 }
 
@@ -1276,11 +1249,11 @@ function dataURLToBlob(dataUrl) {
 }
 
 // ============================================================
-//  CONFETTI
+// CONFETTI
 // ============================================================
 function spawnConfetti() {
   var colors = ['#a78bfa','#7c3aed','#fbbf24','#34d399','#f472b6','#60a5fa','#f97316'];
-  for(var i=0;i<30;i++){
+  for(var i=0;i<25;i++){
     var el = document.createElement('div');
     el.className = 'confetti';
     el.style.left = Math.random()*100+'%';
@@ -1297,90 +1270,78 @@ function spawnConfetti() {
 }
 
 // ============================================================
-//  ISME
+// ISME
 // ============================================================
 function setupIsme() {
-  var avatar = $('ismeAvatar');
-  var bubble = $('ismeBubble');
+  var av = $('ismeAv');
+  var bub = $('ismeBub');
   var close = $('ismeClose');
 
-  avatar.addEventListener('click', function(){
-    if(bubble.classList.contains('show')) {
-      bubble.classList.remove('show');
+  av.addEventListener('click', function(){
+    if(bub.classList.contains('show')) {
+      bub.classList.remove('show');
     } else {
-      var msgs = [
-        TX.isme.draw,
-        TX.isme.share,
-        TX.isme.challenge.replace('{challenge}', 'Draw your dream'),
-        TX.isme.map,
-        TX.isme.gallery,
-        TX.isme.stats
-      ];
+      var msgs = [TX.isme.d, TX.isme.sh, TX.isme.ch.replace('{challenge}','Draw your dream'), TX.isme.ch.replace('{challenge}','Draw your hope')];
       var msg = msgs[Math.floor(Math.random()*msgs.length)];
-      showIsmeMessage(msg, 4000);
+      showIsme(msg, 4000);
     }
   });
 
   close.addEventListener('click', function(e){
     e.stopPropagation();
-    bubble.classList.remove('show');
+    bub.classList.remove('show');
   });
 }
 
-function showIsmeMessage(text, duration) {
-  var bubble = $('ismeBubble');
-  var textEl = $('ismeText');
-  textEl.textContent = text;
-  bubble.classList.add('show');
+function showIsme(text, duration) {
+  var bub = $('ismeBub');
+  var el = $('ismeText');
+  el.textContent = text;
+  bub.classList.add('show');
   clearTimeout(ismeTimer);
   ismeTimer = setTimeout(function(){
-    bubble.classList.remove('show');
+    bub.classList.remove('show');
   }, duration || 3000);
 }
 
-function reactIsme(mood, emoji) {
+function reactIsme(m, emoji) {
   var msg = '';
-  switch(mood) {
-    case 'joy': msg = TX.isme.joy; break;
-    case 'sad': msg = TX.isme.sad; break;
-    case 'angry': msg = TX.isme.angry; break;
-    case 'calm': msg = TX.isme.calm; break;
-    case 'empty': msg = TX.isme.empty; break;
-    default: msg = TX.isme.draw; break;
+  switch(m) {
+    case 'joy': msg = TX.isme.j; break;
+    case 'sad': msg = TX.isme.s; break;
+    case 'angry': msg = TX.isme.a; break;
+    case 'calm': msg = TX.isme.c; break;
+    case 'empty': msg = TX.isme.e; break;
+    default: msg = TX.isme.d; break;
   }
-  showIsmeMessage(msg + ' ' + emoji, 4000);
+  showIsme(msg + ' ' + emoji, 4000);
 }
 
 function startIsmeTimer() {
   setInterval(function(){
-    var bubble = $('ismeBubble');
-    if(bubble.classList.contains('show')) return;
-    var msgs = [
-      TX.isme.draw,
-      TX.isme.share,
-      TX.isme.map,
-      'How are you feeling today? 💜'
-    ];
+    var bub = $('ismeBub');
+    if(bub.classList.contains('show')) return;
+    var msgs = [TX.isme.d, TX.isme.sh, 'How are you feeling today? 💜'];
     var msg = msgs[Math.floor(Math.random()*msgs.length)];
-    showIsmeMessage(msg, 3000);
-  }, 25000);
+    showIsme(msg, 3000);
+  }, 30000);
 }
 
 function checkDailyChallenge() {
   var today = new Date().toISOString().split('T')[0];
-  var lastChallenge = localStorage.getItem('mewonen_last_challenge') || '';
-  if(lastChallenge !== today) {
+  var last = localStorage.getItem('mw_lc') || '';
+  if(last !== today) {
     var challenges = ['Draw your joy','Draw your dream','Draw a memory','Draw your fear','Draw your hope','Draw your strength','Draw your love','Draw your peace'];
-    var challenge = challenges[Math.floor(Math.random()*challenges.length)];
-    localStorage.setItem('mewonen_last_challenge', today);
+    var ch = challenges[Math.floor(Math.random()*challenges.length)];
+    localStorage.setItem('mw_lc', today);
     setTimeout(function(){
-      showIsmeMessage(TX.isme.challenge.replace('{challenge}', challenge), 5000);
-    }, 4000);
+      showIsme(TX.isme.ch.replace('{challenge}', ch), 5000);
+    }, 5000);
   }
 }
 
 // ============================================================
-//  TOAST
+// TOAST
 // ============================================================
 function showToast(msg) {
   var t = $('toast');
@@ -1390,9 +1351,9 @@ function showToast(msg) {
 }
 
 // ============================================================
-//  INIT
+// INIT
 // ============================================================
-renderLangBar();
+renderLang();
 </script>
 </body>
 </html>
