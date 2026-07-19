@@ -26,7 +26,6 @@ body{
   --s:rgba(16,16,32,0.85);--s2:rgba(22,22,44,0.97);
   --r:28px;--nav:60px;
 }
-
 /* ========== SPLASH ========== */
 #splash{
   position:fixed;inset:0;z-index:1000;
@@ -43,7 +42,7 @@ body{
 .splash-bar span{display:block;height:100%;width:0%;background:linear-gradient(90deg,#7c3aed,#a78bfa);animation:pb 2s ease-in-out forwards}
 @keyframes pb{0%{width:0%}100%{width:100%}}
 
-/* ========== GLOBE 3D ========== */
+/* ========== GLOBE ========== */
 #globeScreen{
   position:fixed;inset:0;z-index:800;
   background:#0a0a18;
@@ -51,14 +50,42 @@ body{
   overflow:hidden;
 }
 #globeScreen.active{display:flex}
-.globe-container{width:100%;height:60vh;position:relative}
+.globe-container{width:100%;height:55vh;position:relative}
 #globeCanvas{width:100%;height:100%;display:block}
-.globe-overlay{
-  position:absolute;bottom:20px;left:0;right:0;
+.globe-bottom{
+  position:absolute;bottom:10px;left:0;right:0;
   text-align:center;padding:0 20px;
 }
-.globe-overlay .globe-msg{color:rgba(255,255,255,0.5);font-size:0.7rem;margin-bottom:8px}
-.globe-overlay .globe-msg strong{color:#a78bfa;font-weight:400}
+.globe-bottom .gm{color:rgba(255,255,255,0.5);font-size:0.7rem;margin-bottom:6px}
+.globe-bottom .gm strong{color:#a78bfa;font-weight:400}
+
+/* ========== ISME SUR LE GLOBE ========== */
+#ismeGlobe{
+  position:absolute;bottom:80px;right:16px;z-index:10;
+  display:flex;flex-direction:column;align-items:flex-end;gap:4px;
+}
+#ismeGlobe .bub{
+  background:var(--s2);border:1px solid rgba(139,92,246,0.1);
+  border-radius:14px;padding:8px 14px;
+  max-width:200px;font-size:0.55rem;color:rgba(255,255,255,0.9);
+  backdrop-filter:blur(16px);box-shadow:0 8px 30px rgba(0,0,0,0.5);
+  animation:bi2 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  line-height:1.5;text-align:left;
+}
+@keyframes bi2{0%{opacity:0;transform:translateY(6px) scale(0.9)}100%{opacity:1;transform:translateY(0) scale(1)}}
+#ismeGlobe .av{
+  width:44px;height:44px;border-radius:50%;
+  background:linear-gradient(135deg,#7c3aed,#a78bfa);
+  box-shadow:0 4px 30px rgba(124,58,237,0.3);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.2rem;color:#fff;
+  animation:if 2.5s ease-in-out infinite;
+  cursor:pointer;transition:transform 0.2s;position:relative;
+  margin-top:4px;
+}
+@keyframes if{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+#ismeGlobe .av .im{position:absolute;bottom:1px;right:3px;font-size:0.35rem;font-weight:800;color:rgba(255,255,255,0.4)}
+
 .btn{
   display:inline-flex;align-items:center;gap:6px;
   padding:10px 24px;border-radius:50px;
@@ -136,7 +163,7 @@ canvas#c{
 #rp2{color:rgba(255,255,255,0.25);font-size:0.5rem;font-weight:200;text-align:center;max-width:280px}
 @keyframes pi{0%{opacity:0;transform:scale(0.4)}100%{opacity:1;transform:scale(1)}}
 
-/* ========== BUBBLES (conversations) ========== */
+/* ========== BUBBLES ========== */
 #bubbleBox{
   display:none;flex-direction:column;align-items:center;gap:6px;
   margin-top:6px;width:100%;max-width:300px;animation:bb 0.5s ease-out;
@@ -252,14 +279,13 @@ canvas#c{
 .mc .n{color:rgba(255,255,255,0.2);margin-top:1px}
 .mc .m{font-size:0.8rem;margin-top:1px}
 
-/* ========== LEGAL (COMPLET) ========== */
+/* ========== LEGAL ========== */
 .lc{
   max-width:380px;width:100%;padding:4px 0;font-size:0.5rem;line-height:1.8;color:rgba(255,255,255,0.4);text-align:left;
 }
 .lc h3{color:#a78bfa;font-size:0.55rem;font-weight:500;margin:10px 0 3px}
 .lc a{color:#a78bfa;text-decoration:none}
 .lc .ld{height:0.5px;background:rgba(255,255,255,0.03);margin:10px 0}
-.lc .copyright{color:rgba(255,255,255,0.2);font-size:0.45rem;margin-top:14px;text-align:center}
 
 /* ========== ISME ========== */
 #isme{
@@ -287,7 +313,6 @@ canvas#c{
   line-height:1.5;text-align:left;
 }
 #isme .bub.show{display:block}
-@keyframes bi2{0%{opacity:0;transform:translateY(6px) scale(0.9)}100%{opacity:1;transform:translateY(0) scale(1)}}
 #isme .bub .bc{background:none;border:none;color:rgba(255,255,255,0.1);cursor:pointer;font-size:0.4rem;margin-left:4px}
 
 /* ========== TOAST ========== */
@@ -312,6 +337,8 @@ canvas#c{
 @media(max-width:380px){
   #isme .av{width:40px;height:40px;font-size:1rem}
   #isme .bub{max-width:140px;font-size:0.45rem}
+  #ismeGlobe .av{width:38px;height:38px;font-size:1rem}
+  #ismeGlobe .bub{max-width:150px;font-size:0.5rem}
 }
 </style>
 </head>
@@ -325,11 +352,15 @@ canvas#c{
   <div class="splash-bar"><span></span></div>
 </div>
 
-<!-- ===== GLOBE 3D ===== -->
+<!-- ===== GLOBE ===== -->
 <div id="globeScreen">
   <div class="globe-container"><canvas id="globeCanvas"></canvas></div>
-  <div class="globe-overlay">
-    <div class="globe-msg" id="globeMsg">🌍 <strong>Explore the world's mood</strong> · Tap to continue</div>
+  <div id="ismeGlobe">
+    <div class="bub" id="globeIsmeBub"><span id="globeIsmeText">🌍 Hello! I'm ISME. Let's explore the world together. 💜</span></div>
+    <div class="av" id="globeIsmeAv">✦<span class="im">I</span></div>
+  </div>
+  <div class="globe-bottom">
+    <div class="gm" id="globeMsg">🌍 <strong>Explore the world's mood</strong> · Tap the globe to start</div>
     <button class="btn btn-p" id="globeBtn">🌍 Start your journey</button>
   </div>
 </div>
@@ -421,7 +452,7 @@ canvas#c{
   </div>
 </div>
 
-<!-- ===== ISME ===== -->
+<!-- ===== ISME (dans l'app) ===== -->
 <div id="isme">
   <div class="bub" id="ismeBub"><span id="ismeText">Hello. I'm ISME. 💜</span><button class="bc" id="ismeClose">✕</button></div>
   <div class="av" id="ismeAv">✦<span class="im">I</span></div>
@@ -442,8 +473,9 @@ var L = {
     op:['Your private space to draw what you feel.','Use your finger. Mewonen listens.','Your companion. Always by your side, every day.'],
     on:'Next',clr:'Clear',sh:'Share',sv:'Save',
     nav:['Draw','Gallery','Stats','World','Legal'],
-    globe:'🌍 Explore the world\'s mood · Tap to continue',
+    globe:'🌍 Explore the world\'s mood · Tap the globe to start',
     globeBtn:'🌍 Start your journey',
+    globeIsme:'🌍 Hello! I\'m ISME. Let\'s explore the world together. 💜',
     isme:{
       h:'Hello. I\'m ISME. 💜',
       d:'Draw what you feel. I\'m here.',
@@ -463,26 +495,29 @@ var L = {
     },
     legal:`
 <h3>© 2026 Mewonen — All rights reserved</h3>
-<p><strong>Mewonen</strong> is an original creation by <strong>Ismail Belabbess</strong>.</p>
-<p>The name <strong>Mewonen</strong>, the logo, the concept, the design, the source code, and all content are the exclusive property of their creator.</p>
-<p>Any reproduction, copying, or adaptation without prior written permission is strictly prohibited.</p>
+<p><strong>Mewonen</strong> is an original creation by <strong>Ismail Belabbess</strong>, published on July 4, 2026 at mewonnen.com.</p>
+<p>The name <strong>Mewonen</strong>, the logo, the concept, the design, the source code, and all content on this site are the exclusive property of their creator.</p>
+<p>Any reproduction, copying, modification, adaptation, or exploitation of the name, concept, or code, in whole or in part, without prior written permission, is strictly prohibited.</p>
 <p><strong>Contact:</strong> calmewave2026@proton.me</p>
 <div class="ld"></div>
 <h3>Privacy Policy</h3>
-<p><strong>Last updated:</strong> July 19, 2026</p>
-<p>Mewonen is designed with privacy at its core. <strong>We collect absolutely no personal data.</strong> Everything you draw, write, or say remains exclusively on your device.</p>
-<p>Mewonen uses your browser's <strong>localStorage</strong> to save your mood history and drawings. This data never leaves your device.</p>
-<p>Under <strong>GDPR</strong> (EU), <strong>CCPA</strong> (California), <strong>LGPD</strong> (Brazil), and <strong>PIPEDA</strong> (Canada), you have the right to access, export, and delete your data.</p>
-<p><strong>Mewonen uses zero cookies, zero trackers, zero analytics, and zero advertising.</strong></p>
-<div class="ld"></div>
+<p><strong>Last updated:</strong> July 4, 2026</p>
+<p>Mewonen is designed with privacy at its core. <strong>We collect absolutely no personal data.</strong> Everything you draw, write, or say remains exclusively on your device. No information is transmitted to any server, third party, or cloud service.</p>
+<h3>How Your Data is Stored</h3>
+<p>Mewonen uses your browser's <strong>localStorage</strong> to save your mood history, drawings, and preferences. This data never leaves your device. You can delete it at any time from Settings.</p>
+<h3>Your Rights</h3>
+<p>Under global privacy laws including <strong>GDPR</strong> (European Union), <strong>CCPA</strong> (California), <strong>LGPD</strong> (Brazil), and <strong>PIPEDA</strong> (Canada), you have the right to: Access your data, Export your data, Delete your data, Withdraw consent. Since all data is stored locally on your device, you can exercise these rights directly through the Settings menu at any time.</p>
+<h3>Cookies & Tracking</h3>
+<p><strong>Mewonen uses zero cookies, zero trackers, zero analytics, and zero advertising.</strong> We have no way to track you because we collect nothing.</p>
 <h3>Medical Disclaimer</h3>
-<p><strong>Mewonen is not a medical device.</strong> It does not diagnose, treat, or prevent any mental health condition. If you are in crisis, please contact a qualified healthcare provider or visit <a href="https://findahelpline.com" target="_blank">findahelpline.com</a>.</p>
-<div class="ld"></div>
+<p><strong>Mewonen is not a medical device or healthcare service.</strong> It does not diagnose, treat, cure, or prevent any mental health condition. If you are experiencing a crisis, please contact a qualified healthcare provider or visit <a href="https://findahelpline.com" target="_blank" rel="noopener">findahelpline.com</a>.</p>
 <h3>Terms of Service</h3>
-<p>By using Mewonen, you agree to use it for personal, non-commercial purposes only. You must be at least 13 years of age.</p>
-<div class="ld"></div>
+<p>By using Mewonen, you agree to use it for personal, non-commercial purposes only. You must be at least 13 years of age. Mewonen is provided "as is" without warranties of any kind.</p>
 <h3>Children's Privacy</h3>
 <p>Mewonen is not directed to children under 13. We do not knowingly collect personal information from anyone under 13.</p>
+<h3>Contact</h3>
+<p><strong>Ismail Belabbess</strong><br><a href="mailto:calmewave2026@proton.me">calmewave2026@proton.me</a></p>
+<div class="ld"></div>
 <p style="margin-top:10px;color:#a78bfa;text-align:center;">© 2026 Mewonen. Free. Forever. No ads. No data. No judgment.</p>`
   },
   fr:{
@@ -491,8 +526,9 @@ var L = {
     op:['Ton espace privé pour dessiner ce que tu ressens.','Utilise ton doigt. Mewonen écoute.','Ton compagnon. Toujours à tes côtés, chaque jour.'],
     on:'Suivant',clr:'Effacer',sh:'Partager',sv:'Sauvegarder',
     nav:['Dessiner','Galerie','Stats','Monde','Légal'],
-    globe:'🌍 Explore l\'humeur du monde · Appuie pour continuer',
+    globe:'🌍 Explore l\'humeur du monde · Appuie sur le globe pour commencer',
     globeBtn:'🌍 Commence ton voyage',
+    globeIsme:'🌍 Bonjour ! Je suis ISME. Explorons le monde ensemble. 💜',
     isme:{
       h:'Bonjour. Je suis ISME. 💜',
       d:'Dessine ce que tu ressens. Je suis là.',
@@ -512,26 +548,29 @@ var L = {
     },
     legal:`
 <h3>© 2026 Mewonen — Tous droits réservés</h3>
-<p><strong>Mewonen</strong> est une création originale de <strong>Ismail Belabbess</strong>.</p>
-<p>Le nom <strong>Mewonen</strong>, le logo, le concept, le design, le code source et tout le contenu sont la propriété exclusive de leur créateur.</p>
-<p>Toute reproduction, copie ou adaptation sans autorisation écrite préalable est strictement interdite.</p>
+<p><strong>Mewonen</strong> est une création originale de <strong>Ismail Belabbess</strong>, publiée le 4 juillet 2026 sur mewonnen.com.</p>
+<p>Le nom <strong>Mewonen</strong>, le logo, le concept, le design, le code source et tout le contenu de ce site sont la propriété exclusive de leur créateur.</p>
+<p>Toute reproduction, copie, modification, adaptation ou exploitation du nom, du concept ou du code, en tout ou partie, sans autorisation écrite préalable, est strictement interdite.</p>
 <p><strong>Contact :</strong> calmewave2026@proton.me</p>
 <div class="ld"></div>
 <h3>Politique de Confidentialité</h3>
-<p><strong>Dernière mise à jour :</strong> 19 juillet 2026</p>
-<p>Mewonen est conçu avec la confidentialité au cœur. <strong>Nous ne collectons absolument aucune donnée personnelle.</strong> Tout ce que vous dessinez, écrivez ou dites reste exclusivement sur votre appareil.</p>
-<p>Mewonen utilise le <strong>localStorage</strong> de votre navigateur pour sauvegarder votre historique et vos dessins. Ces données ne quittent jamais votre appareil.</p>
-<p>Conformément au <strong>RGPD</strong> (UE), <strong>CCPA</strong> (Californie), <strong>LGPD</strong> (Brésil) et <strong>PIPEDA</strong> (Canada), vous avez le droit d'accéder, exporter et supprimer vos données.</p>
-<p><strong>Mewonen n'utilise aucun cookie, traceur, outil analytique ou publicité.</strong></p>
-<div class="ld"></div>
+<p><strong>Dernière mise à jour :</strong> 4 juillet 2026</p>
+<p>Mewonen est conçu avec la confidentialité au cœur. <strong>Nous ne collectons absolument aucune donnée personnelle.</strong> Tout ce que vous dessinez, écrivez ou dites reste exclusivement sur votre appareil. Aucune information n'est transmise à un serveur, tiers ou service cloud.</p>
+<h3>Stockage des Données</h3>
+<p>Mewonen utilise le <strong>localStorage</strong> de votre navigateur pour sauvegarder votre historique, dessins et préférences. Ces données ne quittent jamais votre appareil. Vous pouvez les supprimer à tout moment depuis les Paramètres.</p>
+<h3>Vos Droits</h3>
+<p>Conformément aux lois mondiales incluant le <strong>RGPD</strong> (Union Européenne), le <strong>CCPA</strong> (Californie), la <strong>LGPD</strong> (Brésil) et la <strong>PIPEDA</strong> (Canada), vous avez le droit d'accéder, exporter, supprimer vos données et retirer votre consentement. Toutes les données étant locales, vous exercez ces droits via les Paramètres.</p>
+<h3>Cookies & Pistage</h3>
+<p><strong>Mewonen n'utilise aucun cookie, traceur, outil analytique ou publicité.</strong> Nous ne pouvons pas vous pister car nous ne collectons rien.</p>
 <h3>Disclaimer Médical</h3>
-<p><strong>Mewonen n'est pas un dispositif médical.</strong> Il ne diagnostique, ne traite ni ne prévient aucune condition. En cas de crise, contactez un professionnel de santé ou visitez <a href="https://findahelpline.com" target="_blank">findahelpline.com</a>.</p>
-<div class="ld"></div>
+<p><strong>Mewonen n'est pas un dispositif médical.</strong> Il ne diagnostique, ne traite, ne guérit ni ne prévient aucune condition. En cas de crise, contactez un professionnel de santé ou visitez <a href="https://findahelpline.com" target="_blank" rel="noopener">findahelpline.com</a>.</p>
 <h3>Conditions d'Utilisation</h3>
-<p>En utilisant Mewonen, vous acceptez de l'utiliser à des fins personnelles et non commerciales. Vous devez avoir au moins 13 ans.</p>
+<p>En utilisant Mewonen, vous acceptez de l'utiliser à des fins personnelles et non commerciales. Vous devez avoir au moins 13 ans. Mewonen est fourni "tel quel" sans garantie.</p>
+<h3>Enfants</h3>
+<p>Mewonen n'est pas destiné aux moins de 13 ans. Nous ne collectons aucune donnée.</p>
+<h3>Contact</h3>
+<p><strong>Ismail Belabbess</strong><br><a href="mailto:calmewave2026@proton.me">calmewave2026@proton.me</a></p>
 <div class="ld"></div>
-<h3>Confidentialité des Enfants</h3>
-<p>Mewonen n'est pas destiné aux enfants de moins de 13 ans. Nous ne collectons pas sciemment d'informations personnelles auprès de personnes de moins de 13 ans.</p>
 <p style="margin-top:10px;color:#a78bfa;text-align:center;">© 2026 Mewonen. Gratuit. Pour toujours. Sans pub. Sans données. Sans jugement.</p>`
   },
   es:{
@@ -540,8 +579,9 @@ var L = {
     op:['Tu espacio privado para dibujar lo que sientes.','Usa tu dedo. Mewonen escucha.','Tu compañero. Siempre a tu lado, cada día.'],
     on:'Siguiente',clr:'Limpiar',sh:'Compartir',sv:'Guardar',
     nav:['Dibujar','Galería','Estadísticas','Mundo','Legal'],
-    globe:'🌍 Explora el estado de ánimo del mundo · Toca para continuar',
+    globe:'🌍 Explora el estado de ánimo del mundo · Toca el globo para empezar',
     globeBtn:'🌍 Comienza tu viaje',
+    globeIsme:'🌍 ¡Hola! Soy ISME. Exploremos el mundo juntos. 💜',
     isme:{
       h:'Hola. Soy ISME. 💜',
       d:'Dibuja lo que sientes. Estoy aquí.',
@@ -561,26 +601,29 @@ var L = {
     },
     legal:`
 <h3>© 2026 Mewonen — Todos los derechos reservados</h3>
-<p><strong>Mewonen</strong> es una creación original de <strong>Ismail Belabbess</strong>.</p>
-<p>El nombre <strong>Mewonen</strong>, el logo, el concepto, el diseño, el código fuente y todo el contenido son propiedad exclusiva de su creador.</p>
-<p>Queda prohibida cualquier reproducción, copia o adaptación sin autorización previa por escrito.</p>
+<p><strong>Mewonen</strong> es una creación original de <strong>Ismail Belabbess</strong>, publicada el 4 de julio de 2026 en mewonnen.com.</p>
+<p>El nombre <strong>Mewonen</strong>, el logo, el concepto, el diseño, el código fuente y todo el contenido de este sitio son propiedad exclusiva de su creador.</p>
+<p>Queda prohibida cualquier reproducción, copia, modificación, adaptación o explotación del nombre, concepto o código, total o parcialmente, sin autorización previa por escrito.</p>
 <p><strong>Contacto:</strong> calmewave2026@proton.me</p>
 <div class="ld"></div>
 <h3>Política de Privacidad</h3>
-<p><strong>Última actualización:</strong> 19 de julio de 2026</p>
-<p>Mewonen está diseñado con la privacidad en el centro. <strong>No recopilamos absolutamente ningún dato personal.</strong> Todo lo que dibujas, escribes o dices permanece exclusivamente en tu dispositivo.</p>
-<p>Mewonen utiliza el <strong>localStorage</strong> de tu navegador para guardar tu historial y dibujos. Estos datos nunca salen de tu dispositivo.</p>
-<p>Según el <strong>RGPD</strong> (UE), <strong>CCPA</strong> (California), <strong>LGPD</strong> (Brasil) y <strong>PIPEDA</strong> (Canadá), tienes derecho a acceder, exportar y eliminar tus datos.</p>
-<p><strong>Mewonen no utiliza cookies, rastreadores, análisis ni publicidad.</strong></p>
-<div class="ld"></div>
+<p><strong>Última actualización:</strong> 4 de julio de 2026</p>
+<p>Mewonen está diseñado con la privacidad en el centro. <strong>No recopilamos absolutamente ningún dato personal.</strong> Todo lo que dibujas, escribes o dices permanece exclusivamente en tu dispositivo. Ninguna información se transmite a ningún servidor, tercero o servicio en la nube.</p>
+<h3>Almacenamiento de Datos</h3>
+<p>Mewonen utiliza el <strong>localStorage</strong> de tu navegador para guardar tu historial, dibujos y preferencias. Estos datos nunca salen de tu dispositivo. Puedes eliminarlos en cualquier momento desde Ajustes.</p>
+<h3>Tus Derechos</h3>
+<p>Según las leyes globales incluyendo el <strong>RGPD</strong> (Unión Europea), el <strong>CCPA</strong> (California), la <strong>LGPD</strong> (Brasil) y la <strong>PIPEDA</strong> (Canadá), tienes derecho a acceder, exportar y eliminar tus datos y retirar tu consentimiento. Al ser todos los datos locales, puedes ejercer estos derechos directamente desde Ajustes.</p>
+<h3>Cookies y Rastreo</h3>
+<p><strong>Mewonen no utiliza cookies, rastreadores, análisis ni publicidad.</strong> No tenemos forma de rastrearte porque no recopilamos nada.</p>
 <h3>Aviso Médico</h3>
-<p><strong>Mewonen no es un dispositivo médico.</strong> No diagnostica, trata ni previene ninguna condición. Si estás en crisis, contacta a un profesional de salud o visita <a href="https://findahelpline.com" target="_blank">findahelpline.com</a>.</p>
-<div class="ld"></div>
+<p><strong>Mewonen no es un dispositivo médico.</strong> No diagnostica, trata, cura ni previene ninguna condición. Si estás en crisis, contacta a un profesional de salud o visita <a href="https://findahelpline.com" target="_blank" rel="noopener">findahelpline.com</a>.</p>
 <h3>Términos de Servicio</h3>
-<p>Al usar Mewonen, aceptas usarlo solo con fines personales y no comerciales. Debes tener al menos 13 años.</p>
+<p>Al usar Mewonen, aceptas usarlo solo con fines personales y no comerciales. Debes tener al menos 13 años. Mewonen se proporciona "tal cual" sin garantías de ningún tipo.</p>
+<h3>Menores</h3>
+<p>Mewonen no está dirigido a menores de 13 años. No recopilamos información personal de nadie menor de 13 años.</p>
+<h3>Contacto</h3>
+<p><strong>Ismail Belabbess</strong><br><a href="mailto:calmewave2026@proton.me">calmewave2026@proton.me</a></p>
 <div class="ld"></div>
-<h3>Privacidad de Menores</h3>
-<p>Mewonen no está dirigido a menores de 13 años. No recopilamos conscientemente información personal de personas menores de 13 años.</p>
 <p style="margin-top:10px;color:#a78bfa;text-align:center;">© 2026 Mewonen. Gratis. Para siempre. Sin anuncios. Sin datos. Sin juicios.</p>`
   },
   ar:{
@@ -589,8 +632,9 @@ var L = {
     op:['مساحتك الخاصة لرسم ما تشعر به.','استخدم إصبعك. Mewonen يستمع.','رفيقك. دائماً بجانبك، كل يوم.'],
     on:'التالي',clr:'مسح',sh:'مشاركة',sv:'حفظ',
     nav:['رسم','معرض','إحصائيات','العالم','قانوني'],
-    globe:'🌍 استكشف مزاج العالم · اضغط للمتابعة',
+    globe:'🌍 استكشف مزاج العالم · اضغط على الكرة الأرضية للبدء',
     globeBtn:'🌍 ابدأ رحلتك',
+    globeIsme:'🌍 مرحباً! أنا ISME. دعنا نستكشف العالم معاً. 💜',
     isme:{
       h:'مرحباً. أنا ISME. 💜',
       d:'ارسم ما تشعر به. أنا هنا.',
@@ -610,26 +654,29 @@ var L = {
     },
     legal:`
 <h3>© 2026 Mewonen — جميع الحقوق محفوظة</h3>
-<p><strong>Mewonen</strong> هو إبداع أصلي لـ <strong>Ismail Belabbess</strong>.</p>
-<p>الاسم <strong>Mewonen</strong>، الشعار، المفهوم، التصميم، الكود المصدري وجميع المحتويات هي ملكية حصرية لمنشئها.</p>
-<p>أي نسخ أو تكييف دون إذن كتابي مسبق محظور تماماً.</p>
+<p><strong>Mewonen</strong> هو إبداع أصلي لـ <strong>Ismail Belabbess</strong>، نُشر في 4 يوليو 2026 على mewonnen.com.</p>
+<p>الاسم <strong>Mewonen</strong>، الشعار، المفهوم، التصميم، الكود المصدري وجميع المحتويات على هذا الموقع هي ملكية حصرية لمنشئها.</p>
+<p>أي نسخ أو تعديل أو تكييف أو استغلال للاسم أو المفهوم أو الكود، كلياً أو جزئياً، دون إذن كتابي مسبق، محظور تماماً.</p>
 <p><strong>للتواصل:</strong> calmewave2026@proton.me</p>
 <div class="ld"></div>
 <h3>سياسة الخصوصية</h3>
-<p><strong>آخر تحديث:</strong> 19 يوليو 2026</p>
-<p>تم تصميم Mewonen مع الخصوصية في جوهره. <strong>نحن لا نجمع أي بيانات شخصية على الإطلاق.</strong> كل ما ترسمه أو تكتبه أو تقوله يبقى حصرياً على جهازك.</p>
-<p>يستخدم Mewonen <strong>localStorage</strong> في متصفحك لحفظ تاريخك ورسوماتك. هذه البيانات لا تغادر جهازك أبداً.</p>
-<p>بموجب <strong>GDPR</strong> (الاتحاد الأوروبي)، <strong>CCPA</strong> (كاليفورنيا)، <strong>LGPD</strong> (البرازيل) و <strong>PIPEDA</strong> (كندا)، لديك الحق في الوصول وتصدير وحذف بياناتك.</p>
-<p><strong>Mewonen لا يستخدم الكوكيز أو أدوات التتبع أو التحليلات أو الإعلانات.</strong></p>
-<div class="ld"></div>
+<p><strong>آخر تحديث:</strong> 4 يوليو 2026</p>
+<p>تم تصميم Mewonen مع الخصوصية في جوهره. <strong>نحن لا نجمع أي بيانات شخصية على الإطلاق.</strong> كل ما ترسمه أو تكتبه أو تقوله يبقى حصرياً على جهازك. لا يتم نقل أي معلومات إلى أي خادم أو طرف ثالث أو خدمة سحابية.</p>
+<h3>كيفية تخزين بياناتك</h3>
+<p>يستخدم Mewonen <strong>localStorage</strong> في متصفحك لحفظ تاريخ مزاجك ورسوماتك وتفضيلاتك. هذه البيانات لا تغادر جهازك أبداً. يمكنك حذفها في أي وقت من الإعدادات.</p>
+<h3>حقوقك</h3>
+<p>بموجب القوانين العالمية بما في ذلك <strong>GDPR</strong> (الاتحاد الأوروبي)، <strong>CCPA</strong> (كاليفورنيا)، <strong>LGPD</strong> (البرازيل) و <strong>PIPEDA</strong> (كندا)، لديك الحق في الوصول وتصدير وحذف بياناتك وسحب موافقتك. نظراً لأن جميع البيانات مخزنة محلياً، يمكنك ممارسة هذه الحقوق مباشرة من خلال الإعدادات.</p>
+<h3>الكوكيز والتتبع</h3>
+<p><strong>Mewonen لا يستخدم الكوكيز أو أدوات التتبع أو التحليلات أو الإعلانات.</strong> لا يمكننا تتبعك لأننا لا نجمع أي شيء.</p>
 <h3>إخلاء مسؤولية طبي</h3>
-<p><strong>Mewonen ليس جهازاً طبياً.</strong> لا يشخص أو يعالج أو يمنع أي حالة صحية. إذا كنت في أزمة، اتصل بأخصائي صحي أو زر <a href="https://findahelpline.com" target="_blank">findahelpline.com</a>.</p>
-<div class="ld"></div>
+<p><strong>Mewonen ليس جهازاً طبياً.</strong> لا يشخص أو يعالج أو يشفي أو يمنع أي حالة صحية. إذا كنت تعاني من أزمة، يرجى الاتصال بمقدم رعاية صحية مؤهل أو زيارة <a href="https://findahelpline.com" target="_blank" rel="noopener">findahelpline.com</a>.</p>
 <h3>شروط الخدمة</h3>
-<p>باستخدام Mewonen، أنت توافق على استخدامه للأغراض الشخصية وغير التجارية فقط. يجب أن تكون على الأقل 13 عاماً.</p>
-<div class="ld"></div>
+<p>باستخدام Mewonen، أنت توافق على استخدامه للأغراض الشخصية وغير التجارية فقط. يجب أن تكون على الأقل 13 عاماً. يتم توفير Mewonen "كما هو" دون أي ضمانات من أي نوع.</p>
 <h3>خصوصية الأطفال</h3>
 <p>Mewonen غير موجه للأطفال دون سن 13 عاماً. نحن لا نجمع معلومات شخصية من أي شخص دون سن 13 عاماً.</p>
+<h3>اتصل بنا</h3>
+<p><strong>Ismail Belabbess</strong><br><a href="mailto:calmewave2026@proton.me">calmewave2026@proton.me</a></p>
+<div class="ld"></div>
 <p style="margin-top:10px;color:#a78bfa;text-align:center;">© 2026 Mewonen. مجاني. للأبد. بدون إعلانات. بدون بيانات. بدون أحكام.</p>`
   },
   ja:{
@@ -638,8 +685,9 @@ var L = {
     op:['あなたのプライベートな感情スペース。','指で描いてください。Mewonenが聞きます。','あなたの仲間。いつもそばに。'],
     on:'次へ',clr:'クリア',sh:'シェア',sv:'保存',
     nav:['描く','ギャラリー','統計','世界','法的'],
-    globe:'🌍 世界の気分を探る · タップして続ける',
+    globe:'🌍 世界の気分を探る · 地球儀をタップして始める',
     globeBtn:'🌍 旅を始める',
+    globeIsme:'🌍 こんにちは！私はISMEです。一緒に世界を探検しましょう。💜',
     isme:{
       h:'こんにちは。ISMEです。💜',
       d:'感じたことを描いて。ここにいるよ。',
@@ -659,26 +707,29 @@ var L = {
     },
     legal:`
 <h3>© 2026 Mewonen — 全著作権所有</h3>
-<p><strong>Mewonen</strong> は <strong>Ismail Belabbess</strong> によるオリジナル作品です。</p>
-<p>名前 <strong>Mewonen</strong>、ロゴ、コンセプト、デザイン、ソースコード、およびすべてのコンテンツは作成者の独占的財産です。</p>
-<p>事前の書面による許可なく複製、コピー、または翻案することを禁じます。</p>
+<p><strong>Mewonen</strong> は <strong>Ismail Belabbess</strong> によるオリジナル作品であり、2026年7月4日に mewonnen.com で公開されました。</p>
+<p>名称 <strong>Mewonen</strong>、ロゴ、コンセプト、デザイン、ソースコード、およびこのサイト上のすべてのコンテンツは、作成者の独占的財産です。</p>
+<p>事前の書面による許可なく、名称、コンセプト、またはコードの全部または一部を複製、修正、翻案、または利用することを禁じます。</p>
 <p><strong>連絡先：</strong> calmewave2026@proton.me</p>
 <div class="ld"></div>
 <h3>プライバシーポリシー</h3>
-<p><strong>最終更新日：</strong> 2026年7月19日</p>
-<p>Mewonenはプライバシーを中心に設計されています。 <strong>個人データは一切収集しません。</strong> 描いたり書いたりしたものはすべてデバイスにのみ保存されます。</p>
-<p>Mewonenはブラウザの <strong>localStorage</strong> を使用して履歴と描画を保存します。このデータがデバイスから外部に出ることはありません。</p>
-<p><strong>GDPR</strong>（EU）、<strong>CCPA</strong>（カリフォルニア）、<strong>LGPD</strong>（ブラジル）、<strong>PIPEDA</strong>（カナダ）に基づき、データへのアクセス、エクスポート、削除の権利があります。</p>
-<p><strong>Mewonenはクッキー、トラッカー、分析、広告を一切使用しません。</strong></p>
-<div class="ld"></div>
+<p><strong>最終更新日：</strong> 2026年7月4日</p>
+<p>Mewonenはプライバシーを中心に設計されています。 <strong>個人データは一切収集しません。</strong> 描いたり書いたりしたものはすべてデバイスにのみ保存されます。情報はサーバー、第三者、クラウドサービスに一切送信されません。</p>
+<h3>データの保存方法</h3>
+<p>Mewonenはブラウザの <strong>localStorage</strong> を使用して、気分の履歴、描画、設定を保存します。このデータがデバイスから外部に出ることはありません。設定からいつでも削除できます。</p>
+<h3>あなたの権利</h3>
+<p><strong>GDPR</strong>（EU）、<strong>CCPA</strong>（カリフォルニア）、<strong>LGPD</strong>（ブラジル）、<strong>PIPEDA</strong>（カナダ）を含むグローバルなプライバシー法に基づき、データへのアクセス、エクスポート、削除、同意の撤回を行う権利があります。すべてのデータはデバイスにローカルに保存されるため、これらの権利は設定メニューから直接行使できます。</p>
+<h3>クッキーとトラッキング</h3>
+<p><strong>Mewonenはクッキー、トラッカー、分析、広告を一切使用しません。</strong> 何も収集しないため、あなたを追跡する方法はありません。</p>
 <h3>医療免責事項</h3>
-<p><strong>Mewonenは医療機器ではありません。</strong> いかなる症状も診断、治療、予防しません。危機的状況にある場合は、資格のある医療提供者に連絡するか、<a href="https://findahelpline.com" target="_blank">findahelpline.com</a> をご覧ください。</p>
-<div class="ld"></div>
+<p><strong>Mewonenは医療機器ではありません。</strong> いかなる症状も診断、治療、治癒、予防しません。危機的状況にある場合は、資格のある医療提供者に連絡するか、<a href="https://findahelpline.com" target="_blank" rel="noopener">findahelpline.com</a> をご覧ください。</p>
 <h3>利用規約</h3>
-<p>Mewonenを使用することにより、個人的かつ非商業的な目的でのみ使用することに同意したものとします。13歳以上である必要があります。</p>
-<div class="ld"></div>
+<p>Mewonenを使用することにより、個人的かつ非商業的な目的でのみ使用することに同意したものとします。13歳以上である必要があります。Mewonenは「現状有姿」で提供され、いかなる保証もありません。</p>
 <h3>子供のプライバシー</h3>
 <p>Mewonenは13歳未満の子供向けではありません。13歳未満の個人情報を意図的に収集することはありません。</p>
+<h3>お問い合わせ</h3>
+<p><strong>Ismail Belabbess</strong><br><a href="mailto:calmewave2026@proton.me">calmewave2026@proton.me</a></p>
+<div class="ld"></div>
 <p style="margin-top:10px;color:#a78bfa;text-align:center;">© 2026 Mewonen. 無料。永遠に。広告なし。データなし。判断なし。</p>`
   },
   zh:{
@@ -687,8 +738,9 @@ var L = {
     op:['你的私人情感空间。','用你的手指画画。Mewonen 倾听。','你的伙伴。永远在你身边。'],
     on:'下一步',clr:'清除',sh:'分享',sv:'保存',
     nav:['绘画','画廊','统计','世界','法律'],
-    globe:'🌍 探索世界的心情 · 点击继续',
+    globe:'🌍 探索世界的心情 · 点击地球仪开始',
     globeBtn:'🌍 开始你的旅程',
+    globeIsme:'🌍 你好！我是ISME。让我们一起探索世界吧。💜',
     isme:{
       h:'你好。我是 ISME。💜',
       d:'画出你的感受。我在这里。',
@@ -708,26 +760,29 @@ var L = {
     },
     legal:`
 <h3>© 2026 Mewonen — 保留所有权利</h3>
-<p><strong>Mewonen</strong> 是 <strong>Ismail Belabbess</strong> 的原创作品。</p>
-<p>名称 <strong>Mewonen</strong>、徽标、概念、设计、源代码及所有内容均为其创建者的独家财产。</p>
-<p>未经事先书面许可，禁止任何复制、拷贝或改编。</p>
+<p><strong>Mewonen</strong> 是 <strong>Ismail Belabbess</strong> 的原创作品，于2026年7月4日在 mewonnen.com 发布。</p>
+<p>名称 <strong>Mewonen</strong>、徽标、概念、设计、源代码及本网站上的所有内容均为其创建者的独家财产。</p>
+<p>未经事先书面许可，禁止对名称、概念或代码的全部或部分进行复制、修改、改编或利用。</p>
 <p><strong>联系方式：</strong> calmewave2026@proton.me</p>
 <div class="ld"></div>
 <h3>隐私政策</h3>
-<p><strong>最后更新：</strong> 2026年7月19日</p>
-<p>Mewonen 以隐私为核心设计。 <strong>我们绝对不收集任何个人数据。</strong> 您绘制、书写或说的所有内容都仅保留在您的设备上。</p>
-<p>Mewonen 使用浏览器的 <strong>localStorage</strong> 保存您的历史和绘图。这些数据永远不会离开您的设备。</p>
-<p>根据 <strong>GDPR</strong>（欧盟）、<strong>CCPA</strong>（加州）、<strong>LGPD</strong>（巴西）和 <strong>PIPEDA</strong>（加拿大），您有权访问、导出和删除您的数据。</p>
-<p><strong>Mewonen 不使用任何 cookie、跟踪器、分析工具或广告。</strong></p>
-<div class="ld"></div>
+<p><strong>最后更新：</strong> 2026年7月4日</p>
+<p>Mewonen 以隐私为核心设计。 <strong>我们绝对不收集任何个人数据。</strong> 您绘制、书写或说的所有内容都仅保留在您的设备上。不会向任何服务器、第三方或云服务传输任何信息。</p>
+<h3>数据存储方式</h3>
+<p>Mewonen 使用浏览器的 <strong>localStorage</strong> 保存您的心情历史、绘图和偏好。这些数据永远不会离开您的设备。您可以随时在设置中删除它们。</p>
+<h3>您的权利</h3>
+<p>根据包括 <strong>GDPR</strong>（欧盟）、<strong>CCPA</strong>（加州）、<strong>LGPD</strong>（巴西）和 <strong>PIPEDA</strong>（加拿大）在内的全球隐私法律，您有权访问、导出、删除您的数据并撤回同意。由于所有数据都存储在您的设备本地，您可以通过设置菜单直接行使这些权利。</p>
+<h3>Cookie 和跟踪</h3>
+<p><strong>Mewonen 不使用任何 cookie、跟踪器、分析工具或广告。</strong> 我们无法跟踪您，因为我们不收集任何信息。</p>
 <h3>医疗免责声明</h3>
-<p><strong>Mewonen 不是医疗设备。</strong> 它不诊断、治疗或预防任何健康状况。如果您处于危机中，请联系合格的医疗保健提供者或访问 <a href="https://findahelpline.com" target="_blank">findahelpline.com</a>。</p>
-<div class="ld"></div>
+<p><strong>Mewonen 不是医疗设备。</strong> 它不诊断、治疗、治愈或预防任何心理健康状况。如果您正在经历危机，请联系合格的医疗保健提供者或访问 <a href="https://findahelpline.com" target="_blank" rel="noopener">findahelpline.com</a>。</p>
 <h3>服务条款</h3>
-<p>使用 Mewonen 即表示您同意仅将其用于个人非商业目的。您必须年满13岁。</p>
-<div class="ld"></div>
+<p>使用 Mewonen 即表示您同意仅将其用于个人非商业目的。您必须年满13岁。Mewonen 按"原样"提供，不提供任何形式的保证。</p>
 <h3>儿童隐私</h3>
 <p>Mewonen 不面向13岁以下的儿童。我们不会有意收集13岁以下个人的信息。</p>
+<h3>联系我们</h3>
+<p><strong>Ismail Belabbess</strong><br><a href="mailto:calmewave2026@proton.me">calmewave2026@proton.me</a></p>
+<div class="ld"></div>
 <p style="margin-top:10px;color:#a78bfa;text-align:center;">© 2026 Mewonen. 免费。永远。无广告。无数据。无评判。</p>`
   },
   ko:{
@@ -736,8 +791,9 @@ var L = {
     op:['당신의 개인적인 감정 공간입니다.','손가락으로 그려보세요. Mewonen이 듣습니다.','당신의 동반자. 항상 당신 곁에.'],
     on:'다음',clr:'지우기',sh:'공유',sv:'저장',
     nav:['그리기','갤러리','통계','세계','법률'],
-    globe:'🌍 세계의 기분을 탐험하세요 · 계속하려면 탭하세요',
+    globe:'🌍 세계의 기분을 탐험하세요 · 지구본을 탭하여 시작하세요',
     globeBtn:'🌍 여정을 시작하세요',
+    globeIsme:'🌍 안녕하세요! 저는 ISME입니다. 함께 세계를 탐험해봅시다. 💜',
     isme:{
       h:'안녕하세요. 저는 ISME입니다. 💜',
       d:'느낌을 그려보세요. 제가 여기 있어요.',
@@ -757,26 +813,29 @@ var L = {
     },
     legal:`
 <h3>© 2026 Mewonen — 모든 권리 보유</h3>
-<p><strong>Mewonen</strong>은 <strong>Ismail Belabbess</strong>의 독창적인 창작물입니다.</p>
-<p>이름 <strong>Mewonen</strong>, 로고, 개념, 디자인, 소스 코드 및 모든 콘텐츠는 창작자의 독점 재산입니다.</p>
-<p>사전 서면 허가 없이 복제, 복사 또는 각색하는 것을 금지합니다.</p>
+<p><strong>Mewonen</strong>은 <strong>Ismail Belabbess</strong>의 독창적인 창작물이며, 2026년 7월 4일에 mewonnen.com에 게시되었습니다.</p>
+<p>이름 <strong>Mewonen</strong>, 로고, 컨셉, 디자인, 소스 코드 및 이 사이트의 모든 콘텐츠는 제작자의 독점 재산입니다.</p>
+<p>사전 서면 허가 없이 이름, 컨셉 또는 코드의 전체 또는 일부를 복제, 수정, 각색 또는 이용하는 것을 엄격히 금지합니다.</p>
 <p><strong>연락처:</strong> calmewave2026@proton.me</p>
 <div class="ld"></div>
 <h3>개인정보 보호정책</h3>
-<p><strong>마지막 업데이트:</strong> 2026년 7월 19일</p>
-<p>Mewonen은 개인정보 보호를 핵심으로 설계되었습니다. <strong>개인 데이터를 절대 수집하지 않습니다.</strong> 귀하가 그리고, 쓰고, 말하는 모든 것은 귀하의 기기에만 남습니다.</p>
-<p>Mewonen은 브라우저의 <strong>localStorage</strong>를 사용하여 귀하의 기록과 그림을 저장합니다. 이 데이터는 절대 기기를 떠나지 않습니다.</p>
-<p><strong>GDPR</strong>(EU), <strong>CCPA</strong>(캘리포니아), <strong>LGPD</strong>(브라질), <strong>PIPEDA</strong>(캐나다)에 따라 귀하는 데이터에 액세스하고 내보내고 삭제할 권리가 있습니다.</p>
-<p><strong>Mewonen은 쿠키, 추적기, 분석 도구 또는 광고를 전혀 사용하지 않습니다.</strong></p>
-<div class="ld"></div>
+<p><strong>마지막 업데이트:</strong> 2026년 7월 4일</p>
+<p>Mewonen은 개인정보 보호를 핵심으로 설계되었습니다. <strong>개인 데이터를 절대 수집하지 않습니다.</strong> 귀하가 그리고, 쓰고, 말하는 모든 것은 귀하의 기기에만 남습니다. 어떤 정보도 서버, 제3자 또는 클라우드 서비스로 전송되지 않습니다.</p>
+<h3>데이터 저장 방식</h3>
+<p>Mewonen은 브라우저의 <strong>localStorage</strong>를 사용하여 귀하의 기분 기록, 그림 및 환경 설정을 저장합니다. 이 데이터는 절대 기기를 떠나지 않습니다. 설정에서 언제든지 삭제할 수 있습니다.</p>
+<h3>귀하의 권리</h3>
+<p><strong>GDPR</strong>(EU), <strong>CCPA</strong>(캘리포니아), <strong>LGPD</strong>(브라질), <strong>PIPEDA</strong>(캐나다)를 포함한 글로벌 개인정보 보호법에 따라 귀하는 데이터에 액세스하고 내보내고 삭제하고 동의를 철회할 권리가 있습니다. 모든 데이터가 기기에 로컬로 저장되므로 설정 메뉴를 통해 직접 이러한 권리를 행사할 수 있습니다.</p>
+<h3>쿠키 및 추적</h3>
+<p><strong>Mewonen은 쿠키, 추적기, 분석 도구 또는 광고를 전혀 사용하지 않습니다.</strong> 아무것도 수집하지 않기 때문에 귀하를 추적할 방법이 없습니다.</p>
 <h3>의료 면책 조항</h3>
-<p><strong>Mewonen은 의료 기기가 아닙니다.</strong> 어떤 건강 상태도 진단, 치료 또는 예방하지 않습니다. 위기 상황인 경우 자격을 갖춘 의료 제공자에게 연락하거나 <a href="https://findahelpline.com" target="_blank">findahelpline.com</a>을 방문하세요.</p>
-<div class="ld"></div>
+<p><strong>Mewonen은 의료 기기가 아닙니다.</strong> 어떤 정신 건강 상태도 진단, 치료, 치유 또는 예방하지 않습니다. 위기 상황에 처한 경우 자격을 갖춘 의료 서비스 제공자에게 연락하거나 <a href="https://findahelpline.com" target="_blank" rel="noopener">findahelpline.com</a>을 방문하세요.</p>
 <h3>서비스 이용약관</h3>
-<p>Mewonen을 사용함으로써 귀하는 개인적이고 비상업적인 목적으로만 사용하는 데 동의합니다. 만 13세 이상이어야 합니다.</p>
-<div class="ld"></div>
+<p>Mewonen을 사용함으로써 귀하는 개인적이고 비상업적인 목적으로만 사용하는 데 동의합니다. 만 13세 이상이어야 합니다. Mewonen은 어떠한 보증도 없이 "있는 그대로" 제공됩니다.</p>
 <h3>아동 개인정보</h3>
 <p>Mewonen은 13세 미만 아동을 대상으로 하지 않습니다. 13세 미만의 개인정보를 의도적으로 수집하지 않습니다.</p>
+<h3>문의하기</h3>
+<p><strong>Ismail Belabbess</strong><br><a href="mailto:calmewave2026@proton.me">calmewave2026@proton.me</a></p>
+<div class="ld"></div>
 <p style="margin-top:10px;color:#a78bfa;text-align:center;">© 2026 Mewonen. 무료. 영원히. 광고 없음. 데이터 없음. 판단 없음.</p>`
   }
 };
@@ -789,13 +848,11 @@ var TX = L[lang];
 var brush = 3;
 var mood = '';
 var pts = [];
-var drawing = false;
 var streak = 0;
 var history = [];
 var gallery = [];
 var isDrawing = false;
 var ismeTimer = null;
-var step = 0;
 
 // ============================================================
 // DOM REFS
@@ -825,6 +882,7 @@ function updateUI() {
   $('btnDownload').innerHTML = '💾 ' + TX.sv;
   $('globeMsg').innerHTML = TX.globe;
   $('globeBtn').textContent = TX.globeBtn;
+  $('globeIsmeText').textContent = TX.globeIsme;
   var navs = document.querySelectorAll('.nav-item .nl');
   if(navs.length) { navs[0].textContent = TX.nav[0]; navs[1].textContent = TX.nav[1]; navs[2].textContent = TX.nav[2]; navs[3].textContent = TX.nav[3]; navs[4].textContent = TX.nav[4]; }
   $('lc').innerHTML = TX.legal;
@@ -852,6 +910,11 @@ setTimeout(function(){
   setTimeout(function(){
     $('globeScreen').classList.add('active');
     initGlobe3D();
+    // ISME on globe speaks after 2s
+    setTimeout(function(){
+      var bub = document.getElementById('globeIsmeBub');
+      bub.style.display = 'block';
+    }, 1500);
   }, 300);
 }, 2200);
 
@@ -891,7 +954,7 @@ function initGlobe3D() {
     starsPos.push(r*Math.sin(phi)*Math.sin(theta));
   }
   starsGeo.setAttribute('position', new THREE.Float32BufferAttribute(starsPos, 3));
-  var starsMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.1, transparent: true, opacity: 0.6 });
+  var starsMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.08, transparent: true, opacity: 0.5 });
   var stars = new THREE.Points(starsGeo, starsMat);
   scene.add(stars);
 
@@ -909,19 +972,20 @@ function initGlobe3D() {
   var dotGeo = new THREE.BufferGeometry();
   var dotPos = [];
   var dotColors = [];
-  for(var i=0;i<80;i++){
+  var emojiColors = ['#a78bfa','#7c3aed','#fbbf24','#34d399','#f472b6','#60a5fa','#f97316'];
+  for(var i=0;i<60;i++){
     var theta2 = Math.random()*Math.PI*2;
     var phi2 = Math.acos(2*Math.random()-1);
     var r2 = 1.42;
     dotPos.push(r2*Math.sin(phi2)*Math.cos(theta2));
     dotPos.push(r2*Math.cos(phi2));
     dotPos.push(r2*Math.sin(phi2)*Math.sin(theta2));
-    var c = new THREE.Color().setHSL(0.7 + Math.random()*0.2, 0.8, 0.5 + Math.random()*0.3);
+    var c = new THREE.Color(emojiColors[Math.floor(Math.random()*emojiColors.length)]);
     dotColors.push(c.r, c.g, c.b);
   }
   dotGeo.setAttribute('position', new THREE.Float32BufferAttribute(dotPos, 3));
   dotGeo.setAttribute('color', new THREE.Float32BufferAttribute(dotColors, 3));
-  var dotMat = new THREE.PointsMaterial({ size: 0.06, vertexColors: true, transparent: true, opacity: 0.8 });
+  var dotMat = new THREE.PointsMaterial({ size: 0.05, vertexColors: true, transparent: true, opacity: 0.7 });
   var dots = new THREE.Points(dotGeo, dotMat);
   scene.add(dots);
 
@@ -942,7 +1006,7 @@ function initGlobe3D() {
 
 function animateGlobe() {
   requestAnimationFrame(animateGlobe);
-  if(globe) globe.rotation.y += 0.002;
+  if(globe) globe.rotation.y += 0.003;
   renderer.render(scene, camera);
 }
 
