@@ -7,12 +7,15 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Mewonen">
 <title>Mewonen — Draw your mood</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-/* ========== RESET ========== */
+/* ========== RESET & BASE ========== */
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 html{font-size:16px;-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}
 body{
-  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  font-family:'Inter',-apple-system,sans-serif;
   background:#0a0a18;color:#f0f0f0;
   min-height:100dvh;overflow:hidden;
   -webkit-font-smoothing:antialiased;
@@ -20,15 +23,16 @@ body{
 }
 :root{
   --p:#7c3aed;--p2:#a78bfa;--g:#fbbf24;--bg:#0a0a18;
-  --s:rgba(16,16,32,0.8);--s2:rgba(22,22,44,0.95);
+  --s:rgba(16,16,32,0.85);--s2:rgba(22,22,44,0.97);
   --r:28px;--nav:60px;
 }
+
 /* ========== SPLASH ========== */
 #splash{
   position:fixed;inset:0;z-index:1000;
   background:radial-gradient(ellipse at 50% 30%,#1a1030,#0a0a18);
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  transition:opacity 0.9s ease;
+  transition:opacity 1s ease;
 }
 #splash.hidden{opacity:0;pointer-events:none}
 .splash-isme{font-size:4.5rem;margin-bottom:6px;animation:sf 2s ease-in-out infinite;text-shadow:0 0 60px rgba(124,58,237,0.5)}
@@ -39,7 +43,7 @@ body{
 .splash-bar span{display:block;height:100%;width:0%;background:linear-gradient(90deg,#7c3aed,#a78bfa);animation:pb 2s ease-in-out forwards}
 @keyframes pb{0%{width:0%}100%{width:100%}}
 
-/* ========== GLOBE ========== */
+/* ========== GLOBE 3D ========== */
 #globeScreen{
   position:fixed;inset:0;z-index:800;
   background:#0a0a18;
@@ -47,51 +51,24 @@ body{
   overflow:hidden;
 }
 #globeScreen.active{display:flex}
-.globe-wrap{
-  position:relative;width:280px;height:280px;margin-bottom:10px;
-  perspective:800px;
+.globe-container{width:100%;height:60vh;position:relative}
+#globeCanvas{width:100%;height:100%;display:block}
+.globe-overlay{
+  position:absolute;bottom:20px;left:0;right:0;
+  text-align:center;padding:0 20px;
 }
-.globe{
-  width:100%;height:100%;border-radius:50%;
-  position:relative;
-  transform-style:preserve-3d;
-  animation:spin 25s linear infinite;
-  background:radial-gradient(circle at 35% 35%,#1a3a5c,#0a1a2a);
-  box-shadow:0 0 80px rgba(124,58,237,0.08);
-  cursor:grab;
+.globe-overlay .globe-msg{color:rgba(255,255,255,0.5);font-size:0.7rem;margin-bottom:8px}
+.globe-overlay .globe-msg strong{color:#a78bfa;font-weight:400}
+.btn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:10px 24px;border-radius:50px;
+  font-size:0.65rem;font-weight:500;letter-spacing:0.5px;
+  cursor:pointer;transition:all 0.2s;border:none;font-family:inherit;
 }
-.globe:active{cursor:grabbing}
-@keyframes spin{0%{transform:rotateY(0deg)}100%{transform:rotateY(360deg)}}
-.globe-ping{
-  position:absolute;width:100%;height:100%;border-radius:50%;
-  border:1.5px solid rgba(167,139,250,0.08);
-  animation:pingPulse 3s ease-in-out infinite;
-}
-@keyframes pingPulse{0%,100%{transform:scale(1);opacity:0.3}50%{transform:scale(1.04);opacity:0}}
-.globe-dots{position:absolute;inset:0;border-radius:50%;overflow:hidden}
-.dot{
-  position:absolute;width:5px;height:5px;border-radius:50%;
-  background:rgba(167,139,250,0.3);
-  animation:dotFloat 3s ease-in-out infinite;
-}
-@keyframes dotFloat{0%,100%{transform:translateY(0);opacity:0.3}50%{transform:translateY(-8px);opacity:0.8}}
-.globe-emojis{position:absolute;inset:0;border-radius:50%;pointer-events:none}
-.ge{
-  position:absolute;font-size:0.9rem;animation:geFloat 4s ease-in-out infinite;
-}
-@keyframes geFloat{0%,100%{transform:translateY(0) scale(1);opacity:0.6}50%{transform:translateY(-12px) scale(1.1);opacity:1}}
-.globe-flag{
-  position:absolute;bottom:-10px;left:50%;transform:translateX(-50%);
-  font-size:2.5rem;animation:flagPop 0.6s cubic-bezier(0.34,1.56,0.64,1);
-  display:none;
-}
-@keyframes flagPop{0%{opacity:0;transform:translateX(-50%) scale(0.3)}100%{opacity:1;transform:translateX(-50%) scale(1)}}
-.globe-msg{
-  color:rgba(255,255,255,0.6);font-size:0.7rem;text-align:center;max-width:300px;line-height:1.6;padding:0 16px;margin-top:6px;
-}
-.globe-msg strong{color:#a78bfa;font-weight:400}
-.globe-btn{margin-top:12px}
-.globe-btn .btn{padding:10px 24px;font-size:0.65rem}
+.btn:active{transform:scale(0.94)}
+.btn-p{background:linear-gradient(135deg,#7c3aed,#a78bfa);color:#fff;box-shadow:0 4px 25px rgba(124,58,237,0.3)}
+.btn-o{background:transparent;color:#a78bfa;border:1px solid rgba(139,92,246,0.15)}
+.btn-s{padding:6px 14px;font-size:0.5rem}
 
 /* ========== ONBOARDING ========== */
 #onboarding{
@@ -107,6 +84,7 @@ body{
 .on-slide .icon{font-size:4rem;margin-bottom:10px}
 .on-slide h2{font-size:1.4rem;font-weight:200;color:#fff;margin-bottom:4px}
 .on-slide p{color:rgba(255,255,255,0.5);font-size:0.8rem;line-height:1.6}
+.on-slide .isme-preview{font-size:2.5rem;margin:6px 0;animation:sf 2s ease-in-out infinite}
 .on-dots{display:flex;gap:8px;margin:16px 0}
 .on-dots span{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.06);transition:all 0.3s}
 .on-dots span.active{background:#a78bfa;transform:scale(1.2)}
@@ -128,7 +106,7 @@ body{
 @keyframes dp{0%,100%{opacity:0.2}50%{opacity:1}}
 .top-bar .langs{display:flex;gap:3px}
 .top-bar .langs button{
-  background:none;border:none;color:rgba(255,255,255,0.15);
+  background:none;border:none;color:rgba(255,255,255,0.12);
   font-size:0.45rem;cursor:pointer;padding:2px 6px;border-radius:4px;
   transition:all 0.2s;font-weight:400;
 }
@@ -158,22 +136,25 @@ canvas#c{
 #rp2{color:rgba(255,255,255,0.25);font-size:0.5rem;font-weight:200;text-align:center;max-width:280px}
 @keyframes pi{0%{opacity:0;transform:scale(0.4)}100%{opacity:1;transform:scale(1)}}
 
-/* ========== BUBBLES ========== */
+/* ========== BUBBLES (conversations) ========== */
 #bubbleBox{
   display:none;flex-direction:column;align-items:center;gap:6px;
-  margin-top:6px;width:100%;max-width:280px;animation:bb 0.5s ease-out;
+  margin-top:6px;width:100%;max-width:300px;animation:bb 0.5s ease-out;
 }
 @keyframes bb{0%{opacity:0;transform:translateY(10px)}100%{opacity:1;transform:translateY(0)}}
 #bubbleBox.show{display:flex}
 .bubble-msg{
-  background:var(--s2);border:1px solid rgba(139,92,246,0.1);
-  border-radius:16px;padding:10px 14px;text-align:center;
-  font-size:0.65rem;color:rgba(255,255,255,0.85);line-height:1.5;
+  background:var(--s2);border:1px solid rgba(139,92,246,0.08);
+  border-radius:16px;padding:12px 16px;text-align:center;
+  font-size:0.65rem;color:rgba(255,255,255,0.85);line-height:1.6;
   backdrop-filter:blur(12px);width:100%;
 }
-.bubble-msg .b-icon{font-size:1.2rem;display:block;margin-bottom:2px}
+.bubble-msg .b-icon{font-size:1.4rem;display:block;margin-bottom:2px}
 .bubble-btns{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
-.bubble-btns button{padding:6px 14px;border-radius:50px;font-size:0.5rem;border:none;cursor:pointer;transition:all 0.2s;font-family:inherit}
+.bubble-btns button{
+  padding:6px 14px;border-radius:50px;font-size:0.5rem;
+  border:none;cursor:pointer;transition:all 0.2s;font-family:inherit;
+}
 .bubble-btns button:active{transform:scale(0.92)}
 .bubble-btns .bb-p{background:linear-gradient(135deg,#7c3aed,#a78bfa);color:#fff}
 .bubble-btns .bb-s{background:transparent;border:1px solid rgba(255,255,255,0.06);color:rgba(255,255,255,0.5)}
@@ -190,19 +171,7 @@ canvas#c{
 .tb button:active{transform:scale(0.85)}
 .tb button.active{border-color:#a78bfa;color:#a78bfa;background:rgba(139,92,246,0.06)}
 
-/* ========== BUTTONS ========== */
 .btn-g{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-top:3px}
-.btn{
-  display:inline-flex;align-items:center;gap:4px;
-  padding:6px 14px;border-radius:50px;
-  font-size:0.5rem;font-weight:500;letter-spacing:0.3px;
-  cursor:pointer;transition:all 0.2s;border:none;font-family:inherit;
-}
-.btn:active{transform:scale(0.92)}
-.btn-p{background:linear-gradient(135deg,#7c3aed,#a78bfa);color:#fff;box-shadow:0 4px 20px rgba(124,58,237,0.2)}
-.btn-o{background:transparent;color:#a78bfa;border:1px solid rgba(139,92,246,0.1)}
-.btn-s{padding:4px 10px;font-size:0.45rem}
-.btn-i{padding:6px 8px;border-radius:50%;min-width:30px;min-height:30px}
 
 /* ========== STREAK ========== */
 .sb{
@@ -283,25 +252,26 @@ canvas#c{
 .mc .n{color:rgba(255,255,255,0.2);margin-top:1px}
 .mc .m{font-size:0.8rem;margin-top:1px}
 
-/* ========== LEGAL ========== */
+/* ========== LEGAL (COMPLET) ========== */
 .lc{
-  max-width:360px;width:100%;padding:4px 0;font-size:0.5rem;line-height:1.8;color:rgba(255,255,255,0.4);text-align:left;
+  max-width:380px;width:100%;padding:4px 0;font-size:0.5rem;line-height:1.8;color:rgba(255,255,255,0.4);text-align:left;
 }
-.lc h3{color:#a78bfa;font-size:0.55rem;font-weight:500;margin:8px 0 2px}
+.lc h3{color:#a78bfa;font-size:0.55rem;font-weight:500;margin:10px 0 3px}
 .lc a{color:#a78bfa;text-decoration:none}
-.lc .ld{height:0.5px;background:rgba(255,255,255,0.03);margin:8px 0}
+.lc .ld{height:0.5px;background:rgba(255,255,255,0.03);margin:10px 0}
+.lc .copyright{color:rgba(255,255,255,0.2);font-size:0.45rem;margin-top:14px;text-align:center}
 
 /* ========== ISME ========== */
 #isme{
-  position:fixed;bottom:70px;right:8px;z-index:200;
+  position:fixed;bottom:70px;right:10px;z-index:200;
   display:flex;flex-direction:column;align-items:flex-end;gap:3px;
 }
 #isme .av{
-  width:44px;height:44px;border-radius:50%;
+  width:48px;height:48px;border-radius:50%;
   background:linear-gradient(135deg,#7c3aed,#a78bfa);
   box-shadow:0 4px 30px rgba(124,58,237,0.3);
   display:flex;align-items:center;justify-content:center;
-  font-size:1.2rem;color:#fff;
+  font-size:1.3rem;color:#fff;
   animation:if 2.5s ease-in-out infinite;
   cursor:pointer;transition:transform 0.2s;position:relative;
 }
@@ -310,11 +280,11 @@ canvas#c{
 #isme .av .im{position:absolute;bottom:1px;right:3px;font-size:0.35rem;font-weight:800;color:rgba(255,255,255,0.4)}
 #isme .bub{
   background:var(--s2);border:1px solid rgba(139,92,246,0.08);
-  border-radius:14px;padding:6px 12px;
-  max-width:160px;font-size:0.5rem;color:rgba(255,255,255,0.85);
+  border-radius:14px;padding:8px 12px;
+  max-width:170px;font-size:0.5rem;color:rgba(255,255,255,0.85);
   backdrop-filter:blur(16px);box-shadow:0 8px 30px rgba(0,0,0,0.5);
   display:none;animation:bi2 0.4s cubic-bezier(0.34,1.56,0.64,1);
-  line-height:1.4;text-align:left;
+  line-height:1.5;text-align:left;
 }
 #isme .bub.show{display:block}
 @keyframes bi2{0%{opacity:0;transform:translateY(6px) scale(0.9)}100%{opacity:1;transform:translateY(0) scale(1)}}
@@ -337,13 +307,11 @@ canvas#c{
 @media(min-width:600px){
   .gg{grid-template-columns:repeat(4,1fr);max-width:360px}
   .mg{grid-template-columns:repeat(4,1fr);max-width:360px}
-  .globe-wrap{width:340px;height:340px}
   canvas#c{width:340px;height:340px}
 }
 @media(max-width:380px){
-  .globe-wrap{width:220px;height:220px}
-  #isme .av{width:38px;height:38px;font-size:1rem}
-  #isme .bub{max-width:130px;font-size:0.45rem;padding:5px 10px}
+  #isme .av{width:40px;height:40px;font-size:1rem}
+  #isme .bub{max-width:140px;font-size:0.45rem}
 }
 </style>
 </head>
@@ -357,18 +325,13 @@ canvas#c{
   <div class="splash-bar"><span></span></div>
 </div>
 
-<!-- ===== GLOBE ===== -->
+<!-- ===== GLOBE 3D ===== -->
 <div id="globeScreen">
-  <div class="globe-wrap" id="globeWrap">
-    <div class="globe" id="globe">
-      <div class="globe-ping"></div>
-      <div class="globe-dots" id="globeDots"></div>
-      <div class="globe-emojis" id="globeEmojis"></div>
-    </div>
-    <div class="globe-flag" id="globeFlag">🌍</div>
+  <div class="globe-container"><canvas id="globeCanvas"></canvas></div>
+  <div class="globe-overlay">
+    <div class="globe-msg" id="globeMsg">🌍 <strong>Explore the world's mood</strong> · Tap to continue</div>
+    <button class="btn btn-p" id="globeBtn">🌍 Start your journey</button>
   </div>
-  <div class="globe-msg" id="globeMsg">🌍 <strong>Tap to connect</strong> · See the world's mood</div>
-  <div class="globe-btn"><button class="btn btn-p" id="globeBtn">🌍 Explore the world</button></div>
 </div>
 
 <!-- ===== ONBOARDING ===== -->
@@ -378,16 +341,19 @@ canvas#c{
     <div class="icon">🧠</div>
     <h2 id="ot0">Welcome to Mewonen</h2>
     <p id="op0">Your private space to draw what you feel.</p>
+    <div class="isme-preview">✦</div>
   </div>
   <div class="on-slide">
     <div class="icon">✍️</div>
     <h2 id="ot1">Draw freely</h2>
     <p id="op1">Use your finger. Mewonen listens to your mood.</p>
+    <div class="isme-preview">✦</div>
   </div>
   <div class="on-slide">
-    <div class="icon">🌍</div>
-    <h2 id="ot2">Connect with the world</h2>
-    <p id="op2">Share your mood and see how others feel.</p>
+    <div class="icon">💜</div>
+    <h2 id="ot2">ISME is with you</h2>
+    <p id="op2">Your companion. Always by your side, every day.</p>
+    <div class="isme-preview">✦</div>
   </div>
   <button class="btn btn-p" id="onBtn">Next</button>
 </div>
@@ -440,7 +406,8 @@ canvas#c{
 
     <!-- Screen: Legal -->
     <div class="scr" id="sc-legal">
-      <div class="st">Privacy &amp; Legal</div><div class="ss">Your data stays on your device</div>
+      <div class="st">Privacy &amp; Legal</div>
+      <div class="ss">Your data stays on your device</div>
       <div class="lc" id="lc"></div>
     </div>
   </div>
@@ -463,20 +430,37 @@ canvas#c{
 <!-- ===== TOAST ===== -->
 <div id="toast"></div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 // ============================================================
-// LANGUAGES
+// LANGUAGES (7 langues)
 // ============================================================
 var L = {
   en:{
     pr:'100% Private',cl:'moods drawn',
-    ot:['Welcome to Mewonen','Draw freely','Connect with the world'],
-    op:['Your private space to draw what you feel.','Use your finger. Mewonen listens.','Share your mood and see how others feel.'],
+    ot:['Welcome to Mewonen','Draw freely','ISME is with you'],
+    op:['Your private space to draw what you feel.','Use your finger. Mewonen listens.','Your companion. Always by your side, every day.'],
     on:'Next',clr:'Clear',sh:'Share',sv:'Save',
     nav:['Draw','Gallery','Stats','World','Legal'],
-    globe:'🌍 Tap to connect · See the world\'s mood',
-    globeBtn:'🌍 Explore the world',
-    isme:{h:'Hello. I\'m ISME. 💜',d:'Draw what you feel. I\'m here.',j:'You\'re shining today ✨',s:'I\'m here. Let it flow 🌊',a:'This energy is yours 🔥',c:'Stillness is strength 🌙',e:'Space is waiting for you 🕳️',sh:'Share your mood with the world 🌍',st:'🔥 {n} day streak! Keep going!',w:'Welcome back! 💜',ch:'Daily challenge: {challenge}'},
+    globe:'🌍 Explore the world\'s mood · Tap to continue',
+    globeBtn:'🌍 Start your journey',
+    isme:{
+      h:'Hello. I\'m ISME. 💜',
+      d:'Draw what you feel. I\'m here.',
+      j:'You\'re shining today ✨',
+      s:'I\'m here. Let it flow 🌊',
+      a:'This energy is yours 🔥',
+      c:'Stillness is strength 🌙',
+      e:'Space is waiting for you 🕳️',
+      sh:'Share your mood with the world 🌍',
+      st:'🔥 {n} day streak! Keep going!',
+      w:'Welcome back! 💜',
+      ch:'Daily challenge: {challenge}',
+      step1:'Welcome! Draw your mood here. I\'ll listen. ✍️',
+      step2:'You drew {emoji}! How do you feel? 💜',
+      step3:'Want to share your drawing with the world? 🌍',
+      step4:'Come back tomorrow to keep your streak! 🔥'
+    },
     legal:`
 <h3>© 2026 Mewonen — All rights reserved</h3>
 <p><strong>Mewonen</strong> is an original creation by <strong>Ismail Belabbess</strong>.</p>
@@ -496,17 +480,36 @@ var L = {
 <div class="ld"></div>
 <h3>Terms of Service</h3>
 <p>By using Mewonen, you agree to use it for personal, non-commercial purposes only. You must be at least 13 years of age.</p>
+<div class="ld"></div>
+<h3>Children's Privacy</h3>
+<p>Mewonen is not directed to children under 13. We do not knowingly collect personal information from anyone under 13.</p>
 <p style="margin-top:10px;color:#a78bfa;text-align:center;">© 2026 Mewonen. Free. Forever. No ads. No data. No judgment.</p>`
   },
   fr:{
     pr:'100% Privé',cl:'humeurs dessinées',
-    ot:['Bienvenue sur Mewonen','Dessine librement','Connecte-toi au monde'],
-    op:['Ton espace privé pour dessiner ce que tu ressens.','Utilise ton doigt. Mewonen écoute.','Partage ton humeur et vois comment les autres se sentent.'],
+    ot:['Bienvenue sur Mewonen','Dessine librement','ISME est avec toi'],
+    op:['Ton espace privé pour dessiner ce que tu ressens.','Utilise ton doigt. Mewonen écoute.','Ton compagnon. Toujours à tes côtés, chaque jour.'],
     on:'Suivant',clr:'Effacer',sh:'Partager',sv:'Sauvegarder',
     nav:['Dessiner','Galerie','Stats','Monde','Légal'],
-    globe:'🌍 Appuie pour te connecter · Vois l\'humeur du monde',
-    globeBtn:'🌍 Explorer le monde',
-    isme:{h:'Bonjour. Je suis ISME. 💜',d:'Dessine ce que tu ressens. Je suis là.',j:'Tu rayonnes aujourd\'hui ✨',s:'Je suis là. Laisse couler 🌊',a:'Cette énergie est tienne 🔥',c:'L\'immobilité est force 🌙',e:'L\'espace t\'attend 🕳️',sh:'Partage ton humeur avec le monde 🌍',st:'🔥 {n} jours de suite ! Continue !',w:'Bon retour ! 💜',ch:'Défi du jour : {challenge}'},
+    globe:'🌍 Explore l\'humeur du monde · Appuie pour continuer',
+    globeBtn:'🌍 Commence ton voyage',
+    isme:{
+      h:'Bonjour. Je suis ISME. 💜',
+      d:'Dessine ce que tu ressens. Je suis là.',
+      j:'Tu rayonnes aujourd\'hui ✨',
+      s:'Je suis là. Laisse couler 🌊',
+      a:'Cette énergie est tienne 🔥',
+      c:'L\'immobilité est force 🌙',
+      e:'L\'espace t\'attend 🕳️',
+      sh:'Partage ton humeur avec le monde 🌍',
+      st:'🔥 {n} jours de suite ! Continue !',
+      w:'Bon retour ! 💜',
+      ch:'Défi du jour : {challenge}',
+      step1:'Bienvenue ! Dessine ton humeur ici. Je t\'écoute. ✍️',
+      step2:'Tu as dessiné {emoji} ! Comment te sens-tu ? 💜',
+      step3:'Tu veux partager ton dessin avec le monde ? 🌍',
+      step4:'Reviens demain pour garder ta série ! 🔥'
+    },
     legal:`
 <h3>© 2026 Mewonen — Tous droits réservés</h3>
 <p><strong>Mewonen</strong> est une création originale de <strong>Ismail Belabbess</strong>.</p>
@@ -518,25 +521,44 @@ var L = {
 <p><strong>Dernière mise à jour :</strong> 19 juillet 2026</p>
 <p>Mewonen est conçu avec la confidentialité au cœur. <strong>Nous ne collectons absolument aucune donnée personnelle.</strong> Tout ce que vous dessinez, écrivez ou dites reste exclusivement sur votre appareil.</p>
 <p>Mewonen utilise le <strong>localStorage</strong> de votre navigateur pour sauvegarder votre historique et vos dessins. Ces données ne quittent jamais votre appareil.</p>
-<p>Conformément au <strong>RGPD</strong> (UE), <strong>CCPA</strong> (Californie), <strong>LGPD</strong> (Brésil) et <strong>PIPEDA</strong> (Canada), vous avez le droit d\'accéder, exporter et supprimer vos données.</p>
-<p><strong>Mewonen n\'utilise aucun cookie, traceur, outil analytique ou publicité.</strong></p>
+<p>Conformément au <strong>RGPD</strong> (UE), <strong>CCPA</strong> (Californie), <strong>LGPD</strong> (Brésil) et <strong>PIPEDA</strong> (Canada), vous avez le droit d'accéder, exporter et supprimer vos données.</p>
+<p><strong>Mewonen n'utilise aucun cookie, traceur, outil analytique ou publicité.</strong></p>
 <div class="ld"></div>
 <h3>Disclaimer Médical</h3>
-<p><strong>Mewonen n\'est pas un dispositif médical.</strong> Il ne diagnostique, ne traite ni ne prévient aucune condition. En cas de crise, contactez un professionnel de santé ou visitez <a href="https://findahelpline.com" target="_blank">findahelpline.com</a>.</p>
+<p><strong>Mewonen n'est pas un dispositif médical.</strong> Il ne diagnostique, ne traite ni ne prévient aucune condition. En cas de crise, contactez un professionnel de santé ou visitez <a href="https://findahelpline.com" target="_blank">findahelpline.com</a>.</p>
 <div class="ld"></div>
-<h3>Conditions d\'Utilisation</h3>
-<p>En utilisant Mewonen, vous acceptez de l\'utiliser à des fins personnelles et non commerciales. Vous devez avoir au moins 13 ans.</p>
+<h3>Conditions d'Utilisation</h3>
+<p>En utilisant Mewonen, vous acceptez de l'utiliser à des fins personnelles et non commerciales. Vous devez avoir au moins 13 ans.</p>
+<div class="ld"></div>
+<h3>Confidentialité des Enfants</h3>
+<p>Mewonen n'est pas destiné aux enfants de moins de 13 ans. Nous ne collectons pas sciemment d'informations personnelles auprès de personnes de moins de 13 ans.</p>
 <p style="margin-top:10px;color:#a78bfa;text-align:center;">© 2026 Mewonen. Gratuit. Pour toujours. Sans pub. Sans données. Sans jugement.</p>`
   },
   es:{
     pr:'100% Privado',cl:'estados dibujados',
-    ot:['Bienvenido a Mewonen','Dibuja libremente','Conéctate con el mundo'],
-    op:['Tu espacio privado para dibujar lo que sientes.','Usa tu dedo. Mewonen escucha.','Comparte tu estado de ánimo y ve cómo se sienten los demás.'],
+    ot:['Bienvenido a Mewonen','Dibuja libremente','ISME está contigo'],
+    op:['Tu espacio privado para dibujar lo que sientes.','Usa tu dedo. Mewonen escucha.','Tu compañero. Siempre a tu lado, cada día.'],
     on:'Siguiente',clr:'Limpiar',sh:'Compartir',sv:'Guardar',
     nav:['Dibujar','Galería','Estadísticas','Mundo','Legal'],
-    globe:'🌍 Toca para conectar · Ve el estado de ánimo del mundo',
-    globeBtn:'🌍 Explorar el mundo',
-    isme:{h:'Hola. Soy ISME. 💜',d:'Dibuja lo que sientes. Estoy aquí.',j:'Estás brillando hoy ✨',s:'Estoy aquí. Déjalo fluir 🌊',a:'Esta energía es tuya 🔥',c:'La quietud es fuerza 🌙',e:'El espacio te espera 🕳️',sh:'Comparte tu estado de ánimo con el mundo 🌍',st:'🔥 {n} días seguidos! ¡Sigue!',w:'¡Bienvenido de nuevo! 💜',ch:'Desafío diario: {challenge}'},
+    globe:'🌍 Explora el estado de ánimo del mundo · Toca para continuar',
+    globeBtn:'🌍 Comienza tu viaje',
+    isme:{
+      h:'Hola. Soy ISME. 💜',
+      d:'Dibuja lo que sientes. Estoy aquí.',
+      j:'Estás brillando hoy ✨',
+      s:'Estoy aquí. Déjalo fluir 🌊',
+      a:'Esta energía es tuya 🔥',
+      c:'La quietud es fuerza 🌙',
+      e:'El espacio te espera 🕳️',
+      sh:'Comparte tu estado de ánimo con el mundo 🌍',
+      st:'🔥 {n} días seguidos! ¡Sigue!',
+      w:'¡Bienvenido de nuevo! 💜',
+      ch:'Desafío diario: {challenge}',
+      step1:'¡Bienvenido! Dibuja tu estado de ánimo aquí. Te escucho. ✍️',
+      step2:'¡Dibujaste {emoji}! ¿Cómo te sientes? 💜',
+      step3:'¿Quieres compartir tu dibujo con el mundo? 🌍',
+      step4:'¡Vuelve mañana para mantener tu racha! 🔥'
+    },
     legal:`
 <h3>© 2026 Mewonen — Todos los derechos reservados</h3>
 <p><strong>Mewonen</strong> es una creación original de <strong>Ismail Belabbess</strong>.</p>
@@ -556,17 +578,36 @@ var L = {
 <div class="ld"></div>
 <h3>Términos de Servicio</h3>
 <p>Al usar Mewonen, aceptas usarlo solo con fines personales y no comerciales. Debes tener al menos 13 años.</p>
+<div class="ld"></div>
+<h3>Privacidad de Menores</h3>
+<p>Mewonen no está dirigido a menores de 13 años. No recopilamos conscientemente información personal de personas menores de 13 años.</p>
 <p style="margin-top:10px;color:#a78bfa;text-align:center;">© 2026 Mewonen. Gratis. Para siempre. Sin anuncios. Sin datos. Sin juicios.</p>`
   },
   ar:{
     pr:'خصوصية 100%',cl:'حالة مرسومة',
-    ot:['مرحباً بك في Mewonen','ارسم بحرية','تواصل مع العالم'],
-    op:['مساحتك الخاصة لرسم ما تشعر به.','استخدم إصبعك. Mewonen يستمع.','شارك مزاجك وانظر كيف يشعر الآخرون.'],
+    ot:['مرحباً بك في Mewonen','ارسم بحرية','ISME معك'],
+    op:['مساحتك الخاصة لرسم ما تشعر به.','استخدم إصبعك. Mewonen يستمع.','رفيقك. دائماً بجانبك، كل يوم.'],
     on:'التالي',clr:'مسح',sh:'مشاركة',sv:'حفظ',
     nav:['رسم','معرض','إحصائيات','العالم','قانوني'],
-    globe:'🌍 اضغط للاتصال · شاهد مزاج العالم',
-    globeBtn:'🌍 استكشف العالم',
-    isme:{h:'مرحباً. أنا ISME. 💜',d:'ارسم ما تشعر به. أنا هنا.',j:'أنت مشرق اليوم ✨',s:'أنا هنا. دعه يتدفق 🌊',a:'هذه الطاقة لك 🔥',c:'السكون قوة 🌙',e:'الفضاء ينتظرك 🕳️',sh:'شارك مزاجك مع العالم 🌍',st:'🔥 {n} أيام متتالية! استمر!',w:'مرحباً بعودتك! 💜',ch:'تحدي اليوم: {challenge}'},
+    globe:'🌍 استكشف مزاج العالم · اضغط للمتابعة',
+    globeBtn:'🌍 ابدأ رحلتك',
+    isme:{
+      h:'مرحباً. أنا ISME. 💜',
+      d:'ارسم ما تشعر به. أنا هنا.',
+      j:'أنت مشرق اليوم ✨',
+      s:'أنا هنا. دعه يتدفق 🌊',
+      a:'هذه الطاقة لك 🔥',
+      c:'السكون قوة 🌙',
+      e:'الفضاء ينتظرك 🕳️',
+      sh:'شارك مزاجك مع العالم 🌍',
+      st:'🔥 {n} أيام متتالية! استمر!',
+      w:'مرحباً بعودتك! 💜',
+      ch:'تحدي اليوم: {challenge}',
+      step1:'مرحباً! ارسم مزاجك هنا. أنا أستمع. ✍️',
+      step2:'لقد رسمت {emoji}! كيف تشعر؟ 💜',
+      step3:'هل تريد مشاركة رسمك مع العالم؟ 🌍',
+      step4:'عد غداً للحفاظ على سلسلتك! 🔥'
+    },
     legal:`
 <h3>© 2026 Mewonen — جميع الحقوق محفوظة</h3>
 <p><strong>Mewonen</strong> هو إبداع أصلي لـ <strong>Ismail Belabbess</strong>.</p>
@@ -586,17 +627,36 @@ var L = {
 <div class="ld"></div>
 <h3>شروط الخدمة</h3>
 <p>باستخدام Mewonen، أنت توافق على استخدامه للأغراض الشخصية وغير التجارية فقط. يجب أن تكون على الأقل 13 عاماً.</p>
+<div class="ld"></div>
+<h3>خصوصية الأطفال</h3>
+<p>Mewonen غير موجه للأطفال دون سن 13 عاماً. نحن لا نجمع معلومات شخصية من أي شخص دون سن 13 عاماً.</p>
 <p style="margin-top:10px;color:#a78bfa;text-align:center;">© 2026 Mewonen. مجاني. للأبد. بدون إعلانات. بدون بيانات. بدون أحكام.</p>`
   },
   ja:{
     pr:'100% プライベート',cl:'描かれた気分',
-    ot:['Mewonenへようこそ','自由に描く','世界とつながる'],
-    op:['あなたのプライベートな感情スペース。','指で描いてください。Mewonenが聞きます。','気分を共有し、他の人の気持ちを見ましょう。'],
+    ot:['Mewonenへようこそ','自由に描く','ISMEはあなたと共に'],
+    op:['あなたのプライベートな感情スペース。','指で描いてください。Mewonenが聞きます。','あなたの仲間。いつもそばに。'],
     on:'次へ',clr:'クリア',sh:'シェア',sv:'保存',
     nav:['描く','ギャラリー','統計','世界','法的'],
-    globe:'🌍 タップして接続 · 世界の気分を見る',
-    globeBtn:'🌍 世界を探索する',
-    isme:{h:'こんにちは。ISMEです。💜',d:'感じたことを描いて。ここにいるよ。',j:'今日は輝いているね ✨',s:'ここにいるよ。流して 🌊',a:'このエネルギーはあなたのもの 🔥',c:'静けさは力 🌙',e:'スペースがあなたを待っている 🕳️',sh:'気分を世界と共有しよう 🌍',st:'🔥 {n}日連続！続けて！',w:'おかえり！💜',ch:'今日のチャレンジ：{challenge}'},
+    globe:'🌍 世界の気分を探る · タップして続ける',
+    globeBtn:'🌍 旅を始める',
+    isme:{
+      h:'こんにちは。ISMEです。💜',
+      d:'感じたことを描いて。ここにいるよ。',
+      j:'今日は輝いているね ✨',
+      s:'ここにいるよ。流して 🌊',
+      a:'このエネルギーはあなたのもの 🔥',
+      c:'静けさは力 🌙',
+      e:'スペースがあなたを待っている 🕳️',
+      sh:'気分を世界と共有しよう 🌍',
+      st:'🔥 {n}日連続！続けて！',
+      w:'おかえり！💜',
+      ch:'今日のチャレンジ：{challenge}',
+      step1:'ようこそ！気分を描いてください。聞いています。✍️',
+      step2:'{emoji}を描きました！気分はどうですか？💜',
+      step3:'描いたものを世界と共有しますか？🌍',
+      step4:'連続記録を保つために明日も来てください！🔥'
+    },
     legal:`
 <h3>© 2026 Mewonen — 全著作権所有</h3>
 <p><strong>Mewonen</strong> は <strong>Ismail Belabbess</strong> によるオリジナル作品です。</p>
@@ -616,17 +676,36 @@ var L = {
 <div class="ld"></div>
 <h3>利用規約</h3>
 <p>Mewonenを使用することにより、個人的かつ非商業的な目的でのみ使用することに同意したものとします。13歳以上である必要があります。</p>
+<div class="ld"></div>
+<h3>子供のプライバシー</h3>
+<p>Mewonenは13歳未満の子供向けではありません。13歳未満の個人情報を意図的に収集することはありません。</p>
 <p style="margin-top:10px;color:#a78bfa;text-align:center;">© 2026 Mewonen. 無料。永遠に。広告なし。データなし。判断なし。</p>`
   },
   zh:{
     pr:'100% 私密',cl:'心情已绘制',
-    ot:['欢迎来到 Mewonen','自由绘画','与世界连接'],
-    op:['你的私人情感空间。','用你的手指画画。Mewonen 倾听。','分享你的心情，看看别人的感受。'],
+    ot:['欢迎来到 Mewonen','自由绘画','ISME 与你同在'],
+    op:['你的私人情感空间。','用你的手指画画。Mewonen 倾听。','你的伙伴。永远在你身边。'],
     on:'下一步',clr:'清除',sh:'分享',sv:'保存',
     nav:['绘画','画廊','统计','世界','法律'],
-    globe:'🌍 点击连接 · 看看世界的心情',
-    globeBtn:'🌍 探索世界',
-    isme:{h:'你好。我是 ISME。💜',d:'画出你的感受。我在这里。',j:'你今天在发光 ✨',s:'我在这里。让它流走 🌊',a:'这能量是你的 🔥',c:'静止是力量 🌙',e:'空间在等你 🕳️',sh:'与世界分享你的心情 🌍',st:'🔥 连续 {n} 天！继续！',w:'欢迎回来！💜',ch:'今日挑战：{challenge}'},
+    globe:'🌍 探索世界的心情 · 点击继续',
+    globeBtn:'🌍 开始你的旅程',
+    isme:{
+      h:'你好。我是 ISME。💜',
+      d:'画出你的感受。我在这里。',
+      j:'你今天在发光 ✨',
+      s:'我在这里。让它流走 🌊',
+      a:'这能量是你的 🔥',
+      c:'静止是力量 🌙',
+      e:'空间在等你 🕳️',
+      sh:'与世界分享你的心情 🌍',
+      st:'🔥 连续 {n} 天！继续！',
+      w:'欢迎回来！💜',
+      ch:'今日挑战：{challenge}',
+      step1:'欢迎！在这里画出你的心情。我在倾听。✍️',
+      step2:'你画了 {emoji}！你感觉如何？💜',
+      step3:'你想与世界分享你的画作吗？🌍',
+      step4:'明天再来保持你的连续记录！🔥'
+    },
     legal:`
 <h3>© 2026 Mewonen — 保留所有权利</h3>
 <p><strong>Mewonen</strong> 是 <strong>Ismail Belabbess</strong> 的原创作品。</p>
@@ -646,17 +725,36 @@ var L = {
 <div class="ld"></div>
 <h3>服务条款</h3>
 <p>使用 Mewonen 即表示您同意仅将其用于个人非商业目的。您必须年满13岁。</p>
+<div class="ld"></div>
+<h3>儿童隐私</h3>
+<p>Mewonen 不面向13岁以下的儿童。我们不会有意收集13岁以下个人的信息。</p>
 <p style="margin-top:10px;color:#a78bfa;text-align:center;">© 2026 Mewonen. 免费。永远。无广告。无数据。无评判。</p>`
   },
   ko:{
     pr:'100% 비공개',cl:'그려진 기분',
-    ot:['Mewonen에 오신 것을 환영합니다','자유롭게 그리기','세계와 연결하기'],
-    op:['당신의 개인적인 감정 공간입니다.','손가락으로 그려보세요. Mewonen이 듣습니다.','기분을 공유하고 다른 사람들의 기분을 보세요.'],
+    ot:['Mewonen에 오신 것을 환영합니다','자유롭게 그리기','ISME가 당신과 함께합니다'],
+    op:['당신의 개인적인 감정 공간입니다.','손가락으로 그려보세요. Mewonen이 듣습니다.','당신의 동반자. 항상 당신 곁에.'],
     on:'다음',clr:'지우기',sh:'공유',sv:'저장',
     nav:['그리기','갤러리','통계','세계','법률'],
-    globe:'🌍 탭하여 연결 · 세계의 기분 보기',
-    globeBtn:'🌍 세계 탐험하기',
-    isme:{h:'안녕하세요. 저는 ISME입니다. 💜',d:'느낌을 그려보세요. 제가 여기 있어요.',j:'오늘 당신은 빛나고 있어요 ✨',s:'제가 여기 있어요. 흘려보내요 🌊',a:'이 에너지는 당신의 것입니다 🔥',c:'고요함은 힘입니다 🌙',e:'공간이 당신을 기다리고 있어요 🕳️',sh:'당신의 기분을 세계와 공유하세요 🌍',st:'🔥 {n}일 연속! 계속하세요!',w:'돌아오신 것을 환영합니다! 💜',ch:'오늘의 도전: {challenge}'},
+    globe:'🌍 세계의 기분을 탐험하세요 · 계속하려면 탭하세요',
+    globeBtn:'🌍 여정을 시작하세요',
+    isme:{
+      h:'안녕하세요. 저는 ISME입니다. 💜',
+      d:'느낌을 그려보세요. 제가 여기 있어요.',
+      j:'오늘 당신은 빛나고 있어요 ✨',
+      s:'제가 여기 있어요. 흘려보내요 🌊',
+      a:'이 에너지는 당신의 것입니다 🔥',
+      c:'고요함은 힘입니다 🌙',
+      e:'공간이 당신을 기다리고 있어요 🕳️',
+      sh:'당신의 기분을 세계와 공유하세요 🌍',
+      st:'🔥 {n}일 연속! 계속하세요!',
+      w:'돌아오신 것을 환영합니다! 💜',
+      ch:'오늘의 도전: {challenge}',
+      step1:'환영합니다! 여기에 기분을 그려보세요. 듣고 있어요.✍️',
+      step2:'{emoji}을(를) 그렸네요! 기분이 어떠신가요? 💜',
+      step3:'그림을 세계와 공유하시겠습니까? 🌍',
+      step4:'연속 기록을 유지하려면 내일 다시 오세요! 🔥'
+    },
     legal:`
 <h3>© 2026 Mewonen — 모든 권리 보유</h3>
 <p><strong>Mewonen</strong>은 <strong>Ismail Belabbess</strong>의 독창적인 창작물입니다.</p>
@@ -676,6 +774,9 @@ var L = {
 <div class="ld"></div>
 <h3>서비스 이용약관</h3>
 <p>Mewonen을 사용함으로써 귀하는 개인적이고 비상업적인 목적으로만 사용하는 데 동의합니다. 만 13세 이상이어야 합니다.</p>
+<div class="ld"></div>
+<h3>아동 개인정보</h3>
+<p>Mewonen은 13세 미만 아동을 대상으로 하지 않습니다. 13세 미만의 개인정보를 의도적으로 수집하지 않습니다.</p>
 <p style="margin-top:10px;color:#a78bfa;text-align:center;">© 2026 Mewonen. 무료. 영원히. 광고 없음. 데이터 없음. 판단 없음.</p>`
   }
 };
@@ -694,10 +795,7 @@ var history = [];
 var gallery = [];
 var isDrawing = false;
 var ismeTimer = null;
-var globeAngle = 0;
-var globeDragging = false;
-var globeStartX = 0;
-var globeStartY = 0;
+var step = 0;
 
 // ============================================================
 // DOM REFS
@@ -753,71 +851,99 @@ setTimeout(function(){
   $('splash').classList.add('hidden');
   setTimeout(function(){
     $('globeScreen').classList.add('active');
-    initGlobe();
+    initGlobe3D();
   }, 300);
 }, 2200);
 
 // ============================================================
-// GLOBE
+// GLOBE 3D (Three.js)
 // ============================================================
-function initGlobe() {
-  // Dots on globe
-  var dots = $('globeDots');
-  for(var i=0;i<30;i++){
-    var d = document.createElement('div');
-    d.className = 'dot';
-    var a = Math.random()*Math.PI*2;
-    var r = 40 + Math.random()*45;
-    var x = 50 + Math.cos(a)*r;
-    var y = 50 + Math.sin(a)*r;
-    d.style.left = x+'%';
-    d.style.top = y+'%';
-    d.style.animationDelay = (Math.random()*3)+'s';
-    d.style.width = (2+Math.random()*4)+'px';
-    d.style.height = d.style.width;
-    dots.appendChild(d);
+var scene, camera, renderer, globe;
+function initGlobe3D() {
+  var container = document.querySelector('.globe-container');
+  var w = container.clientWidth;
+  var h = container.clientHeight || 300;
+
+  scene = new THREE.Scene();
+  camera = new THREE.PerspectiveCamera(45, w/h, 0.1, 1000);
+  camera.position.z = 3.5;
+
+  renderer = new THREE.WebGLRenderer({ canvas: $('globeCanvas'), alpha: true, antialias: true });
+  renderer.setSize(w, h);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+  // Globe
+  var geo = new THREE.SphereGeometry(1.4, 64, 64);
+  var tex = new THREE.TextureLoader().load('https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg');
+  var mat = new THREE.MeshPhongMaterial({ map: tex, shininess: 5 });
+  globe = new THREE.Mesh(geo, mat);
+  scene.add(globe);
+
+  // Stars
+  var starsGeo = new THREE.BufferGeometry();
+  var starsPos = [];
+  for(var i=0;i<2000;i++){
+    var r = 50 + Math.random()*50;
+    var theta = Math.random()*Math.PI*2;
+    var phi = Math.acos(2*Math.random()-1);
+    starsPos.push(r*Math.sin(phi)*Math.cos(theta));
+    starsPos.push(r*Math.cos(phi));
+    starsPos.push(r*Math.sin(phi)*Math.sin(theta));
   }
+  starsGeo.setAttribute('position', new THREE.Float32BufferAttribute(starsPos, 3));
+  var starsMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.1, transparent: true, opacity: 0.6 });
+  var stars = new THREE.Points(starsGeo, starsMat);
+  scene.add(stars);
 
-  // Emojis on globe
-  var emojis = $('globeEmojis');
-  var emojiList = ['☀️','🌧️','🌈','⚡','🌙','🔥','🌱','💨','❄️','🕳️'];
-  for(var i=0;i<15;i++){
-    var e = document.createElement('div');
-    e.className = 'ge';
-    e.textContent = emojiList[Math.floor(Math.random()*emojiList.length)];
-    var a = Math.random()*Math.PI*2;
-    var r = 25 + Math.random()*35;
-    var x = 50 + Math.cos(a)*r;
-    var y = 50 + Math.sin(a)*r;
-    e.style.left = x+'%';
-    e.style.top = y+'%';
-    e.style.animationDelay = (Math.random()*4)+'s';
-    e.style.fontSize = (0.6+Math.random()*0.6)+'rem';
-    emojis.appendChild(e);
+  // Lights
+  var light = new THREE.DirectionalLight(0xffffff, 1.2);
+  light.position.set(2, 2, 4);
+  scene.add(light);
+  var light2 = new THREE.DirectionalLight(0x8888ff, 0.3);
+  light2.position.set(-2, -1, -3);
+  scene.add(light2);
+  var ambient = new THREE.AmbientLight(0x222244, 0.5);
+  scene.add(ambient);
+
+  // Particles on globe (emotions)
+  var dotGeo = new THREE.BufferGeometry();
+  var dotPos = [];
+  var dotColors = [];
+  for(var i=0;i<80;i++){
+    var theta2 = Math.random()*Math.PI*2;
+    var phi2 = Math.acos(2*Math.random()-1);
+    var r2 = 1.42;
+    dotPos.push(r2*Math.sin(phi2)*Math.cos(theta2));
+    dotPos.push(r2*Math.cos(phi2));
+    dotPos.push(r2*Math.sin(phi2)*Math.sin(theta2));
+    var c = new THREE.Color().setHSL(0.7 + Math.random()*0.2, 0.8, 0.5 + Math.random()*0.3);
+    dotColors.push(c.r, c.g, c.b);
   }
+  dotGeo.setAttribute('position', new THREE.Float32BufferAttribute(dotPos, 3));
+  dotGeo.setAttribute('color', new THREE.Float32BufferAttribute(dotColors, 3));
+  var dotMat = new THREE.PointsMaterial({ size: 0.06, vertexColors: true, transparent: true, opacity: 0.8 });
+  var dots = new THREE.Points(dotGeo, dotMat);
+  scene.add(dots);
 
-  // Globe drag
-  var globe = $('globe');
-  globe.addEventListener('mousedown', function(e){ globeDragging=true; globeStartX=e.clientX; });
-  document.addEventListener('mousemove', function(e){ if(globeDragging){ var dx=e.clientX-globeStartX; globe.style.transform='rotateY('+(parseFloat(globe.style.transform?.replace(/[^0-9.]/g,'')||0)+dx*0.5)+'deg)'; globeStartX=e.clientX; } });
-  document.addEventListener('mouseup', function(){ globeDragging=false; });
-  globe.addEventListener('touchstart', function(e){ globeDragging=true; globeStartX=e.touches[0].clientX; });
-  globe.addEventListener('touchmove', function(e){ if(globeDragging){ var dx=e.touches[0].clientX-globeStartX; globe.style.transform='rotateY('+(parseFloat(globe.style.transform?.replace(/[^0-9.]/g,'')||0)+dx*0.5)+'deg)'; globeStartX=e.touches[0].clientX; } });
-  globe.addEventListener('touchend', function(){ globeDragging=false; });
+  animateGlobe();
+  window.addEventListener('resize', function(){
+    var w2 = container.clientWidth;
+    var h2 = container.clientHeight || 300;
+    camera.aspect = w2/h2;
+    camera.updateProjectionMatrix();
+    renderer.setSize(w2, h2);
+  });
 
-  // Globe button
   $('globeBtn').addEventListener('click', function(){
     $('globeScreen').classList.remove('active');
     $('onboarding').classList.add('active');
   });
+}
 
-  // Auto-rotation
-  setInterval(function(){
-    if(!globeDragging){
-      var current = parseFloat(globe.style.transform?.replace(/[^0-9.]/g,'')||0);
-      globe.style.transform = 'rotateY('+(current+1)+'deg)';
-    }
-  }, 80);
+function animateGlobe() {
+  requestAnimationFrame(animateGlobe);
+  if(globe) globe.rotation.y += 0.002;
+  renderer.render(scene, camera);
 }
 
 // ============================================================
@@ -855,7 +981,10 @@ function initApp() {
   buildStats();
   buildMap();
   setupIsme();
-  showIsme(TX.isme.h, 3000);
+  // ISME guide step 1
+  setTimeout(function(){
+    showIsme(TX.isme.step1, 5000);
+  }, 1500);
   startIsmeTimer();
   checkDailyChallenge();
 }
@@ -990,16 +1119,26 @@ function analyze(pts) {
   // ISME reaction
   reactIsme(emo.m, emo.e);
 
+  // ISME step 2
+  setTimeout(function(){
+    showIsme(TX.isme.step2.replace('{emoji}', emo.e), 4000);
+  }, 1000);
+
   // Confetti on joy
   if(emo.m === 'joy') spawnConfetti();
 
   // Show bubbles
   showBubbles(emo);
 
-  // Share prompt
+  // ISME step 3
   setTimeout(function(){
-    showIsme(TX.isme.sh, 4000);
-  }, 3000);
+    showIsme(TX.isme.step3, 4000);
+  }, 5000);
+
+  // ISME step 4
+  setTimeout(function(){
+    showIsme(TX.isme.step4, 4000);
+  }, 9000);
 
   // Challenge
   checkDailyChallenge();
@@ -1281,7 +1420,7 @@ function setupIsme() {
     if(bub.classList.contains('show')) {
       bub.classList.remove('show');
     } else {
-      var msgs = [TX.isme.d, TX.isme.sh, TX.isme.ch.replace('{challenge}','Draw your dream'), TX.isme.ch.replace('{challenge}','Draw your hope')];
+      var msgs = [TX.isme.d, TX.isme.sh, TX.isme.ch.replace('{challenge}','Draw your dream')];
       var msg = msgs[Math.floor(Math.random()*msgs.length)];
       showIsme(msg, 4000);
     }
