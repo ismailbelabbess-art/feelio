@@ -1,264 +1,1177 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="mul">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Mewonen">
 <meta name="theme-color" content="#0a0a18">
-<meta name="copyright" content="© 2026 Mewonen. Ismail Belabbess. All rights reserved.">
-<meta name="description" content="Mewonen — Draw your mood. 100% private. Free forever.">
-<meta property="og:title" content="Mewonen — Draw your mood">
-<meta property="og:description" content="Draw your mood. Mewonen understands.">
-<meta property="og:url" content="https://mewonen.com">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Mewonen — Draw your mood">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3CradialGradient id='g' cx='50%25' cy='50%25'%3E%3Cstop offset='0%25' stop-color='%23c4b5fd'/%3E%3Cstop offset='100%25' stop-color='%237c3aed'/%3E%3C/radialGradient%3E%3C/defs%3E%3Ccircle cx='50' cy='50' r='48' fill='url(%23g)'/%3E%3Ctext x='50' y='65' text-anchor='middle' font-size='40' font-weight='200' fill='white'%3EM%3C/text%3E%3C/svg%3E">
-<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3CradialGradient id='g' cx='50%25' cy='50%25'%3E%3Cstop offset='0%25' stop-color='%23c4b5fd'/%3E%3Cstop offset='100%25' stop-color='%237c3aed'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='20' fill='url(%23g)'/%3E%3Ctext x='50' y='65' text-anchor='middle' font-size='40' font-weight='200' fill='white'%3EM%3C/text%3E%3C/svg%3E">
-<link rel="manifest" href="data:application/manifest+json,%7B%22name%22:%22Mewonen%22,%22short_name%22:%22Mewonen%22,%22start_url%22:%22/%22,%22display%22:%22standalone%22,%22background_color%22:%22%230a0a18%22,%22theme_color%22:%22%230a0a18%22%7D">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Mewonen">
 <title>Mewonen — Draw your mood</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
+/* ===== RESET & BASE ===== */
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
+html{font-size:16px;-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}
 body{
-    font-family:'Inter',-apple-system,sans-serif;
-    background:#0a0a18;color:#f0f0f0;
-    -webkit-font-smoothing:antialiased;
-    user-select:none;-webkit-user-select:none;
+  font-family:'Inter',-apple-system,sans-serif;
+  background:#0a0a18;color:#f0f0f0;
+  min-height:100dvh;overflow:hidden;
+  -webkit-font-smoothing:antialiased;
+  user-select:none;-webkit-user-select:none;
 }
-.hero{
-    min-height:100vh;min-height:100dvh;
-    display:flex;flex-direction:column;align-items:center;justify-content:center;
-    position:relative;text-align:center;padding:20px;
+body.fr{font-family:'Inter',-apple-system,sans-serif}
+body.ja{font-family:'Hiragino Sans',-apple-system,sans-serif}
+body.zh{font-family:'PingFang SC',-apple-system,sans-serif}
+body.ko{font-family:'Apple SD Gothic Neo',-apple-system,sans-serif}
+body.es{font-family:'Inter',-apple-system,sans-serif}
+body.ar{font-family:'Noto Sans Arabic',-apple-system,sans-serif}
+
+/* ===== SPLASH SCREEN ===== */
+#splash{
+  position:fixed;inset:0;z-index:1000;
+  background:#0a0a18;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  transition:opacity 0.8s ease;
 }
-.hero-bg{position:absolute;inset:0;background:radial-gradient(circle at 50% 40%,rgba(167,139,250,0.08) 0%,transparent 70%)}
-.logo{font-size:2rem;font-weight:100;letter-spacing:10px;color:#fff;margin-bottom:4px;position:relative;z-index:1}
-.subtitle{color:#a78bfa;font-size:0.7rem;letter-spacing:3px;margin-bottom:16px;position:relative;z-index:1}
-.counter{color:rgba(255,255,255,0.4);font-size:0.7rem;margin-bottom:16px;position:relative;z-index:1}
-.counter span{color:#a78bfa;font-weight:500}
+#splash.hidden{opacity:0;pointer-events:none}
+.splash-logo{font-size:4rem;font-weight:100;letter-spacing:18px;color:#fff;text-shadow:0 0 60px rgba(167,139,250,0.6);animation:splashPulse 1.5s ease-in-out infinite}
+.splash-isme{font-size:3rem;margin-bottom:10px;animation:splashFloat 2s ease-in-out infinite}
+@keyframes splashPulse{0%,100%{transform:scale(1);opacity:0.8}50%{transform:scale(1.05);opacity:1}}
+@keyframes splashFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.splash-sub{color:#a78bfa;font-size:0.8rem;letter-spacing:6px;margin-top:10px;opacity:0.6}
+
+/* ===== ONBOARDING ===== */
+#onboarding{
+  position:fixed;inset:0;z-index:900;
+  background:rgba(10,10,24,0.97);
+  display:none;flex-direction:column;align-items:center;justify-content:center;
+  padding:20px;text-align:center;
+  backdrop-filter:blur(20px);
+}
+#onboarding.active{display:flex}
+.on-slide{display:none;animation:fadeUp 0.6s ease-out;max-width:400px}
+.on-slide.active{display:block}
+.on-slide .icon{font-size:4rem;margin-bottom:12px}
+.on-slide h2{font-size:1.6rem;font-weight:200;color:#fff;margin-bottom:8px}
+.on-slide p{color:rgba(255,255,255,0.6);font-size:0.9rem;line-height:1.6}
+.on-progress{display:flex;gap:8px;margin:20px 0}
+.on-progress .dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,0.15);transition:all 0.3s}
+.on-progress .dot.active{background:#a78bfa;transform:scale(1.2)}
+@keyframes fadeUp{0%{opacity:0;transform:translateY(20px)}100%{opacity:1;transform:translateY(0)}}
+
+/* ===== APP ===== */
+#app{
+  display:none;flex-direction:column;height:100dvh;position:relative;
+  background:#0a0a18;
+}
+#app.active{display:flex}
+
+/* ===== TOP BAR ===== */
+.top-bar{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:12px 16px;padding-top:calc(12px + env(safe-area-inset-top,0));
+  background:rgba(10,10,24,0.6);backdrop-filter:blur(16px);
+  border-bottom:0.5px solid rgba(255,255,255,0.04);
+  z-index:50;flex-shrink:0;
+}
+.top-bar .langs{display:flex;gap:4px}
+.top-bar .langs button{
+  background:none;border:none;color:rgba(255,255,255,0.3);
+  font-size:0.55rem;cursor:pointer;padding:2px 6px;border-radius:4px;
+  transition:all 0.2s;
+}
+.top-bar .langs button.active{color:#a78bfa;background:rgba(139,92,246,0.1)}
+.top-bar .privacy{display:flex;align-items:center;gap:6px;color:rgba(255,255,255,0.3);font-size:0.5rem;letter-spacing:1px}
+.top-bar .privacy .dot{width:4px;height:4px;border-radius:50%;background:#34d399;animation:dotPulse 2s infinite}
+@keyframes dotPulse{0%,100%{opacity:0.3}50%{opacity:1}}
+
+/* ===== MAIN CONTENT ===== */
+.main{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:10px 16px;overflow-y:auto;position:relative;
+}
+
+/* ===== CANVAS ===== */
+.canvas-wrap{position:relative;margin-bottom:8px}
 canvas#canvas{
-    width:260px;height:260px;border-radius:28px;
-    background:rgba(16,16,32,0.6);touch-action:none;cursor:crosshair;
-    border:1.5px solid rgba(255,255,255,0.08);position:relative;z-index:1;
+  width:280px;height:280px;border-radius:28px;
+  background:rgba(16,16,32,0.8);
+  border:1.5px solid rgba(139,92,246,0.2);
+  touch-action:none;cursor:crosshair;
+  box-shadow:0 0 40px rgba(139,92,246,0.08);
+  display:block;
 }
-.result-emoji{font-size:3rem;margin-top:8px;position:relative;z-index:1;min-height:60px}
-.result-phrase{color:#fff;font-size:0.8rem;margin-top:4px;position:relative;z-index:1;max-width:300px}
+@media(min-width:500px){canvas#canvas{width:320px;height:320px}}
+
+/* ===== RESULT ===== */
+#resultWrap{display:flex;flex-direction:column;align-items:center;min-height:70px;gap:2px;margin-top:6px}
+#resultEmoji{font-size:3.2rem;animation:popIn 0.5s cubic-bezier(0.34,1.56,0.64,1)}
+#resultPhrase{color:rgba(255,255,255,0.8);font-size:0.75rem;font-weight:300;text-align:center;max-width:300px}
+#resultPhrase2{color:rgba(255,255,255,0.4);font-size:0.6rem;font-weight:200;text-align:center;max-width:300px}
+@keyframes popIn{0%{opacity:0;transform:scale(0.5)}100%{opacity:1;transform:scale(1)}}
+
+/* ===== TOOLBAR ===== */
+.toolbar{display:flex;gap:6px;margin-bottom:6px;flex-wrap:wrap;justify-content:center}
+.toolbar button{
+  width:32px;height:32px;border-radius:50%;border:1px solid rgba(255,255,255,0.06);
+  background:rgba(255,255,255,0.02);color:rgba(255,255,255,0.4);
+  cursor:pointer;font-size:0.7rem;transition:all 0.2s;
+}
+.toolbar button:active{transform:scale(0.85)}
+.toolbar button.active{border-color:#a78bfa;color:#a78bfa;background:rgba(139,92,246,0.08)}
+
+/* ===== BUTTONS ===== */
+.btn-group{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-top:4px}
 .btn{
-    display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:50px;
-    font-size:0.8rem;font-weight:500;cursor:pointer;border:none;transition:all 0.2s ease;
-    text-decoration:none;letter-spacing:0.5px;position:relative;z-index:1;margin-top:10px;
+  display:inline-flex;align-items:center;gap:5px;
+  padding:8px 16px;border-radius:50px;
+  font-size:0.6rem;font-weight:500;letter-spacing:0.3px;
+  cursor:pointer;transition:all 0.2s;border:none;
 }
-.btn-outline{background:transparent;color:#a78bfa;border:1px solid rgba(139,92,246,0.3)}
-.btn-outline:active{transform:scale(0.96)}
-.section{padding:50px 20px;text-align:center;max-width:500px;margin:0 auto}
-.section h2{font-size:1.2rem;font-weight:200;margin-bottom:16px}
-.benefits{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
-.benefit{text-align:center}
-.benefit .icon{font-size:2rem;margin-bottom:4px}
-.benefit h3{font-size:0.7rem;font-weight:500;margin-bottom:2px}
-.benefit p{color:#888;font-size:0.6rem}
-.badges{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
-.badge{background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.2);padding:8px 12px;border-radius:16px;font-size:0.6rem;color:#a78bfa}
-footer{text-align:center;padding:30px 20px;border-top:1px solid rgba(255,255,255,0.05)}
-footer p{color:#555;font-size:0.6rem;line-height:1.8}
-footer a{color:#a78bfa;text-decoration:none}
-.mascot{position:fixed;bottom:16px;right:16px;z-index:100;display:flex;flex-direction:column;align-items:flex-end;gap:6px}
-.mascot-bubble{background:rgba(22,22,44,0.97);border:1px solid rgba(139,92,246,0.3);border-radius:14px;padding:10px 14px;max-width:200px;font-size:0.65rem;color:#fff;cursor:pointer}
-.mascot-bubble a{color:#a78bfa;text-decoration:none;font-weight:500}
-.mascot-avatar{width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#a78bfa);display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:#fff;cursor:pointer;animation:mascotBounce 2s ease-in-out infinite;box-shadow:0 4px 20px rgba(124,58,237,0.4)}
-@keyframes mascotBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-.social-bar{position:fixed;bottom:0;left:0;right:0;z-index:99;background:rgba(16,16,32,0.95);padding:6px;text-align:center;font-size:0.6rem;color:rgba(255,255,255,0.5);display:none}
-.social-bar.show{display:block}
-@media(min-width:768px){canvas#canvas{width:300px;height:300px}}
+.btn:active{transform:scale(0.94)}
+.btn-primary{background:linear-gradient(135deg,#7c3aed,#a78bfa);color:#fff;box-shadow:0 4px 20px rgba(124,58,237,0.25)}
+.btn-outline{background:transparent;color:#a78bfa;border:1px solid rgba(139,92,246,0.2)}
+.btn-small{padding:5px 12px;font-size:0.5rem}
+.btn-icon{padding:8px 10px;border-radius:50%;min-width:34px;min-height:34px}
+
+/* ===== COUNTER ===== */
+.counter{color:rgba(255,255,255,0.25);font-size:0.5rem;margin-top:8px}
+.counter span{color:#a78bfa}
+
+/* ===== STREAK BADGE ===== */
+.streak-badge{
+  display:none;align-items:center;gap:4px;
+  padding:3px 10px;border-radius:12px;
+  font-size:0.5rem;font-weight:500;
+  margin-bottom:4px;
+}
+.streak-badge.show{display:inline-flex}
+.streak-badge.bronze{background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.2);color:#fbbf24}
+.streak-badge.silver{background:rgba(203,213,225,0.1);border:1px solid rgba(203,213,225,0.2);color:#cbd5e1}
+.streak-badge.diamond{background:rgba(96,165,250,0.1);border:1px solid rgba(96,165,250,0.2);color:#60a5fa}
+.streak-badge.legendary{background:rgba(251,191,36,0.15);border:1px solid rgba(251,191,36,0.4);color:#fbbf24;box-shadow:0 0 20px rgba(251,191,36,0.15)}
+
+/* ===== NAVIGATION ===== */
+.nav{
+  position:fixed;bottom:0;left:0;right:0;z-index:100;
+  display:flex;justify-content:space-around;align-items:center;
+  height:60px;padding:0 4px env(safe-area-inset-bottom,0);
+  background:rgba(10,10,22,0.95);backdrop-filter:blur(30px);
+  border-top:0.5px solid rgba(255,255,255,0.04);
+}
+.nav-item{
+  display:flex;flex-direction:column;align-items:center;gap:1px;
+  cursor:pointer;padding:4px 10px;border-radius:12px;
+  color:rgba(255,255,255,0.3);transition:all 0.2s;
+  min-width:44px;min-height:44px;justify-content:center;
+  background:none;border:none;font-family:inherit;
+}
+.nav-item.active{color:#a78bfa}
+.nav-item .nav-icon{font-size:1.1rem}
+.nav-item .nav-label{font-size:0.4rem;font-weight:500;opacity:0.6}
+.nav-item.active .nav-label{opacity:1}
+
+/* ===== SCREENS ===== */
+.screen{display:none;flex-direction:column;align-items:center;justify-content:center;padding:10px 16px 70px;width:100%;height:100%;overflow-y:auto}
+.screen.active{display:flex}
+.screen-title{font-size:1.2rem;font-weight:200;letter-spacing:3px;margin-bottom:4px;color:#fff}
+.screen-sub{color:rgba(255,255,255,0.3);font-size:0.55rem;margin-bottom:12px}
+
+/* ===== GALLERY ===== */
+.gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;width:100%;max-width:320px}
+.gallery-item{aspect-ratio:1;border-radius:12px;background:rgba(255,255,255,0.02);overflow:hidden;border:1px solid rgba(255,255,255,0.04)}
+.gallery-item img{width:100%;height:100%;object-fit:cover}
+
+/* ===== STATS ===== */
+.stat-card{display:flex;align-items:center;gap:10px;padding:10px 14px;background:rgba(255,255,255,0.02);border-radius:12px;width:100%;max-width:280px;margin:3px 0}
+.stat-card .emoji{font-size:1.4rem}
+.stat-card .info{display:flex;flex-direction:column}
+.stat-card .info .count{font-size:0.8rem;font-weight:500;color:#fff}
+.stat-card .info .label{font-size:0.5rem;color:rgba(255,255,255,0.3)}
+
+/* ===== MAP ===== */
+.map-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;width:100%;max-width:320px;margin:8px 0}
+.map-country{display:flex;flex-direction:column;align-items:center;padding:10px 4px;background:rgba(255,255,255,0.02);border-radius:12px;font-size:0.5rem}
+.map-country .flag{font-size:1.2rem}
+.map-country .mood{font-size:1rem;margin-top:2px}
+
+/* ===== ISME MASCOT ===== */
+#isme{
+  position:fixed;bottom:80px;right:12px;z-index:200;
+  display:flex;flex-direction:column;align-items:flex-end;gap:6px;
+  pointer-events:none;
+}
+#isme.interactive{pointer-events:auto}
+#isme .avatar{
+  width:52px;height:52px;border-radius:50%;
+  background:linear-gradient(135deg,#7c3aed,#a78bfa);
+  box-shadow:0 4px 30px rgba(124,58,237,0.4);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.4rem;color:#fff;
+  animation:ismeFloat 2.5s ease-in-out infinite;
+  cursor:pointer;transition:transform 0.2s;
+}
+#isme .avatar:active{transform:scale(0.85)}
+#isme .avatar .i-mark{font-size:0.6rem;font-weight:800;color:rgba(255,255,255,0.6);position:absolute;bottom:2px;right:6px}
+@keyframes ismeFloat{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-6px) scale(1.02)}}
+
+#isme .bubble{
+  background:rgba(22,22,44,0.95);
+  border:1px solid rgba(139,92,246,0.2);
+  border-radius:16px;padding:10px 14px;
+  max-width:200px;
+  font-size:0.6rem;color:#fff;
+  backdrop-filter:blur(16px);
+  box-shadow:0 8px 32px rgba(0,0,0,0.5);
+  display:none;animation:bubbleIn 0.4s ease-out;
+  line-height:1.4;text-align:left;
+}
+#isme .bubble.show{display:block}
+@keyframes bubbleIn{0%{opacity:0;transform:translateY(8px) scale(0.9)}100%{opacity:1;transform:translateY(0) scale(1)}}
+
+/* ===== CONFETTI ===== */
+.confetti{position:fixed;pointer-events:none;z-index:300;animation:confettiFall 2s ease-out forwards}
+@keyframes confettiFall{0%{transform:translateY(0) rotate(0deg);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
+
+/* ===== TOAST ===== */
+#toast{
+  position:fixed;top:80px;left:50%;transform:translateX(-50%);
+  z-index:400;background:rgba(22,22,44,0.95);
+  padding:8px 18px;border-radius:16px;
+  color:#fff;font-size:0.55rem;
+  opacity:0;pointer-events:none;transition:all 0.3s;
+  border:1px solid rgba(139,92,246,0.2);
+  backdrop-filter:blur(12px);
+  white-space:nowrap;
+}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:380px){canvas#canvas{width:240px;height:240px}#isme .avatar{width:44px;height:44px;font-size:1.2rem}}
+@media(min-width:600px){.gallery-grid{grid-template-columns:repeat(4,1fr)}.map-grid{grid-template-columns:repeat(4,1fr)}}
 </style>
 </head>
 <body>
 
-<!-- HERO + CANVAS -->
-<div class="hero">
-    <div class="hero-bg"></div>
-    <div class="logo">MEWONEN</div>
-    <div class="subtitle">Draw your mood</div>
-    <div class="counter"><span id="liveCounter">0</span> people drew their mood today</div>
-    
-    <canvas id="canvas" width="500" height="500" aria-label="Draw your mood"></canvas>
-    <div class="result-emoji" id="resultEmoji"></div>
-    <div class="result-phrase" id="resultPhrase"></div>
-    <button class="btn btn-outline" id="btnClear" onclick="resetCanvas()">Clear</button>
+<!-- ===== SPLASH ===== -->
+<div id="splash">
+  <div class="splash-isme">✦</div>
+  <div class="splash-logo">MEWONEN</div>
+  <div class="splash-sub">Draw your mood</div>
 </div>
 
-<!-- BÉNÉFICES -->
-<div class="section">
-    <h2>Why Mewonen</h2>
-    <div class="benefits">
-        <div class="benefit"><div class="icon">🔒</div><h3>100% Private</h3><p>Stays on your phone</p></div>
-        <div class="benefit"><div class="icon">⚡</div><h3>No Sign Up</h3><p>Open. Draw. Feel.</p></div>
-        <div class="benefit"><div class="icon">🌍</div><h3>7 Languages</h3><p>Speaks your language</p></div>
+<!-- ===== ONBOARDING ===== -->
+<div id="onboarding">
+  <div class="on-progress">
+    <div class="dot active" data-i="0"></div>
+    <div class="dot" data-i="1"></div>
+    <div class="dot" data-i="2"></div>
+  </div>
+  <div class="on-slide active" data-i="0">
+    <div class="icon">🧠</div>
+    <h2 id="onTitle0">Welcome to Mewonen</h2>
+    <p id="onText0">Your private space to draw what you feel.</p>
+  </div>
+  <div class="on-slide" data-i="1">
+    <div class="icon">✍️</div>
+    <h2 id="onTitle1">Draw freely</h2>
+    <p id="onText1">Use your finger. Mewonen listens.</p>
+  </div>
+  <div class="on-slide" data-i="2">
+    <div class="icon">💜</div>
+    <h2 id="onTitle2">ISME is here</h2>
+    <p id="onText2">Your companion. Always with you.</p>
+  </div>
+  <button class="btn btn-primary" id="onBtn">Next</button>
+</div>
+
+<!-- ===== APP ===== -->
+<div id="app">
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="privacy"><span class="dot"></span><span id="privacyLabel">100% Private</span></div>
+    <div class="langs" id="langBar"></div>
+  </div>
+
+  <!-- Main -->
+  <div class="main">
+    <!-- Screen: Draw -->
+    <div class="screen active" id="screen-draw">
+      <div class="streak-badge" id="streakBadge"><span>🔥</span> <span id="streakText">0</span></div>
+      <div class="canvas-wrap">
+        <canvas id="canvas" width="500" height="500"></canvas>
+      </div>
+      <div id="resultWrap">
+        <div id="resultEmoji"></div>
+        <div id="resultPhrase"></div>
+        <div id="resultPhrase2"></div>
+      </div>
+      <div class="toolbar">
+        <button data-size="3" class="active">S</button>
+        <button data-size="6">M</button>
+        <button data-size="14">L</button>
+        <button id="btnUndo">↩</button>
+        <button id="btnClear">✕</button>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary btn-small" id="btnShare">📤 Share</button>
+        <button class="btn btn-outline btn-small" id="btnDownload">💾 Save</button>
+      </div>
+      <div class="counter"><span id="totalCounter">0</span> <span id="counterLabel">moods drawn</span></div>
     </div>
-</div>
 
-<!-- BADGES -->
-<div class="section">
-    <h2>Join people worldwide</h2>
-    <div class="badges">
-        <span class="badge">🎨 13 emotions</span>
-        <span class="badge">🔥 Daily streak</span>
-        <span class="badge">💜 Free forever</span>
-        <span class="badge">⭐ Top rated</span>
+    <!-- Screen: Gallery -->
+    <div class="screen" id="screen-gallery">
+      <div class="screen-title">Gallery</div>
+      <div class="screen-sub">Your drawings</div>
+      <div class="gallery-grid" id="galleryGrid"></div>
     </div>
-</div>
 
-<!-- FOOTER -->
-<footer>
-    <p>© 2026 Mewonen — Created by Ismail Belabbess<br>"Everyone feels. Mewonen listens."<br><a href="https://mewonen.com">mewonen.com</a> 💜</p>
-</footer>
-
-<!-- MASCOTTE -->
-<div class="mascot" id="mascot">
-    <div class="mascot-bubble" id="mascotBubble" onclick="mascotClick()">
-        <span id="mascotText">How are you feeling today?</span>
+    <!-- Screen: Stats -->
+    <div class="screen" id="screen-stats">
+      <div class="screen-title">Stats</div>
+      <div class="screen-sub">Your emotions</div>
+      <div id="statsContainer"></div>
     </div>
-    <div class="mascot-avatar" onclick="mascotClick()">M</div>
+
+    <!-- Screen: Map -->
+    <div class="screen" id="screen-map">
+      <div class="screen-title">World Mood</div>
+      <div class="screen-sub">How others feel</div>
+      <div class="map-grid" id="mapGrid"></div>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <div class="nav">
+    <button class="nav-item active" data-screen="draw"><span class="nav-icon">✍️</span><span class="nav-label">Draw</span></button>
+    <button class="nav-item" data-screen="gallery"><span class="nav-icon">🖼️</span><span class="nav-label">Gallery</span></button>
+    <button class="nav-item" data-screen="stats"><span class="nav-icon">📊</span><span class="nav-label">Stats</span></button>
+    <button class="nav-item" data-screen="map"><span class="nav-icon">🌍</span><span class="nav-label">World</span></button>
+  </div>
 </div>
 
-<!-- BARRE SOCIALE -->
-<div class="social-bar" id="socialBar">
-    <span id="socialText">Someone in 🇺🇸 just drew ☀️</span>
+<!-- ===== ISME ===== -->
+<div id="isme" class="interactive">
+  <div class="bubble" id="ismeBubble"><span id="ismeText">Hello. I'm ISME. 💜</span></div>
+  <div class="avatar" id="ismeAvatar">
+    ✦
+    <span class="i-mark">I</span>
+  </div>
 </div>
+
+<!-- ===== TOAST ===== -->
+<div id="toast"></div>
 
 <script>
-// ==================== COMPTEUR LIVE ====================
-var count = parseInt(localStorage.getItem('mw_landing_count') || '1547');
-count = Math.max(count, 1500) + Math.floor(Math.random() * 5);
-localStorage.setItem('mw_landing_count', count.toString());
-document.getElementById('liveCounter').textContent = count.toLocaleString();
-setInterval(function(){
-    count += Math.floor(Math.random() * 3) + 1;
-    localStorage.setItem('mw_landing_count', count.toString());
-    document.getElementById('liveCounter').textContent = count.toLocaleString();
-}, 25000);
-
-// ==================== CANVAS ====================
-var canvas = document.getElementById('canvas');
-var ctx = canvas.getContext('2d');
-var drawing = false, points = [], startTime = 0, brushSize = 4;
-
-var emotions = [
-    {emoji:'☀️',p:'You are shining today'},
-    {emoji:'🌧️',p:'Let it wash over you'},
-    {emoji:'🌪️',p:'Even storms run out of rain'},
-    {emoji:'🌈',p:'Look what you crossed'},
-    {emoji:'⚡',p:'This energy is yours'},
-    {emoji:'🌙',p:'Rest is not weakness'},
-    {emoji:'🔥',p:'Passion is power'},
-    {emoji:'🌱',p:'Hope whispers'},
-    {emoji:'🙏',p:'Gratitude changes you'},
-    {emoji:'💨',p:'Let the wind carry you'},
-    {emoji:'🌫️',p:'Clarity comes slowly'},
-    {emoji:'❄️',p:'Spring always comes'},
-    {emoji:'🕳️',p:'Space waiting'}
-];
-
-function getPos(e){
-    var r = canvas.getBoundingClientRect();
-    var sX = canvas.width / r.width, sY = canvas.height / r.height;
-    var cX = e.touches ? e.touches[0].clientX : e.clientX;
-    var cY = e.touches ? e.touches[0].clientY : e.clientY;
-    return {x: (cX - r.left) * sX, y: (cY - r.top) * sY};
-}
-
-function startDraw(e){
-    e.preventDefault();
-    drawing = true; points = []; startTime = Date.now();
-    var p = getPos(e);
-    points.push({x: p.x, y: p.y, time: Date.now()});
-    ctx.beginPath(); ctx.moveTo(p.x, p.y);
-}
-
-function moveDraw(e){
-    e.preventDefault();
-    if(!drawing) return;
-    var p = getPos(e);
-    points.push({x: p.x, y: p.y, time: Date.now()});
-    ctx.lineTo(p.x, p.y);
-    ctx.strokeStyle = 'rgba(200,180,255,0.9)';
-    ctx.lineWidth = brushSize; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-    ctx.stroke();
-}
-
-function endDraw(){
-    drawing = false;
-    if(points.length < 3) return;
-    var totalDist = 0;
-    for(var i = 1; i < points.length; i++){
-        var dx = points[i].x - points[i-1].x, dy = points[i].y - points[i-1].y;
-        totalDist += Math.sqrt(dx*dx + dy*dy);
+// ============================================================
+//  LANGUAGES
+// ============================================================
+var LANG = {
+  en: {
+    name: 'English',
+    privacy: '100% Private',
+    onTitle: ['Welcome to Mewonen','Draw freely','ISME is here'],
+    onText: ['Your private space to draw what you feel.','Use your finger. Mewonen listens.','Your companion. Always with you.'],
+    onBtn: 'Next',
+    counter: 'moods drawn',
+    clear: 'Clear',
+    share: 'Share',
+    download: 'Save',
+    gallery: 'Gallery',
+    stats: 'Stats',
+    world: 'World',
+    draw: 'Draw',
+    isme: {
+      hello: 'Hello. I\'m ISME. 💜',
+      draw: 'Draw what you feel. I\'m here.',
+      joy: 'You\'re shining today. ✨',
+      sad: 'I\'m here. Let it flow. 🌊',
+      angry: 'This energy is yours. 🔥',
+      calm: 'Stillness is strength. 🌙',
+      empty: 'Space is waiting for you. 🕳️',
+      share: 'Share your mood with the world!',
+      streak: '🔥 {n} day streak! Keep going!',
+      return: 'Welcome back! How are you today?',
+      challenge: 'Daily challenge: {challenge}',
+      map: 'See how others feel around the world.',
     }
-    var idx = Math.floor(Math.random() * emotions.length);
-    if(totalDist > 400) idx = 0;
-    else if(totalDist > 250) idx = 4;
-    else if(totalDist > 100) idx = 1;
-    else if(totalDist < 15) idx = 12;
-    
-    var e = emotions[idx];
-    document.getElementById('resultEmoji').textContent = e.emoji;
-    document.getElementById('resultPhrase').textContent = e.p;
-    
-    // Incrémenter le compteur
-    count++;
-    localStorage.setItem('mw_landing_count', count.toString());
-    document.getElementById('liveCounter').textContent = count.toLocaleString();
+  },
+  fr: {
+    name: 'Français',
+    privacy: '100% Privé',
+    onTitle: ['Bienvenue sur Mewonen','Dessine librement','ISME est là'],
+    onText: ['Ton espace privé pour dessiner ce que tu ressens.','Utilise ton doigt. Mewonen écoute.','Ton compagnon. Toujours avec toi.'],
+    onBtn: 'Suivant',
+    counter: 'humeurs dessinées',
+    clear: 'Effacer',
+    share: 'Partager',
+    download: 'Sauvegarder',
+    gallery: 'Galerie',
+    stats: 'Stats',
+    world: 'Monde',
+    draw: 'Dessiner',
+    isme: {
+      hello: 'Bonjour. Je suis ISME. 💜',
+      draw: 'Dessine ce que tu ressens. Je suis là.',
+      joy: 'Tu rayonnes aujourd\'hui. ✨',
+      sad: 'Je suis là. Laisse couler. 🌊',
+      angry: 'Cette énergie est tienne. 🔥',
+      calm: 'L\'immobilité est force. 🌙',
+      empty: 'L\'espace t\'attend. 🕳️',
+      share: 'Partage ton humeur avec le monde !',
+      streak: '🔥 {n} jours de suite ! Continue !',
+      return: 'Bon retour ! Comment te sens-tu ?',
+      challenge: 'Défi du jour : {challenge}',
+      map: 'Vois comment les autres se sentent dans le monde.',
+    }
+  },
+  es: {
+    name: 'Español',
+    privacy: '100% Privado',
+    onTitle: ['Bienvenido a Mewonen','Dibuja libremente','ISME está aquí'],
+    onText: ['Tu espacio privado para dibujar lo que sientes.','Usa tu dedo. Mewonen escucha.','Tu compañero. Siempre contigo.'],
+    onBtn: 'Siguiente',
+    counter: 'estados dibujados',
+    clear: 'Limpiar',
+    share: 'Compartir',
+    download: 'Guardar',
+    gallery: 'Galería',
+    stats: 'Estadísticas',
+    world: 'Mundo',
+    draw: 'Dibujar',
+    isme: {
+      hello: 'Hola. Soy ISME. 💜',
+      draw: 'Dibuja lo que sientes. Estoy aquí.',
+      joy: 'Estás brillando hoy. ✨',
+      sad: 'Estoy aquí. Déjalo fluir. 🌊',
+      angry: 'Esta energía es tuya. 🔥',
+      calm: 'La quietud es fuerza. 🌙',
+      empty: 'El espacio te espera. 🕳️',
+      share: '¡Comparte tu estado con el mundo!',
+      streak: '🔥 {n} días seguidos! ¡Sigue!',
+      return: '¡Bienvenido! ¿Cómo estás hoy?',
+      challenge: 'Desafío diario: {challenge}',
+      map: 'Mira cómo se sienten los demás en el mundo.',
+    }
+  },
+  ar: {
+    name: 'العربية',
+    privacy: 'خصوصية 100%',
+    onTitle: ['مرحباً بك في Mewonen','ارسم بحرية','ISME هنا'],
+    onText: ['مساحتك الخاصة لرسم ما تشعر به.','استخدم إصبعك. Mewonen يستمع.','رفيقك. دائماً معك.'],
+    onBtn: 'التالي',
+    counter: 'حالة مرسومة',
+    clear: 'مسح',
+    share: 'مشاركة',
+    download: 'حفظ',
+    gallery: 'معرض',
+    stats: 'إحصائيات',
+    world: 'العالم',
+    draw: 'رسم',
+    isme: {
+      hello: 'مرحباً. أنا ISME. 💜',
+      draw: 'ارسم ما تشعر به. أنا هنا.',
+      joy: 'أنت مشرق اليوم. ✨',
+      sad: 'أنا هنا. دعه يتدفق. 🌊',
+      angry: 'هذه الطاقة لك. 🔥',
+      calm: 'السكون قوة. 🌙',
+      empty: 'الفضاء ينتظرك. 🕳️',
+      share: 'شارك مزاجك مع العالم!',
+      streak: '🔥 {n} أيام متتالية! استمر!',
+      return: 'مرحباً بعودتك! كيف حالك اليوم؟',
+      challenge: 'تحدي اليوم: {challenge}',
+      map: 'انظر كيف يشعر الآخرون في العالم.',
+    }
+  },
+  ja: {
+    name: '日本語',
+    privacy: '100% プライベート',
+    onTitle: ['Mewonenへようこそ','自由に描く','ISMEがいます'],
+    onText: ['あなたのプライベートな感情スペース。','指で描いてください。Mewonenが聞きます。','あなたの仲間。いつもそばに。'],
+    onBtn: '次へ',
+    counter: '描かれた気分',
+    clear: 'クリア',
+    share: 'シェア',
+    download: '保存',
+    gallery: 'ギャラリー',
+    stats: '統計',
+    world: '世界',
+    draw: '描く',
+    isme: {
+      hello: 'こんにちは。ISMEです。💜',
+      draw: '感じたことを描いて。ここにいるよ。',
+      joy: '今日は輝いているね。✨',
+      sad: 'ここにいるよ。流して。🌊',
+      angry: 'このエネルギーはあなたのもの。🔥',
+      calm: '静けさは力。🌙',
+      empty: 'スペースがあなたを待っている。🕳️',
+      share: '気分を世界と共有しよう！',
+      streak: '🔥 {n}日連続！続けて！',
+      return: 'おかえり！今日はどう？',
+      challenge: '今日のチャレンジ：{challenge}',
+      map: '世界の人々がどう感じているか見てみよう。',
+    }
+  },
+  zh: {
+    name: '中文',
+    privacy: '100% 私密',
+    onTitle: ['欢迎来到 Mewonen','自由绘画','ISME在这里'],
+    onText: ['你的私人情感空间。','用你的手指画画。Mewonen倾听。','你的伙伴。永远在你身边。'],
+    onBtn: '下一步',
+    counter: '心情已绘制',
+    clear: '清除',
+    share: '分享',
+    download: '保存',
+    gallery: '画廊',
+    stats: '统计',
+    world: '世界',
+    draw: '绘画',
+    isme: {
+      hello: '你好。我是ISME。💜',
+      draw: '画出你的感受。我在这里。',
+      joy: '你今天在发光。✨',
+      sad: '我在这里。让它流走。🌊',
+      angry: '这能量是你的。🔥',
+      calm: '静止是力量。🌙',
+      empty: '空间在等你。🕳️',
+      share: '与世界分享你的心情！',
+      streak: '🔥 连续{n}天！继续！',
+      return: '欢迎回来！今天怎么样？',
+      challenge: '今日挑战：{challenge}',
+      map: '看看世界上其他人的感受。',
+    }
+  },
+  ko: {
+    name: '한국어',
+    privacy: '100% 비공개',
+    onTitle: ['Mewonen에 오신 것을 환영합니다','자유롭게 그리기','ISME가 있습니다'],
+    onText: ['당신의 개인적인 감정 공간입니다.','손가락으로 그려보세요. Mewonen이 듣습니다.','당신의 동반자. 항상 함께합니다.'],
+    onBtn: '다음',
+    counter: '그려진 기분',
+    clear: '지우기',
+    share: '공유',
+    download: '저장',
+    gallery: '갤러리',
+    stats: '통계',
+    world: '세계',
+    draw: '그리기',
+    isme: {
+      hello: '안녕하세요. 저는 ISME입니다. 💜',
+      draw: '느낌을 그려보세요. 제가 여기 있어요.',
+      joy: '오늘 당신은 빛나고 있어요. ✨',
+      sad: '제가 여기 있어요. 흘려보내요. 🌊',
+      angry: '이 에너지는 당신의 것입니다. 🔥',
+      calm: '고요함은 힘입니다. 🌙',
+      empty: '공간이 당신을 기다리고 있어요. 🕳️',
+      share: '당신의 기분을 세계와 공유하세요!',
+      streak: '🔥 {n}일 연속! 계속하세요!',
+      return: '돌아오신 것을 환영합니다! 오늘 기분이 어떠신가요?',
+      challenge: '오늘의 도전: {challenge}',
+      map: '세계 다른 사람들의 기분을 보세요.',
+    }
+  }
+};
+
+// ============================================================
+//  STATE
+// ============================================================
+var lang = 'en';
+var TX = LANG[lang];
+var brushSize = 3;
+var currentMood = '';
+var points = [];
+var drawing = false;
+var streak = 0;
+var history = [];
+var gallery = [];
+
+// ============================================================
+//  DOM REFS
+// ============================================================
+var $ = function(id){ return document.getElementById(id); };
+var canvas = $('canvas');
+var ctx = canvas.getContext('2d');
+
+// ============================================================
+//  LANGUAGE
+// ============================================================
+function setLang(l) {
+  lang = l;
+  TX = LANG[lang] || LANG.en;
+  document.body.className = lang === 'ar' ? 'ar' : lang === 'ja' ? 'ja' : lang === 'zh' ? 'zh' : lang === 'ko' ? 'ko' : lang === 'es' ? 'es' : '';
+  updateUI();
+  updateIsmeText(TX.isme.hello);
 }
 
-function resetCanvas(){
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    document.getElementById('resultEmoji').textContent = '';
-    document.getElementById('resultPhrase').textContent = '';
+function updateUI() {
+  // Privacy
+  $('privacyLabel').textContent = TX.privacy;
+  // Onboarding
+  for(var i=0;i<3;i++){ $('onTitle'+i).textContent = TX.onTitle[i]; $('onText'+i).textContent = TX.onText[i]; }
+  $('onBtn').textContent = TX.onBtn;
+  // Counter
+  $('counterLabel').textContent = TX.counter;
+  // Clear
+  $('btnClear').textContent = TX.clear;
+  // Share / Download
+  $('btnShare').innerHTML = '📤 ' + TX.share;
+  $('btnDownload').innerHTML = '💾 ' + TX.download;
+  // Nav
+  document.querySelectorAll('.nav-item').forEach(function(el){
+    var label = el.querySelector('.nav-label');
+    if(label) {
+      var key = el.dataset.screen;
+      if(key === 'draw') label.textContent = TX.draw;
+      else if(key === 'gallery') label.textContent = TX.gallery;
+      else if(key === 'stats') label.textContent = TX.stats;
+      else if(key === 'map') label.textContent = TX.world;
+    }
+  });
+  // Language bar
+  renderLangBar();
 }
 
-canvas.addEventListener('touchstart', startDraw, {passive: false});
-canvas.addEventListener('touchmove', moveDraw, {passive: false});
-canvas.addEventListener('touchend', endDraw);
-canvas.addEventListener('mousedown', startDraw);
-canvas.addEventListener('mousemove', moveDraw);
-canvas.addEventListener('mouseup', endDraw);
-canvas.addEventListener('mouseleave', endDraw);
-
-// ==================== MASCOTTE ====================
-var mascotTexts = ["How are you feeling today?","Draw your mood. It helps. 💜","Someone just drew ☀️. Your turn?","You're not alone. Draw it."];
-var mascotIdx = 0;
-setInterval(function(){
-    mascotIdx = (mascotIdx + 1) % mascotTexts.length;
-    document.getElementById('mascotText').textContent = mascotTexts[mascotIdx];
-}, 4000);
-
-function mascotClick(){
-    var bubble = document.getElementById('mascotBubble');
-    bubble.innerHTML = '<span>Draw it on Mewonen. It helps. 💜</span>';
+function renderLangBar() {
+  var bar = $('langBar');
+  bar.innerHTML = '';
+  var codes = ['en','fr','es','ar','ja','zh','ko'];
+  codes.forEach(function(code){
+    var btn = document.createElement('button');
+    btn.textContent = code.toUpperCase();
+    if(code === lang) btn.className = 'active';
+    btn.addEventListener('click', function(){ setLang(code); });
+    bar.appendChild(btn);
+  });
 }
 
-// ==================== BARRE SOCIALE ====================
-var socialMessages = ["🇺🇸 just drew ☀️","🇯🇵 just drew 🌧️","🇧🇷 just drew 🌈","🇫🇷 just drew 🌙","🇮🇳 just drew 🔥"];
-function showSocial(){
-    var bar = document.getElementById('socialBar');
-    var txt = document.getElementById('socialText');
-    txt.textContent = socialMessages[Math.floor(Math.random() * socialMessages.length)];
-    bar.classList.add('show');
-    setTimeout(function(){ bar.classList.remove('show'); }, 4000);
-}
-setInterval(showSocial, 12000);
-showSocial();
+// ============================================================
+//  SPLASH / ONBOARDING
+// ============================================================
+setTimeout(function(){
+  $('splash').classList.add('hidden');
+  setTimeout(function(){
+    $('onboarding').classList.add('active');
+  }, 400);
+}, 1800);
 
-// ==================== REFERER DETECTION ====================
-var ref = document.referrer || '';
-var logo = document.querySelector('.subtitle');
-if(ref.includes('instagram') || ref.includes('facebook')){
-    logo.textContent = 'Welcome from Instagram 👋';
+var onStep = 0;
+$('onBtn').addEventListener('click', function(){
+  onStep++;
+  if(onStep >= 3) {
+    $('onboarding').classList.remove('active');
+    $('app').classList.add('active');
+    initApp();
+    return;
+  }
+  document.querySelectorAll('.on-slide').forEach(function(el){ el.classList.remove('active'); });
+  document.querySelector('.on-slide[data-i="'+onStep+'"]').classList.add('active');
+  document.querySelectorAll('.on-progress .dot').forEach(function(dot, i){
+    dot.classList.toggle('active', i <= onStep);
+  });
+  if(onStep === 2) $('onBtn').textContent = 'Start';
+});
+
+// ============================================================
+//  INIT APP
+// ============================================================
+function initApp() {
+  loadData();
+  setupCanvas();
+  setupNavigation();
+  setupToolbar();
+  setupButtons();
+  updateStreak();
+  updateCounter();
+  buildGallery();
+  buildStats();
+  buildMap();
+  setupIsme();
+  showIsmeMessage(TX.isme.hello, 3000);
+  startIsmeTimer();
 }
+
+// ============================================================
+//  DATA
+// ============================================================
+function loadData() {
+  try {
+    var h = localStorage.getItem('mewonen_history');
+    history = h ? JSON.parse(h) : [];
+    var g = localStorage.getItem('mewonen_gallery');
+    gallery = g ? JSON.parse(g) : [];
+    var s = localStorage.getItem('mewonen_streak');
+    streak = s ? parseInt(s) : 0;
+  } catch(e) { history=[]; gallery=[]; streak=0; }
+}
+
+function saveData() {
+  try {
+    localStorage.setItem('mewonen_history', JSON.stringify(history));
+    localStorage.setItem('mewonen_gallery', JSON.stringify(gallery));
+    localStorage.setItem('mewonen_streak', streak.toString());
+  } catch(e) {}
+}
+
+// ============================================================
+//  CANVAS
+// ============================================================
+function setupCanvas() {
+  var rect = canvas.getBoundingClientRect();
+  var scaleX = canvas.width / rect.width;
+  var scaleY = canvas.height / rect.height;
+  var isDrawing = false;
+  var pts = [];
+
+  function getPos(e) {
+    var r = canvas.getBoundingClientRect();
+    var cx = e.touches ? e.touches[0].clientX : e.clientX;
+    var cy = e.touches ? e.touches[0].clientY : e.clientY;
+    return { x: (cx - r.left) * (canvas.width / r.width), y: (cy - r.top) * (canvas.height / r.height) };
+  }
+
+  function start(e) {
+    e.preventDefault();
+    isDrawing = true;
+    pts = [];
+    var p = getPos(e);
+    pts.push(p);
+    ctx.beginPath();
+    ctx.moveTo(p.x, p.y);
+  }
+
+  function move(e) {
+    e.preventDefault();
+    if(!isDrawing) return;
+    var p = getPos(e);
+    pts.push(p);
+    ctx.lineTo(p.x, p.y);
+    ctx.strokeStyle = 'rgba(200,180,255,0.85)';
+    ctx.lineWidth = brushSize;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.shadowColor = 'rgba(139,92,246,0.3)';
+    ctx.shadowBlur = 10;
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+    if(navigator.vibrate && pts.length % 12 === 0) navigator.vibrate(3);
+  }
+
+  function end() {
+    if(!isDrawing) return;
+    isDrawing = false;
+    if(pts.length < 4) return;
+    analyzeDrawing(pts);
+  }
+
+  canvas.addEventListener('touchstart', start, {passive:false});
+  canvas.addEventListener('touchmove', move, {passive:false});
+  canvas.addEventListener('touchend', end);
+  canvas.addEventListener('mousedown', start);
+  canvas.addEventListener('mousemove', move);
+  canvas.addEventListener('mouseup', end);
+  canvas.addEventListener('mouseleave', end);
+}
+
+// ============================================================
+//  ANALYZE DRAWING
+// ============================================================
+function analyzeDrawing(pts) {
+  var totalDist = 0;
+  for(var i=1;i<pts.length;i++){
+    var dx=pts[i].x-pts[i-1].x, dy=pts[i].y-pts[i-1].y;
+    totalDist += Math.sqrt(dx*dx+dy*dy);
+  }
+  var idx = 0;
+  if(totalDist > 400) idx = 0;      // ☀️ Joy
+  else if(totalDist > 250) idx = 4;  // ⚡ Energy
+  else if(totalDist > 120) idx = 1;  // 🌧️ Sad
+  else if(totalDist < 20) idx = 12;  // 🕳️ Empty
+  else idx = 2;                      // 🌪️ Storm
+
+  var emotions = [
+    { emoji:'☀️', phrase:'You are shining today.', phrase2:'Your light is contagious.', mood:'joy' },
+    { emoji:'🌧️', phrase:'Let it wash over you.', phrase2:'Rain feeds the roots.', mood:'sad' },
+    { emoji:'🌪️', phrase:'Even storms run out of rain.', phrase2:'This too shall pass.', mood:'angry' },
+    { emoji:'🌈', phrase:'Look what you crossed.', phrase2:'Still standing.', mood:'calm' },
+    { emoji:'⚡', phrase:'This energy is yours.', phrase2:'Use it wisely.', mood:'angry' },
+    { emoji:'🌙', phrase:'Rest is not weakness.', phrase2:'Stillness is strength.', mood:'calm' },
+    { emoji:'🔥', phrase:'Passion is power.', phrase2:'You are alive.', mood:'angry' },
+    { emoji:'🌱', phrase:'Hope whispers.', phrase2:'Growth takes time.', mood:'calm' },
+    { emoji:'🙏', phrase:'Gratitude changes you.', phrase2:'You said thank you.', mood:'joy' },
+    { emoji:'💨', phrase:'Let the wind carry you.', phrase2:'Freedom is near.', mood:'calm' },
+    { emoji:'🌫️', phrase:'Clarity comes slowly.', phrase2:'The fog will lift.', mood:'sad' },
+    { emoji:'❄️', phrase:'Spring always comes.', phrase2:'You are frozen, not broken.', mood:'sad' },
+    { emoji:'🕳️', phrase:'Space waiting for you.', phrase2:'Fill it when you\'re ready.', mood:'empty' }
+  ];
+
+  var e = emotions[idx];
+  currentMood = e.mood;
+  $('resultEmoji').textContent = e.emoji;
+  $('resultPhrase').textContent = e.phrase;
+  $('resultPhrase2').textContent = e.phrase2;
+
+  // Save
+  var today = new Date().toISOString().split('T')[0];
+  history.push({ date: today, emoji: e.emoji, mood: e.mood });
+  if(history.length > 30) history.shift();
+
+  // Save drawing to gallery
+  var dataUrl = canvas.toDataURL('image/png');
+  gallery.unshift({ data: dataUrl, date: today, mood: e.mood });
+  if(gallery.length > 12) gallery.pop();
+
+  saveData();
+  updateCounter();
+  updateStreak();
+  buildGallery();
+  buildStats();
+
+  // ISME reaction
+  reactIsme(e.mood, e.emoji);
+
+  // Confetti
+  if(e.mood === 'joy') spawnConfetti();
+
+  // Share prompt
+  setTimeout(function(){
+    showIsmeMessage(TX.isme.share, 5000);
+  }, 2000);
+
+  // Challenge prompt
+  checkDailyChallenge();
+}
+
+// ============================================================
+//  COUNTER & STREAK
+// ============================================================
+function updateCounter() {
+  var total = history.length;
+  $('totalCounter').textContent = total;
+}
+
+function updateStreak() {
+  if(history.length === 0) { streak=0; $('streakBadge').classList.remove('show'); return; }
+  var today = new Date().toISOString().split('T')[0];
+  var lastDate = history[history.length-1].date;
+  if(lastDate === today) {
+    // Count consecutive days from end
+    var count = 0;
+    var d = new Date(today);
+    for(var i=history.length-1; i>=0; i--) {
+      var hd = new Date(history[i].date);
+      var diff = Math.floor((d - hd) / 86400000);
+      if(diff === count) count++;
+      else break;
+    }
+    streak = count;
+  } else {
+    var yesterday = new Date();
+    yesterday.setDate(yesterday.getDate()-1);
+    var yStr = yesterday.toISOString().split('T')[0];
+    if(lastDate === yStr) {
+      // Streak continues
+      var count2 = 0;
+      var d2 = new Date(today);
+      for(var j=history.length-1; j>=0; j--) {
+        var hd2 = new Date(history[j].date);
+        var diff2 = Math.floor((d2 - hd2) / 86400000);
+        if(diff2 === count2) count2++;
+        else break;
+      }
+      streak = count2;
+    } else {
+      streak = 0;
+    }
+  }
+  saveData();
+
+  var badge = $('streakBadge');
+  var text = $('streakText');
+  if(streak >= 2) {
+    badge.classList.add('show');
+    text.textContent = streak + ' day' + (streak>1?'s':'') + ' 🔥';
+    if(streak >= 100) badge.className = 'streak-badge show legendary';
+    else if(streak >= 30) badge.className = 'streak-badge show diamond';
+    else if(streak >= 7) badge.className = 'streak-badge show silver';
+    else if(streak >= 3) badge.className = 'streak-badge show bronze';
+    else badge.className = 'streak-badge show';
+    if(streak > 1 && streak % 3 === 0) {
+      showIsmeMessage(TX.isme.streak.replace('{n}', streak), 4000);
+    }
+  } else {
+    badge.classList.remove('show');
+  }
+}
+
+// ============================================================
+//  GALLERY
+// ============================================================
+function buildGallery() {
+  var grid = $('galleryGrid');
+  grid.innerHTML = '';
+  if(gallery.length === 0) {
+    grid.innerHTML = '<div style="color:rgba(255,255,255,0.2);grid-column:1/-1;padding:20px;font-size:0.6rem;text-align:center">No drawings yet.<br>Draw your first mood!</div>';
+    return;
+  }
+  gallery.forEach(function(item){
+    var div = document.createElement('div');
+    div.className = 'gallery-item';
+    var img = document.createElement('img');
+    img.src = item.data;
+    img.alt = 'Drawing';
+    img.loading = 'lazy';
+    div.appendChild(img);
+    grid.appendChild(div);
+  });
+}
+
+// ============================================================
+//  STATS
+// ============================================================
+function buildStats() {
+  var container = $('statsContainer');
+  container.innerHTML = '';
+  if(history.length === 0) {
+    container.innerHTML = '<div style="color:rgba(255,255,255,0.2);padding:20px;font-size:0.6rem">No data yet.</div>';
+    return;
+  }
+  var counts = {};
+  history.forEach(function(h){ counts[h.emoji] = (counts[h.emoji]||0)+1; });
+  var sorted = Object.keys(counts).sort(function(a,b){ return counts[b]-counts[a]; });
+  sorted.slice(0,6).forEach(function(emoji){
+    var div = document.createElement('div');
+    div.className = 'stat-card';
+    div.innerHTML = '<span class="emoji">'+emoji+'</span><div class="info"><span class="count">'+counts[emoji]+'</span><span class="label">'+emoji+'</span></div>';
+    container.appendChild(div);
+  });
+}
+
+// ============================================================
+//  MAP
+// ============================================================
+function buildMap() {
+  var grid = $('mapGrid');
+  grid.innerHTML = '';
+  var countries = [
+    { flag: '🇺🇸', name: 'USA', mood: '☀️' },
+    { flag: '🇫🇷', name: 'France', mood: '🌙' },
+    { flag: '🇯🇵', name: 'Japan', mood: '🌱' },
+    { flag: '🇲🇦', name: 'Morocco', mood: '☀️' },
+    { flag: '🇨🇳', name: 'China', mood: '🌧️' },
+    { flag: '🇰🇷', name: 'Korea', mood: '⚡' },
+    { flag: '🇪🇸', name: 'Spain', mood: '🌈' },
+    { flag: '🇧🇷', name: 'Brazil', mood: '🔥' },
+    { flag: '🇮🇳', name: 'India', mood: '🌫️' },
+  ];
+  countries.forEach(function(c){
+    var div = document.createElement('div');
+    div.className = 'map-country';
+    div.innerHTML = '<span class="flag">'+c.flag+'</span><span>'+c.name+'</span><span class="mood">'+c.mood+'</span>';
+    grid.appendChild(div);
+  });
+}
+
+// ============================================================
+//  NAVIGATION
+// ============================================================
+function setupNavigation() {
+  document.querySelectorAll('.nav-item').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var screen = this.dataset.screen;
+      document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
+      $('screen-'+screen).classList.add('active');
+      document.querySelectorAll('.nav-item').forEach(function(n){ n.classList.remove('active'); });
+      this.classList.add('active');
+      if(screen === 'gallery') buildGallery();
+      if(screen === 'stats') buildStats();
+      if(screen === 'map') buildMap();
+    });
+  });
+}
+
+// ============================================================
+//  TOOLBAR
+// ============================================================
+function setupToolbar() {
+  document.querySelectorAll('.toolbar button[data-size]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      brushSize = parseInt(this.dataset.size);
+      document.querySelectorAll('.toolbar button[data-size]').forEach(function(b){ b.classList.remove('active'); });
+      this.classList.add('active');
+    });
+  });
+  $('btnUndo').addEventListener('click', function(){
+    // Simple undo: clear and redraw last 3 strokes? For simplicity, just clear
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    showIsmeMessage('Undo. Try again? 💜', 2500);
+  });
+}
+
+// ============================================================
+//  BUTTONS
+// ============================================================
+function setupButtons() {
+  $('btnClear').addEventListener('click', function(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    $('resultEmoji').textContent = '';
+    $('resultPhrase').textContent = '';
+    $('resultPhrase2').textContent = '';
+    showIsmeMessage('Clear. Start fresh. ✨', 2500);
+  });
+
+  $('btnShare').addEventListener('click', function(){
+    var dataUrl = canvas.toDataURL('image/png');
+    var text = $('resultPhrase').textContent || 'I drew my mood on Mewonen. 💜 mewonnen.com';
+    if(navigator.share) {
+      var blob = dataURLToBlob(dataUrl);
+      navigator.share({
+        title: 'Mewonen',
+        text: text,
+        files: [new File([blob], 'mood.png', {type: 'image/png'})]
+      }).catch(function(){});
+    } else {
+      // Fallback: download
+      downloadImage(dataUrl);
+      showIsmeMessage('📤 Saved! Share it with your friends.', 3000);
+    }
+  });
+
+  $('btnDownload').addEventListener('click', function(){
+    var dataUrl = canvas.toDataURL('image/png');
+    downloadImage(dataUrl);
+    showIsmeMessage('💾 Saved to your device.', 2500);
+  });
+}
+
+function downloadImage(dataUrl) {
+  var link = document.createElement('a');
+  link.download = 'mewonen-mood.png';
+  link.href = dataUrl;
+  link.click();
+}
+
+function dataURLToBlob(dataUrl) {
+  var arr = dataUrl.split(','), mime = arr[0].match(/:(.*?);/)[1];
+  var bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+  while(n--) u8arr[n] = bstr.charCodeAt(n);
+  return new Blob([u8arr], {type: mime});
+}
+
+// ============================================================
+//  CONFETTI
+// ============================================================
+function spawnConfetti() {
+  var colors = ['#a78bfa','#7c3aed','#fbbf24','#34d399','#f472b6','#60a5fa'];
+  for(var i=0;i<30;i++){
+    var el = document.createElement('div');
+    el.className = 'confetti';
+    el.style.left = Math.random()*100+'%';
+    el.style.top = '-20px';
+    el.style.width = (3+Math.random()*6)+'px';
+    el.style.height = (3+Math.random()*6)+'px';
+    el.style.background = colors[Math.floor(Math.random()*colors.length)];
+    el.style.borderRadius = Math.random()>0.5?'50%':'2px';
+    el.style.animationDuration = (1.5+Math.random()*2)+'s';
+    el.style.animationDelay = Math.random()*0.5+'s';
+    document.body.appendChild(el);
+    setTimeout(function(){ el.remove(); }, 3000);
+  }
+}
+
+// ============================================================
+//  ISME
+// ============================================================
+var ismeTimer = null;
+
+function setupIsme() {
+  var avatar = $('ismeAvatar');
+  var bubble = $('ismeBubble');
+  avatar.addEventListener('click', function(){
+    if(bubble.classList.contains('show')) {
+      bubble.classList.remove('show');
+    } else {
+      var msgs = [
+        TX.isme.draw,
+        TX.isme.share,
+        TX.isme.challenge.replace('{challenge}', 'Draw your dream'),
+        TX.isme.map
+      ];
+      var msg = msgs[Math.floor(Math.random()*msgs.length)];
+      showIsmeMessage(msg, 4000);
+    }
+  });
+}
+
+function showIsmeMessage(text, duration) {
+  var bubble = $('ismeBubble');
+  var textEl = $('ismeText');
+  textEl.textContent = text;
+  bubble.classList.add('show');
+  clearTimeout(ismeTimer);
+  ismeTimer = setTimeout(function(){
+    bubble.classList.remove('show');
+  }, duration || 3000);
+}
+
+function reactIsme(mood, emoji) {
+  var msg = '';
+  switch(mood) {
+    case 'joy': msg = TX.isme.joy; break;
+    case 'sad': msg = TX.isme.sad; break;
+    case 'angry': msg = TX.isme.angry; break;
+    case 'calm': msg = TX.isme.calm; break;
+    case 'empty': msg = TX.isme.empty; break;
+    default: msg = TX.isme.draw; break;
+  }
+  showIsmeMessage(msg + ' ' + emoji, 4000);
+}
+
+function startIsmeTimer() {
+  setInterval(function(){
+    var bubble = $('ismeBubble');
+    if(bubble.classList.contains('show')) return;
+    var msgs = [
+      TX.isme.draw,
+      TX.isme.share,
+      TX.isme.map,
+      'How are you feeling today? 💜'
+    ];
+    var msg = msgs[Math.floor(Math.random()*msgs.length)];
+    showIsmeMessage(msg, 3000);
+  }, 25000);
+}
+
+function checkDailyChallenge() {
+  var today = new Date().toISOString().split('T')[0];
+  var lastChallenge = localStorage.getItem('mewonen_last_challenge') || '';
+  if(lastChallenge !== today) {
+    var challenges = ['Draw your joy','Draw your dream','Draw a memory','Draw your fear','Draw your hope','Draw your strength'];
+    var challenge = challenges[Math.floor(Math.random()*challenges.length)];
+    localStorage.setItem('mewonen_last_challenge', today);
+    setTimeout(function(){
+      showIsmeMessage(TX.isme.challenge.replace('{challenge}', challenge), 5000);
+    }, 4000);
+  }
+}
+
+// ============================================================
+//  UPDATE ON LANGUAGE CHANGE
+// ============================================================
+function updateIsmeText(text) {
+  var bubble = $('ismeBubble');
+  var textEl = $('ismeText');
+  if(bubble.classList.contains('show')) {
+    textEl.textContent = text;
+  }
+}
+
+// ============================================================
+//  INIT
+// ============================================================
+renderLangBar();
 </script>
 </body>
 </html>
