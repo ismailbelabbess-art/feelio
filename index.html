@@ -112,8 +112,8 @@ body{font-family:'Inter',-apple-system,sans-serif;background:#0a0a18;color:#fff;
 #appGlobeBg{
   position:absolute;inset:0;z-index:0;
   pointer-events:none;
-  opacity:0.35;
-  filter:blur(4px) brightness(0.5);
+  opacity:0.30;
+  filter:blur(3px) brightness(0.4);
 }
 #appGlobeBg canvas{
   width:100%;height:100%;display:block;
@@ -138,8 +138,8 @@ body{font-family:'Inter',-apple-system,sans-serif;background:#0a0a18;color:#fff;
   flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
   padding:6px 12px 70px;overflow-y:auto;position:relative;z-index:1;
 }
-.cwrap{position:relative;margin-bottom:4px;border-radius:28px;box-shadow:0 8px 40px rgba(124,58,237,0.04);background:rgba(10,10,24,0.4);backdrop-filter:blur(8px);padding:6px;}
-canvas#c{width:270px;height:270px;border-radius:28px;background:rgba(10,10,24,0.2);backdrop-filter:blur(4px);border:1.5px solid rgba(139,92,246,0.08);touch-action:none;cursor:crosshair;display:block}
+.cwrap{position:relative;margin-bottom:4px;border-radius:28px;box-shadow:0 8px 40px rgba(124,58,237,0.04);background:rgba(10,10,24,0.3);backdrop-filter:blur(6px);padding:6px;}
+canvas#c{width:270px;height:270px;border-radius:28px;background:rgba(10,10,24,0.15);backdrop-filter:blur(2px);border:1.5px solid rgba(139,92,246,0.08);touch-action:none;cursor:crosshair;display:block}
 @media(min-width:500px){canvas#c{width:310px;height:310px}}
 @media(max-width:380px){canvas#c{width:230px;height:230px}}
 
@@ -471,12 +471,15 @@ setTimeout(function(){
 }, 2200);
 
 // ============================================================
-// GLOBE 3D WITH EMOJI EMOTIONS (main screen)
+// GLOBE 3D "MANGA HEART" WITH EFFECTS
 // ============================================================
 var scene, camera, renderer, globe, emotionParticles = [];
 var isDragging = false, previousMousePosition = { x: 0, y: 0 };
 var globeRotation = { x: 0, y: 0 };
 var pulseTime = 0;
+var shockWaves = [];
+var trailParticles = [];
+var auraGlow = null;
 
 function initGlobe3D() {
   var container = document.querySelector('.globe-container');
@@ -491,17 +494,29 @@ function initGlobe3D() {
   renderer.setSize(w, h);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   
-  // Globe
-  var geo = new THREE.SphereGeometry(1.5, 64, 64);
+  // ===== AURA GLOW (sphere surrounding the globe) =====
+  var auraGeo = new THREE.SphereGeometry(1.65, 32, 32);
+  var auraMat = new THREE.MeshBasicMaterial({
+    color: 0x7c3aed,
+    transparent: true,
+    opacity: 0.06,
+    wireframe: false,
+    side: THREE.BackSide
+  });
+  auraGlow = new THREE.Mesh(auraGeo, auraMat);
+  scene.add(auraGlow);
+  
+  // ===== GLOBE =====
+  var geo = new THREE.SphereGeometry(1.5, 48, 48);
   var tex = new THREE.TextureLoader().load('https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg');
   var mat = new THREE.MeshPhongMaterial({ map: tex, shininess: 5 });
   globe = new THREE.Mesh(geo, mat);
   scene.add(globe);
   
-  // Stars
+  // ===== STARS =====
   var starsGeo = new THREE.BufferGeometry();
   var starsPos = [];
-  for(var i=0;i<2000;i++){
+  for(var i=0;i<1500;i++){
     var r = 50 + Math.random()*50;
     var theta = Math.random()*Math.PI*2;
     var phi = Math.acos(2*Math.random()-1);
@@ -510,12 +525,12 @@ function initGlobe3D() {
     starsPos.push(r*Math.sin(phi)*Math.sin(theta));
   }
   starsGeo.setAttribute('position', new THREE.Float32BufferAttribute(starsPos, 3));
-  var starsMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.06, transparent: true, opacity: 0.4 });
+  var starsMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.05, transparent: true, opacity: 0.3 });
   var stars = new THREE.Points(starsGeo, starsMat);
   scene.add(stars);
   
-  // Lights
-  var light = new THREE.DirectionalLight(0xffffff, 1.2);
+  // ===== LIGHTS =====
+  var light = new THREE.DirectionalLight(0xffffff, 1.0);
   light.position.set(2, 2, 4);
   scene.add(light);
   var light2 = new THREE.DirectionalLight(0x8888ff, 0.3);
@@ -524,9 +539,9 @@ function initGlobe3D() {
   var ambient = new THREE.AmbientLight(0x222244, 0.5);
   scene.add(ambient);
   
-  // ===== EMOJI PARTICLES =====
+  // ===== EMOJI PARTICLES (weather emotions) =====
   var emojiList = ['☀️','🌧️','🌈','⚡','🌙','🔥','🌱','💨','❄️','🌫️','🌪️'];
-  for(var i=0;i<120;i++){
+  for(var i=0;i<100;i++){
     var theta = Math.random()*Math.PI*2;
     var phi = Math.acos(2*Math.random()-1);
     var r = 1.56 + Math.random()*0.02;
@@ -535,37 +550,27 @@ function initGlobe3D() {
     var z = r*Math.sin(phi)*Math.sin(theta);
     
     var emoji = emojiList[Math.floor(Math.random()*emojiList.length)];
-    
     var c = document.createElement('canvas');
-    c.width = 64;
-    c.height = 64;
+    c.width = 48;
+    c.height = 48;
     var ctx2 = c.getContext('2d');
-    ctx2.font = '40px Arial';
+    ctx2.font = '30px Arial';
     ctx2.textAlign = 'center';
     ctx2.textBaseline = 'middle';
-    ctx2.fillText(emoji, 32, 34);
-    
+    ctx2.fillText(emoji, 24, 26);
     var texture = new THREE.CanvasTexture(c);
-    var spriteMat = new THREE.SpriteMaterial({ map: texture, transparent: true, depthTest: true, opacity: 0.85 });
+    var spriteMat = new THREE.SpriteMaterial({ map: texture, transparent: true, depthTest: true, opacity: 0.7 });
     var sprite = new THREE.Sprite(spriteMat);
     sprite.position.set(x, y, z);
-    var size = 0.08 + Math.random()*0.1;
+    var size = 0.07 + Math.random()*0.08;
     sprite.scale.set(size, size, 1);
     scene.add(sprite);
     
-    var ringGeo = new THREE.RingGeometry(size*2.5, size*4, 16);
-    var ringMat = new THREE.MeshBasicMaterial({ color: 0x7c3aed, transparent: true, opacity: 0.08, side: THREE.DoubleSide });
-    var ring = new THREE.Mesh(ringGeo, ringMat);
-    ring.position.set(x, y, z);
-    ring.lookAt(0, 0, 0);
-    scene.add(ring);
-    
     emotionParticles.push({
       mesh: sprite,
-      ring: ring,
       basePos: { x: x, y: y, z: z },
       phase: Math.random()*Math.PI*2,
-      speed: 0.3 + Math.random()*1.0,
+      speed: 0.3 + Math.random()*0.8,
       floatAmp: 0.02 + Math.random()*0.03,
       emoji: emoji
     });
@@ -604,6 +609,64 @@ function initGlobe3D() {
   }, {passive: true});
   canvasEl.addEventListener('touchend', function() { isDragging = false; });
   
+  // ===== SHOCK WAVE SYSTEM =====
+  function createShockWave() {
+    var ringGeo = new THREE.RingGeometry(0.05, 0.15, 32);
+    var ringMat = new THREE.MeshBasicMaterial({
+      color: 0xa78bfa,
+      transparent: true,
+      opacity: 0.6,
+      side: THREE.DoubleSide
+    });
+    var ring = new THREE.Mesh(ringGeo, ringMat);
+    ring.position.set(0, 0, 0);
+    scene.add(ring);
+    
+    shockWaves.push({
+      mesh: ring,
+      life: 0,
+      maxLife: 1.2,
+      scale: 0.1
+    });
+  }
+  
+  // ===== TRAIL PARTICLES =====
+  function createTrailParticles() {
+    for(var i=0;i<8;i++){
+      var theta = Math.random()*Math.PI*2;
+      var phi = Math.acos(2*Math.random()-1);
+      var r = 1.5 + Math.random()*0.2;
+      var x = r*Math.sin(phi)*Math.cos(theta);
+      var y = r*Math.cos(phi);
+      var z = r*Math.sin(phi)*Math.sin(theta);
+      
+      var geo2 = new THREE.SphereGeometry(0.01 + Math.random()*0.02, 4, 4);
+      var mat2 = new THREE.MeshBasicMaterial({ color: 0xa78bfa, transparent: true, opacity: 0.8 });
+      var particle = new THREE.Mesh(geo2, mat2);
+      particle.position.set(x, y, z);
+      scene.add(particle);
+      
+      trailParticles.push({
+        mesh: particle,
+        basePos: { x: x, y: y, z: z },
+        life: 0,
+        maxLife: 0.5 + Math.random()*0.5,
+        speed: 0.5 + Math.random()*0.5,
+        phase: Math.random()*Math.PI*2
+      });
+    }
+  }
+  
+  // ===== BEAT CYCLE =====
+  var beatCount = 0;
+  setInterval(function(){
+    beatCount++;
+    if(beatCount % 2 === 0) {
+      createShockWave();
+      createTrailParticles();
+    }
+  }, 1200);
+  
   animateGlobe3D();
   
   window.addEventListener('resize', function(){
@@ -614,13 +677,13 @@ function initGlobe3D() {
     renderer.setSize(w2, h2);
   });
   
-  // CTA button
+  // ===== CTA BUTTON =====
   $('globeCta').addEventListener('click', function(){
     $('globeScreen').classList.remove('active');
     $('onboarding').classList.add('active');
   });
   
-  // ISME avatar on globe - toggle bubble
+  // ===== ISME TOGGLE =====
   $('globeIsmeAv').addEventListener('click', function(){
     var bub = document.getElementById('globeIsmeBub');
     if(bub.style.display === 'none' || bub.style.display === '') {
@@ -632,7 +695,7 @@ function initGlobe3D() {
     }
   });
   
-  // ISME messages on globe
+  // ===== ISME MESSAGES =====
   var globeMessages = [
     { text: 'Hey ! I\'m ISME. Draw your mood, I\'ll listen. 💜', delay: 1000 },
     { text: '✍️ Tap the button below to start drawing!', delay: 4000 },
@@ -653,44 +716,78 @@ function initGlobe3D() {
 function animateGlobe3D() {
   requestAnimationFrame(animateGlobe3D);
   
-  // Pulsation (heartbeat)
-  pulseTime += 0.02;
-  var beat = Math.sin(pulseTime * 2) * 0.5 + 0.5;
-  var pulseScale = 1 + beat * 0.025;
+  // ===== HEARTBEAT PULSATION =====
+  pulseTime += 0.018;
+  var beat = Math.sin(pulseTime * 1.8) * 0.5 + 0.5;
+  var pulseScale = 1 + beat * 0.035;
+  var pulseOpacity = 0.04 + beat * 0.06;
   
+  // Globe scale
   if(globe) {
     globe.rotation.x += globeRotation.x * 0.1;
     globe.rotation.y += globeRotation.y * 0.1;
     globeRotation.x *= 0.9;
     globeRotation.y *= 0.9;
     if(!isDragging) {
-      globe.rotation.y += 0.002;
+      globe.rotation.y += 0.0015;
     }
     globe.scale.set(pulseScale, pulseScale, pulseScale);
   }
   
+  // Aura glow
+  if(auraGlow) {
+    auraGlow.scale.set(1 + beat * 0.06, 1 + beat * 0.06, 1 + beat * 0.06);
+    auraGlow.material.opacity = pulseOpacity;
+  }
+  
+  // ===== SHOCK WAVES =====
+  for(var i=shockWaves.length-1; i>=0; i--){
+    var sw = shockWaves[i];
+    sw.life += 0.02;
+    sw.scale += 0.06;
+    var progress = sw.life / sw.maxLife;
+    sw.mesh.scale.set(sw.scale, sw.scale, 1);
+    sw.mesh.material.opacity = 0.6 * (1 - progress);
+    if(sw.life >= sw.maxLife) {
+      scene.remove(sw.mesh);
+      shockWaves.splice(i, 1);
+    }
+  }
+  
+  // ===== TRAIL PARTICLES =====
   var time = Date.now() * 0.001;
+  for(var i=trailParticles.length-1; i>=0; i--){
+    var tp = trailParticles[i];
+    tp.life += 0.02;
+    var progress = tp.life / tp.maxLife;
+    var offset = Math.sin(time * tp.speed + tp.phase) * 0.04 * (1 - progress);
+    tp.mesh.position.x = tp.basePos.x * (1 + offset * 0.5);
+    tp.mesh.position.y = tp.basePos.y * (1 + offset * 0.5);
+    tp.mesh.position.z = tp.basePos.z * (1 + offset * 0.5);
+    tp.mesh.material.opacity = 0.8 * (1 - progress);
+    var sc = 1 + progress * 2;
+    tp.mesh.scale.set(sc, sc, sc);
+    if(tp.life >= tp.maxLife) {
+      scene.remove(tp.mesh);
+      trailParticles.splice(i, 1);
+    }
+  }
+  
+  // ===== EMOJI PARTICLES =====
   emotionParticles.forEach(function(p) {
     var offset = Math.sin(time * p.speed + p.phase) * p.floatAmp;
     p.mesh.position.x = p.basePos.x * (1 + offset * 0.4);
     p.mesh.position.y = p.basePos.y * (1 + offset * 0.4);
     p.mesh.position.z = p.basePos.z * (1 + offset * 0.4);
-    var sc = 0.08 + Math.sin(time * p.speed * 1.3 + p.phase + beat*0.5) * 0.03;
+    var sc = 0.07 + Math.sin(time * p.speed * 1.3 + p.phase + beat*0.5) * 0.025;
     p.mesh.scale.set(sc, sc, 1);
-    if(p.ring) {
-      p.ring.position.copy(p.mesh.position);
-      p.ring.lookAt(0, 0, 0);
-      var rs = 1 + Math.sin(time * p.speed * 0.7 + p.phase + beat*0.3) * 0.15;
-      p.ring.scale.set(rs, rs, rs);
-      p.ring.material.opacity = 0.04 + Math.sin(time * p.speed + p.phase + beat*0.5) * 0.02;
-    }
   });
   
   renderer.render(scene, camera);
 }
 
 // ============================================================
-// APP GLOBE (background in draw screen)
+// APP GLOBE (background in draw screen) - Lighter version
 // ============================================================
 function initAppGlobe() {
   var container = document.getElementById('appGlobeBg');
@@ -705,597 +802,335 @@ function initAppGlobe() {
   appGlobeRenderer.setSize(w, h);
   appGlobeRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
   
-  // Globe
-  var geo = new THREE.SphereGeometry(1.2, 48, 48);
+  // Globe (smaller, lower quality)
+  var geo = new THREE.SphereGeometry(1.2, 32, 32);
   var tex = new THREE.TextureLoader().load('https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg');
   var mat = new THREE.MeshPhongMaterial({ map: tex, shininess: 5 });
   appGlobe = new THREE.Mesh(geo, mat);
   appGlobeScene.add(appGlobe);
   
+  // Aura for background
+  var auraGeo = new THREE.SphereGeometry(1.32, 16, 16);
+  var auraMat = new THREE.MeshBasicMaterial({
+    color: 0x7c3aed,
+    transparent: true,
+    opacity: 0.03,
+    side: THREE.BackSide
+  });
+  var aura = new THREE.Mesh(auraGeo, auraMat);
+  appGlobeScene.add(aura);
+  
   // Lights
-  var light = new THREE.DirectionalLight(0xffffff, 0.8);
+  var light = new THREE.DirectionalLight(0xffffff, 0.6);
   light.position.set(2, 2, 4);
   appGlobeScene.add(light);
-  var ambient = new THREE.AmbientLight(0x222244, 0.5);
+  var ambient = new THREE.AmbientLight(0x222244, 0.4);
   appGlobeScene.add(ambient);
   
-  // Some particles (fewer for performance)
+  // Few particles
   var emojiList = ['☀️','🌧️','🌈','⚡','🌙','🔥','🌱'];
-  for(var i=0;i<40;i++){
-    var theta = Math.random()*Math.PI*2;
-    var phi = Math.acos(2*Math.random()-1);
-    var r = 1.26 + Math.random()*0.02;
-    var x = r*Math.sin(phi)*Math.cos(theta);
-    var y = r*Math.cos(phi);
-    var z = r*Math.sin(phi)*Math.sin(theta);
-    
-    var emoji = emojiList[Math.floor(Math.random()*emojiList.length)];
-    var c = document.createElement('canvas');
-    c.width = 48;
-    c.height = 48;
-    var ctx2 = c.getContext('2d');
-    ctx2.font = '30px Arial';
-    ctx2.textAlign = 'center';
-    ctx2.textBaseline = 'middle';
-    ctx2.fillText(emoji, 24, 26);
-    var texture = new THREE.CanvasTexture(c);
-    var spriteMat = new THREE.SpriteMaterial({ map: texture, transparent: true, depthTest: true, opacity: 0.4 });
-    var sprite = new THREE.Sprite(spriteMat);
-    sprite.position.set(x, y, z);
-    var size = 0.06 + Math.random()*0.06;
-    sprite.scale.set(size, size, 1);
-    appGlobeScene.add(sprite);
-  }
-  
-  animateAppGlobe();
+  for(var i=0;i=0;i--){
+      var hd2=new Date(history[j].date);
+      var diff2=Math.floor((d2-hd2)/86400000);
+      if(diff2===c2)c2++;
+      else break;
+    }
+    streak=c2;
+  } else { streak=0; }
 }
-
-function animateAppGlobe() {
-  requestAnimationFrame(animateAppGlobe);
-  
-  // Pulsation for background globe
-  pulseTime += 0.015;
-  var beat = Math.sin(pulseTime * 1.8) * 0.5 + 0.5;
-  var pulseScale = 1 + beat * 0.02;
-  
-  if(appGlobe) {
-    appGlobe.rotation.y += 0.001;
-    appGlobe.scale.set(pulseScale, pulseScale, pulseScale);
-  }
-  
-  if(appGlobeRenderer && appGlobeScene && appGlobeCamera) {
-    appGlobeRenderer.render(appGlobeScene, appGlobeCamera);
-  }
-}
-
-// ============================================================
-// ONBOARDING
-// ============================================================
-var onStep = 0;
-$('onBtn').addEventListener('click', function(){
-  onStep++;
-  if(onStep >= 3){
-    $('onboarding').classList.remove('active');
-    $('app').classList.add('active');
-    initApp();
-    // Start app globe
-    setTimeout(initAppGlobe, 200);
-    return;
-  }
-  var slides = document.querySelectorAll('.on-slide');
-  slides.forEach(function(s){ s.classList.remove('active'); });
-  slides[onStep].classList.add('active');
-  var dots = document.querySelectorAll('.on-dots span');
-  dots.forEach(function(d,i){ d.classList.toggle('active', i<=onStep); });
-  if(onStep === 2) $('onBtn').textContent = 'Start';
-});
-
-// ============================================================
-// INIT APP
-// ============================================================
-function initApp() {
-  loadData();
-  setupCanvas();
-  setupNav();
-  setupToolbar();
-  setupButtons();
-  updateStreak();
-  updateCounter();
-  buildGallery();
-  buildStats();
-  buildMap();
-  setupIsme();
-  setTimeout(function(){
-    showIsme(TX.isme.step1, 5000);
-  }, 1500);
-  startIsmeTimer();
-  checkDailyChallenge();
-}
-
-// ============================================================
-// DATA
-// ============================================================
-function loadData() {
-  try {
-    history = JSON.parse(localStorage.getItem('mw_h')||'[]');
-    gallery = JSON.parse(localStorage.getItem('mw_g')||'[]');
-    streak = parseInt(localStorage.getItem('mw_s')||'0');
-  } catch(e){ history=[]; gallery=[]; streak=0; }
-}
-function saveData() {
-  try {
-    localStorage.setItem('mw_h', JSON.stringify(history));
-    localStorage.setItem('mw_g', JSON.stringify(gallery));
-    localStorage.setItem('mw_s', streak.toString());
-  } catch(e){}
-}
-
-// ============================================================
-// CANVAS
-// ============================================================
-function setupCanvas() {
-  function getPos(e) {
-    var r = canvas.getBoundingClientRect();
-    var cx = e.touches ? e.touches[0].clientX : e.clientX;
-    var cy = e.touches ? e.touches[0].clientY : e.clientY;
-    return { x: (cx - r.left) * (canvas.width / r.width), y: (cy - r.top) * (canvas.height / r.height) };
-  }
-  function start(e) {
-    e.preventDefault();
-    isDrawing = true;
-    pts = [];
-    var p = getPos(e);
-    pts.push(p);
-    ctx.beginPath();
-    ctx.moveTo(p.x, p.y);
-    if(navigator.vibrate) navigator.vibrate(5);
-  }
-  function move(e) {
-    e.preventDefault();
-    if(!isDrawing) return;
-    var p = getPos(e);
-    pts.push(p);
-    ctx.lineTo(p.x, p.y);
-    ctx.strokeStyle = 'rgba(200,180,255,0.85)';
-    ctx.lineWidth = brush;
-    ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
-    ctx.shadowColor = 'rgba(139,92,246,0.15)';
-    ctx.shadowBlur = 8;
-    ctx.stroke();
-    ctx.shadowBlur = 0;
-    if(navigator.vibrate && pts.length % 8 === 0) navigator.vibrate(3);
-  }
-  function end() {
-    if(!isDrawing) return;
-    isDrawing = false;
-    if(pts.length < 4) return;
-    analyze(pts);
-  }
-  canvas.addEventListener('touchstart', start, {passive:false});
-  canvas.addEventListener('touchmove', move, {passive:false});
-  canvas.addEventListener('touchend', end);
-  canvas.addEventListener('mousedown', start);
-  canvas.addEventListener('mousemove', move);
-  canvas.addEventListener('mouseup', end);
-  canvas.addEventListener('mouseleave', end);
-}
-
-// ============================================================
-// ANALYZE
-// ============================================================
-function analyze(pts) {
-  var dist = 0;
-  for(var i=1;i<pts.length;i++){
-    var dx=pts[i].x-pts[i-1].x, dy=pts[i].y-pts[i-1].y;
-    dist += Math.sqrt(dx*dx+dy*dy);
-  }
-  var idx = 0;
-  if(dist > 400) idx = 0;
-  else if(dist > 250) idx = 4;
-  else if(dist > 120) idx = 1;
-  else if(dist < 20) idx = 12;
-  else idx = 2;
-  var emos = [
-    { e:'☀️', p:'You are shining today.', m:'joy' },
-    { e:'🌧️', p:'Let it wash over you.', m:'sad' },
-    { e:'🌪️', p:'Even storms run out of rain.', m:'angry' },
-    { e:'🌈', p:'Look what you crossed.', m:'calm' },
-    { e:'⚡', p:'This energy is yours.', m:'angry' },
-    { e:'🌙', p:'Rest is not weakness.', m:'calm' },
-    { e:'🔥', p:'Passion is power.', m:'angry' },
-    { e:'🌱', p:'Hope whispers.', m:'calm' },
-    { e:'🙏', p:'Gratitude changes you.', m:'joy' },
-    { e:'💨', p:'Let the wind carry you.', m:'calm' },
-    { e:'🌫️', p:'Clarity comes slowly.', m:'sad' },
-    { e:'❄️', p:'Spring always comes.', m:'sad' },
-    { e:'🕳️', p:'Space waiting for you.', m:'empty' }
-  ];
-  var emo = emos[idx];
-  mood = emo.m;
-  $('re').textContent = emo.e;
-  $('rp').textContent = emo.p;
-  var today = new Date().toISOString().split('T')[0];
-  history.push({ date: today, emoji: emo.e, mood: emo.m });
-  if(history.length > 30) history.shift();
-  var dataUrl = canvas.toDataURL('image/png');
-  gallery.unshift({ data: dataUrl, date: today, mood: emo.m });
-  if(gallery.length > 12) gallery.pop();
-  saveData();
-  updateCounter();
-  updateStreak();
-  buildGallery();
-  buildStats();
-  reactIsme(emo.m, emo.e);
-  setTimeout(function(){
-    showIsme(TX.isme.step2.replace('{emoji}', emo.e), 4000);
-  }, 1000);
-  if(emo.m === 'joy') spawnConfetti();
-  showBubbles(emo);
-  setTimeout(function(){
-    showIsme(TX.isme.step3, 4000);
-  }, 5000);
-  setTimeout(function(){
-    showIsme(TX.isme.step4, 4000);
-  }, 9000);
-  checkDailyChallenge();
-}
-
-// ============================================================
-// BUBBLES
-// ============================================================
-function showBubbles(emo) {
-  var box = $('bubbleBox');
-  var msg = $('bubbleMsg');
-  var btns = $('bubbleBtns');
-  var icon = emo.e;
-  var msgs = {
-    'joy': 'You\'re radiating happiness! ❤️ How are you feeling?',
-    'sad': 'I\'m here for you. ❤️ Do you want to talk about it?',
-    'angry': 'This energy is powerful. 🔥 Channel it into your art.',
-    'calm': 'Peace surrounds you. 🌙 Keep this moment.',
-    'empty': 'Space is waiting for you. 🕳️ Fill it with what you love.'
-  };
-  var m = msgs[emo.m] || 'How are you feeling today? 💜';
-  msg.innerHTML = '<span class="b-icon">'+icon+'</span>'+m;
-  btns.innerHTML = `
-    <button class="bb-p" data-action="share">📤 Share</button>
-    <button class="bb-p" data-action="globe">🌍 See on globe</button>
-    <button class="bb-s" data-action="ok">💜 OK</button>
-  `;
-  box.classList.add('show');
-  btns.querySelectorAll('button').forEach(function(b){
-    b.addEventListener('click', function(){
-      var action = this.dataset.action;
-      if(action === 'share') { $('btnShare').click(); }
-      else if(action === 'globe') { showGlobe(); }
-      else if(action === 'ok') { box.classList.remove('show'); }
-    });
-  });
-}
-function showGlobe() {
-  $('globeScreen').classList.add('active');
-  $('app').classList.remove('active');
-  setTimeout(function(){
-    $('globeScreen').classList.remove('active');
-    $('app').classList.add('active');
-    showIsme('🌍 Your mood is now on the globe!', 3000);
-  }, 3000);
-}
-
-// ============================================================
-// COUNTER & STREAK
-// ============================================================
-function updateCounter() { $('tc').textContent = history.length; }
-function updateStreak() {
-  if(history.length === 0) { streak=0; $('sb').classList.remove('show'); return; }
-  var today = new Date().toISOString().split('T')[0];
-  var last = history[history.length-1].date;
-  if(last === today) {
-    var c=0, d=new Date(today);
-    for(var i=history.length-1;i>=0;i--){ var hd=new Date(history[i].date); var diff=Math.floor((d-hd)/86400000); if(diff===c)c++; else break; }
-    streak=c;
-  } else {
-    var y = new Date(); y.setDate(y.getDate()-1); var ys=y.toISOString().split('T')[0];
-    if(last === ys) {
-      var c2=0, d2=new Date(today);
-      for(var j=history.length-1;j>=0;j--){ var hd2=new Date(history[j].date); var diff2=Math.floor((d2-hd2)/86400000); if(diff2===c2)c2++; else break; }
-      streak=c2;
-    } else { streak=0; }
-  }
-  saveData();
-  var badge=$('sb'), text=$('st');
-  if(streak>=2){
-    badge.classList.add('show'); text.textContent=streak+' day'+(streak>1?'s':'')+' 🔥';
-    if(streak>=100) badge.className='sb show lg';
-    else if(streak>=30) badge.className='sb show dm';
-    else if(streak>=7) badge.className='sb show sv';
-    else if(streak>=3) badge.className='sb show bz';
-    else badge.className='sb show';
-    if(streak>1 && streak%5===0) showIsme(TX.isme.st.replace('{n}',streak),4000);
-  } else { badge.classList.remove('show'); }
+saveData();
+var badge=$('sb'), text=$('st');
+if(streak>=2){
+  badge.classList.add('show'); text.textContent=streak+' day'+(streak>1?'s':'')+' 🔥';
+  if(streak>=100) badge.className='sb show lg';
+  else if(streak>=30) badge.className='sb show dm';
+  else if(streak>=7) badge.className='sb show sv';
+  else if(streak>=3) badge.className='sb show bz';
+  else badge.className='sb show';
+  if(streak>1 && streak%5===0) showIsme(TX.isme.st.replace('{n}',streak),4000);
+} else { badge.classList.remove('show'); }
 }
 
 // ============================================================
 // GALLERY
 // ============================================================
 function buildGallery() {
-  var grid = $('gg');
-  grid.innerHTML = '';
-  if(gallery.length === 0) {
-    grid.innerHTML = '<div style="color:rgba(255,255,255,0.1);grid-column:1/-1;padding:16px;font-size:0.5rem;text-align:center">No drawings yet.<br>Draw your first mood!</div>';
-    return;
-  }
-  gallery.forEach(function(item){
-    var div = document.createElement('div');
-    div.className = 'gi';
-    var img = document.createElement('img');
-    img.src = item.data;
-    img.alt = 'Drawing';
-    img.loading = 'lazy';
-    div.appendChild(img);
-    grid.appendChild(div);
-  });
+var grid = $('gg');
+grid.innerHTML = '';
+if(gallery.length === 0) {
+  grid.innerHTML = '<div style="color:rgba(255,255,255,0.1);grid-column:1/-1;padding:16px;font-size:0.5rem;text-align:center">No drawings yet.<br>Draw your first mood!</div>';
+  return;
+}
+gallery.forEach(function(item){
+  var div = document.createElement('div');
+  div.className = 'gi';
+  var img = document.createElement('img');
+  img.src = item.data;
+  img.alt = 'Drawing';
+  img.loading = 'lazy';
+  div.appendChild(img);
+  grid.appendChild(div);
+});
 }
 
 // ============================================================
 // STATS
 // ============================================================
 function buildStats() {
-  var c = $('scContainer');
-  c.innerHTML = '';
-  if(history.length === 0) {
-    c.innerHTML = '<div style="color:rgba(255,255,255,0.1);padding:16px;font-size:0.5rem">No data yet.</div>';
-    return;
-  }
-  var counts = {};
-  history.forEach(function(h){ counts[h.emoji] = (counts[h.emoji]||0)+1; });
-  var sorted = Object.keys(counts).sort(function(a,b){ return counts[b]-counts[a]; });
-  var max = sorted.length ? counts[sorted[0]] : 1;
-  sorted.slice(0,6).forEach(function(emoji){
-    var div = document.createElement('div');
-    div.className = 'scard';
-    var pct = (counts[emoji]/max)*100;
-    div.innerHTML = '<span class="e">'+emoji+'</span><div class="inf"><span class="n">'+counts[emoji]+'</span><span class="l">'+emoji+'</span><div class="bar"><span style="width:'+pct+'%"></span></div></div>';
-    c.appendChild(div);
-  });
+var c = $('scContainer');
+c.innerHTML = '';
+if(history.length === 0) {
+  c.innerHTML = '<div style="color:rgba(255,255,255,0.1);padding:16px;font-size:0.5rem">No data yet.</div>';
+  return;
+}
+var counts = {};
+history.forEach(function(h){ counts[h.emoji] = (counts[h.emoji]||0)+1; });
+var sorted = Object.keys(counts).sort(function(a,b){ return counts[b]-counts[a]; });
+var max = sorted.length ? counts[sorted[0]] : 1;
+sorted.slice(0,6).forEach(function(emoji){
+  var div = document.createElement('div');
+  div.className = 'scard';
+  var pct = (counts[emoji]/max)*100;
+  div.innerHTML = '<span class="e">'+emoji+'</span><div class="inf"><span class="n">'+counts[emoji]+'</span><span class="l">'+emoji+'</span><div class="bar"><span style="width:'+pct+'%"></span></div></div>';
+  c.appendChild(div);
+});
 }
 
 // ============================================================
 // MAP
 // ============================================================
 function buildMap() {
-  var grid = $('mg');
-  grid.innerHTML = '';
-  var countries = [
-    { f:'🇺🇸', n:'USA', m:'☀️' },
-    { f:'🇫🇷', n:'France', m:'🌙' },
-    { f:'🇯🇵', n:'Japan', m:'🌱' },
-    { f:'🇲🇦', n:'Morocco', m:'☀️' },
-    { f:'🇨🇳', n:'China', m:'🌧️' },
-    { f:'🇰🇷', n:'Korea', m:'⚡' },
-    { f:'🇪🇸', n:'Spain', m:'🌈' },
-    { f:'🇧🇷', n:'Brazil', m:'🔥' },
-    { f:'🇮🇳', n:'India', m:'🌫️' }
-  ];
-  countries.forEach(function(c){
-    var div = document.createElement('div');
-    div.className = 'mc';
-    div.innerHTML = '<span class="f">'+c.f+'</span><span class="n">'+c.n+'</span><span class="m">'+c.m+'</span>';
-    grid.appendChild(div);
-  });
+var grid = $('mg');
+grid.innerHTML = '';
+var countries = [
+  { f:'🇺🇸', n:'USA', m:'☀️' },
+  { f:'🇫🇷', n:'France', m:'🌙' },
+  { f:'🇯🇵', n:'Japan', m:'🌱' },
+  { f:'🇲🇦', n:'Morocco', m:'☀️' },
+  { f:'🇨🇳', n:'China', m:'🌧️' },
+  { f:'🇰🇷', n:'Korea', m:'⚡' },
+  { f:'🇪🇸', n:'Spain', m:'🌈' },
+  { f:'🇧🇷', n:'Brazil', m:'🔥' },
+  { f:'🇮🇳', n:'India', m:'🌫️' }
+];
+countries.forEach(function(c){
+  var div = document.createElement('div');
+  div.className = 'mc';
+  div.innerHTML = '<span class="f">'+c.f+'</span><span class="n">'+c.n+'</span><span class="m">'+c.m+'</span>';
+  grid.appendChild(div);
+});
 }
 
 // ============================================================
 // NAV
 // ============================================================
 function setupNav() {
-  document.querySelectorAll('.nav-item').forEach(function(btn){
-    btn.addEventListener('click', function(){
-      var sc = this.dataset.sc;
-      document.querySelectorAll('.scr').forEach(function(s){ s.classList.remove('active'); });
-      var target = $('sc-'+sc);
-      if(target) target.classList.add('active');
-      document.querySelectorAll('.nav-item').forEach(function(n){ n.classList.remove('active'); });
-      this.classList.add('active');
-      if(sc === 'gallery') buildGallery();
-      if(sc === 'stats') buildStats();
-      if(sc === 'map') buildMap();
-    });
+document.querySelectorAll('.nav-item').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    var sc = this.dataset.sc;
+    document.querySelectorAll('.scr').forEach(function(s){ s.classList.remove('active'); });
+    var target = $('sc-'+sc);
+    if(target) target.classList.add('active');
+    document.querySelectorAll('.nav-item').forEach(function(n){ n.classList.remove('active'); });
+    this.classList.add('active');
+    if(sc === 'gallery') buildGallery();
+    if(sc === 'stats') buildStats();
+    if(sc === 'map') buildMap();
   });
+});
 }
 
 // ============================================================
 // TOOLBAR
 // ============================================================
 function setupToolbar() {
-  document.querySelectorAll('.tb button[data-s]').forEach(function(btn){
-    btn.addEventListener('click', function(){
-      brush = parseInt(this.dataset.s);
-      document.querySelectorAll('.tb button[data-s]').forEach(function(b){ b.classList.remove('active'); });
-      this.classList.add('active');
-    });
+document.querySelectorAll('.tb button[data-s]').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    brush = parseInt(this.dataset.s);
+    document.querySelectorAll('.tb button[data-s]').forEach(function(b){ b.classList.remove('active'); });
+    this.classList.add('active');
   });
-  $('btnUndo').addEventListener('click', function(){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    $('re').textContent = '';
-    $('rp').textContent = '';
-    $('bubbleBox').classList.remove('show');
-    showIsme('Try again. You got this. 💜', 2500);
-  });
+});
+$('btnUndo').addEventListener('click', function(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  $('re').textContent = '';
+  $('rp').textContent = '';
+  $('bubbleBox').classList.remove('show');
+  showIsme('Try again. You got this. 💜', 2500);
+});
 }
 
 // ============================================================
 // BUTTONS
 // ============================================================
 function setupButtons() {
-  $('btnClear').addEventListener('click', function(){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    $('re').textContent = '';
-    $('rp').textContent = '';
-    $('bubbleBox').classList.remove('show');
-    showIsme('Clear. Start fresh. ✨', 2500);
-  });
-  $('btnShare').addEventListener('click', function(){
-    var dataUrl = canvas.toDataURL('image/png');
-    var phrase = $('rp').textContent || 'I drew my mood on Mewonen. 💜';
-    if(navigator.share) {
-      var blob = dataURLToBlob(dataUrl);
-      navigator.share({
-        title: 'Mewonen',
-        text: phrase + '\nDraw yours at mewonnen.com',
-        files: [new File([blob], 'mood.png', {type: 'image/png'})]
-      }).catch(function(){});
-    } else {
-      downloadImage(dataUrl);
-      showIsme('📤 Saved! Share it with your friends.', 3000);
-    }
-  });
-  $('btnDownload').addEventListener('click', function(){
-    var dataUrl = canvas.toDataURL('image/png');
+$('btnClear').addEventListener('click', function(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  $('re').textContent = '';
+  $('rp').textContent = '';
+  $('bubbleBox').classList.remove('show');
+  showIsme('Clear. Start fresh. ✨', 2500);
+});
+$('btnShare').addEventListener('click', function(){
+  var dataUrl = canvas.toDataURL('image/png');
+  var phrase = $('rp').textContent || 'I drew my mood on Mewonen. 💜';
+  if(navigator.share) {
+    var blob = dataURLToBlob(dataUrl);
+    navigator.share({
+      title: 'Mewonen',
+      text: phrase + '\nDraw yours at mewonnen.com',
+      files: [new File([blob], 'mood.png', {type: 'image/png'})]
+    }).catch(function(){});
+  } else {
     downloadImage(dataUrl);
-    showIsme('💾 Saved to your device.', 2500);
-  });
+    showIsme('📤 Saved! Share it with your friends.', 3000);
+  }
+});
+$('btnDownload').addEventListener('click', function(){
+  var dataUrl = canvas.toDataURL('image/png');
+  downloadImage(dataUrl);
+  showIsme('💾 Saved to your device.', 2500);
+});
 }
 function downloadImage(dataUrl) {
-  var link = document.createElement('a');
-  link.download = 'mewonen-mood.png';
-  link.href = dataUrl;
-  link.click();
+var link = document.createElement('a');
+link.download = 'mewonen-mood.png';
+link.href = dataUrl;
+link.click();
 }
 function dataURLToBlob(dataUrl) {
-  var arr = dataUrl.split(','), mime = arr[0].match(/:(.*?);/)[1];
-  var bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
-  while(n--) u8arr[n] = bstr.charCodeAt(n);
-  return new Blob([u8arr], {type: mime});
+var arr = dataUrl.split(','), mime = arr[0].match(/:(.*?);/)[1];
+var bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+while(n--) u8arr[n] = bstr.charCodeAt(n);
+return new Blob([u8arr], {type: mime});
 }
 
 // ============================================================
 // CONFETTI
 // ============================================================
 function spawnConfetti() {
-  var colors = ['#a78bfa','#7c3aed','#fbbf24','#34d399','#f472b6','#60a5fa','#f97316'];
-  for(var i=0;i<25;i++){
-    var el = document.createElement('div');
-    el.className = 'confetti';
-    el.style.left = Math.random()*100+'%';
-    el.style.top = '-20px';
-    el.style.width = (3+Math.random()*6)+'px';
-    el.style.height = (3+Math.random()*6)+'px';
-    el.style.background = colors[Math.floor(Math.random()*colors.length)];
-    el.style.borderRadius = Math.random()>0.5?'50%':'2px';
-    el.style.animationDuration = (1.5+Math.random()*2)+'s';
-    el.style.animationDelay = Math.random()*0.5+'s';
-    document.body.appendChild(el);
-    setTimeout(function(){ el.remove(); }, 3000);
-  }
+var colors = ['#a78bfa','#7c3aed','#fbbf24','#34d399','#f472b6','#60a5fa','#f97316'];
+for(var i=0;i<25;i++){
+  var el = document.createElement('div');
+  el.className = 'confetti';
+  el.style.left = Math.random()*100+'%';
+  el.style.top = '-20px';
+  el.style.width = (3+Math.random()*6)+'px';
+  el.style.height = (3+Math.random()*6)+'px';
+  el.style.background = colors[Math.floor(Math.random()*colors.length)];
+  el.style.borderRadius = Math.random()>0.5?'50%':'2px';
+  el.style.animationDuration = (1.5+Math.random()*2)+'s';
+  el.style.animationDelay = Math.random()*0.5+'s';
+  document.body.appendChild(el);
+  setTimeout(function(){ el.remove(); }, 3000);
+}
 }
 
 // ============================================================
 // ISME
 // ============================================================
 function setupIsme() {
-  var av = $('ismeAv');
-  var bub = $('ismeBub');
-  var close = $('ismeClose');
-  av.addEventListener('click', function(){
-    if(bub.classList.contains('show')) {
-      bub.classList.remove('show');
-    } else {
-      var msgs = [TX.isme.d, TX.isme.sh, TX.isme.ch.replace('{challenge}','Draw your dream')];
-      var msg = msgs[Math.floor(Math.random()*msgs.length)];
-      showIsme(msg, 4000);
-    }
-  });
-  close.addEventListener('click', function(e){
-    e.stopPropagation();
+var av = $('ismeAv');
+var bub = $('ismeBub');
+var close = $('ismeClose');
+av.addEventListener('click', function(){
+  if(bub.classList.contains('show')) {
     bub.classList.remove('show');
-  });
+  } else {
+    var msgs = [TX.isme.d, TX.isme.sh, TX.isme.ch.replace('{challenge}','Draw your dream')];
+    var msg = msgs[Math.floor(Math.random()*msgs.length)];
+    showIsme(msg, 4000);
+  }
+});
+close.addEventListener('click', function(e){
+  e.stopPropagation();
+  bub.classList.remove('show');
+});
 }
 
 function showIsme(text, duration) {
-  var bub = $('ismeBub');
-  var el = $('ismeText');
-  var icon = $('ismeIcon');
-  var stepLabel = $('ismeStepLabel');
-  if(text.includes('Welcome') || text.includes('Bienvenue') || text.includes('ようこそ') || text.includes('مرحباً')) {
-    stepLabel.textContent = '👋 Step 1/4';
-    icon.textContent = '✨';
-  } else if(text.includes('drew') || text.includes('dessiné') || text.includes('그렸') || text.includes('رسمت')) {
-    stepLabel.textContent = '🎨 Step 2/4';
-    icon.textContent = '💜';
-  } else if(text.includes('share') || text.includes('Partage') || text.includes('공유') || text.includes('مشاركة')) {
-    stepLabel.textContent = '🌍 Step 3/4';
-    icon.textContent = '📤';
-  } else if(text.includes('tomorrow') || text.includes('demain') || text.includes('내일') || text.includes('غداً')) {
-    stepLabel.textContent = '🔥 Step 4/4';
-    icon.textContent = '⭐';
-  } else {
-    stepLabel.textContent = '💜 ISME';
-    icon.textContent = '✦';
-  }
-  el.textContent = text;
-  bub.classList.add('show');
-  clearTimeout(ismeTimer);
-  ismeTimer = setTimeout(function(){
-    bub.classList.remove('show');
-  }, duration || 3000);
+var bub = $('ismeBub');
+var el = $('ismeText');
+var icon = $('ismeIcon');
+var stepLabel = $('ismeStepLabel');
+if(text.includes('Welcome') || text.includes('Bienvenue') || text.includes('ようこそ') || text.includes('مرحباً')) {
+  stepLabel.textContent = '👋 Step 1/4';
+  icon.textContent = '✨';
+} else if(text.includes('drew') || text.includes('dessiné') || text.includes('그렸') || text.includes('رسمت')) {
+  stepLabel.textContent = '🎨 Step 2/4';
+  icon.textContent = '💜';
+} else if(text.includes('share') || text.includes('Partage') || text.includes('공유') || text.includes('مشاركة')) {
+  stepLabel.textContent = '🌍 Step 3/4';
+  icon.textContent = '📤';
+} else if(text.includes('tomorrow') || text.includes('demain') || text.includes('내일') || text.includes('غداً')) {
+  stepLabel.textContent = '🔥 Step 4/4';
+  icon.textContent = '⭐';
+} else {
+  stepLabel.textContent = '💜 ISME';
+  icon.textContent = '✦';
+}
+el.textContent = text;
+bub.classList.add('show');
+clearTimeout(ismeTimer);
+ismeTimer = setTimeout(function(){
+  bub.classList.remove('show');
+}, duration || 3000);
 }
 
 function reactIsme(m, emoji) {
-  var msg = '';
-  switch(m) {
-    case 'joy': msg = TX.isme.j; break;
-    case 'sad': msg = TX.isme.s; break;
-    case 'angry': msg = TX.isme.a; break;
-    case 'calm': msg = TX.isme.c; break;
-    case 'empty': msg = TX.isme.e; break;
-    default: msg = TX.isme.d; break;
-  }
-  showIsme(msg + ' ' + emoji, 4000);
+var msg = '';
+switch(m) {
+  case 'joy': msg = TX.isme.j; break;
+  case 'sad': msg = TX.isme.s; break;
+  case 'angry': msg = TX.isme.a; break;
+  case 'calm': msg = TX.isme.c; break;
+  case 'empty': msg = TX.isme.e; break;
+  default: msg = TX.isme.d; break;
+}
+showIsme(msg + ' ' + emoji, 4000);
 }
 
 function startIsmeTimer() {
-  setInterval(function(){
-    var bub = $('ismeBub');
-    if(bub.classList.contains('show')) return;
-    var msgs = [TX.isme.d, TX.isme.sh, 'How are you feeling today? 💜'];
-    var msg = msgs[Math.floor(Math.random()*msgs.length)];
-    showIsme(msg, 3000);
-  }, 30000);
+setInterval(function(){
+  var bub = $('ismeBub');
+  if(bub.classList.contains('show')) return;
+  var msgs = [TX.isme.d, TX.isme.sh, 'How are you feeling today? 💜'];
+  var msg = msgs[Math.floor(Math.random()*msgs.length)];
+  showIsme(msg, 3000);
+}, 30000);
 }
 
 function checkDailyChallenge() {
-  var today = new Date().toISOString().split('T')[0];
-  var last = localStorage.getItem('mw_lc') || '';
-  if(last !== today) {
-    var challenges = ['Draw your joy','Draw your dream','Draw a memory','Draw your fear','Draw your hope','Draw your strength','Draw your love','Draw your peace'];
-    var ch = challenges[Math.floor(Math.random()*challenges.length)];
-    localStorage.setItem('mw_lc', today);
-    setTimeout(function(){
-      showIsme(TX.isme.ch.replace('{challenge}', ch), 5000);
-    }, 5000);
-  }
+var today = new Date().toISOString().split('T')[0];
+var last = localStorage.getItem('mw_lc') || '';
+if(last !== today) {
+  var challenges = ['Draw your joy','Draw your dream','Draw a memory','Draw your fear','Draw your hope','Draw your strength','Draw your love','Draw your peace'];
+  var ch = challenges[Math.floor(Math.random()*challenges.length)];
+  localStorage.setItem('mw_lc', today);
+  setTimeout(function(){
+    showIsme(TX.isme.ch.replace('{challenge}', ch), 5000);
+  }, 5000);
+}
 }
 
 // ============================================================
 // TOAST
 // ============================================================
 function showToast(msg) {
-  var t = $('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(function(){ t.classList.remove('show'); }, 2500);
+var t = $('toast');
+t.textContent = msg;
+t.classList.add('show');
+setTimeout(function(){ t.classList.remove('show'); }, 2500);
 }
 
 // ============================================================
 // GLOBE COUNTER
 // ============================================================
 function updateGlobeCounter() {
-  var c = parseInt(localStorage.getItem('mw_globe_counter') || '1547');
-  c += Math.floor(Math.random() * 3) + 1;
-  localStorage.setItem('mw_globe_counter', c.toString());
-  $('globeCounter').textContent = c.toLocaleString();
+var c = parseInt(localStorage.getItem('mw_globe_counter') || '1547');
+c += Math.floor(Math.random() * 3) + 1;
+localStorage.setItem('mw_globe_counter', c.toString());
+$('globeCounter').textContent = c.toLocaleString();
 }
 setInterval(updateGlobeCounter, 20000);
 updateGlobeCounter();
