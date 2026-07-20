@@ -80,7 +80,6 @@ body{font-family:'Inter',-apple-system,sans-serif;background:#0a0a18;color:#fff;
 @keyframes ctaPulse{0%,100%{transform:scale(1);box-shadow:0 8px 40px rgba(124,58,237,0.4)}50%{transform:scale(1.03);box-shadow:0 8px 60px rgba(124,58,237,0.6)}}
 .globe-cta .cta-btn:active{transform:scale(0.94)}
 .globe-cta .cta-btn .arrow{font-size:1.2rem;transition:transform 0.3s}
-.globe-cta .cta-btn:hover .arrow{transform:translateX(4px)}
 .globe-cta .cta-sub{
   color:rgba(255,255,255,0.25);font-size:0.55rem;margin-top:10px;letter-spacing:2px;
 }
@@ -106,13 +105,27 @@ body{font-family:'Inter',-apple-system,sans-serif;background:#0a0a18;color:#fff;
 .btn-p{background:linear-gradient(135deg,#7c3aed,#a78bfa);color:#fff;box-shadow:0 4px 25px rgba(124,58,237,0.3)}
 
 /* ===== APP ===== */
-#app{display:none;flex-direction:column;height:100dvh;background:#0a0a18}
+#app{display:none;flex-direction:column;height:100dvh;background:#0a0a18;position:relative;overflow:hidden}
 #app.active{display:flex}
+
+/* ===== GLOBE EN ARRIÈRE-PLAN DANS L'APP ===== */
+#appGlobeBg{
+  position:absolute;inset:0;z-index:0;
+  pointer-events:none;
+  opacity:0.35;
+  filter:blur(4px) brightness(0.5);
+}
+#appGlobeBg canvas{
+  width:100%;height:100%;display:block;
+}
+
 .top-bar{
   display:flex;justify-content:space-between;align-items:center;
   padding:8px 12px;padding-top:calc(8px + env(safe-area-inset-top,0));
   background:rgba(10,10,24,0.6);backdrop-filter:blur(16px);
-  border-bottom:0.5px solid rgba(255,255,255,0.03);flex-shrink:0;z-index:50;
+  border-bottom:0.5px solid rgba(255,255,255,0.03);
+  flex-shrink:0;z-index:50;
+  position:relative;
 }
 .top-bar .l{display:flex;align-items:center;gap:6px;color:rgba(255,255,255,0.2);font-size:0.4rem;letter-spacing:1px}
 .top-bar .l .d{width:4px;height:4px;border-radius:50%;background:#34d399;animation:dp 2s infinite}
@@ -121,18 +134,21 @@ body{font-family:'Inter',-apple-system,sans-serif;background:#0a0a18;color:#fff;
 .top-bar .langs button{background:none;border:none;color:rgba(255,255,255,0.12);font-size:0.45rem;cursor:pointer;padding:2px 6px;border-radius:4px;transition:all 0.2s;font-weight:400}
 .top-bar .langs button.active{color:#a78bfa;background:rgba(139,92,246,0.06)}
 
-.main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 12px 70px;overflow-y:auto;position:relative}
-.cwrap{position:relative;margin-bottom:4px;border-radius:28px;box-shadow:0 8px 40px rgba(124,58,237,0.04)}
-canvas#c{width:270px;height:270px;border-radius:28px;background:rgba(16,16,32,0.85);backdrop-filter:blur(12px);border:1.5px solid rgba(139,92,246,0.08);touch-action:none;cursor:crosshair;display:block}
+.main{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:6px 12px 70px;overflow-y:auto;position:relative;z-index:1;
+}
+.cwrap{position:relative;margin-bottom:4px;border-radius:28px;box-shadow:0 8px 40px rgba(124,58,237,0.04);background:rgba(10,10,24,0.4);backdrop-filter:blur(8px);padding:6px;}
+canvas#c{width:270px;height:270px;border-radius:28px;background:rgba(10,10,24,0.2);backdrop-filter:blur(4px);border:1.5px solid rgba(139,92,246,0.08);touch-action:none;cursor:crosshair;display:block}
 @media(min-width:500px){canvas#c{width:310px;height:310px}}
 @media(max-width:380px){canvas#c{width:230px;height:230px}}
 
-#rw{display:flex;flex-direction:column;align-items:center;min-height:50px;gap:1px;margin-top:4px}
+#rw{display:flex;flex-direction:column;align-items:center;min-height:50px;gap:1px;margin-top:4px;position:relative;z-index:2}
 #re{font-size:2.6rem;animation:pi 0.5s cubic-bezier(0.34,1.56,0.64,1)}
 #rp{color:rgba(255,255,255,0.8);font-size:0.7rem;font-weight:300;text-align:center;max-width:280px}
 @keyframes pi{0%{opacity:0;transform:scale(0.4)}100%{opacity:1;transform:scale(1)}}
 
-#bubbleBox{display:none;flex-direction:column;align-items:center;gap:6px;margin-top:6px;width:100%;max-width:300px;animation:bb 0.5s ease-out}
+#bubbleBox{display:none;flex-direction:column;align-items:center;gap:6px;margin-top:6px;width:100%;max-width:300px;animation:bb 0.5s ease-out;position:relative;z-index:2}
 @keyframes bb{0%{opacity:0;transform:translateY(10px)}100%{opacity:1;transform:translateY(0)}}
 #bubbleBox.show{display:flex}
 .bubble-msg{background:var(--s2);border:1px solid rgba(139,92,246,0.08);border-radius:16px;padding:12px 16px;text-align:center;font-size:0.65rem;color:rgba(255,255,255,0.85);line-height:1.6;backdrop-filter:blur(12px);width:100%}
@@ -143,21 +159,25 @@ canvas#c{width:270px;height:270px;border-radius:28px;background:rgba(16,16,32,0.
 .bubble-btns .bb-p{background:linear-gradient(135deg,#7c3aed,#a78bfa);color:#fff}
 .bubble-btns .bb-s{background:transparent;border:1px solid rgba(255,255,255,0.06);color:rgba(255,255,255,0.5)}
 
-.tb{display:flex;gap:4px;margin-bottom:3px;flex-wrap:wrap;justify-content:center}
+.tb{display:flex;gap:4px;margin-bottom:3px;flex-wrap:wrap;justify-content:center;position:relative;z-index:2}
 .tb button{width:28px;height:28px;border-radius:50%;border:1px solid rgba(255,255,255,0.04);background:rgba(255,255,255,0.02);color:rgba(255,255,255,0.25);cursor:pointer;font-size:0.55rem;transition:all 0.2s;display:flex;align-items:center;justify-content:center}
 .tb button:active{transform:scale(0.85)}
 .tb button.active{border-color:#a78bfa;color:#a78bfa;background:rgba(139,92,246,0.06)}
-.btn-g{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-top:3px}
+.btn-g{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-top:3px;position:relative;z-index:2}
 .btn-s{padding:6px 14px;font-size:0.5rem}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:10px 24px;border-radius:50px;font-size:0.65rem;font-weight:500;letter-spacing:0.5px;cursor:pointer;transition:all 0.2s;border:none;font-family:inherit}
+.btn:active{transform:scale(0.94)}
+.btn-p{background:linear-gradient(135deg,#7c3aed,#a78bfa);color:#fff;box-shadow:0 4px 25px rgba(124,58,237,0.3)}
+.btn-o{background:transparent;color:#a78bfa;border:1px solid rgba(139,92,246,0.15)}
 
-.sb{display:none;align-items:center;gap:4px;padding:2px 10px;border-radius:12px;font-size:0.45rem;font-weight:500;margin-bottom:2px;animation:bi 0.5s cubic-bezier(0.34,1.56,0.64,1)}
+.sb{display:none;align-items:center;gap:4px;padding:2px 10px;border-radius:12px;font-size:0.45rem;font-weight:500;margin-bottom:2px;animation:bi 0.5s cubic-bezier(0.34,1.56,0.64,1);position:relative;z-index:2}
 @keyframes bi{0%{opacity:0;transform:scale(0.5)}100%{opacity:1;transform:scale(1)}}
 .sb.show{display:inline-flex}
 .sb.bz{background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.12);color:#fbbf24}
 .sb.sv{background:rgba(203,213,225,0.08);border:1px solid rgba(203,213,225,0.12);color:#cbd5e1}
 .sb.dm{background:rgba(96,165,250,0.08);border:1px solid rgba(96,165,250,0.12);color:#60a5fa}
 .sb.lg{background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.25);color:#fbbf24;box-shadow:0 0 30px rgba(251,191,36,0.05)}
-.counter{color:rgba(255,255,255,0.12);font-size:0.4rem;margin-top:3px}
+.counter{color:rgba(255,255,255,0.12);font-size:0.4rem;margin-top:3px;position:relative;z-index:2}
 .counter span{color:#a78bfa}
 
 .nav{position:fixed;bottom:0;left:0;right:0;z-index:100;display:flex;justify-content:space-around;align-items:center;height:60px;padding:0 4px env(safe-area-inset-bottom,0);background:rgba(10,10,22,0.97);backdrop-filter:blur(30px);border-top:0.5px solid rgba(255,255,255,0.02)}
@@ -169,7 +189,7 @@ canvas#c{width:270px;height:270px;border-radius:28px;background:rgba(16,16,32,0.
 .nav-item .nd{position:absolute;top:3px;width:3px;height:3px;border-radius:50%;background:#a78bfa;opacity:0}
 .nav-item.active .nd{opacity:1}
 
-.scr{display:none;flex-direction:column;align-items:center;padding:6px 12px 70px;width:100%;height:100%;overflow-y:auto;animation:si 0.35s ease-out}
+.scr{display:none;flex-direction:column;align-items:center;padding:6px 12px 70px;width:100%;height:100%;overflow-y:auto;animation:si 0.35s ease-out;position:relative;z-index:1}
 @keyframes si{0%{opacity:0;transform:translateY(4px)}100%{opacity:1;transform:translateY(0)}}
 .scr.active{display:flex}
 .st{font-size:1rem;font-weight:200;letter-spacing:2px;margin-bottom:1px;color:#fff}
@@ -276,6 +296,9 @@ canvas#c{width:270px;height:270px;border-radius:28px;background:rgba(16,16,32,0.
 
 <!-- ===== APP ===== -->
 <div id="app">
+  <!-- Globe en arrière-plan -->
+  <div id="appGlobeBg"><canvas id="appGlobeCanvas"></canvas></div>
+
   <div class="top-bar">
     <div class="l"><span class="d"></span><span id="prLabel">100% Private</span></div>
     <div class="langs" id="langBar"></div>
@@ -381,6 +404,10 @@ var history = [];
 var gallery = [];
 var isDrawing = false;
 var ismeTimer = null;
+var appGlobeScene = null;
+var appGlobeCamera = null;
+var appGlobeRenderer = null;
+var appGlobe = null;
 
 var $ = function(i){ return document.getElementById(i); };
 var canvas = $('c');
@@ -444,11 +471,12 @@ setTimeout(function(){
 }, 2200);
 
 // ============================================================
-// GLOBE 3D WITH EMOJI EMOTIONS
+// GLOBE 3D WITH EMOJI EMOTIONS (main screen)
 // ============================================================
 var scene, camera, renderer, globe, emotionParticles = [];
 var isDragging = false, previousMousePosition = { x: 0, y: 0 };
 var globeRotation = { x: 0, y: 0 };
+var pulseTime = 0;
 
 function initGlobe3D() {
   var container = document.querySelector('.globe-container');
@@ -496,9 +524,8 @@ function initGlobe3D() {
   var ambient = new THREE.AmbientLight(0x222244, 0.5);
   scene.add(ambient);
   
-  // ===== EMOJI PARTICLES (weather emotions) =====
+  // ===== EMOJI PARTICLES =====
   var emojiList = ['☀️','🌧️','🌈','⚡','🌙','🔥','🌱','💨','❄️','🌫️','🌪️'];
-  // We'll use canvas to draw emojis on sprites
   for(var i=0;i<120;i++){
     var theta = Math.random()*Math.PI*2;
     var phi = Math.acos(2*Math.random()-1);
@@ -509,7 +536,6 @@ function initGlobe3D() {
     
     var emoji = emojiList[Math.floor(Math.random()*emojiList.length)];
     
-    // Create canvas for emoji
     var c = document.createElement('canvas');
     c.width = 64;
     c.height = 64;
@@ -520,26 +546,15 @@ function initGlobe3D() {
     ctx2.fillText(emoji, 32, 34);
     
     var texture = new THREE.CanvasTexture(c);
-    var spriteMat = new THREE.SpriteMaterial({ 
-      map: texture, 
-      transparent: true, 
-      depthTest: true,
-      opacity: 0.85
-    });
+    var spriteMat = new THREE.SpriteMaterial({ map: texture, transparent: true, depthTest: true, opacity: 0.85 });
     var sprite = new THREE.Sprite(spriteMat);
     sprite.position.set(x, y, z);
     var size = 0.08 + Math.random()*0.1;
     sprite.scale.set(size, size, 1);
     scene.add(sprite);
     
-    // Glow ring
     var ringGeo = new THREE.RingGeometry(size*2.5, size*4, 16);
-    var ringMat = new THREE.MeshBasicMaterial({ 
-      color: 0x7c3aed, 
-      transparent: true, 
-      opacity: 0.08, 
-      side: THREE.DoubleSide 
-    });
+    var ringMat = new THREE.MeshBasicMaterial({ color: 0x7c3aed, transparent: true, opacity: 0.08, side: THREE.DoubleSide });
     var ring = new THREE.Mesh(ringGeo, ringMat);
     ring.position.set(x, y, z);
     ring.lookAt(0, 0, 0);
@@ -617,7 +632,7 @@ function initGlobe3D() {
     }
   });
   
-  // Show ISME messages on globe (guide)
+  // ISME messages on globe
   var globeMessages = [
     { text: 'Hey ! I\'m ISME. Draw your mood, I\'ll listen. 💜', delay: 1000 },
     { text: '✍️ Tap the button below to start drawing!', delay: 4000 },
@@ -638,6 +653,11 @@ function initGlobe3D() {
 function animateGlobe3D() {
   requestAnimationFrame(animateGlobe3D);
   
+  // Pulsation (heartbeat)
+  pulseTime += 0.02;
+  var beat = Math.sin(pulseTime * 2) * 0.5 + 0.5;
+  var pulseScale = 1 + beat * 0.025;
+  
   if(globe) {
     globe.rotation.x += globeRotation.x * 0.1;
     globe.rotation.y += globeRotation.y * 0.1;
@@ -646,6 +666,7 @@ function animateGlobe3D() {
     if(!isDragging) {
       globe.rotation.y += 0.002;
     }
+    globe.scale.set(pulseScale, pulseScale, pulseScale);
   }
   
   var time = Date.now() * 0.001;
@@ -654,18 +675,97 @@ function animateGlobe3D() {
     p.mesh.position.x = p.basePos.x * (1 + offset * 0.4);
     p.mesh.position.y = p.basePos.y * (1 + offset * 0.4);
     p.mesh.position.z = p.basePos.z * (1 + offset * 0.4);
-    var sc = 0.08 + Math.sin(time * p.speed * 1.3 + p.phase) * 0.03;
+    var sc = 0.08 + Math.sin(time * p.speed * 1.3 + p.phase + beat*0.5) * 0.03;
     p.mesh.scale.set(sc, sc, 1);
     if(p.ring) {
       p.ring.position.copy(p.mesh.position);
       p.ring.lookAt(0, 0, 0);
-      var rs = 1 + Math.sin(time * p.speed * 0.7 + p.phase) * 0.15;
+      var rs = 1 + Math.sin(time * p.speed * 0.7 + p.phase + beat*0.3) * 0.15;
       p.ring.scale.set(rs, rs, rs);
-      p.ring.material.opacity = 0.04 + Math.sin(time * p.speed + p.phase) * 0.02;
+      p.ring.material.opacity = 0.04 + Math.sin(time * p.speed + p.phase + beat*0.5) * 0.02;
     }
   });
   
   renderer.render(scene, camera);
+}
+
+// ============================================================
+// APP GLOBE (background in draw screen)
+// ============================================================
+function initAppGlobe() {
+  var container = document.getElementById('appGlobeBg');
+  var w = container.clientWidth;
+  var h = container.clientHeight || 400;
+  
+  appGlobeScene = new THREE.Scene();
+  appGlobeCamera = new THREE.PerspectiveCamera(45, w/h, 0.1, 1000);
+  appGlobeCamera.position.z = 3.2;
+  
+  appGlobeRenderer = new THREE.WebGLRenderer({ canvas: document.getElementById('appGlobeCanvas'), alpha: true, antialias: true });
+  appGlobeRenderer.setSize(w, h);
+  appGlobeRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+  
+  // Globe
+  var geo = new THREE.SphereGeometry(1.2, 48, 48);
+  var tex = new THREE.TextureLoader().load('https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg');
+  var mat = new THREE.MeshPhongMaterial({ map: tex, shininess: 5 });
+  appGlobe = new THREE.Mesh(geo, mat);
+  appGlobeScene.add(appGlobe);
+  
+  // Lights
+  var light = new THREE.DirectionalLight(0xffffff, 0.8);
+  light.position.set(2, 2, 4);
+  appGlobeScene.add(light);
+  var ambient = new THREE.AmbientLight(0x222244, 0.5);
+  appGlobeScene.add(ambient);
+  
+  // Some particles (fewer for performance)
+  var emojiList = ['☀️','🌧️','🌈','⚡','🌙','🔥','🌱'];
+  for(var i=0;i<40;i++){
+    var theta = Math.random()*Math.PI*2;
+    var phi = Math.acos(2*Math.random()-1);
+    var r = 1.26 + Math.random()*0.02;
+    var x = r*Math.sin(phi)*Math.cos(theta);
+    var y = r*Math.cos(phi);
+    var z = r*Math.sin(phi)*Math.sin(theta);
+    
+    var emoji = emojiList[Math.floor(Math.random()*emojiList.length)];
+    var c = document.createElement('canvas');
+    c.width = 48;
+    c.height = 48;
+    var ctx2 = c.getContext('2d');
+    ctx2.font = '30px Arial';
+    ctx2.textAlign = 'center';
+    ctx2.textBaseline = 'middle';
+    ctx2.fillText(emoji, 24, 26);
+    var texture = new THREE.CanvasTexture(c);
+    var spriteMat = new THREE.SpriteMaterial({ map: texture, transparent: true, depthTest: true, opacity: 0.4 });
+    var sprite = new THREE.Sprite(spriteMat);
+    sprite.position.set(x, y, z);
+    var size = 0.06 + Math.random()*0.06;
+    sprite.scale.set(size, size, 1);
+    appGlobeScene.add(sprite);
+  }
+  
+  animateAppGlobe();
+}
+
+function animateAppGlobe() {
+  requestAnimationFrame(animateAppGlobe);
+  
+  // Pulsation for background globe
+  pulseTime += 0.015;
+  var beat = Math.sin(pulseTime * 1.8) * 0.5 + 0.5;
+  var pulseScale = 1 + beat * 0.02;
+  
+  if(appGlobe) {
+    appGlobe.rotation.y += 0.001;
+    appGlobe.scale.set(pulseScale, pulseScale, pulseScale);
+  }
+  
+  if(appGlobeRenderer && appGlobeScene && appGlobeCamera) {
+    appGlobeRenderer.render(appGlobeScene, appGlobeCamera);
+  }
 }
 
 // ============================================================
@@ -678,6 +778,8 @@ $('onBtn').addEventListener('click', function(){
     $('onboarding').classList.remove('active');
     $('app').classList.add('active');
     initApp();
+    // Start app globe
+    setTimeout(initAppGlobe, 200);
     return;
   }
   var slides = document.querySelectorAll('.on-slide');
