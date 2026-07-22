@@ -104,22 +104,27 @@ canvas#c{width:240px;height:240px;border-radius:20px;background:rgba(10,10,24,0.
 .draw-right{display:flex;flex-direction:column;gap:6px;align-items:center;min-width:50px}
 .draw-right .isme-mini{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer}
 .draw-right .isme-mini .av-mini{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#a78bfa);display:flex;align-items:center;justify-content:center;font-size:1rem;color:#fff;animation:ismeFloat 2.5s ease-in-out infinite;border:1.5px solid rgba(167,139,250,0.15)}
-.draw-right .isme-mini .bubble-mini{background:rgba(22,22,44,0.9);border:1px solid rgba(139,92,246,0.08);border-radius:10px;padding:4px 8px;font-size:0.4rem;color:rgba(255,255,255,0.6);text-align:center;max-width:70px;line-height:1.2;display:none}
+.draw-right .isme-mini .bubble-mini{background:rgba(22,22,44,0.9);border:1px solid rgba(139,92,246,0.08);border-radius:10px;padding:4px 8px;font-size:0.4rem;color:rgba(255,255,255,0.6);text-align:center;max-width:70px;line-height:1.2;display:none;animation:popIn 0.3s ease-out}
 .draw-right .isme-mini .bubble-mini.show{display:block}
+@keyframes popIn{0%{opacity:0;transform:scale(0.8)}100%{opacity:1;transform:scale(1)}}
 .draw-right .badge-mini{display:flex;flex-direction:column;align-items:center;gap:1px;background:rgba(255,255,255,0.02);border-radius:8px;padding:4px 6px;border:1px solid rgba(255,255,255,0.03)}
-.draw-right .badge-mini .b-icon{font-size:1rem}
+.draw-right .badge-mini .b-icon{font-size:1rem;animation:badgePop 0.5s ease-out}
+@keyframes badgePop{0%{opacity:0;transform:scale(0.3) rotate(-10deg)}100%{opacity:1;transform:scale(1) rotate(0deg)}}
 .draw-right .badge-mini .b-label{font-size:0.3rem;color:rgba(255,255,255,0.15)}
+.draw-right .badge-progress{width:100%;height:2px;background:rgba(255,255,255,0.05);border-radius:2px;overflow:hidden}
+.draw-right .badge-progress span{display:block;height:100%;background:linear-gradient(90deg,#fbbf24,#f59e0b);width:0%;transition:width 0.5s}
 
 .draw-bottom{display:flex;justify-content:space-between;align-items:center;padding:4px 8px;background:rgba(255,255,255,0.02);border-radius:12px;border:1px solid rgba(255,255,255,0.04);flex-wrap:wrap;gap:4px}
 .draw-bottom .streak-box{display:flex;align-items:center;gap:4px;font-size:0.5rem;color:rgba(255,255,255,0.3)}
 .draw-bottom .streak-box .fire{font-size:0.7rem}
 .draw-bottom .streak-box .s-count{color:#fbbf24;font-weight:600}
-.draw-bottom .streak-timer{font-size:0.4rem;color:rgba(255,100,100,0.7);display:none}
+.draw-bottom .streak-timer{font-size:0.4rem;color:rgba(255,100,100,0.7);display:none;animation:popIn 0.3s ease-out}
 .draw-bottom .streak-timer.show{display:inline}
 .draw-bottom .social-box{font-size:0.45rem;color:rgba(255,255,255,0.2)}
 .draw-bottom .social-box .s-dot{display:inline-block;width:4px;height:4px;border-radius:50%;background:#34d399;margin-right:4px;animation:dp 2s infinite}
 .draw-bottom .ranking-box{font-size:0.4rem;color:rgba(255,255,255,0.15)}
-.draw-bottom .ranking-box .rank-item{display:inline-block;margin:0 2px}
+.draw-bottom .ranking-box .rank-item{display:inline-block;margin:0 2px;animation:popIn 0.3s ease-out}
+.draw-bottom .ranking-box .rank-user{color:#a78bfa}
 
 /* ===== RESULT ===== */
 #rw{display:flex;flex-direction:column;align-items:center;min-height:40px;gap:1px;margin-top:4px;position:relative;z-index:2}
@@ -207,12 +212,31 @@ canvas#c{width:240px;height:240px;border-radius:20px;background:rgba(10,10,24,0.
 .lc a{color:#a78bfa;text-decoration:none}
 .lc .ld{height:0.5px;background:rgba(255,255,255,0.03);margin:8px 0}
 
+/* ===== COLLECTION ===== */
+.collection-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%;max-width:320px;margin-top:10px}
+.collection-item{display:flex;flex-direction:column;align-items:center;padding:8px 4px;background:rgba(255,255,255,0.02);border-radius:12px;border:1px solid rgba(255,255,255,0.04)}
+.collection-item .c-icon{font-size:1.8rem}
+.collection-item .c-label{font-size:0.35rem;color:rgba(255,255,255,0.15);margin-top:2px}
+.collection-item.unlocked{border-color:rgba(139,92,246,0.2);background:rgba(139,92,246,0.05)}
+.collection-item.unlocked .c-label{color:#a78bfa}
+.collection-item.locked{opacity:0.3}
+.collection-item.locked .c-icon{filter:grayscale(1)}
+
+/* ===== CLASSEMENT ===== */
+.ranking-list{width:100%;max-width:320px;margin-top:8px}
+.ranking-item{display:flex;align-items:center;gap:8px;padding:4px 8px;background:rgba(255,255,255,0.02);border-radius:8px;margin:2px 0}
+.ranking-item .r-pos{font-size:0.5rem;color:rgba(255,255,255,0.2);width:20px}
+.ranking-item .r-emoji{font-size:0.9rem}
+.ranking-item .r-name{font-size:0.5rem;color:rgba(255,255,255,0.5);flex:1}
+.ranking-item .r-score{font-size:0.45rem;color:#a78bfa}
+.ranking-item.me{background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.1)}
+
 #isme{position:fixed;bottom:64px;right:8px;z-index:200;display:flex;flex-direction:column;align-items:flex-end;gap:2px}
 #isme .av{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#a78bfa);box-shadow:0 4px 25px rgba(124,58,237,0.25);display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:#fff;animation:ismeFloatApp 2s ease-in-out infinite;cursor:pointer;transition:transform 0.2s;position:relative;border:1.5px solid rgba(167,139,250,0.15)}
 @keyframes ismeFloatApp{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-6px) scale(1.03)}}
 #isme .av:active{transform:scale(0.85)}
 #isme .av .im{position:absolute;bottom:1px;right:2px;font-size:0.3rem;font-weight:800;color:rgba(255,255,255,0.3);background:rgba(0,0,0,0.2);padding:1px 3px;border-radius:3px}
-#isme .bub{background:rgba(22,22,44,0.95);border:1px solid rgba(139,92,246,0.06);border-radius:14px;padding:8px 12px;max-width:160px;font-size:0.5rem;color:rgba(255,255,255,0.85);backdrop-filter:blur(16px);box-shadow:0 8px 25px rgba(0,0,0,0.4);display:none;line-height:1.4;text-align:left}
+#isme .bub{background:rgba(22,22,44,0.95);border:1px solid rgba(139,92,246,0.06);border-radius:14px;padding:8px 12px;max-width:160px;font-size:0.5rem;color:rgba(255,255,255,0.85);backdrop-filter:blur(16px);box-shadow:0 8px 25px rgba(0,0,0,0.4);display:none;line-height:1.4;text-align:left;animation:popIn 0.3s ease-out}
 #isme .bub.show{display:block}
 #isme .bub .bc{background:none;border:none;color:rgba(255,255,255,0.1);cursor:pointer;font-size:0.35rem;margin-left:4px}
 #isme .bub .isme-icon{font-size:0.9rem;display:inline-block;margin-right:4px}
@@ -223,7 +247,7 @@ canvas#c{width:240px;height:240px;border-radius:20px;background:rgba(10,10,24,0.
 .confetti{position:fixed;pointer-events:none;z-index:300;animation:cf 2s ease-out forwards}
 @keyframes cf{0%{transform:translateY(0) rotate(0deg);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
 
-@media(min-width:600px){.gg{grid-template-columns:repeat(4,1fr);max-width:360px}.mg{grid-template-columns:repeat(4,1fr);max-width:360px}canvas#c{width:300px;height:300px}.draw-middle{gap:12px}.draw-left{min-width:70px}.draw-right{min-width:70px}}
+@media(min-width:600px){.gg{grid-template-columns:repeat(4,1fr);max-width:360px}.mg{grid-template-columns:repeat(4,1fr);max-width:360px}canvas#c{width:300px;height:300px}.draw-middle{gap:12px}.draw-left{min-width:70px}.draw-right{min-width:70px}.collection-grid{grid-template-columns:repeat(5,1fr)}}
 @media(max-width:380px){#isme .av{width:38px;height:38px;font-size:1rem}#isme .bub{max-width:130px;font-size:0.45rem;padding:6px 10px}canvas#c{width:180px;height:180px}.draw-left{min-width:40px}.draw-right{min-width:40px}.draw-right .isme-mini .av-mini{width:30px;height:30px;font-size:0.8rem}}
 </style>
 </head>
@@ -271,7 +295,6 @@ canvas#c{width:240px;height:240px;border-radius:20px;background:rgba(10,10,24,0.
     <!-- Draw Screen -->
     <div class="scr active" id="sc-draw">
       <div class="draw-layout">
-        <!-- TOP: Mode + Défi -->
         <div class="draw-top">
           <div class="draw-mode">
             <span class="mode-icon">🎯</span>
@@ -283,9 +306,7 @@ canvas#c{width:240px;height:240px;border-radius:20px;background:rgba(10,10,24,0.
           </div>
         </div>
 
-        <!-- MIDDLE: Sidebar + Canvas + Sidebar -->
         <div class="draw-middle">
-          <!-- LEFT SIDEBAR -->
           <div class="draw-left">
             <div class="quest-box">
               <div class="q-label">Quête</div>
@@ -298,12 +319,10 @@ canvas#c{width:240px;height:240px;border-radius:20px;background:rgba(10,10,24,0.
             </div>
           </div>
 
-          <!-- CANVAS -->
           <div class="cwrap">
             <canvas id="c" width="500" height="500"></canvas>
           </div>
 
-          <!-- RIGHT SIDEBAR -->
           <div class="draw-right">
             <div class="isme-mini" id="ismeMini">
               <div class="av-mini" id="ismeMiniAv">✦</div>
@@ -312,11 +331,11 @@ canvas#c{width:240px;height:240px;border-radius:20px;background:rgba(10,10,24,0.
             <div class="badge-mini" id="badgeMini">
               <span class="b-icon" id="badgeIcon">🌟</span>
               <span class="b-label" id="badgeLabel">récent</span>
+              <div class="badge-progress"><span id="badgeProgress" style="width:0%"></span></div>
             </div>
           </div>
         </div>
 
-        <!-- BOTTOM: Streak + Social + Ranking -->
         <div class="draw-bottom">
           <div class="streak-box">
             <span class="fire">🔥</span>
@@ -329,24 +348,20 @@ canvas#c{width:240px;height:240px;border-radius:20px;background:rgba(10,10,24,0.
             <span id="socialText">💜 3 personnes ont dessiné ☀️ aujourd'hui</span>
           </div>
           <div class="ranking-box" id="rankingBox">
-            🏆 <span id="rank1">☀️ 5</span> <span id="rank2">🌧️ 3</span> <span id="rank3">🌈 2</span>
+            🏆 <span class="rank-item" id="rank1">☀️ 5</span> <span class="rank-item" id="rank2">🌧️ 3</span> <span class="rank-item" id="rank3">🌈 2</span>
           </div>
         </div>
       </div>
 
-      <!-- RESULT -->
       <div id="rw"><div id="re"></div><div id="rp"></div></div>
 
-      <!-- BUBBLES -->
       <div id="bubbleBox"><div class="bubble-msg" id="bubbleMsg"></div><div class="bubble-btns" id="bubbleBtns"></div></div>
 
-      <!-- TOOLBAR -->
       <div class="tb">
         <button data-s="3" class="active">S</button><button data-s="6">M</button><button data-s="14">L</button>
         <button id="btnUndo">↩</button><button id="btnClear">✕</button>
       </div>
 
-      <!-- BUTTONS -->
       <div class="btn-g">
         <button class="btn btn-share btn-s" id="btnShare">📤 <span class="share-arrow">↑</span> Share</button>
         <button class="btn btn-statut btn-s" id="btnStatut">📱 Statut</button>
@@ -366,6 +381,20 @@ canvas#c{width:240px;height:240px;border-radius:20px;background:rgba(10,10,24,0.
     <!-- Map -->
     <div class="scr" id="sc-map"><div class="st">World Mood</div><div class="ss">How others feel</div><div class="mg" id="mg"></div></div>
 
+    <!-- Collection -->
+    <div class="scr" id="sc-collection">
+      <div class="st">Collection</div>
+      <div class="ss">Badges débloqués</div>
+      <div class="collection-grid" id="collectionGrid"></div>
+    </div>
+
+    <!-- Ranking -->
+    <div class="scr" id="sc-ranking">
+      <div class="st">Classement</div>
+      <div class="ss">Top des émotions</div>
+      <div class="ranking-list" id="rankingList"></div>
+    </div>
+
     <!-- Legal -->
     <div class="scr" id="sc-legal">
       <div class="st">Privacy &amp; Legal</div><div class="ss">Your data stays on your device</div>
@@ -377,7 +406,8 @@ canvas#c{width:240px;height:240px;border-radius:20px;background:rgba(10,10,24,0.
     <button class="nav-item active" data-sc="draw"><span class="nd"></span><span class="ni">✍️</span><span class="nl">Draw</span></button>
     <button class="nav-item" data-sc="gallery"><span class="nd"></span><span class="ni">🖼️</span><span class="nl">Gallery</span></button>
     <button class="nav-item" data-sc="stats"><span class="nd"></span><span class="ni">📊</span><span class="nl">Stats</span></button>
-    <button class="nav-item" data-sc="map"><span class="nd"></span><span class="ni">🌍</span><span class="nl">World</span></button>
+    <button class="nav-item" data-sc="collection"><span class="nd"></span><span class="ni">🎖️</span><span class="nl">Collection</span></button>
+    <button class="nav-item" data-sc="ranking"><span class="nd"></span><span class="ni">🏆</span><span class="nl">Ranking</span></button>
     <button class="nav-item" data-sc="legal"><span class="nd"></span><span class="ni">⚖️</span><span class="nl">Legal</span></button>
   </div>
 </div>
@@ -400,16 +430,16 @@ setTimeout(function(){
 }, 2500);
 
 // ============================================================
-// LANGUAGES (7 langues)
+// LANGUAGES
 // ============================================================
 var L = {
-  en: { pr:'100% Private', cl:'moods drawn', ot:['Welcome to Mewonen','Draw freely','ISME is with you'], op:['Your private space to draw what you feel.','Use your finger. Mewonen listens.','Your companion. Always by your side, every day.'], on:'Next', clr:'Clear', sh:'Share', sv:'Save', st:'Statut', invite:'Invite', nav:['Draw','Gallery','Stats','World','Legal'], globeCta:'✍️ Draw your mood', globeSub:'🌍 Explore emotions around the world', globeIsme:'Hey ! I\'m ISME. Draw your mood, I\'ll listen. 💜', defis:['Draw the shape of confidence','Draw your safe place','Draw a happy memory','Draw the shadow of fear','Draw the color of hope','Draw the sound of peace','Draw the texture of joy','Draw the weight of sadness','Draw the lightness of freedom','Draw the shape of love'], isme:{h:'Hello. I\'m ISME. 💜',d:'Draw what you feel. I\'m here.',j:'You\'re shining today ✨',s:'I\'m here. Let it flow 🌊',a:'This energy is yours 🔥',c:'Stillness is strength 🌙',e:'Space is waiting for you 🕳️',sh:'Share your mood with the world 🌍',st:'🔥 {n} day streak! Keep going!',w:'Welcome back! 💜',ch:'Daily challenge: {challenge}', step1:'Welcome! Draw your mood here. I\'ll listen. ✍️', step2:'You drew {emoji}! How do you feel? 💜', step3:'Want to share your drawing with the world? 🌍', step4:'Come back tomorrow to keep your streak! 🔥'} },
-  fr: { pr:'100% Privé', cl:'humeurs dessinées', ot:['Bienvenue sur Mewonen','Dessine librement','ISME est avec toi'], op:['Ton espace privé pour dessiner ce que tu ressens.','Utilise ton doigt. Mewonen écoute.','Ton compagnon. Toujours à tes côtés, chaque jour.'], on:'Suivant', clr:'Effacer', sh:'Partager', sv:'Sauvegarder', st:'Statut', invite:'Inviter', nav:['Dessiner','Galerie','Stats','Monde','Légal'], globeCta:'✍️ Dessine ton humeur', globeSub:'🌍 Explore les émotions dans le monde', globeIsme:'Salut ! Je suis ISME. Dessine ton humeur, je t\'écoute. 💜', defis:['Dessine la forme de la confiance','Dessine ton lieu sûr','Dessine un souvenir heureux','Dessine l\'ombre de la peur','Dessine la couleur de l\'espoir','Dessine le son de la paix','Dessine la texture de la joie','Dessine le poids de la tristesse','Dessine la légèreté de la liberté','Dessine la forme de l\'amour'], isme:{h:'Bonjour. Je suis ISME. 💜',d:'Dessine ce que tu ressens. Je suis là.',j:'Tu rayonnes aujourd\'hui ✨',s:'Je suis là. Laisse couler 🌊',a:'Cette énergie est tienne 🔥',c:'L\'immobilité est force 🌙',e:'L\'espace t\'attend 🕳️',sh:'Partage ton humeur avec le monde 🌍',st:'🔥 {n} jours de suite ! Continue !',w:'Bon retour ! 💜',ch:'Défi du jour : {challenge}', step1:'Bienvenue ! Dessine ton humeur ici. Je t\'écoute. ✍️', step2:'Tu as dessiné {emoji} ! Comment te sens-tu ? 💜', step3:'Tu veux partager ton dessin avec le monde ? 🌍', step4:'Reviens demain pour garder ta série ! 🔥'} },
-  es: { pr:'100% Privado', cl:'estados dibujados', ot:['Bienvenido a Mewonen','Dibuja libremente','ISME está contigo'], op:['Tu espacio privado para dibujar lo que sientes.','Usa tu dedo. Mewonen escucha.','Tu compañero. Siempre a tu lado, cada día.'], on:'Siguiente', clr:'Limpiar', sh:'Compartir', sv:'Guardar', st:'Estado', invite:'Invitar', nav:['Dibujar','Galería','Estadísticas','Mundo','Legal'], globeCta:'✍️ Dibuja tu estado de ánimo', globeSub:'🌍 Explora las emociones en el mundo', globeIsme:'¡Hola! Soy ISME. Dibuja tu estado de ánimo, te escucho. 💜', defis:['Dibuja la forma de la confianza','Dibuja tu lugar seguro','Dibuja un recuerdo feliz','Dibuja la sombra del miedo','Dibuja el color de la esperanza','Dibuja el sonido de la paz','Dibuja la textura de la alegría','Dibuja el peso de la tristeza','Dibuja la ligereza de la libertad','Dibuja la forma del amor'], isme:{h:'Hola. Soy ISME. 💜',d:'Dibuja lo que sientes. Estoy aquí.',j:'Estás brillando hoy ✨',s:'Estoy aquí. Déjalo fluir 🌊',a:'Esta energía es tuya 🔥',c:'La quietud es fuerza 🌙',e:'El espacio te espera 🕳️',sh:'Comparte tu estado de ánimo con el mundo 🌍',st:'🔥 {n} días seguidos! ¡Sigue!',w:'¡Bienvenido de nuevo! 💜',ch:'Desafío diario: {challenge}', step1:'¡Bienvenido! Dibuja tu estado de ánimo aquí. Te escucho. ✍️', step2:'¡Dibujaste {emoji}! ¿Cómo te sientes? 💜', step3:'¿Quieres compartir tu dibujo con el mundo? 🌍', step4:'¡Vuelve mañana para mantener tu racha! 🔥'} },
-  ar: { pr:'خصوصية 100%', cl:'حالة مرسومة', ot:['مرحباً بك في Mewonen','ارسم بحرية','ISME معك'], op:['مساحتك الخاصة لرسم ما تشعر به.','استخدم إصبعك. Mewonen يستمع.','رفيقك. دائماً بجانبك، كل يوم.'], on:'التالي', clr:'مسح', sh:'مشاركة', sv:'حفظ', st:'حالة', invite:'دعوة', nav:['رسم','معرض','إحصائيات','العالم','قانوني'], globeCta:'✍️ ارسم مزاجك', globeSub:'🌍 استكشف المشاعر حول العالم', globeIsme:'مرحباً ! أنا ISME. ارسم مزاجك، أنا أستمع. 💜', defis:['ارسم شكل الثقة','ارسم مكانك الآمن','ارسم ذكرى سعيدة','ارسم ظل الخوف','ارسم لون الأمل','ارسم صوت السلام','ارسم ملمس الفرح','ارسم ثقل الحزن','ارسم خفة الحرية','ارسم شكل الحب'], isme:{h:'مرحباً. أنا ISME. 💜',d:'ارسم ما تشعر به. أنا هنا.',j:'أنت مشرق اليوم ✨',s:'أنا هنا. دعه يتدفق 🌊',a:'هذه الطاقة لك 🔥',c:'السكون قوة 🌙',e:'الفضاء ينتظرك 🕳️',sh:'شارك مزاجك مع العالم 🌍',st:'🔥 {n} أيام متتالية! استمر!',w:'مرحباً بعودتك! 💜',ch:'تحدي اليوم: {challenge}', step1:'مرحباً! ارسم مزاجك هنا. أنا أستمع. ✍️', step2:'لقد رسمت {emoji}! كيف تشعر؟ 💜', step3:'هل تريد مشاركة رسمك مع العالم؟ 🌍', step4:'عد غداً للحفاظ على سلسلتك! 🔥'} },
-  ja: { pr:'100% プライベート', cl:'描かれた気分', ot:['Mewonenへようこそ','自由に描く','ISMEはあなたと共に'], op:['あなたのプライベートな感情スペース。','指で描いてください。Mewonenが聞きます。','あなたの仲間。いつもそばに。'], on:'次へ', clr:'クリア', sh:'シェア', sv:'保存', st:'ステータス', invite:'招待', nav:['描く','ギャラリー','統計','世界','法的'], globeCta:'✍️ 気分を描く', globeSub:'🌍 世界中の感情を探索する', globeIsme:'こんにちは！私はISMEです。気分を描いて、聞いています。💜', defis:['自信の形を描く','安全な場所を描く','楽しい思い出を描く','恐怖の影を描く','希望の色を描く','平和の音を描く','喜びの質感を描く','悲しみの重さを描く','自由の軽やかさを描く','愛の形を描く'], isme:{h:'こんにちは。ISMEです。💜',d:'感じたことを描いて。ここにいるよ。',j:'今日は輝いているね ✨',s:'ここにいるよ。流して 🌊',a:'このエネルギーはあなたのもの 🔥',c:'静けさは力 🌙',e:'スペースがあなたを待っている 🕳️',sh:'気分を世界と共有しよう 🌍',st:'🔥 {n}日連続！続けて！',w:'おかえり！💜',ch:'今日のチャレンジ：{challenge}', step1:'ようこそ！気分を描いてください。聞いています。✍️', step2:'{emoji}を描きました！気分はどうですか？💜', step3:'描いたものを世界と共有しますか？🌍', step4:'連続記録を保つために明日も来てください！🔥'} },
-  zh: { pr:'100% 私密', cl:'心情已绘制', ot:['欢迎来到 Mewonen','自由绘画','ISME 与你同在'], op:['你的私人情感空间。','用你的手指画画。Mewonen 倾听。','你的伙伴。永远在你身边。'], on:'下一步', clr:'清除', sh:'分享', sv:'保存', st:'状态', invite:'邀请', nav:['绘画','画廊','统计','世界','法律'], globeCta:'✍️ 画出你的心情', globeSub:'🌍 探索世界各地的情绪', globeIsme:'你好！我是ISME。画出你的心情，我在倾听。💜', defis:['画出自信的形状','画出你的安全之地','画出快乐的回忆','画出恐惧的阴影','画出希望的颜色','画出和平的声音','画出喜悦的质感','画出悲伤的重量','画出自由的轻盈','画出爱的形状'], isme:{h:'你好。我是 ISME。💜',d:'画出你的感受。我在这里。',j:'你今天在发光 ✨',s:'我在这里。让它流走 🌊',a:'这能量是你的 🔥',c:'静止是力量 🌙',e:'空间在等你 🕳️',sh:'与世界分享你的心情 🌍',st:'🔥 连续 {n} 天！继续！',w:'欢迎回来！💜',ch:'今日挑战：{challenge}', step1:'欢迎！在这里画出你的心情。我在倾听。✍️', step2:'你画了 {emoji}！你感觉如何？💜', step3:'你想与世界分享你的画作吗？🌍', step4:'明天再来保持你的连续记录！🔥'} },
-  ko: { pr:'100% 비공개', cl:'그려진 기분', ot:['Mewonen에 오신 것을 환영합니다','자유롭게 그리기','ISME가 당신과 함께합니다'], op:['당신의 개인적인 감정 공간입니다.','손가락으로 그려보세요. Mewonen이 듣습니다.','당신의 동반자. 항상 당신 곁에.'], on:'다음', clr:'지우기', sh:'공유', sv:'저장', st:'상태', invite:'초대', nav:['그리기','갤러리','통계','세계','법률'], globeCta:'✍️ 기분 그리기', globeSub:'🌍 전 세계의 감정 탐험', globeIsme:'안녕하세요! 저는 ISME입니다. 기분을 그려보세요, 듣고 있어요.💜', defis:['자신감의 형태를 그리기','안전한 장소 그리기','행복한 기억 그리기','두려움의 그림자 그리기','희망의 색 그리기','평화의 소리 그리기','기쁨의 질감 그리기','슬픔의 무게 그리기','자유의 가벼움 그리기','사랑의 형태 그리기'], isme:{h:'안녕하세요. 저는 ISME입니다. 💜',d:'느낌을 그려보세요. 제가 여기 있어요.',j:'오늘 당신은 빛나고 있어요 ✨',s:'제가 여기 있어요. 흘려보내요 🌊',a:'이 에너지는 당신의 것입니다 🔥',c:'고요함은 힘입니다 🌙',e:'공간이 당신을 기다리고 있어요 🕳️',sh:'당신의 기분을 세계와 공유하세요 🌍',st:'🔥 {n}일 연속! 계속하세요!',w:'돌아오신 것을 환영합니다! 💜',ch:'오늘의 도전: {challenge}', step1:'환영합니다! 여기에 기분을 그려보세요. 듣고 있어요.✍️', step2:'{emoji}을(를) 그렸네요! 기분이 어떠신가요? 💜', step3:'그림을 세계와 공유하시겠습니까? 🌍', step4:'연속 기록을 유지하려면 내일 다시 오세요! 🔥'} }
+  en: { pr:'100% Private', cl:'moods drawn', ot:['Welcome to Mewonen','Draw freely','ISME is with you'], op:['Your private space to draw what you feel.','Use your finger. Mewonen listens.','Your companion. Always by your side, every day.'], on:'Next', clr:'Clear', sh:'Share', sv:'Save', st:'Statut', invite:'Invite', nav:['Draw','Gallery','Stats','Collection','Ranking','Legal'], globeCta:'✍️ Draw your mood', globeSub:'🌍 Explore emotions around the world', globeIsme:'Hey ! I\'m ISME. Draw your mood, I\'ll listen. 💜', defis:['Draw the shape of confidence','Draw your safe place','Draw a happy memory','Draw the shadow of fear','Draw the color of hope','Draw the sound of peace','Draw the texture of joy','Draw the weight of sadness','Draw the lightness of freedom','Draw the shape of love'], isme:{h:'Hello. I\'m ISME. 💜',d:'Draw what you feel. I\'m here.',j:'You\'re shining today ✨',s:'I\'m here. Let it flow 🌊',a:'This energy is yours 🔥',c:'Stillness is strength 🌙',e:'Space is waiting for you 🕳️',sh:'Share your mood with the world 🌍',st:'🔥 {n} day streak! Keep going!',w:'Welcome back! 💜',ch:'Daily challenge: {challenge}', step1:'Welcome! Draw your mood here. I\'ll listen. ✍️', step2:'You drew {emoji}! How do you feel? 💜', step3:'Want to share your drawing with the world? 🌍', step4:'Come back tomorrow to keep your streak! 🔥'} },
+  fr: { pr:'100% Privé', cl:'humeurs dessinées', ot:['Bienvenue sur Mewonen','Dessine librement','ISME est avec toi'], op:['Ton espace privé pour dessiner ce que tu ressens.','Utilise ton doigt. Mewonen écoute.','Ton compagnon. Toujours à tes côtés, chaque jour.'], on:'Suivant', clr:'Effacer', sh:'Partager', sv:'Sauvegarder', st:'Statut', invite:'Inviter', nav:['Dessiner','Galerie','Stats','Collection','Classement','Légal'], globeCta:'✍️ Dessine ton humeur', globeSub:'🌍 Explore les émotions dans le monde', globeIsme:'Salut ! Je suis ISME. Dessine ton humeur, je t\'écoute. 💜', defis:['Dessine la forme de la confiance','Dessine ton lieu sûr','Dessine un souvenir heureux','Dessine l\'ombre de la peur','Dessine la couleur de l\'espoir','Dessine le son de la paix','Dessine la texture de la joie','Dessine le poids de la tristesse','Dessine la légèreté de la liberté','Dessine la forme de l\'amour'], isme:{h:'Bonjour. Je suis ISME. 💜',d:'Dessine ce que tu ressens. Je suis là.',j:'Tu rayonnes aujourd\'hui ✨',s:'Je suis là. Laisse couler 🌊',a:'Cette énergie est tienne 🔥',c:'L\'immobilité est force 🌙',e:'L\'espace t\'attend 🕳️',sh:'Partage ton humeur avec le monde 🌍',st:'🔥 {n} jours de suite ! Continue !',w:'Bon retour ! 💜',ch:'Défi du jour : {challenge}', step1:'Bienvenue ! Dessine ton humeur ici. Je t\'écoute. ✍️', step2:'Tu as dessiné {emoji} ! Comment te sens-tu ? 💜', step3:'Tu veux partager ton dessin avec le monde ? 🌍', step4:'Reviens demain pour garder ta série ! 🔥'} },
+  es: { pr:'100% Privado', cl:'estados dibujados', ot:['Bienvenido a Mewonen','Dibuja libremente','ISME está contigo'], op:['Tu espacio privado para dibujar lo que sientes.','Usa tu dedo. Mewonen escucha.','Tu compañero. Siempre a tu lado, cada día.'], on:'Siguiente', clr:'Limpiar', sh:'Compartir', sv:'Guardar', st:'Estado', invite:'Invitar', nav:['Dibujar','Galería','Estadísticas','Colección','Clasificación','Legal'], globeCta:'✍️ Dibuja tu estado de ánimo', globeSub:'🌍 Explora las emociones en el mundo', globeIsme:'¡Hola! Soy ISME. Dibuja tu estado de ánimo, te escucho. 💜', defis:['Dibuja la forma de la confianza','Dibuja tu lugar seguro','Dibuja un recuerdo feliz','Dibuja la sombra del miedo','Dibuja el color de la esperanza','Dibuja el sonido de la paz','Dibuja la textura de la alegría','Dibuja el peso de la tristeza','Dibuja la ligereza de la libertad','Dibuja la forma del amor'], isme:{h:'Hola. Soy ISME. 💜',d:'Dibuja lo que sientes. Estoy aquí.',j:'Estás brillando hoy ✨',s:'Estoy aquí. Déjalo fluir 🌊',a:'Esta energía es tuya 🔥',c:'La quietud es fuerza 🌙',e:'El espacio te espera 🕳️',sh:'Comparte tu estado de ánimo con el mundo 🌍',st:'🔥 {n} días seguidos! ¡Sigue!',w:'¡Bienvenido de nuevo! 💜',ch:'Desafío diario: {challenge}', step1:'¡Bienvenido! Dibuja tu estado de ánimo aquí. Te escucho. ✍️', step2:'¡Dibujaste {emoji}! ¿Cómo te sientes? 💜', step3:'¿Quieres compartir tu dibujo con el mundo? 🌍', step4:'¡Vuelve mañana para mantener tu racha! 🔥'} },
+  ar: { pr:'خصوصية 100%', cl:'حالة مرسومة', ot:['مرحباً بك في Mewonen','ارسم بحرية','ISME معك'], op:['مساحتك الخاصة لرسم ما تشعر به.','استخدم إصبعك. Mewonen يستمع.','رفيقك. دائماً بجانبك، كل يوم.'], on:'التالي', clr:'مسح', sh:'مشاركة', sv:'حفظ', st:'حالة', invite:'دعوة', nav:['رسم','معرض','إحصائيات','مجموعة','ترتيب','قانوني'], globeCta:'✍️ ارسم مزاجك', globeSub:'🌍 استكشف المشاعر حول العالم', globeIsme:'مرحباً ! أنا ISME. ارسم مزاجك، أنا أستمع. 💜', defis:['ارسم شكل الثقة','ارسم مكانك الآمن','ارسم ذكرى سعيدة','ارسم ظل الخوف','ارسم لون الأمل','ارسم صوت السلام','ارسم ملمس الفرح','ارسم ثقل الحزن','ارسم خفة الحرية','ارسم شكل الحب'], isme:{h:'مرحباً. أنا ISME. 💜',d:'ارسم ما تشعر به. أنا هنا.',j:'أنت مشرق اليوم ✨',s:'أنا هنا. دعه يتدفق 🌊',a:'هذه الطاقة لك 🔥',c:'السكون قوة 🌙',e:'الفضاء ينتظرك 🕳️',sh:'شارك مزاجك مع العالم 🌍',st:'🔥 {n} أيام متتالية! استمر!',w:'مرحباً بعودتك! 💜',ch:'تحدي اليوم: {challenge}', step1:'مرحباً! ارسم مزاجك هنا. أنا أستمع. ✍️', step2:'لقد رسمت {emoji}! كيف تشعر؟ 💜', step3:'هل تريد مشاركة رسمك مع العالم؟ 🌍', step4:'عد غداً للحفاظ على سلسلتك! 🔥'} },
+  ja: { pr:'100% プライベート', cl:'描かれた気分', ot:['Mewonenへようこそ','自由に描く','ISMEはあなたと共に'], op:['あなたのプライベートな感情スペース。','指で描いてください。Mewonenが聞きます。','あなたの仲間。いつもそばに。'], on:'次へ', clr:'クリア', sh:'シェア', sv:'保存', st:'ステータス', invite:'招待', nav:['描く','ギャラリー','統計','コレクション','ランキング','法的'], globeCta:'✍️ 気分を描く', globeSub:'🌍 世界中の感情を探索する', globeIsme:'こんにちは！私はISMEです。気分を描いて、聞いています。💜', defis:['自信の形を描く','安全な場所を描く','楽しい思い出を描く','恐怖の影を描く','希望の色を描く','平和の音を描く','喜びの質感を描く','悲しみの重さを描く','自由の軽やかさを描く','愛の形を描く'], isme:{h:'こんにちは。ISMEです。💜',d:'感じたことを描いて。ここにいるよ。',j:'今日は輝いているね ✨',s:'ここにいるよ。流して 🌊',a:'このエネルギーはあなたのもの 🔥',c:'静けさは力 🌙',e:'スペースがあなたを待っている 🕳️',sh:'気分を世界と共有しよう 🌍',st:'🔥 {n}日連続！続けて！',w:'おかえり！💜',ch:'今日のチャレンジ：{challenge}', step1:'ようこそ！気分を描いてください。聞いています。✍️', step2:'{emoji}を描きました！気分はどうですか？💜', step3:'描いたものを世界と共有しますか？🌍', step4:'連続記録を保つために明日も来てください！🔥'} },
+  zh: { pr:'100% 私密', cl:'心情已绘制', ot:['欢迎来到 Mewonen','自由绘画','ISME 与你同在'], op:['你的私人情感空间。','用你的手指画画。Mewonen 倾听。','你的伙伴。永远在你身边。'], on:'下一步', clr:'清除', sh:'分享', sv:'保存', st:'状态', invite:'邀请', nav:['绘画','画廊','统计','收藏','排名','法律'], globeCta:'✍️ 画出你的心情', globeSub:'🌍 探索世界各地的情绪', globeIsme:'你好！我是ISME。画出你的心情，我在倾听。💜', defis:['画出自信的形状','画出你的安全之地','画出快乐的回忆','画出恐惧的阴影','画出希望的颜色','画出和平的声音','画出喜悦的质感','画出悲伤的重量','画出自由的轻盈','画出爱的形状'], isme:{h:'你好。我是 ISME。💜',d:'画出你的感受。我在这里。',j:'你今天在发光 ✨',s:'我在这里。让它流走 🌊',a:'这能量是你的 🔥',c:'静止是力量 🌙',e:'空间在等你 🕳️',sh:'与世界分享你的心情 🌍',st:'🔥 连续 {n} 天！继续！',w:'欢迎回来！💜',ch:'今日挑战：{challenge}', step1:'欢迎！在这里画出你的心情。我在倾听。✍️', step2:'你画了 {emoji}！你感觉如何？💜', step3:'你想与世界分享你的画作吗？🌍', step4:'明天再来保持你的连续记录！🔥'} },
+  ko: { pr:'100% 비공개', cl:'그려진 기분', ot:['Mewonen에 오신 것을 환영합니다','자유롭게 그리기','ISME가 당신과 함께합니다'], op:['당신의 개인적인 감정 공간입니다.','손가락으로 그려보세요. Mewonen이 듣습니다.','당신의 동반자. 항상 당신 곁에.'], on:'다음', clr:'지우기', sh:'공유', sv:'저장', st:'상태', invite:'초대', nav:['그리기','갤러리','통계','컬렉션','순위','법률'], globeCta:'✍️ 기분 그리기', globeSub:'🌍 전 세계의 감정 탐험', globeIsme:'안녕하세요! 저는 ISME입니다. 기분을 그려보세요, 듣고 있어요.💜', defis:['자신감의 형태를 그리기','안전한 장소 그리기','행복한 기억 그리기','두려움의 그림자 그리기','희망의 색 그리기','평화의 소리 그리기','기쁨의 질감 그리기','슬픔의 무게 그리기','자유의 가벼움 그리기','사랑의 형태 그리기'], isme:{h:'안녕하세요. 저는 ISME입니다. 💜',d:'느낌을 그려보세요. 제가 여기 있어요.',j:'오늘 당신은 빛나고 있어요 ✨',s:'제가 여기 있어요. 흘려보내요 🌊',a:'이 에너지는 당신의 것입니다 🔥',c:'고요함은 힘입니다 🌙',e:'공간이 당신을 기다리고 있어요 🕳️',sh:'당신의 기분을 세계와 공유하세요 🌍',st:'🔥 {n}일 연속! 계속하세요!',w:'돌아오신 것을 환영합니다! 💜',ch:'오늘의 도전: {challenge}', step1:'환영합니다! 여기에 기분을 그려보세요. 듣고 있어요.✍️', step2:'{emoji}을(를) 그렸네요! 기분이 어떠신가요? 💜', step3:'그림을 세계와 공유하시겠습니까? 🌍', step4:'연속 기록을 유지하려면 내일 다시 오세요! 🔥'} }
 };
 
 // ============================================================
@@ -428,6 +458,9 @@ var questCount = 0;
 var questMax = 3;
 var badgeRare = false;
 var rankingData = {};
+var userBadges = [];
+var allBadges = ['🌟','💎','🏆','🌈','⭐','🔥','💜','🦋','🌊','🌺','🍀','🌙','☀️'];
+var collectionProgress = 0;
 
 var $ = function(id){ return document.getElementById(id); };
 var canvas = $('c');
@@ -460,7 +493,7 @@ function updateUI() {
   var ctaSub = document.querySelector('.cta-sub');
   if(ctaSub) ctaSub.textContent = TX.globeSub;
   var navs = document.querySelectorAll('.nav-item .nl');
-  if(navs.length) { navs[0].textContent = TX.nav[0]; navs[1].textContent = TX.nav[1]; navs[2].textContent = TX.nav[2]; navs[3].textContent = TX.nav[3]; navs[4].textContent = TX.nav[4]; }
+  if(navs.length) { navs[0].textContent = TX.nav[0]; navs[1].textContent = TX.nav[1]; navs[2].textContent = TX.nav[2]; navs[3].textContent = TX.nav[3]; navs[4].textContent = TX.nav[4]; navs[5].textContent = TX.nav[5]; }
   var day = new Date().getDate();
   var defis = TX.defis || ['Draw the shape of confidence','Draw your safe place','Draw a happy memory','Draw the shadow of fear','Draw the color of hope','Draw the sound of peace','Draw the texture of joy','Draw the weight of sadness','Draw the lightness of freedom','Draw the shape of love'];
   $('defiText').textContent = defis[day % defis.length];
@@ -678,6 +711,7 @@ function initApp(){
   setupIsme();
   updateQuest();
   updateRanking();
+  updateCollection();
   setTimeout(function(){ showIsme(TX.isme.step1, 5000); }, 1500);
   startIsmeTimer();
   checkDailyChallenge();
@@ -693,7 +727,8 @@ function loadData(){
     streak = parseInt(localStorage.getItem('mw_s')||'0');
     questCount = parseInt(localStorage.getItem('mw_quest')||'0');
     rankingData = JSON.parse(localStorage.getItem('mw_ranking')||'{}');
-  } catch(e){ history=[]; gallery=[]; streak=0; questCount=0; rankingData={}; }
+    userBadges = JSON.parse(localStorage.getItem('mw_badges')||'[]');
+  } catch(e){ history=[]; gallery=[]; streak=0; questCount=0; rankingData={}; userBadges=[]; }
 }
 function saveData(){
   try {
@@ -702,6 +737,7 @@ function saveData(){
     localStorage.setItem('mw_s', streak.toString());
     localStorage.setItem('mw_quest', questCount.toString());
     localStorage.setItem('mw_ranking', JSON.stringify(rankingData));
+    localStorage.setItem('mw_badges', JSON.stringify(userBadges));
   } catch(e){}
 }
 
@@ -718,19 +754,55 @@ function updateQuest(){
       badgeRare = true;
       $('badgeIcon').textContent = '🏆';
       $('badgeLabel').textContent = 'Quête complète !';
+      addBadge('🏆');
       showToast('🏆 Quête complète ! Badge débloqué !');
+      spawnConfetti();
     }
   }
 }
 
+function addBadge(badge){
+  if(userBadges.indexOf(badge) === -1){
+    userBadges.push(badge);
+    saveData();
+    updateCollection();
+  }
+}
+
+function updateCollection(){
+  var grid = document.getElementById('collectionGrid');
+  grid.innerHTML = '';
+  allBadges.forEach(function(b){
+    var div = document.createElement('div');
+    div.className = 'collection-item';
+    if(userBadges.indexOf(b) !== -1){
+      div.classList.add('unlocked');
+      div.innerHTML = '<span class="c-icon">'+b+'</span><span class="c-label">Débloqué</span>';
+    } else {
+      div.classList.add('locked');
+      div.innerHTML = '<span class="c-icon">?</span><span class="c-label">Verrouillé</span>';
+    }
+    grid.appendChild(div);
+  });
+  collectionProgress = Math.round((userBadges.length/allBadges.length)*100);
+}
+
 function updateRanking(){
-  if(history.length === 0) return;
+  var list = document.getElementById('rankingList');
+  list.innerHTML = '';
   var counts = {};
   history.forEach(function(h){ counts[h.emoji] = (counts[h.emoji]||0)+1; });
   var sorted = Object.keys(counts).sort(function(a,b){ return counts[b]-counts[a]; });
-  for(var i=0;i<3 && i<sorted.length;i++){
-    var el = document.getElementById('rank'+(i+1));
-    if(el) el.textContent = sorted[i] + ' ' + counts[sorted[i]];
+  var topUsers = ['Luna','Max','Elena','Leo','Mia','Noah','Chloe','Liam','Zara','Ethan'];
+  var topScores = [12,10,9,8,7,6,5,5,4,4];
+  for(var i=0;i<10;i++){
+    var div = document.createElement('div');
+    div.className = 'ranking-item';
+    if(i === 0) div.classList.add('me');
+    var emoji = sorted[i] || '💜';
+    var score = counts[emoji] || 0;
+    div.innerHTML = '<span class="r-pos">#'+(i+1)+'</span><span class="r-emoji">'+emoji+'</span><span class="r-name">'+topUsers[i%topUsers.length]+'</span><span class="r-score">'+score+'</span>';
+    list.appendChild(div);
   }
 }
 
@@ -833,25 +905,33 @@ function analyze(pts){
   buildGallery();
   buildStats();
   updateRanking();
-  // Quest
   questCount++;
   localStorage.setItem('mw_quest_date', today);
   updateQuest();
-  // Ranking update
   rankingData[emo.e] = (rankingData[emo.e]||0)+1;
   saveData();
-  // Récompense variable
   var rare = Math.random() < 0.2;
   if(rare){
-    var badges = ['🌟', '💎', '🏆', '🌈', '⭐'];
+    var badges = ['🌟','💎','🏆','🌈','⭐','🔥','💜','🦋','🌊','🌺','🍀','🌙','☀️'];
     var b = badges[Math.floor(Math.random()*badges.length)];
     $('badgeIcon').textContent = b;
     $('badgeLabel').textContent = 'Rare !';
+    addBadge(b);
     showToast('🎉 Badge rare débloqué : ' + b);
     spawnConfetti();
   }
-  // ISME reaction
-  reactIsme(emo.m, emo.e);
+  // Mettre à jour la barre de progression des badges
+  var pct = Math.min((userBadges.length/allBadges.length)*100, 100);
+  document.getElementById('badgeProgress').style.width = pct + '%';
+  // ISME personnalisé
+  var ismeMsg = '';
+  if(emo.m === 'sad') ismeMsg = 'Je suis là. Tu n\'es pas seul. 💜';
+  else if(emo.m === 'joy') ismeMsg = 'Tu rayonnes ! Continue comme ça ✨';
+  else if(emo.m === 'angry') ismeMsg = 'Cette énergie est puissante. Canalise-la. 🔥';
+  else if(emo.m === 'calm') ismeMsg = 'La paix t\'habite. Garde-la. 🌙';
+  else if(emo.m === 'empty') ismeMsg = 'L\'espace est là pour toi. Remplis-le. 🕳️';
+  else ismeMsg = TX.isme.d;
+  showIsme(ismeMsg, 4000);
   setTimeout(function(){ showIsme(TX.isme.step2.replace('{emoji}', emo.e), 4000); }, 1000);
   if(emo.m === 'joy') spawnConfetti();
   showBubbles(emo);
@@ -928,50 +1008,53 @@ function downloadStatut(){
   canvas2.width = 800;
   canvas2.height = 800;
   var ctx2 = canvas2.getContext('2d');
-  // Background
   var grad = ctx2.createLinearGradient(0,0,800,800);
   grad.addColorStop(0, '#1a1030');
   grad.addColorStop(1, '#0a0a18');
   ctx2.fillStyle = grad;
   ctx2.fillRect(0,0,800,800);
-  // Border
   ctx2.strokeStyle = '#7c3aed';
   ctx2.lineWidth = 4;
   ctx2.strokeRect(20,20,760,760);
-  // Emoji
   ctx2.textAlign = 'center';
   ctx2.textBaseline = 'middle';
   ctx2.font = '200px Arial';
   ctx2.fillStyle = '#fff';
   ctx2.fillText(emoji, 400, 320);
-  // Phrase
   ctx2.font = '36px Inter, sans-serif';
   ctx2.fillStyle = 'rgba(255,255,255,0.7)';
   ctx2.fillText(phrase, 400, 480);
-  // Logo
   ctx2.font = '24px Inter, sans-serif';
   ctx2.fillStyle = '#a78bfa';
   ctx2.fillText('💜 Mewonen.com', 400, 580);
-  // QR Code (simulé)
-  ctx2.fillStyle = 'rgba(255,255,255,0.05)';
-  ctx2.fillRect(680, 680, 80, 80);
-  ctx2.font = '14px Inter, sans-serif';
-  ctx2.fillStyle = 'rgba(255,255,255,0.2)';
-  ctx2.fillText('mewonen.com', 720, 730);
-  // Download
-  var link = document.createElement('a');
-  link.download = 'mewonen-statut.png';
-  link.href = canvas2.toDataURL('image/png');
-  link.click();
-  showToast('📱 Statut téléchargé !');
+  // QR Code
+  var qrImg = new Image();
+  qrImg.crossOrigin = 'anonymous';
+  qrImg.onload = function(){
+    ctx2.drawImage(qrImg, 660, 670, 100, 100);
+    var link = document.createElement('a');
+    link.download = 'mewonen-statut.png';
+    link.href = canvas2.toDataURL('image/png');
+    link.click();
+    showToast('📱 Statut téléchargé !');
+  };
+  qrImg.onerror = function(){
+    var link = document.createElement('a');
+    link.download = 'mewonen-statut.png';
+    link.href = canvas2.toDataURL('image/png');
+    link.click();
+    showToast('📱 Statut téléchargé !');
+  };
+  qrImg.src = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://mewonen.com';
 }
 
 // ============================================================
 // INVITE
 // ============================================================
 function inviteFriends(){
+  var emoji = document.getElementById('re').textContent || '💜';
   var url = 'https://mewonen.com';
-  var text = '💜 Dessine ton humeur sur Mewonen ! C\'est gratuit et privé. Rejoins-moi : ' + url;
+  var text = '💜 Je viens de dessiner '+emoji+' sur Mewonen ! Et toi ? Rejoins-moi : '+url;
   if(navigator.share){
     navigator.share({ title: 'Mewonen', text: text, url: url }).catch(function(){});
   } else {
@@ -1014,6 +1097,9 @@ function updateStreak(){
     else if(streak>=3) badge.className='sb show bz';
     else badge.className='sb show';
   } else { badge.classList.remove('show'); }
+  // Mettre à jour la barre de progression des badges
+  var pct = Math.min((userBadges.length/allBadges.length)*100, 100);
+  document.getElementById('badgeProgress').style.width = pct + '%';
 }
 
 // ============================================================
@@ -1080,6 +1166,8 @@ function setupNav(){
       if(sc === 'gallery') buildGallery();
       if(sc === 'stats') buildStats();
       if(sc === 'map') buildMap();
+      if(sc === 'collection') updateCollection();
+      if(sc === 'ranking') updateRanking();
     });
   });
 }
@@ -1150,7 +1238,7 @@ function dataURLToBlob(dataUrl){ var arr=dataUrl.split(','), mime=arr[0].match(/
 // ============================================================
 function spawnConfetti(){
   var colors = ['#a78bfa','#7c3aed','#fbbf24','#34d399','#f472b6','#60a5fa','#f97316'];
-  for(var i=0;i<25;i++){
+  for(var i=0;i<30;i++){
     var el=document.createElement('div');
     el.className='confetti';
     el.style.left=Math.random()*100+'%';
