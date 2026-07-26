@@ -22,23 +22,27 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
+:root{
+    --accent:#a78bfa;--accent2:#7c3aed;--bg:#0a0a18;
+    --surface:rgba(16,16,32,0.6);--text:#f0f0f0;--text2:#b0b0b0;--text3:#555;
+}
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 body{
     font-family:'Inter',-apple-system,sans-serif;
-    background:#0a0a18;color:#f0f0f0;
-    -webkit-font-smoothing:antialiased;
+    background:var(--bg);color:var(--text);
+    -webkit-font-smoothing:antialiased;overflow-x:hidden;
     user-select:none;-webkit-user-select:none;
-    overflow:hidden;height:100vh;height:100dvh;
 }
+
 /* ONBOARDING */
 .onboarding{
-    position:fixed;inset:0;z-index:500;
+    position:fixed;inset:0;z-index:500;background:var(--bg);
     display:flex;flex-direction:column;align-items:center;justify-content:center;
-    background:#0a0a18;transition:transform 0.4s ease,opacity 0.4s ease;
+    transition:transform 0.5s ease,opacity 0.5s ease;
 }
 .onboarding.hidden{transform:translateY(-100%);opacity:0;pointer-events:none}
-.swipe-container{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;width:100%;height:100%;-webkit-overflow-scrolling:touch;scrollbar-width:none}
-.swipe-container::-webkit-scrollbar{display:none}
+.swipe-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;width:100%;height:100%;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.swipe-track::-webkit-scrollbar{display:none}
 .swipe{
     min-width:100%;height:100%;scroll-snap-align:center;
     display:flex;flex-direction:column;align-items:center;justify-content:center;
@@ -50,38 +54,85 @@ body{
 .swipe p{font-size:0.85rem;color:rgba(255,255,255,0.5);line-height:1.6;max-width:300px}
 .swipe-dots{position:absolute;bottom:40px;display:flex;gap:8px}
 .dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.2);transition:all 0.3s ease}
-.dot.active{background:#a78bfa;width:24px;border-radius:4px}
+.dot.active{background:var(--accent);width:24px;border-radius:4px}
 .btn-skip{position:absolute;top:20px;right:20px;z-index:10;color:rgba(255,255,255,0.4);font-size:0.75rem;cursor:pointer;background:none;border:none}
-.btn-next{position:absolute;bottom:80px;z-index:10;padding:12px 30px;border-radius:50px;background:linear-gradient(135deg,#7c3aed,#a78bfa);color:#fff;font-size:0.85rem;font-weight:500;cursor:pointer;border:none;transition:all 0.2s ease}
+.btn-next{
+    position:absolute;bottom:80px;z-index:10;padding:12px 30px;border-radius:50px;
+    background:linear-gradient(135deg,var(--accent2),var(--accent));color:#fff;
+    font-size:0.85rem;font-weight:500;cursor:pointer;border:none;transition:all 0.2s ease;
+}
 .btn-next:active{transform:scale(0.96)}
+
 /* CIRCLE */
-.circle-section{display:none;text-align:center;padding:40px 20px}
-.circle-section.active{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:80vh}
+.circle-section{display:none;text-align:center;padding:40px 20px;min-height:100vh;flex-direction:column;align-items:center;justify-content:center}
+.circle-section.active{display:flex}
 .circle-section h2{font-size:1.3rem;font-weight:200;margin-bottom:20px}
-.circle-input{width:100%;max-width:300px;padding:14px;border-radius:16px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.05);color:#fff;font-size:0.85rem;margin-bottom:10px;text-align:center}
+.circle-input{width:100%;max-width:300px;padding:14px;border-radius:16px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.05);color:#fff;font-size:0.85rem;margin-bottom:10px;text-align:center;outline:none}
+.circle-input:focus{border-color:var(--accent)}
+
 /* APP */
-.app{
-    height:100vh;height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;
-    position:relative;text-align:center;padding:20px;
-}
-.app-bg{position:absolute;inset:0;background:radial-gradient(circle at 50% 40%,rgba(167,139,250,0.08) 0%,transparent 70%)}
-.logo{font-size:2rem;font-weight:100;letter-spacing:10px;color:#fff;margin-bottom:4px;position:relative;z-index:1}
-.subtitle{color:#a78bfa;font-size:0.7rem;letter-spacing:3px;margin-bottom:16px;position:relative;z-index:1}
-.counter{color:rgba(255,255,255,0.4);font-size:0.7rem;margin-bottom:16px;position:relative;z-index:1}
-.counter span{color:#a78bfa;font-weight:500}
+.app{display:none;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;min-height:100dvh;padding:20px;position:relative;text-align:center}
+.app.active{display:flex}
+.app-bg{position:absolute;inset:0;background:radial-gradient(circle at 50% 40%,rgba(167,139,250,0.08) 0%,transparent 70%);z-index:0}
+.app>*{position:relative;z-index:1}
+.logo{font-size:2rem;font-weight:100;letter-spacing:10px;color:#fff;margin-bottom:4px}
+.subtitle{color:var(--accent);font-size:0.7rem;letter-spacing:3px;margin-bottom:12px}
+.greeting{color:rgba(255,255,255,0.5);font-size:0.75rem;margin-bottom:16px;font-style:italic}
+.counter{color:rgba(255,255,255,0.4);font-size:0.7rem;margin-bottom:16px}
+.counter span{color:var(--accent);font-weight:500}
+
+/* CANVAS */
+.canvas-wrap{position:relative;margin-bottom:12px}
 canvas#canvas{
-    width:260px;height:260px;border-radius:28px;
-    background:rgba(16,16,32,0.6);touch-action:none;cursor:crosshair;
-    border:1.5px solid rgba(255,255,255,0.08);position:relative;z-index:1;
+    width:260px;height:260px;border-radius:50%;
+    background:var(--surface);touch-action:none;cursor:crosshair;
+    border:2px solid rgba(139,92,246,0.3);
+    box-shadow:0 0 40px rgba(139,92,246,0.2);
+    transition:background 0.5s ease,box-shadow 0.5s ease;
 }
-.result-emoji{font-size:3rem;margin-top:8px;position:relative;z-index:1;min-height:60px}
-.result-phrase{color:#fff;font-size:0.8rem;margin-top:4px;position:relative;z-index:1;max-width:300px}
-.btn-outline{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:50px;font-size:0.8rem;font-weight:500;cursor:pointer;border:1px solid rgba(139,92,246,0.3);background:transparent;color:#a78bfa;transition:all 0.2s ease;margin-top:10px}
-.btn-outline:active{transform:scale(0.96)}
+canvas#canvas.reactive-happy{background:rgba(251,191,36,0.15);box-shadow:0 0 50px rgba(251,191,36,0.3)}
+canvas#canvas.reactive-rain{background:rgba(59,130,246,0.15);box-shadow:0 0 50px rgba(59,130,246,0.3)}
+canvas#canvas.reactive-storm{background:rgba(139,92,246,0.2);box-shadow:0 0 50px rgba(139,92,246,0.4)}
+canvas#canvas.reactive-calm{background:rgba(99,102,241,0.15);box-shadow:0 0 50px rgba(99,102,241,0.3)}
+
+.result-emoji{font-size:3rem;margin-top:8px;min-height:60px}
+.result-phrase{color:#fff;font-size:0.8rem;margin-top:4px;max-width:300px}
+
+/* FEEL WHEEL */
+.wheel-section{display:none;text-align:center}
+.wheel-section.active{display:block}
+.wheel-container{position:relative;width:200px;height:200px;margin:20px auto}
+.wheel-svg{width:100%;height:100%;animation:spinWheel 3s ease-out forwards}
+@keyframes spinWheel{0%{transform:rotate(0deg)}100%{transform:rotate(720deg)}}
+
+/* BUTTONS */
+.btn{
+    display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:50px;
+    font-size:0.8rem;font-weight:500;cursor:pointer;border:none;transition:all 0.2s ease;
+    text-decoration:none;letter-spacing:0.5px;margin:6px;
+}
+.btn-primary{background:linear-gradient(135deg,var(--accent2),var(--accent));color:#fff;box-shadow:0 4px 20px rgba(124,58,237,0.3)}
+.btn-outline{background:transparent;color:var(--accent);border:1px solid rgba(139,92,246,0.3)}
+.btn:active{transform:scale(0.96)}
+
+/* SHARE CARD */
+.share-card{
+    display:none;background:linear-gradient(135deg,#1a1025,#0d1b2a);border-radius:24px;
+    padding:20px;text-align:center;max-width:300px;margin:10px auto;position:relative;
+}
+.share-card.active{display:block}
+.share-card .card-emoji{font-size:4rem}
+.share-card .card-phrase{font-size:0.9rem;color:#fff;margin:8px 0}
+.share-card .card-logo{font-size:0.6rem;color:var(--accent);letter-spacing:3px}
+.share-card canvas{border-radius:16px;width:150px;height:150px;margin:8px 0}
+
+/* MASCOT */
 .mascot{position:fixed;bottom:16px;right:16px;z-index:100;display:flex;flex-direction:column;align-items:flex-end;gap:6px}
 .mascot-bubble{background:rgba(22,22,44,0.97);border:1px solid rgba(139,92,246,0.3);border-radius:14px;padding:10px 14px;max-width:200px;font-size:0.65rem;color:#fff;cursor:pointer}
 .mascot-avatar{width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#a78bfa);display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:#fff;cursor:pointer;animation:bounce 2s ease-in-out infinite;box-shadow:0 4px 20px rgba(124,58,237,0.4)}
 @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+
+/* SOCIAL BAR */
 .social-bar{position:fixed;bottom:0;left:0;right:0;z-index:99;background:rgba(16,16,32,0.95);padding:6px;text-align:center;font-size:0.6rem;color:rgba(255,255,255,0.5);display:none}
 .social-bar.show{display:block}
 </style>
@@ -91,7 +142,7 @@ canvas#canvas{
 <!-- ONBOARDING -->
 <div class="onboarding" id="onboarding">
     <button class="btn-skip" onclick="skipOnboarding()">Skip</button>
-    <div class="swipe-container" id="swipeContainer">
+    <div class="swipe-track" id="swipeTrack">
         <div class="swipe"><div class="swipe-emoji">🧠</div><h2>No one asked how you feel today.</h2><p>Except Mewonen.</p></div>
         <div class="swipe"><div class="swipe-emoji">✍️</div><h2>Draw. No words needed.</h2><p>A line is enough. A scribble too.</p></div>
         <div class="swipe"><div class="swipe-emoji">💜</div><h2>Mewonen understands.</h2><p>13 emotions. 7 languages. Zero data.</p></div>
@@ -108,199 +159,110 @@ canvas#canvas{
     <p style="color:rgba(255,255,255,0.4);font-size:0.7rem;margin-bottom:20px">Add 1 person you trust. They'll just know you're alive. Nothing else.</p>
     <input class="circle-input" type="text" id="circleName" placeholder="Name (ex: Mom)">
     <input class="circle-input" type="email" id="circleEmail" placeholder="Email (optional)">
-    <button class="btn-outline" onclick="saveCircle()">Save & Start →</button>
-    <button class="btn-outline" onclick="skipCircle()" style="margin-top:8px;opacity:0.5">Skip for now</button>
+    <button class="btn btn-primary" onclick="saveCircle()">Save & Start →</button>
+    <button class="btn btn-outline" onclick="skipCircle()" style="margin-top:8px;opacity:0.5">Skip for now</button>
 </div>
 
 <!-- APP -->
-<div class="app" id="app" style="display:none">
+<div class="app" id="app">
     <div class="app-bg"></div>
     <div class="logo">MEWONEN</div>
     <div class="subtitle">Draw your mood</div>
+    <div class="greeting" id="greeting"></div>
     <div class="counter"><span id="liveCounter">0</span> people drew today</div>
-    <canvas id="canvas" width="500" height="500" aria-label="Draw your mood"></canvas>
+
+    <div class="canvas-wrap">
+        <canvas id="canvas" width="500" height="500" aria-label="Draw your mood"></canvas>
+    </div>
     <div class="result-emoji" id="resultEmoji"></div>
     <div class="result-phrase" id="resultPhrase"></div>
-    <button class="btn-outline" id="btnClear" onclick="resetCanvas()">Clear</button>
+
+    <button class="btn btn-outline" onclick="resetCanvas()">Clear</button>
+    <button class="btn btn-outline" onclick="openWheel()">🎡 Feel Wheel</button>
+
+    <!-- Share Card -->
+    <div class="share-card" id="shareCard">
+        <div class="card-emoji" id="cardEmoji"></div>
+        <div class="card-phrase" id="cardPhrase"></div>
+        <canvas id="cardCanvas" width="300" height="300"></canvas>
+        <div class="card-logo">mewonen.com 💜</div>
+        <button class="btn btn-primary" onclick="shareResult()">📤 Share</button>
+    </div>
+
+    <!-- Wheel -->
+    <div class="wheel-section" id="wheelSection">
+        <h3 style="margin-bottom:10px">🎡 Spin the Feel Wheel</h3>
+        <div class="wheel-container">
+            <svg class="wheel-svg" id="wheelSvg" viewBox="0 0 200 200">
+                <circle cx="100" cy="100" r="95" fill="none" stroke="var(--accent)" stroke-width="2"/>
+                <text x="100" y="25" text-anchor="middle" fill="#fff" font-size="14">☀️</text>
+                <text x="175" y="105" text-anchor="middle" fill="#fff" font-size="14">🌧️</text>
+                <text x="100" y="185" text-anchor="middle" fill="#fff" font-size="14">🌪️</text>
+                <text x="25" y="105" text-anchor="middle" fill="#fff" font-size="14">🌈</text>
+                <text x="65" y="55" text-anchor="middle" fill="#fff" font-size="12">🔥</text>
+                <text x="135" y="55" text-anchor="middle" fill="#fff" font-size="12">🌙</text>
+                <text x="135" y="155" text-anchor="middle" fill="#fff" font-size="12">🙏</text>
+                <text x="65" y="155" text-anchor="middle" fill="#fff" font-size="12">🌱</text>
+            </svg>
+        </div>
+        <p style="color:rgba(255,255,255,0.5);font-size:0.7rem">Spin and draw the emotion you get!</p>
+        <button class="btn btn-primary" onclick="spinWheel()">🎡 SPIN</button>
+        <p id="wheelResult" style="margin-top:10px;font-size:1rem;color:#fff"></p>
+    </div>
 </div>
 
-<!-- MASCOTTE -->
+<!-- MASCOT -->
 <div class="mascot" id="mascot">
-    <div class="mascot-bubble" id="mascotBubble" onclick="mascotClick()"><span id="mascotText">How are you feeling today?</span></div>
+    <div class="mascot-bubble" id="mascotBubble" onclick="mascotClick()"><span id="mascotText">How are you feeling?</span></div>
     <div class="mascot-avatar" onclick="mascotClick()">M</div>
 </div>
 <div class="social-bar" id="socialBar"><span id="socialText">Someone just drew ☀️</span></div>
 
 <script>
 // ==================== ONBOARDING ====================
-var currentSwipe = 0;
-var swipeContainer = document.getElementById('swipeContainer');
-var dots = document.querySelectorAll('.dot');
-var btnNext = document.getElementById('btnNext');
-
-swipeContainer.addEventListener('scroll', function(){
-    var idx = Math.round(swipeContainer.scrollLeft / window.innerWidth);
-    currentSwipe = idx;
-    updateDots();
-    btnNext.textContent = idx === 4 ? 'Begin →' : 'Next →';
-});
-
-function updateDots(){
-    dots.forEach(function(d, i){ d.classList.toggle('active', i === currentSwipe); });
-}
-
-function nextSwipe(){
-    if(currentSwipe < 4){
-        currentSwipe++;
-        swipeContainer.scrollTo({left: currentSwipe * window.innerWidth, behavior: 'smooth'});
-    } else {
-        finishOnboarding();
-    }
-}
-
-function skipOnboarding(){ finishOnboarding(); }
-
-function finishOnboarding(){
-    document.getElementById('onboarding').classList.add('hidden');
-    document.getElementById('circleSection').classList.add('active');
-}
+var currentSwipe=0,track=document.getElementById('swipeTrack'),dots=document.querySelectorAll('.dot'),btnNext=document.getElementById('btnNext');
+track.addEventListener('scroll',function(){currentSwipe=Math.round(track.scrollLeft/window.innerWidth);updateDots();btnNext.textContent=currentSwipe===4?'Begin →':'Next →'});
+function updateDots(){dots.forEach(function(d,i){d.classList.toggle('active',i===currentSwipe)})}
+function nextSwipe(){if(currentSwipe<4){currentSwipe++;track.scrollTo({left:currentSwipe*window.innerWidth,behavior:'smooth'})}else finishOnboarding()}
+function skipOnboarding(){finishOnboarding()}
+function finishOnboarding(){document.getElementById('onboarding').classList.add('hidden');document.getElementById('circleSection').classList.add('active')}
 
 // ==================== CIRCLE ====================
-function saveCircle(){
-    var name = document.getElementById('circleName').value.trim();
-    var email = document.getElementById('circleEmail').value.trim();
-    if(name){
-        var circle = JSON.parse(localStorage.getItem('mw_circle') || '[]');
-        circle.push({name: name, email: email, added: new Date().toISOString()});
-        localStorage.setItem('mw_circle', JSON.stringify(circle));
-    }
-    startApp();
-}
+function saveCircle(){var n=document.getElementById('circleName').value.trim();if(n){var c=JSON.parse(localStorage.getItem('mw_circle')||'[]');c.push({name:n,email:document.getElementById('circleEmail').value.trim(),added:new Date().toISOString()});localStorage.setItem('mw_circle',JSON.stringify(c))}startApp()}
+function skipCircle(){startApp()}
+function startApp(){document.getElementById('circleSection').classList.remove('active');document.getElementById('app').classList.add('active');localStorage.setItem('mw_onboarding_done','1');showGreeting()}
 
-function skipCircle(){ startApp(); }
+// ==================== GREETING ====================
+function showGreeting(){var h=JSON.parse(localStorage.getItem('mw_history')||'[]');if(h.length>0){var last=h[h.length-1];document.getElementById('greeting').textContent='Yesterday you felt '+last.emoji+'. And today?';}}
 
-function startApp(){
-    document.getElementById('circleSection').classList.remove('active');
-    document.getElementById('app').style.display = 'flex';
-    localStorage.setItem('mw_onboarding_done', '1');
-}
-
-// ==================== COMPTEUR LIVE ====================
-var count = parseInt(localStorage.getItem('mw_landing_count') || '1547');
-count = Math.max(count, 1500) + Math.floor(Math.random() * 5);
-localStorage.setItem('mw_landing_count', count.toString());
-document.getElementById('liveCounter').textContent = count.toLocaleString();
-setInterval(function(){
-    count += Math.floor(Math.random() * 3) + 1;
-    localStorage.setItem('mw_landing_count', count.toString());
-    document.getElementById('liveCounter').textContent = count.toLocaleString();
-}, 25000);
+// ==================== COMPTEUR ====================
+var count=parseInt(localStorage.getItem('mw_landing_count')||'1547');count=Math.max(count,1500)+Math.floor(Math.random()*5);localStorage.setItem('mw_landing_count',count.toString());document.getElementById('liveCounter').textContent=count.toLocaleString();setInterval(function(){count+=Math.floor(Math.random()*3)+1;localStorage.setItem('mw_landing_count',count.toString());document.getElementById('liveCounter').textContent=count.toLocaleString()},25000);
 
 // ==================== CANVAS ====================
-var canvas = document.getElementById('canvas');
-var ctx = canvas.getContext('2d');
-var drawing = false, points = [], brushSize = 4;
+var canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d'),drawing=false,points=[];
+var emotions=[{emoji:'☀️',p:'You are shining today',bg:'reactive-happy'},{emoji:'🌧️',p:'Let it wash over you',bg:'reactive-rain'},{emoji:'🌪️',p:'Even storms run out of rain',bg:'reactive-storm'},{emoji:'🌈',p:'Look what you crossed',bg:'reactive-happy'},{emoji:'⚡',p:'This energy is yours',bg:'reactive-storm'},{emoji:'🌙',p:'Rest is not weakness',bg:'reactive-calm'},{emoji:'🔥',p:'Passion is power',bg:'reactive-storm'},{emoji:'🌱',p:'Hope whispers',bg:'reactive-happy'},{emoji:'🙏',p:'Gratitude changes you',bg:'reactive-calm'},{emoji:'💨',p:'Let the wind carry you',bg:'reactive-calm'},{emoji:'🌫️',p:'Clarity comes slowly',bg:'reactive-calm'},{emoji:'❄️',p:'Spring always comes',bg:'reactive-calm'},{emoji:'🕳️',p:'Space waiting',bg:'reactive-calm'}];
+function getPos(e){var r=canvas.getBoundingClientRect(),sX=canvas.width/r.width,sY=canvas.height/r.height,cX=e.touches?e.touches[0].clientX:e.clientX,cY=e.touches?e.touches[0].clientY:e.clientY;return{x:(cX-r.left)*sX,y:(cY-r.top)*sY}}
+function startDraw(e){e.preventDefault();drawing=true;points=[];var p=getPos(e);points.push({x:p.x,y:p.y});ctx.beginPath();ctx.moveTo(p.x,p.y);canvas.className=''}
+function moveDraw(e){e.preventDefault();if(!drawing)return;var p=getPos(e);points.push({x:p.x,y:p.y});ctx.lineTo(p.x,p.y);ctx.strokeStyle='rgba(200,180,255,0.9)';ctx.lineWidth=4;ctx.lineCap='round';ctx.lineJoin='round';ctx.stroke()}
+function endDraw(){drawing=false;if(points.length<3)return;var d=0;for(var i=1;i<points.length;i++){var dx=points[i].x-points[i-1].x,dy=points[i].y-points[i-1].y;d+=Math.sqrt(dx*dx+dy*dy)}var idx=Math.floor(Math.random()*emotions.length);if(d>400)idx=0;else if(d>250)idx=4;else if(d>100)idx=1;else if(d<15)idx=12;var e=emotions[idx];document.getElementById('resultEmoji').textContent=e.emoji;document.getElementById('resultPhrase').textContent=e.p;canvas.className=e.bg;showShareCard(e);count++;localStorage.setItem('mw_landing_count',count.toString());document.getElementById('liveCounter').textContent=count.toLocaleString();saveHistory(e)}
+function resetCanvas(){ctx.clearRect(0,0,canvas.width,canvas.height);document.getElementById('resultEmoji').textContent='';document.getElementById('resultPhrase').textContent='';canvas.className='';document.getElementById('shareCard').classList.remove('active')}
+canvas.addEventListener('touchstart',startDraw,{passive:false});canvas.addEventListener('touchmove',moveDraw,{passive:false});canvas.addEventListener('touchend',endDraw);canvas.addEventListener('mousedown',startDraw);canvas.addEventListener('mousemove',moveDraw);canvas.addEventListener('mouseup',endDraw);canvas.addEventListener('mouseleave',endDraw);
+function saveHistory(e){var h=JSON.parse(localStorage.getItem('mw_history')||'[]');h.push({emoji:e.emoji,date:new Date().toISOString().split('T')[0]});if(h.length>30)h.shift();localStorage.setItem('mw_history',JSON.stringify(h))}
 
-var emotions = [
-    {emoji:'☀️',p:'You are shining today'},
-    {emoji:'🌧️',p:'Let it wash over you'},
-    {emoji:'🌪️',p:'Even storms run out of rain'},
-    {emoji:'🌈',p:'Look what you crossed'},
-    {emoji:'⚡',p:'This energy is yours'},
-    {emoji:'🌙',p:'Rest is not weakness'},
-    {emoji:'🔥',p:'Passion is power'},
-    {emoji:'🌱',p:'Hope whispers'},
-    {emoji:'🙏',p:'Gratitude changes you'},
-    {emoji:'💨',p:'Let the wind carry you'},
-    {emoji:'🌫️',p:'Clarity comes slowly'},
-    {emoji:'❄️',p:'Spring always comes'},
-    {emoji:'🕳️',p:'Space waiting'}
-];
+// ==================== SHARE CARD ====================
+function showShareCard(e){var card=document.getElementById('shareCard');card.classList.add('active');document.getElementById('cardEmoji').textContent=e.emoji;document.getElementById('cardPhrase').textContent=e.p;var cc=document.getElementById('cardCanvas'),cctx=cc.getContext('2d');cctx.clearRect(0,0,300,300);cctx.drawImage(canvas,0,0,300,300)}
+function shareResult(){var text=document.getElementById('cardEmoji').textContent+' "'+document.getElementById('cardPhrase').textContent+'"\n\nDraw yours on mewonen.com 💜';if(navigator.share)navigator.share({text:text});else if(navigator.clipboard)navigator.clipboard.writeText(text).then(function(){alert('Copied!')});else alert('Copy this:\n\n'+text)}
 
-function getPos(e){
-    var r = canvas.getBoundingClientRect();
-    var sX = canvas.width / r.width, sY = canvas.height / r.height;
-    var cX = e.touches ? e.touches[0].clientX : e.clientX;
-    var cY = e.touches ? e.touches[0].clientY : e.clientY;
-    return {x: (cX - r.left) * sX, y: (cY - r.top) * sY};
-}
+// ==================== FEEL WHEEL ====================
+function openWheel(){document.getElementById('wheelSection').classList.toggle('active')}
+function spinWheel(){var svg=document.getElementById('wheelSvg');svg.style.animation='none';svg.offsetHeight;svg.style.animation='spinWheel 2s ease-out forwards';var emotionsW=['☀️','🌧️','🌪️','🌈','🔥','🌙','🙏','🌱'];setTimeout(function(){var e=emotionsW[Math.floor(Math.random()*emotionsW.length)];document.getElementById('wheelResult').textContent='🎯 Your challenge: Draw '+e+' now!';resetCanvas()},2100)}
 
-function startDraw(e){
-    e.preventDefault();
-    drawing = true; points = [];
-    var p = getPos(e); points.push({x: p.x, y: p.y});
-    ctx.beginPath(); ctx.moveTo(p.x, p.y);
-}
-
-function moveDraw(e){
-    e.preventDefault();
-    if(!drawing) return;
-    var p = getPos(e); points.push({x: p.x, y: p.y});
-    ctx.lineTo(p.x, p.y);
-    ctx.strokeStyle = 'rgba(200,180,255,0.9)';
-    ctx.lineWidth = brushSize; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-    ctx.stroke();
-}
-
-function endDraw(){
-    drawing = false;
-    if(points.length < 3) return;
-    var totalDist = 0;
-    for(var i=1;i<points.length;i++){
-        var dx=points[i].x-points[i-1].x, dy=points[i].y-points[i-1].y;
-        totalDist += Math.sqrt(dx*dx+dy*dy);
-    }
-    var idx = Math.floor(Math.random()*emotions.length);
-    if(totalDist>400) idx=0; else if(totalDist>250) idx=4; else if(totalDist>100) idx=1; else if(totalDist<15) idx=12;
-    var e = emotions[idx];
-    document.getElementById('resultEmoji').textContent = e.emoji;
-    document.getElementById('resultPhrase').textContent = e.p;
-    count++;
-    localStorage.setItem('mw_landing_count', count.toString());
-    document.getElementById('liveCounter').textContent = count.toLocaleString();
-}
-
-function resetCanvas(){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    document.getElementById('resultEmoji').textContent = '';
-    document.getElementById('resultPhrase').textContent = '';
-}
-
-canvas.addEventListener('touchstart',startDraw,{passive:false});
-canvas.addEventListener('touchmove',moveDraw,{passive:false});
-canvas.addEventListener('touchend',endDraw);
-canvas.addEventListener('mousedown',startDraw);
-canvas.addEventListener('mousemove',moveDraw);
-canvas.addEventListener('mouseup',endDraw);
-canvas.addEventListener('mouseleave',endDraw);
-
-// ==================== MASCOTTE ====================
-var mascotTexts = ["How are you feeling today?","Draw your mood. It helps. 💜","Someone just drew ☀️. Your turn?","You're not alone."];
-var mascotIdx = 0;
-setInterval(function(){
-    mascotIdx = (mascotIdx+1) % mascotTexts.length;
-    document.getElementById('mascotText').textContent = mascotTexts[mascotIdx];
-}, 4000);
-function mascotClick(){
-    document.getElementById('mascotBubble').innerHTML = '<span>Draw it on Mewonen. It helps. 💜</span>';
-}
-
-// ==================== SOCIAL BAR ====================
-var socialMessages = ["🇺🇸 just drew ☀️","🇯🇵 just drew 🌧️","🇧🇷 just drew 🌈","🇫🇷 just drew 🌙","🇮🇳 just drew 🔥"];
-function showSocial(){
-    var bar = document.getElementById('socialBar');
-    bar.classList.add('show');
-    document.getElementById('socialText').textContent = socialMessages[Math.floor(Math.random()*socialMessages.length)];
-    setTimeout(function(){ bar.classList.remove('show'); }, 4000);
-}
-setInterval(showSocial, 12000);
-showSocial();
-
-// ==================== SKIP ONBOARDING IF DONE ====================
-if(localStorage.getItem('mw_onboarding_done') === '1'){
-    document.getElementById('onboarding').classList.add('hidden');
-    document.getElementById('app').style.display = 'flex';
-}
+// ==================== MASCOT ====================
+var mascotTexts=["How are you feeling?","Draw your mood. It helps. 💜","Someone just drew ☀️. You?","You're not alone."],mascotIdx=0;setInterval(function(){mascotIdx=(mascotIdx+1)%mascotTexts.length;document.getElementById('mascotText').textContent=mascotTexts[mascotIdx]},4000);function mascotClick(){document.getElementById('mascotBubble').innerHTML='<span>Draw it on Mewonen. It helps. 💜</span>'}
+// ==================== SOCIAL ====================
+var socialMsgs=["🇺🇸 just drew ☀️","🇯🇵 just drew 🌧️","🇧🇷 just drew 🌈"];function showSocial(){var b=document.getElementById('socialBar');b.classList.add('show');document.getElementById('socialText').textContent=socialMsgs[Math.floor(Math.random()*socialMsgs.length)];setTimeout(function(){b.classList.remove('show')},4000)}setInterval(showSocial,12000);showSocial();
+// ==================== INIT ====================
+if(localStorage.getItem('mw_onboarding_done')==='1'){document.getElementById('onboarding').classList.add('hidden');startApp()}
 </script>
 </body>
 </html>
