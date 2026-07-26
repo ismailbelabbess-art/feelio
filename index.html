@@ -1,912 +1,305 @@
 <!DOCTYPE html>
-<html lang="mul">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
-<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Mewonen">
 <meta name="theme-color" content="#0a0a18">
-<link rel="icon" href="data:;base64,iVBORw0KGgo=">
-<title>Mewonen — Feel Wheel</title>
+<meta name="copyright" content="© 2026 Mewonen. Ismail Belabbess. All rights reserved.">
+<meta name="description" content="Mewonen — Draw your mood. 100% private. Free forever.">
+<meta property="og:title" content="Mewonen — Draw your mood">
+<meta property="og:description" content="Draw your mood. Mewonen understands.">
+<meta property="og:url" content="https://mewonen.com">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Mewonen — Draw your mood">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3CradialGradient id='g' cx='50%25' cy='50%25'%3E%3Cstop offset='0%25' stop-color='%23c4b5fd'/%3E%3Cstop offset='100%25' stop-color='%237c3aed'/%3E%3C/radialGradient%3E%3C/defs%3E%3Ccircle cx='50' cy='50' r='48' fill='url(%23g)'/%3E%3Ctext x='50' y='65' text-anchor='middle' font-size='40' font-weight='200' fill='white'%3EM%3C/text%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3CradialGradient id='g' cx='50%25' cy='50%25'%3E%3Cstop offset='0%25' stop-color='%23c4b5fd'/%3E%3Cstop offset='100%25' stop-color='%237c3aed'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='20' fill='url(%23g)'/%3E%3Ctext x='50' y='65' text-anchor='middle' font-size='40' font-weight='200' fill='white'%3EM%3C/text%3E%3C/svg%3E">
+<link rel="manifest" href="data:application/manifest+json,%7B%22name%22:%22Mewonen%22,%22short_name%22:%22Mewonen%22,%22start_url%22:%22/%22,%22display%22:%22standalone%22,%22background_color%22:%22%230a0a18%22,%22theme_color%22:%22%230a0a18%22%7D">
+<title>Mewonen — Draw your mood</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-/* ===== RESET ===== */
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-html{font-size:16px;-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}
-body{font-family:'Inter',-apple-system,sans-serif;background:#0a0a18;color:#fff;min-height:100dvh;overflow:hidden;-webkit-font-smoothing:antialiased;user-select:none;-webkit-user-select:none}
-
-/* ===== SPLASH ===== */
-#splash{position:fixed;inset:0;z-index:1000;background:radial-gradient(ellipse at 50% 30%,#1a1030,#0a0a18);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 1s ease}
-#splash.hidden{opacity:0;pointer-events:none}
-.splash-isme{font-size:4.5rem;margin-bottom:6px;animation:sf 2s ease-in-out infinite;text-shadow:0 0 60px rgba(124,58,237,0.5)}
-@keyframes sf{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
-.splash-logo{font-size:2.8rem;font-weight:100;letter-spacing:18px;color:#fff;text-shadow:0 0 60px rgba(167,139,250,0.3)}
-.splash-sub{color:#a78bfa;font-size:0.65rem;letter-spacing:6px;margin-top:8px;opacity:0.5}
-.splash-bar{width:50px;height:2px;background:rgba(255,255,255,0.05);border-radius:2px;margin-top:16px;overflow:hidden}
-.splash-bar span{display:block;height:100%;width:0%;background:linear-gradient(90deg,#7c3aed,#a78bfa);animation:pb 2s ease-in-out forwards}
-@keyframes pb{0%{width:0%}100%{width:100%}}
-
-/* ===== DISCOVER OVERLAY ===== */
-#discoverOverlay{position:fixed;inset:0;z-index:950;background:rgba(10,10,24,0.97);backdrop-filter:blur(30px);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px}
-#discoverOverlay.hidden{display:none}
-.discover-container{width:100%;max-width:400px;max-height:90vh;overflow-y:auto;display:flex;flex-direction:column;gap:12px;padding:8px 4px}
-.discover-title{font-size:1.4rem;font-weight:200;text-align:center;margin-bottom:4px;color:#fff;letter-spacing:2px}
-.discover-title span{color:#a78bfa}
-.discover-sub{font-size:0.55rem;color:rgba(255,255,255,0.3);text-align:center;margin-bottom:6px}
-.discover-card{background:rgba(16,16,32,0.6);border:1px solid rgba(139,92,246,0.06);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:14px;backdrop-filter:blur(8px)}
-.discover-card .d-icon{font-size:1.8rem;width:40px;text-align:center;flex-shrink:0}
-.discover-card .d-content{flex:1}
-.discover-card .d-title{font-size:0.7rem;font-weight:600;color:#fff;margin-bottom:2px}
-.discover-card .d-desc{font-size:0.5rem;color:rgba(255,255,255,0.35);line-height:1.4}
-.discover-footer{display:flex;gap:8px;justify-content:center;margin-top:8px;padding:4px 0}
-
-/* ===== ONBOARDING ===== */
-#onboarding{position:fixed;inset:0;z-index:900;background:rgba(10,10,24,0.98);backdrop-filter:blur(30px);display:none;flex-direction:column;align-items:center;justify-content:center;padding:20px}
-#onboarding.active{display:flex}
-.on-slide{display:none;animation:os 0.6s ease-out;max-width:360px;text-align:center}
-.on-slide.active{display:block}
-@keyframes os{0%{opacity:0;transform:translateY(30px)}100%{opacity:1;transform:translateY(0)}}
-.on-slide .icon{font-size:4rem;margin-bottom:10px}
-.on-slide h2{font-size:1.4rem;font-weight:200;color:#fff;margin-bottom:4px}
-.on-slide p{color:rgba(255,255,255,0.5);font-size:0.8rem;line-height:1.6}
-.on-dots{display:flex;gap:8px;margin:16px 0}
-.on-dots span{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.06);transition:all 0.3s}
-.on-dots span.active{background:#a78bfa;transform:scale(1.2)}
-.btn{display:inline-flex;align-items:center;gap:6px;padding:10px 24px;border-radius:50px;font-size:0.65rem;font-weight:500;letter-spacing:0.5px;cursor:pointer;transition:all 0.2s;border:none;font-family:inherit}
-.btn:active{transform:scale(0.94)}
-.btn-p{background:linear-gradient(135deg,#7c3aed,#a78bfa);color:#fff;box-shadow:0 4px 25px rgba(124,58,237,0.3)}
-.btn-o{background:transparent;color:#a78bfa;border:1px solid rgba(139,92,246,0.15)}
-
-/* ===== APP ===== */
-#app{display:none;flex-direction:column;height:100dvh;background:#0a0a18;position:relative;overflow:hidden}
-#app.active{display:flex}
-
-.top-bar{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;padding-top:calc(8px + env(safe-area-inset-top,0));background:rgba(10,10,24,0.6);backdrop-filter:blur(16px);border-bottom:0.5px solid rgba(255,255,255,0.03);flex-shrink:0;z-index:50;position:relative}
-.top-bar .l{display:flex;align-items:center;gap:6px;color:rgba(255,255,255,0.2);font-size:0.4rem;letter-spacing:1px}
-.top-bar .l .d{width:4px;height:4px;border-radius:50%;background:#34d399;animation:dp 2s infinite}
-@keyframes dp{0%,100%{opacity:0.2}50%{opacity:1}}
-.top-bar .langs{display:flex;gap:3px}
-.top-bar .langs button{background:none;border:none;color:rgba(255,255,255,0.12);font-size:0.45rem;cursor:pointer;padding:2px 6px;border-radius:4px;transition:all 0.2s;font-weight:400}
-.top-bar .langs button.active{color:#a78bfa;background:rgba(139,92,246,0.06)}
-
-.main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 12px 70px;overflow-y:auto;position:relative;z-index:1;width:100%}
-
-/* ===== WHEEL SCREEN ===== */
-#wheelScreen{display:none;flex-direction:column;align-items:center;justify-content:center;width:100%;height:100%;padding:10px}
-#wheelScreen.active{display:flex}
-.wheel-title{font-size:1.2rem;font-weight:200;color:#fff;margin-bottom:4px;letter-spacing:2px}
-.wheel-title span{color:#a78bfa}
-.wheel-sub{font-size:0.55rem;color:rgba(255,255,255,0.3);margin-bottom:12px}
-.wheel-container{position:relative;width:240px;height:240px;margin-bottom:12px}
-.wheel-container canvas{width:100%;height:100%;border-radius:50%;box-shadow:0 0 60px rgba(124,58,237,0.15)}
-.wheel-pointer{position:absolute;top:-12px;left:50%;transform:translateX(-50%);font-size:2rem;z-index:5;filter:drop-shadow(0 4px 10px rgba(0,0,0,0.5))}
-.wheel-btn{font-size:1.2rem;padding:12px 28px;background:linear-gradient(135deg,#7c3aed,#a78bfa);color:#fff;border:none;border-radius:50px;cursor:pointer;font-weight:600;box-shadow:0 4px 30px rgba(124,58,237,0.3);transition:all 0.2s;font-family:inherit}
-.wheel-btn:active{transform:scale(0.94)}
-.wheel-result{font-size:0.9rem;color:rgba(255,255,255,0.5);margin-top:8px;text-align:center;min-height:30px}
-.wheel-result .highlight{color:#a78bfa;font-weight:600}
-
-/* ===== CHALLENGE SCREEN ===== */
-#challengeScreen{display:none;flex-direction:column;align-items:center;justify-content:center;width:100%;height:100%;padding:10px}
-#challengeScreen.active{display:flex}
-.challenge-emoji{font-size:4rem;margin-bottom:4px}
-.challenge-name{font-size:1.2rem;font-weight:600;color:#fff;margin-bottom:2px}
-.challenge-desc{font-size:0.6rem;color:rgba(255,255,255,0.4);margin-bottom:8px;text-align:center;max-width:280px}
-.challenge-timer{font-size:4rem;font-weight:200;color:#a78bfa;margin-bottom:8px;font-variant-numeric:tabular-nums}
-.challenge-canvas-wrap{position:relative;border-radius:20px;background:rgba(10,10,24,0.3);backdrop-filter:blur(6px);padding:4px;margin-bottom:6px}
-.challenge-canvas-wrap canvas{width:220px;height:220px;border-radius:16px;background:rgba(10,10,24,0.15);border:1.5px solid rgba(139,92,246,0.06);touch-action:none;cursor:crosshair;display:block}
-@media(min-width:500px){.challenge-canvas-wrap canvas{width:260px;height:260px}}
-@media(max-width:380px){.challenge-canvas-wrap canvas{width:180px;height:180px}}
-.challenge-isme{font-size:0.55rem;color:rgba(255,255,255,0.5);text-align:center;margin-top:4px;min-height:20px}
-
-/* ===== RESULT SCREEN ===== */
-#resultScreen{display:none;flex-direction:column;align-items:center;justify-content:center;width:100%;height:100%;padding:10px}
-#resultScreen.active{display:flex}
-.result-badge{font-size:5rem;margin-bottom:4px;animation:badgePop 0.6s ease-out}
-@keyframes badgePop{0%{opacity:0;transform:scale(0.3) rotate(-20deg)}100%{opacity:1;transform:scale(1) rotate(0deg)}}
-.result-title{font-size:1.3rem;font-weight:600;color:#fff;margin-bottom:2px}
-.result-score{font-size:0.8rem;color:#a78bfa;margin-bottom:6px}
-.result-desc{font-size:0.6rem;color:rgba(255,255,255,0.4);text-align:center;max-width:280px;margin-bottom:8px}
-.result-btns{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
-.result-btns .btn{padding:8px 16px;font-size:0.55rem}
-
-/* ===== COLLECTION ===== */
-.collection-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;width:100%;max-width:320px;margin-top:8px}
-.collection-item{display:flex;flex-direction:column;align-items:center;padding:6px 2px;background:rgba(255,255,255,0.02);border-radius:10px;border:1px solid rgba(255,255,255,0.04)}
-.collection-item .c-icon{font-size:1.6rem}
-.collection-item .c-label{font-size:0.3rem;color:rgba(255,255,255,0.15);margin-top:2px;text-align:center}
-.collection-item.unlocked{border-color:rgba(139,92,246,0.2);background:rgba(139,92,246,0.05)}
-.collection-item.unlocked .c-label{color:#a78bfa}
-.collection-item.locked{opacity:0.25}
-
-/* ===== RANKING ===== */
-.ranking-list{width:100%;max-width:320px;margin-top:6px}
-.ranking-item{display:flex;align-items:center;gap:6px;padding:4px 8px;background:rgba(255,255,255,0.02);border-radius:8px;margin:2px 0}
-.ranking-item .r-pos{font-size:0.5rem;color:rgba(255,255,255,0.2);width:20px}
-.ranking-item .r-emoji{font-size:0.8rem}
-.ranking-item .r-name{font-size:0.5rem;color:rgba(255,255,255,0.5);flex:1}
-.ranking-item .r-score{font-size:0.45rem;color:#a78bfa}
-.ranking-item.me{background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.08)}
-
-/* ===== DRAW SCREEN (free draw) ===== */
-#drawScreen{display:none;flex-direction:column;align-items:center;justify-content:center;width:100%;height:100%;padding:10px}
-#drawScreen.active{display:flex}
-.draw-canvas-wrap{position:relative;border-radius:20px;background:rgba(10,10,24,0.3);backdrop-filter:blur(6px);padding:4px;margin-bottom:6px}
-.draw-canvas-wrap canvas{width:220px;height:220px;border-radius:16px;background:rgba(10,10,24,0.15);border:1.5px solid rgba(139,92,246,0.06);touch-action:none;cursor:crosshair;display:block}
-@media(min-width:500px){.draw-canvas-wrap canvas{width:260px;height:260px}}
-@media(max-width:380px){.draw-canvas-wrap canvas{width:180px;height:180px}}
-
-/* ===== NAV ===== */
-.nav{position:fixed;bottom:0;left:0;right:0;z-index:100;display:flex;justify-content:space-around;align-items:center;height:56px;padding:0 4px env(safe-area-inset-bottom,0);background:rgba(10,10,22,0.97);backdrop-filter:blur(30px);border-top:0.5px solid rgba(255,255,255,0.02)}
-.nav-item{display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;padding:4px 6px;border-radius:12px;color:rgba(255,255,255,0.15);transition:all 0.2s;min-width:36px;min-height:36px;justify-content:center;background:none;border:none;font-family:inherit;position:relative}
-.nav-item .ni{font-size:0.85rem}
-.nav-item .nl{font-size:0.32rem;font-weight:400;opacity:0.4}
-.nav-item.active{color:#a78bfa}
-.nav-item.active .nl{opacity:1}
-.nav-item .nd{position:absolute;top:3px;width:3px;height:3px;border-radius:50%;background:#a78bfa;opacity:0}
-.nav-item.active .nd{opacity:1}
-
-/* ===== LIVE NOTIFICATION ===== */
-#liveNotification{position:fixed;bottom:70px;left:10px;right:10px;z-index:150;background:rgba(22,22,44,0.92);border:1px solid rgba(139,92,246,0.08);border-radius:12px;padding:8px 12px;display:none;align-items:center;gap:8px;backdrop-filter:blur(16px);box-shadow:0 8px 25px rgba(0,0,0,0.4);animation:slideUp 0.4s ease-out;max-width:400px;margin:0 auto}
-#liveNotification.show{display:flex}
-@keyframes slideUp{0%{opacity:0;transform:translateY(20px)}100%{opacity:1;transform:translateY(0)}}
-#liveNotification .n-icon{font-size:1rem}
-#liveNotification .n-text{font-size:0.5rem;color:rgba(255,255,255,0.7);flex:1}
-#liveNotification .n-close{background:none;border:none;color:rgba(255,255,255,0.15);cursor:pointer;font-size:0.6rem}
-
-/* ===== ISME ===== */
-#isme{position:fixed;bottom:64px;right:8px;z-index:200;display:flex;flex-direction:column;align-items:flex-end;gap:2px}
-#isme .av{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#a78bfa);box-shadow:0 4px 25px rgba(124,58,237,0.25);display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:#fff;animation:ismeFloatApp 2s ease-in-out infinite;cursor:pointer;transition:transform 0.2s;position:relative;border:1.5px solid rgba(167,139,250,0.15)}
-@keyframes ismeFloatApp{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-6px) scale(1.03)}}
-#isme .av:active{transform:scale(0.85)}
-#isme .av .im{position:absolute;bottom:1px;right:2px;font-size:0.3rem;font-weight:800;color:rgba(255,255,255,0.3);background:rgba(0,0,0,0.2);padding:1px 3px;border-radius:3px}
-#isme .bub{background:rgba(22,22,44,0.95);border:1px solid rgba(139,92,246,0.06);border-radius:14px;padding:8px 12px;max-width:160px;font-size:0.5rem;color:rgba(255,255,255,0.85);backdrop-filter:blur(16px);box-shadow:0 8px 25px rgba(0,0,0,0.4);display:none;line-height:1.4;text-align:left;animation:popIn 0.3s ease-out}
-#isme .bub.show{display:block}
-#isme .bub .bc{background:none;border:none;color:rgba(255,255,255,0.1);cursor:pointer;font-size:0.35rem;margin-left:4px}
-#isme .bub .isme-icon{font-size:0.9rem;display:inline-block;margin-right:4px}
-#isme .bub .isme-step{display:inline-block;background:rgba(139,92,246,0.1);padding:1px 6px;border-radius:8px;font-size:0.35rem;color:#a78bfa;margin-bottom:2px}
-
-#toast{position:fixed;top:56px;left:50%;transform:translateX(-50%);z-index:400;background:rgba(22,22,44,0.95);padding:4px 12px;border-radius:12px;color:#fff;font-size:0.4rem;opacity:0;pointer-events:none;transition:all 0.3s;border:1px solid rgba(139,92,246,0.06);backdrop-filter:blur(12px);white-space:nowrap;max-width:85%;overflow:hidden;text-overflow:ellipsis}
-#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-.confetti{position:fixed;pointer-events:none;z-index:300;animation:cf 2s ease-out forwards}
-@keyframes cf{0%{transform:translateY(0) rotate(0deg);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
-
-@media(min-width:600px){.collection-grid{grid-template-columns:repeat(5,1fr)}.wheel-container{width:300px;height:300px}}
+body{
+    font-family:'Inter',-apple-system,sans-serif;
+    background:#0a0a18;color:#f0f0f0;
+    -webkit-font-smoothing:antialiased;
+    user-select:none;-webkit-user-select:none;
+    overflow:hidden;height:100vh;height:100dvh;
+}
+/* ONBOARDING */
+.onboarding{
+    position:fixed;inset:0;z-index:500;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    background:#0a0a18;transition:transform 0.4s ease,opacity 0.4s ease;
+}
+.onboarding.hidden{transform:translateY(-100%);opacity:0;pointer-events:none}
+.swipe-container{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;width:100%;height:100%;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.swipe-container::-webkit-scrollbar{display:none}
+.swipe{
+    min-width:100%;height:100%;scroll-snap-align:center;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:40px 30px;text-align:center;
+}
+.swipe-emoji{font-size:5rem;margin-bottom:20px;animation:breathe 3s ease-in-out infinite}
+@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+.swipe h2{font-size:1.4rem;font-weight:300;line-height:1.5;margin-bottom:12px;color:#fff}
+.swipe p{font-size:0.85rem;color:rgba(255,255,255,0.5);line-height:1.6;max-width:300px}
+.swipe-dots{position:absolute;bottom:40px;display:flex;gap:8px}
+.dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.2);transition:all 0.3s ease}
+.dot.active{background:#a78bfa;width:24px;border-radius:4px}
+.btn-skip{position:absolute;top:20px;right:20px;z-index:10;color:rgba(255,255,255,0.4);font-size:0.75rem;cursor:pointer;background:none;border:none}
+.btn-next{position:absolute;bottom:80px;z-index:10;padding:12px 30px;border-radius:50px;background:linear-gradient(135deg,#7c3aed,#a78bfa);color:#fff;font-size:0.85rem;font-weight:500;cursor:pointer;border:none;transition:all 0.2s ease}
+.btn-next:active{transform:scale(0.96)}
+/* CIRCLE */
+.circle-section{display:none;text-align:center;padding:40px 20px}
+.circle-section.active{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:80vh}
+.circle-section h2{font-size:1.3rem;font-weight:200;margin-bottom:20px}
+.circle-input{width:100%;max-width:300px;padding:14px;border-radius:16px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.05);color:#fff;font-size:0.85rem;margin-bottom:10px;text-align:center}
+/* APP */
+.app{
+    height:100vh;height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    position:relative;text-align:center;padding:20px;
+}
+.app-bg{position:absolute;inset:0;background:radial-gradient(circle at 50% 40%,rgba(167,139,250,0.08) 0%,transparent 70%)}
+.logo{font-size:2rem;font-weight:100;letter-spacing:10px;color:#fff;margin-bottom:4px;position:relative;z-index:1}
+.subtitle{color:#a78bfa;font-size:0.7rem;letter-spacing:3px;margin-bottom:16px;position:relative;z-index:1}
+.counter{color:rgba(255,255,255,0.4);font-size:0.7rem;margin-bottom:16px;position:relative;z-index:1}
+.counter span{color:#a78bfa;font-weight:500}
+canvas#canvas{
+    width:260px;height:260px;border-radius:28px;
+    background:rgba(16,16,32,0.6);touch-action:none;cursor:crosshair;
+    border:1.5px solid rgba(255,255,255,0.08);position:relative;z-index:1;
+}
+.result-emoji{font-size:3rem;margin-top:8px;position:relative;z-index:1;min-height:60px}
+.result-phrase{color:#fff;font-size:0.8rem;margin-top:4px;position:relative;z-index:1;max-width:300px}
+.btn-outline{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:50px;font-size:0.8rem;font-weight:500;cursor:pointer;border:1px solid rgba(139,92,246,0.3);background:transparent;color:#a78bfa;transition:all 0.2s ease;margin-top:10px}
+.btn-outline:active{transform:scale(0.96)}
+.mascot{position:fixed;bottom:16px;right:16px;z-index:100;display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.mascot-bubble{background:rgba(22,22,44,0.97);border:1px solid rgba(139,92,246,0.3);border-radius:14px;padding:10px 14px;max-width:200px;font-size:0.65rem;color:#fff;cursor:pointer}
+.mascot-avatar{width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#a78bfa);display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:#fff;cursor:pointer;animation:bounce 2s ease-in-out infinite;box-shadow:0 4px 20px rgba(124,58,237,0.4)}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.social-bar{position:fixed;bottom:0;left:0;right:0;z-index:99;background:rgba(16,16,32,0.95);padding:6px;text-align:center;font-size:0.6rem;color:rgba(255,255,255,0.5);display:none}
+.social-bar.show{display:block}
 </style>
 </head>
 <body>
 
-<!-- ===== SPLASH ===== -->
-<div id="splash">
-  <div class="splash-isme">✦</div>
-  <div class="splash-logo">MEWONEN</div>
-  <div class="splash-sub">Prouve ton émotion 💪</div>
-  <div class="splash-bar"><span></span></div>
+<!-- ONBOARDING -->
+<div class="onboarding" id="onboarding">
+    <button class="btn-skip" onclick="skipOnboarding()">Skip</button>
+    <div class="swipe-container" id="swipeContainer">
+        <div class="swipe"><div class="swipe-emoji">🧠</div><h2>No one asked how you feel today.</h2><p>Except Mewonen.</p></div>
+        <div class="swipe"><div class="swipe-emoji">✍️</div><h2>Draw. No words needed.</h2><p>A line is enough. A scribble too.</p></div>
+        <div class="swipe"><div class="swipe-emoji">💜</div><h2>Mewonen understands.</h2><p>13 emotions. 7 languages. Zero data.</p></div>
+        <div class="swipe"><div class="swipe-emoji">🔥</div><h2>Come back every day.</h2><p>Your streak. Your journey. Your mirror.</p></div>
+        <div class="swipe"><div class="swipe-emoji">👥</div><h2>Invite someone.</h2><p>A circle of trust. Mewonen watches over you.</p></div>
+    </div>
+    <div class="swipe-dots" id="dots"><span class="dot active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+    <button class="btn-next" id="btnNext" onclick="nextSwipe()">Next →</button>
 </div>
 
-<!-- ===== DISCOVER OVERLAY ===== -->
-<div id="discoverOverlay">
-  <div class="discover-container">
-    <div class="discover-title">Découvrez <span>Mewonen</span> ✨</div>
-    <div class="discover-sub">Défie-toi et collectionne des badges</div>
-    <div class="discover-card"><div class="d-icon">🎡</div><div class="d-content"><div class="d-title">Feel Wheel</div><div class="d-desc">Tourne la roue, prouve ton émotion en 10 secondes.</div></div></div>
-    <div class="discover-card"><div class="d-icon">🏅</div><div class="d-content"><div class="d-title">Collectionne des badges</div><div class="d-desc">13 badges à débloquer. Deviens un Maître des émotions.</div></div></div>
-    <div class="discover-card"><div class="d-icon">🔥</div><div class="d-content"><div class="d-title">Défi quotidien</div><div class="d-desc">Un nouveau défi chaque jour. Ne casse pas ta série !</div></div></div>
-    <div class="discover-card"><div class="d-icon">🏆</div><div class="d-content"><div class="d-title">Classement</div><div class="d-desc">Compare-toi aux autres. Qui est le meilleur prouveur ?</div></div></div>
-    <div class="discover-card"><div class="d-icon">📱</div><div class="d-content"><div class="d-title">Partage ton badge</div><div class="d-desc">Poste ton badge sur TikTok/Instagram. #MewonenChallenge</div></div></div>
-    <div class="discover-footer">
-      <button class="btn btn-p" id="discoverStart">Commencer l'aventure →</button>
-    </div>
-  </div>
+<!-- CIRCLE -->
+<div class="circle-section" id="circleSection">
+    <h2>👥 Who should know you're okay?</h2>
+    <p style="color:rgba(255,255,255,0.4);font-size:0.7rem;margin-bottom:20px">Add 1 person you trust. They'll just know you're alive. Nothing else.</p>
+    <input class="circle-input" type="text" id="circleName" placeholder="Name (ex: Mom)">
+    <input class="circle-input" type="email" id="circleEmail" placeholder="Email (optional)">
+    <button class="btn-outline" onclick="saveCircle()">Save & Start →</button>
+    <button class="btn-outline" onclick="skipCircle()" style="margin-top:8px;opacity:0.5">Skip for now</button>
 </div>
 
-<!-- ===== ONBOARDING ===== -->
-<div id="onboarding">
-  <div class="on-dots"><span class="active"></span><span></span><span></span></div>
-  <div class="on-slide active"><div class="icon">🎡</div><h2 id="ot0">Bienvenue dans Mewonen</h2><p id="op0">Défie-toi, prouve ton émotion, collectionne des badges.</p></div>
-  <div class="on-slide"><div class="icon">🏅</div><h2 id="ot1">Collectionne les 13 badges</h2><p id="op1">Chaque émotion a son badge. Deviens un Maître.</p></div>
-  <div class="on-slide"><div class="icon">🔥</div><h2 id="ot2">Défi quotidien</h2><p id="op2">Reviens chaque jour pour garder ta série et débloquer des badges rares.</p></div>
-  <button class="btn btn-p" id="onBtn">Next</button>
+<!-- APP -->
+<div class="app" id="app" style="display:none">
+    <div class="app-bg"></div>
+    <div class="logo">MEWONEN</div>
+    <div class="subtitle">Draw your mood</div>
+    <div class="counter"><span id="liveCounter">0</span> people drew today</div>
+    <canvas id="canvas" width="500" height="500" aria-label="Draw your mood"></canvas>
+    <div class="result-emoji" id="resultEmoji"></div>
+    <div class="result-phrase" id="resultPhrase"></div>
+    <button class="btn-outline" id="btnClear" onclick="resetCanvas()">Clear</button>
 </div>
 
-<!-- ===== APP ===== -->
-<div id="app">
-  <div class="top-bar">
-    <div class="l"><span class="d"></span><span id="prLabel">100% Private</span></div>
-    <div class="langs" id="langBar"></div>
-  </div>
-
-  <div class="main">
-
-    <!-- ===== FEEL WHEEL ===== -->
-    <div id="wheelScreen" class="active">
-      <div class="wheel-title">🎡 <span>Feel Wheel</span></div>
-      <div class="wheel-sub">Tourne et prouve ton émotion en 10 secondes</div>
-      <div class="wheel-container">
-        <canvas id="wheelCanvas"></canvas>
-        <div class="wheel-pointer">▼</div>
-      </div>
-      <button class="wheel-btn" id="spinBtn">Lancer la roue</button>
-      <div class="wheel-result" id="wheelResult">Appuie sur "Lancer la roue"</div>
-    </div>
-
-    <!-- ===== CHALLENGE ===== -->
-    <div id="challengeScreen">
-      <div class="challenge-emoji" id="challengeEmoji">🔥</div>
-      <div class="challenge-name" id="challengeName">Anger</div>
-      <div class="challenge-desc" id="challengeDesc">Prouve-le. Dessine la COLÈRE en 10 secondes.</div>
-      <div class="challenge-timer" id="challengeTimer">10</div>
-      <div class="challenge-canvas-wrap"><canvas id="challengeCanvas" width="500" height="500"></canvas></div>
-      <div class="challenge-isme" id="challengeIsme">💜 Concentre-toi !</div>
-    </div>
-
-    <!-- ===== RESULT ===== -->
-    <div id="resultScreen">
-      <div class="result-badge" id="resultBadge">🏅</div>
-      <div class="result-title" id="resultTitle">Master of Anger</div>
-      <div class="result-score" id="resultScore">🔥 92%</div>
-      <div class="result-desc" id="resultDesc">Tu as prouvé ta colère ! Badge débloqué.</div>
-      <div class="result-btns">
-        <button class="btn btn-p" id="resultShare">📤 Partager</button>
-        <button class="btn btn-o" id="resultAgain">🔄 Rejouer</button>
-        <button class="btn btn-o" id="resultCollection">🏅 Collection</button>
-      </div>
-    </div>
-
-    <!-- ===== FREE DRAW ===== -->
-    <div id="drawScreen">
-      <div style="font-size:0.7rem;color:rgba(255,255,255,0.2);margin-bottom:4px">✍️ Dessin libre</div>
-      <div class="draw-canvas-wrap"><canvas id="drawCanvas" width="500" height="500"></canvas></div>
-      <div style="display:flex;gap:4px;margin-top:4px;flex-wrap:wrap;justify-content:center">
-        <button class="btn btn-o btn-s" id="drawClear">Effacer</button>
-        <button class="btn btn-o btn-s" id="drawShare">📤 Partager</button>
-      </div>
-      <div id="drawResult" style="font-size:0.7rem;color:#a78bfa;margin-top:4px;min-height:20px"></div>
-    </div>
-
-    <!-- ===== COLLECTION ===== -->
-    <div id="collectionScreen" style="display:none;flex-direction:column;align-items:center;justify-content:center;width:100%;height:100%;padding:10px;overflow-y:auto">
-      <div style="font-size:1rem;font-weight:200;color:#fff;letter-spacing:2px;margin-bottom:2px">🏅 Collection</div>
-      <div style="font-size:0.5rem;color:rgba(255,255,255,0.15);margin-bottom:6px">13 badges à débloquer</div>
-      <div class="collection-grid" id="collectionGrid"></div>
-      <div style="display:flex;gap:6px;margin-top:8px">
-        <button class="btn btn-o btn-s" id="collectionBack">← Retour</button>
-      </div>
-    </div>
-
-    <!-- ===== RANKING ===== -->
-    <div id="rankingScreen" style="display:none;flex-direction:column;align-items:center;justify-content:center;width:100%;height:100%;padding:10px;overflow-y:auto">
-      <div style="font-size:1rem;font-weight:200;color:#fff;letter-spacing:2px;margin-bottom:2px">🏆 Classement</div>
-      <div style="font-size:0.5rem;color:rgba(255,255,255,0.15);margin-bottom:6px">Meilleurs prouveurs</div>
-      <div class="ranking-list" id="rankingList"></div>
-      <div style="display:flex;gap:6px;margin-top:8px">
-        <button class="btn btn-o btn-s" id="rankingBack">← Retour</button>
-      </div>
-    </div>
-
-  </div>
-
-  <div class="nav">
-    <button class="nav-item active" data-screen="wheel"><span class="nd"></span><span class="ni">🎡</span><span class="nl">Wheel</span></button>
-    <button class="nav-item" data-screen="draw"><span class="nd"></span><span class="ni">✍️</span><span class="nl">Draw</span></button>
-    <button class="nav-item" data-screen="collection"><span class="nd"></span><span class="ni">🏅</span><span class="nl">Collection</span></button>
-    <button class="nav-item" data-screen="ranking"><span class="nd"></span><span class="ni">🏆</span><span class="nl">Rank</span></button>
-  </div>
+<!-- MASCOTTE -->
+<div class="mascot" id="mascot">
+    <div class="mascot-bubble" id="mascotBubble" onclick="mascotClick()"><span id="mascotText">How are you feeling today?</span></div>
+    <div class="mascot-avatar" onclick="mascotClick()">M</div>
 </div>
-
-<!-- ===== NOTIFICATION ===== -->
-<div id="liveNotification">
-  <span class="n-icon">💜</span>
-  <span class="n-text" id="notifText">🔥 Quelqu'un vient de débloquer le badge Master of Anger !</span>
-  <button class="n-close" id="notifClose">✕</button>
-</div>
-
-<!-- ===== ISME ===== -->
-<div id="isme">
-  <div class="bub" id="ismeBub"><div><span class="isme-step" id="ismeStepLabel">💜 ISME</span></div><span class="isme-icon" id="ismeIcon">✦</span><span id="ismeText">Prêt à prouver ton émotion ? 🎡</span><button class="bc" id="ismeClose">✕</button></div>
-  <div class="av" id="ismeAv">✦<span class="im">I</span></div>
-</div>
-
-<div id="toast"></div>
+<div class="social-bar" id="socialBar"><span id="socialText">Someone just drew ☀️</span></div>
 
 <script>
-// ============================================================
-// CONFIG
-// ============================================================
-var EMOTIONS = [
-  { emoji:'☀️', name:'Joy', color:'#fbbf24' },
-  { emoji:'🌧️', name:'Sadness', color:'#60a5fa' },
-  { emoji:'🌪️', name:'Chaos', color:'#8b5cf6' },
-  { emoji:'🌈', name:'Hope', color:'#34d399' },
-  { emoji:'⚡', name:'Energy', color:'#fbbf24' },
-  { emoji:'🌙', name:'Calm', color:'#818cf8' },
-  { emoji:'🔥', name:'Anger', color:'#ef4444' },
-  { emoji:'🌱', name:'Growth', color:'#34d399' },
-  { emoji:'🙏', name:'Gratitude', color:'#f472b6' },
-  { emoji:'💨', name:'Freedom', color:'#94a3b8' },
-  { emoji:'🌫️', name:'Mystery', color:'#6366f1' },
-  { emoji:'❄️', name:'Stillness', color:'#93c5fd' },
-  { emoji:'🕳️', name:'Emptiness', color:'#4b5563' }
+// ==================== ONBOARDING ====================
+var currentSwipe = 0;
+var swipeContainer = document.getElementById('swipeContainer');
+var dots = document.querySelectorAll('.dot');
+var btnNext = document.getElementById('btnNext');
+
+swipeContainer.addEventListener('scroll', function(){
+    var idx = Math.round(swipeContainer.scrollLeft / window.innerWidth);
+    currentSwipe = idx;
+    updateDots();
+    btnNext.textContent = idx === 4 ? 'Begin →' : 'Next →';
+});
+
+function updateDots(){
+    dots.forEach(function(d, i){ d.classList.toggle('active', i === currentSwipe); });
+}
+
+function nextSwipe(){
+    if(currentSwipe < 4){
+        currentSwipe++;
+        swipeContainer.scrollTo({left: currentSwipe * window.innerWidth, behavior: 'smooth'});
+    } else {
+        finishOnboarding();
+    }
+}
+
+function skipOnboarding(){ finishOnboarding(); }
+
+function finishOnboarding(){
+    document.getElementById('onboarding').classList.add('hidden');
+    document.getElementById('circleSection').classList.add('active');
+}
+
+// ==================== CIRCLE ====================
+function saveCircle(){
+    var name = document.getElementById('circleName').value.trim();
+    var email = document.getElementById('circleEmail').value.trim();
+    if(name){
+        var circle = JSON.parse(localStorage.getItem('mw_circle') || '[]');
+        circle.push({name: name, email: email, added: new Date().toISOString()});
+        localStorage.setItem('mw_circle', JSON.stringify(circle));
+    }
+    startApp();
+}
+
+function skipCircle(){ startApp(); }
+
+function startApp(){
+    document.getElementById('circleSection').classList.remove('active');
+    document.getElementById('app').style.display = 'flex';
+    localStorage.setItem('mw_onboarding_done', '1');
+}
+
+// ==================== COMPTEUR LIVE ====================
+var count = parseInt(localStorage.getItem('mw_landing_count') || '1547');
+count = Math.max(count, 1500) + Math.floor(Math.random() * 5);
+localStorage.setItem('mw_landing_count', count.toString());
+document.getElementById('liveCounter').textContent = count.toLocaleString();
+setInterval(function(){
+    count += Math.floor(Math.random() * 3) + 1;
+    localStorage.setItem('mw_landing_count', count.toString());
+    document.getElementById('liveCounter').textContent = count.toLocaleString();
+}, 25000);
+
+// ==================== CANVAS ====================
+var canvas = document.getElementById('canvas');
+var ctx = canvas.getContext('2d');
+var drawing = false, points = [], brushSize = 4;
+
+var emotions = [
+    {emoji:'☀️',p:'You are shining today'},
+    {emoji:'🌧️',p:'Let it wash over you'},
+    {emoji:'🌪️',p:'Even storms run out of rain'},
+    {emoji:'🌈',p:'Look what you crossed'},
+    {emoji:'⚡',p:'This energy is yours'},
+    {emoji:'🌙',p:'Rest is not weakness'},
+    {emoji:'🔥',p:'Passion is power'},
+    {emoji:'🌱',p:'Hope whispers'},
+    {emoji:'🙏',p:'Gratitude changes you'},
+    {emoji:'💨',p:'Let the wind carry you'},
+    {emoji:'🌫️',p:'Clarity comes slowly'},
+    {emoji:'❄️',p:'Spring always comes'},
+    {emoji:'🕳️',p:'Space waiting'}
 ];
 
-var BADGE_NAMES = {
-  '☀️':'Master of Joy','🌧️':'Master of Sadness','🌪️':'Master of Chaos',
-  '🌈':'Master of Hope','⚡':'Master of Energy','🌙':'Master of Calm',
-  '🔥':'Master of Anger','🌱':'Master of Growth','🙏':'Master of Gratitude',
-  '💨':'Master of Freedom','🌫️':'Master of Mystery','❄️':'Master of Stillness',
-  '🕳️':'Master of Emptiness'
-};
-
-var TX = {
-  pr:'100% Private',
-  ot:['Bienvenue dans Mewonen','Collectionne les 13 badges','Défi quotidien'],
-  op:['Défie-toi, prouve ton émotion, collectionne des badges.','Chaque émotion a son badge. Deviens un Maître.','Reviens chaque jour pour garder ta série.'],
-  on:'Suivant',
-  isme:{h:'Prêt à prouver ton émotion ? 🎡'}
-};
-
-// ============================================================
-// STATE
-// ============================================================
-var userBadges = [];
-var streak = 0;
-var currentEmotion = null;
-var challengeTimer = 10;
-var challengeRunning = false;
-var challengeInterval = null;
-var isDrawing = false;
-var pts = [];
-var brush = 4;
-
-var wheelCanvas = document.getElementById('wheelCanvas');
-var wheelCtx = wheelCanvas.getContext('2d');
-var challengeCanvas = document.getElementById('challengeCanvas');
-var challengeCtx = challengeCanvas.getContext('2d');
-var drawCanvas = document.getElementById('drawCanvas');
-var drawCtx = drawCanvas.getContext('2d');
-
-// ============================================================
-// INIT
-// ============================================================
-setTimeout(function(){
-  document.getElementById('splash').classList.add('hidden');
-}, 2500);
-
-document.getElementById('discoverStart').addEventListener('click', function(){
-  document.getElementById('discoverOverlay').style.display = 'none';
-  document.getElementById('onboarding').classList.add('active');
-});
-
-var onStep = 0;
-document.getElementById('onBtn').addEventListener('click', function(){
-  onStep++;
-  if(onStep >= 3){
-    document.getElementById('onboarding').classList.remove('active');
-    document.getElementById('app').classList.add('active');
-    initApp();
-    return;
-  }
-  var slides = document.querySelectorAll('.on-slide');
-  slides.forEach(function(s){ s.classList.remove('active'); });
-  slides[onStep].classList.add('active');
-  var dots = document.querySelectorAll('.on-dots span');
-  dots.forEach(function(d,i){ d.classList.toggle('active', i<=onStep); });
-  if(onStep === 2) document.getElementById('onBtn').textContent = 'Commencer';
-});
-
-// ============================================================
-// APP
-// ============================================================
-function initApp(){
-  loadData();
-  initWheel();
-  initDrawCanvas();
-  initChallengeCanvas();
-  setupNav();
-  setupButtons();
-  updateCollection();
-  updateRanking();
-  updateStreak();
-  startLiveNotifications();
-  setupIsme();
-  showIsme('Prêt à prouver ton émotion ? 🎡', 3000);
-}
-
-function loadData(){
-  try {
-    userBadges = JSON.parse(localStorage.getItem('mw_wheel_badges')||'[]');
-    streak = parseInt(localStorage.getItem('mw_wheel_streak')||'0');
-  } catch(e){ userBadges=[]; streak=0; }
-}
-function saveData(){
-  try {
-    localStorage.setItem('mw_wheel_badges', JSON.stringify(userBadges));
-    localStorage.setItem('mw_wheel_streak', streak.toString());
-  } catch(e){}
-}
-
-// ============================================================
-// WHEEL
-// ============================================================
-function initWheel(){
-  var rect = wheelCanvas.parentElement.getBoundingClientRect();
-  var size = Math.min(rect.width-20, 240);
-  wheelCanvas.width = size;
-  wheelCanvas.height = size;
-  drawWheel(0);
-}
-
-function drawWheel(rotation){
-  var size = wheelCanvas.width;
-  var cx = size/2, cy = size/2, r = size/2 - 4;
-  var seg = 2 * Math.PI / EMOTIONS.length;
-  wheelCtx.clearRect(0,0,size,size);
-  for(var i=0;i<EMOTIONS.length;i++){
-    var start = i * seg + rotation;
-    var end = start + seg;
-    wheelCtx.beginPath();
-    wheelCtx.moveTo(cx, cy);
-    wheelCtx.arc(cx, cy, r, start, end);
-    wheelCtx.closePath();
-    wheelCtx.fillStyle = EMOTIONS[i].color;
-    wheelCtx.fill();
-    wheelCtx.strokeStyle = '#0a0a18';
-    wheelCtx.lineWidth = 2;
-    wheelCtx.stroke();
-    // texte
-    var mid = start + seg/2;
-    var tx = cx + Math.cos(mid) * r * 0.65;
-    var ty = cy + Math.sin(mid) * r * 0.65;
-    wheelCtx.font = (size/14)+'px Arial';
-    wheelCtx.textAlign = 'center';
-    wheelCtx.textBaseline = 'middle';
-    wheelCtx.fillStyle = '#fff';
-    wheelCtx.fillText(EMOTIONS[i].emoji, tx, ty);
-  }
-  // centre
-  wheelCtx.beginPath();
-  wheelCtx.arc(cx, cy, r*0.12, 0, 2*Math.PI);
-  wheelCtx.fillStyle = '#0a0a18';
-  wheelCtx.fill();
-  wheelCtx.strokeStyle = '#7c3aed';
-  wheelCtx.lineWidth = 2;
-  wheelCtx.stroke();
-}
-
-document.getElementById('spinBtn').addEventListener('click', function(){
-  var btn = this;
-  btn.disabled = true;
-  btn.textContent = '⏳ ...';
-  var spins = 5 + Math.random() * 10;
-  var target = Math.floor(Math.random() * EMOTIONS.length);
-  var totalRotation = spins * 2 * Math.PI + target * (2*Math.PI/EMOTIONS.length);
-  var duration = 3000;
-  var startTime = Date.now();
-  var startRot = 0;
-  var el = document.getElementById('wheelResult');
-  el.textContent = '🎡 La roue tourne...';
-  
-  function animateWheel(){
-    var elapsed = Date.now() - startTime;
-    var progress = Math.min(elapsed/duration, 1);
-    var eased = 1 - Math.pow(1 - progress, 3);
-    var currentRot = startRot + totalRotation * eased;
-    drawWheel(currentRot);
-    if(progress < 1){
-      requestAnimationFrame(animateWheel);
-    } else {
-      btn.disabled = false;
-      btn.textContent = 'Lancer la roue';
-      var idx = target % EMOTIONS.length;
-      currentEmotion = EMOTIONS[idx];
-      el.innerHTML = '🎡 <span class="highlight">'+currentEmotion.emoji+' '+currentEmotion.name+'</span> — Prouve-le !';
-      startChallenge(currentEmotion);
-    }
-  }
-  animateWheel();
-});
-
-// ============================================================
-// CHALLENGE
-// ============================================================
-function startChallenge(emotion){
-  document.getElementById('wheelScreen').classList.remove('active');
-  document.getElementById('challengeScreen').classList.add('active');
-  document.getElementById('challengeEmoji').textContent = emotion.emoji;
-  document.getElementById('challengeName').textContent = emotion.name;
-  document.getElementById('challengeDesc').textContent = 'Prouve-le. Dessine la '+emotion.name+' en 10 secondes.';
-  document.getElementById('challengeTimer').textContent = '10';
-  challengeCtx.clearRect(0,0,challengeCanvas.width,challengeCanvas.height);
-  challengeRunning = true;
-  challengeTimer = 10;
-  pts = [];
-  isDrawing = false;
-  document.getElementById('challengeIsme').textContent = '💜 Prêt ? 3... 2... 1... DESSINE !';
-  setTimeout(function(){
-    startCountdown();
-  }, 1000);
-}
-
-function startCountdown(){
-  if(challengeTimer <= 0){
-    endChallenge();
-    return;
-  }
-  document.getElementById('challengeTimer').textContent = challengeTimer;
-  challengeTimer--;
-  setTimeout(startCountdown, 1000);
-}
-
-function endChallenge(){
-  challengeRunning = false;
-  document.getElementById('challengeTimer').textContent = '⏰';
-  document.getElementById('challengeIsme').textContent = '💜 Analyse en cours...';
-  setTimeout(function(){
-    analyzeChallenge();
-  }, 800);
-}
-
-function analyzeChallenge(){
-  var pts = window._challengePts || [];
-  if(pts.length < 4){
-    document.getElementById('challengeIsme').textContent = '💜 Tu n\'as pas dessiné ! Essaie encore.';
-    setTimeout(function(){
-      document.getElementById('challengeScreen').classList.remove('active');
-      document.getElementById('wheelScreen').classList.add('active');
-    }, 2000);
-    return;
-  }
-  var dist=0;
-  for(var i=1;i<pts.length;i++){ var dx=pts[i].x-pts[i-1].x, dy=pts[i].y-pts[i-1].y; dist += Math.sqrt(dx*dx+dy*dy); }
-  var score = Math.min(Math.floor(dist / 4), 100);
-  var emoji = currentEmotion ? currentEmotion.emoji : '💜';
-  var name = currentEmotion ? currentEmotion.name : 'Mood';
-  var badgeName = BADGE_NAMES[emoji] || 'Master of '+name;
-  var isNew = userBadges.indexOf(emoji) === -1;
-  if(isNew){
-    userBadges.push(emoji);
-    saveData();
-    updateCollection();
-    spawnConfetti();
-  }
-  document.getElementById('challengeScreen').classList.remove('active');
-  document.getElementById('resultScreen').classList.add('active');
-  document.getElementById('resultBadge').textContent = emoji;
-  document.getElementById('resultTitle').textContent = badgeName;
-  document.getElementById('resultScore').textContent = emoji+' '+score+'%';
-  document.getElementById('resultDesc').textContent = isNew ? '🎉 Badge débloqué ! Tu as prouvé ta '+name+'.' : '✅ Tu as déjà ce badge. '+score+'% de prouesse !';
-  window._lastScore = score;
-  window._lastEmoji = emoji;
-  window._lastName = name;
-}
-
-// ============================================================
-// CHALLENGE CANVAS
-// ============================================================
-function initChallengeCanvas(){
-  var canvas = challengeCanvas;
-  var ctx = challengeCtx;
-  var pts = [];
-  var isDrawing = false;
-  window._challengePts = [];
-  
-  function getPos(e){
+function getPos(e){
     var r = canvas.getBoundingClientRect();
-    var cx = e.touches ? e.touches[0].clientX : e.clientX;
-    var cy = e.touches ? e.touches[0].clientY : e.clientY;
-    return { x: (cx - r.left) * (canvas.width / r.width), y: (cy - r.top) * (canvas.height / r.height) };
-  }
-  function start(e){
+    var sX = canvas.width / r.width, sY = canvas.height / r.height;
+    var cX = e.touches ? e.touches[0].clientX : e.clientX;
+    var cY = e.touches ? e.touches[0].clientY : e.clientY;
+    return {x: (cX - r.left) * sX, y: (cY - r.top) * sY};
+}
+
+function startDraw(e){
     e.preventDefault();
-    if(!challengeRunning) return;
-    isDrawing = true;
-    pts = [];
-    window._challengePts = pts;
-    var p = getPos(e);
-    pts.push(p);
-    ctx.beginPath();
-    ctx.moveTo(p.x, p.y);
-  }
-  function move(e){
+    drawing = true; points = [];
+    var p = getPos(e); points.push({x: p.x, y: p.y});
+    ctx.beginPath(); ctx.moveTo(p.x, p.y);
+}
+
+function moveDraw(e){
     e.preventDefault();
-    if(!isDrawing || !challengeRunning) return;
-    var p = getPos(e);
-    pts.push(p);
+    if(!drawing) return;
+    var p = getPos(e); points.push({x: p.x, y: p.y});
     ctx.lineTo(p.x, p.y);
-    ctx.strokeStyle = 'rgba(200,180,255,0.85)';
-    ctx.lineWidth = brush;
-    ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
-    ctx.shadowColor = 'rgba(139,92,246,0.15)';
-    ctx.shadowBlur = 8;
+    ctx.strokeStyle = 'rgba(200,180,255,0.9)';
+    ctx.lineWidth = brushSize; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
     ctx.stroke();
-    ctx.shadowBlur = 0;
-  }
-  function end(e){
-    isDrawing = false;
-  }
-  canvas.addEventListener('touchstart', start, {passive:false});
-  canvas.addEventListener('touchmove', move, {passive:false});
-  canvas.addEventListener('touchend', end);
-  canvas.addEventListener('mousedown', start);
-  canvas.addEventListener('mousemove', move);
-  canvas.addEventListener('mouseup', end);
-  canvas.addEventListener('mouseleave', end);
 }
 
-// ============================================================
-// DRAW CANVAS (free draw)
-// ============================================================
-function initDrawCanvas(){
-  var canvas = drawCanvas;
-  var ctx = drawCtx;
-  var pts = [];
-  var isDrawing = false;
-  
-  function getPos(e){
-    var r = canvas.getBoundingClientRect();
-    var cx = e.touches ? e.touches[0].clientX : e.clientX;
-    var cy = e.touches ? e.touches[0].clientY : e.clientY;
-    return { x: (cx - r.left) * (canvas.width / r.width), y: (cy - r.top) * (canvas.height / r.height) };
-  }
-  function start(e){
-    e.preventDefault();
-    isDrawing = true;
-    pts = [];
-    var p = getPos(e);
-    pts.push(p);
-    ctx.beginPath();
-    ctx.moveTo(p.x, p.y);
-  }
-  function move(e){
-    e.preventDefault();
-    if(!isDrawing) return;
-    var p = getPos(e);
-    pts.push(p);
-    ctx.lineTo(p.x, p.y);
-    ctx.strokeStyle = 'rgba(200,180,255,0.85)';
-    ctx.lineWidth = brush;
-    ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
-    ctx.shadowColor = 'rgba(139,92,246,0.15)';
-    ctx.shadowBlur = 8;
-    ctx.stroke();
-    ctx.shadowBlur = 0;
-  }
-  function end(e){
-    isDrawing = false;
-    if(pts.length > 10){
-      var dist=0;
-      for(var i=1;i<pts.length;i++){ var dx=pts[i].x-pts[i-1].x, dy=pts[i].y-pts[i-1].y; dist += Math.sqrt(dx*dx+dy*dy); }
-      var idx = 0;
-      if(dist>400) idx=0; else if(dist>250) idx=4; else if(dist>120) idx=1; else if(dist<20) idx=12; else idx=2;
-      var emos = ['☀️','🌧️','🌪️','🌈','⚡','🌙','🔥','🌱','🙏','💨','🌫️','❄️','🕳️'];
-      var phrases = ['Tu es rayonnant ! ✨','Laisse couler 🌊','Les tempêtes passent 🌈','Regarde ce que tu as traversé 🌈','Cette énergie est tienne ⚡','Le repos est une force 🌙','La passion est pouvoir 🔥','L\'espoir murmure 🌱','La gratitude change tout 🙏','Laisse le vent te porter 💨','La clarté vient doucement 🌫️','Le printemps revient ❄️','L\'espace t\'attend 🕳️'];
-      document.getElementById('drawResult').textContent = emos[idx]+' '+phrases[idx];
+function endDraw(){
+    drawing = false;
+    if(points.length < 3) return;
+    var totalDist = 0;
+    for(var i=1;i<points.length;i++){
+        var dx=points[i].x-points[i-1].x, dy=points[i].y-points[i-1].y;
+        totalDist += Math.sqrt(dx*dx+dy*dy);
     }
-  }
-  canvas.addEventListener('touchstart', start, {passive:false});
-  canvas.addEventListener('touchmove', move, {passive:false});
-  canvas.addEventListener('touchend', end);
-  canvas.addEventListener('mousedown', start);
-  canvas.addEventListener('mousemove', move);
-  canvas.addEventListener('mouseup', end);
-  canvas.addEventListener('mouseleave', end);
-  
-  document.getElementById('drawClear').addEventListener('click', function(){
-    drawCtx.clearRect(0,0,drawCanvas.width,drawCanvas.height);
-    document.getElementById('drawResult').textContent = '';
-  });
-  document.getElementById('drawShare').addEventListener('click', function(){
-    var dataUrl = drawCanvas.toDataURL('image/png');
-    var link = document.createElement('a');
-    link.download = 'mewonen-drawing.png';
-    link.href = dataUrl;
-    link.click();
-    showToast('📤 Image téléchargée !');
-  });
+    var idx = Math.floor(Math.random()*emotions.length);
+    if(totalDist>400) idx=0; else if(totalDist>250) idx=4; else if(totalDist>100) idx=1; else if(totalDist<15) idx=12;
+    var e = emotions[idx];
+    document.getElementById('resultEmoji').textContent = e.emoji;
+    document.getElementById('resultPhrase').textContent = e.p;
+    count++;
+    localStorage.setItem('mw_landing_count', count.toString());
+    document.getElementById('liveCounter').textContent = count.toLocaleString();
 }
 
-// ============================================================
-// COLLECTION
-// ============================================================
-function updateCollection(){
-  var grid = document.getElementById('collectionGrid');
-  grid.innerHTML = '';
-  EMOTIONS.forEach(function(e){
-    var div = document.createElement('div');
-    div.className = 'collection-item';
-    var unlocked = userBadges.indexOf(e.emoji) !== -1;
-    if(unlocked){
-      div.classList.add('unlocked');
-      div.innerHTML = '<span class="c-icon">'+e.emoji+'</span><span class="c-label">'+BADGE_NAMES[e.emoji]+'</span>';
-    } else {
-      div.classList.add('locked');
-      div.innerHTML = '<span class="c-icon">❓</span><span class="c-label">Verrouillé</span>';
-    }
-    grid.appendChild(div);
-  });
+function resetCanvas(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    document.getElementById('resultEmoji').textContent = '';
+    document.getElementById('resultPhrase').textContent = '';
 }
 
-// ============================================================
-// RANKING
-// ============================================================
-function updateRanking(){
-  var list = document.getElementById('rankingList');
-  list.innerHTML = '';
-  var fakeUsers = ['Luna','Max','Elena','Leo','Mia','Noah','Chloe','Liam','Zara','Ethan'];
-  var fakeScores = [12,10,9,8,7,6,5,5,4,4];
-  for(var i=0;i<10;i++){
-    var div = document.createElement('div');
-    div.className = 'ranking-item';
-    if(i === 0) div.classList.add('me');
-    var emoji = EMOTIONS[i % EMOTIONS.length].emoji;
-    div.innerHTML = '<span class="r-pos">#'+(i+1)+'</span><span class="r-emoji">'+emoji+'</span><span class="r-name">'+fakeUsers[i%fakeUsers.length]+'</span><span class="r-score">'+fakeScores[i%fakeScores.length]+'</span>';
-    list.appendChild(div);
-  }
+canvas.addEventListener('touchstart',startDraw,{passive:false});
+canvas.addEventListener('touchmove',moveDraw,{passive:false});
+canvas.addEventListener('touchend',endDraw);
+canvas.addEventListener('mousedown',startDraw);
+canvas.addEventListener('mousemove',moveDraw);
+canvas.addEventListener('mouseup',endDraw);
+canvas.addEventListener('mouseleave',endDraw);
+
+// ==================== MASCOTTE ====================
+var mascotTexts = ["How are you feeling today?","Draw your mood. It helps. 💜","Someone just drew ☀️. Your turn?","You're not alone."];
+var mascotIdx = 0;
+setInterval(function(){
+    mascotIdx = (mascotIdx+1) % mascotTexts.length;
+    document.getElementById('mascotText').textContent = mascotTexts[mascotIdx];
+}, 4000);
+function mascotClick(){
+    document.getElementById('mascotBubble').innerHTML = '<span>Draw it on Mewonen. It helps. 💜</span>';
 }
 
-// ============================================================
-// STREAK
-// ============================================================
-function updateStreak(){
-  var today = new Date().toISOString().split('T')[0];
-  var last = localStorage.getItem('mw_wheel_last') || '';
-  if(last !== today){
-    var yesterday = new Date(); yesterday.setDate(yesterday.getDate()-1);
-    var yStr = yesterday.toISOString().split('T')[0];
-    if(last === yStr){
-      streak++;
-    } else {
-      streak = 1;
-    }
-    localStorage.setItem('mw_wheel_last', today);
-    saveData();
-  }
-  document.querySelector('.streak-box')?.remove();
-  // on affiche dans isme
-  if(streak > 1){
-    showIsme('🔥 ' + streak + ' jours de suite ! Continue comme ça !', 3000);
-  }
+// ==================== SOCIAL BAR ====================
+var socialMessages = ["🇺🇸 just drew ☀️","🇯🇵 just drew 🌧️","🇧🇷 just drew 🌈","🇫🇷 just drew 🌙","🇮🇳 just drew 🔥"];
+function showSocial(){
+    var bar = document.getElementById('socialBar');
+    bar.classList.add('show');
+    document.getElementById('socialText').textContent = socialMessages[Math.floor(Math.random()*socialMessages.length)];
+    setTimeout(function(){ bar.classList.remove('show'); }, 4000);
 }
+setInterval(showSocial, 12000);
+showSocial();
 
-// ============================================================
-// NAV
-// ============================================================
-function setupNav(){
-  document.querySelectorAll('.nav-item').forEach(function(btn){
-    btn.addEventListener('click', function(){
-      var sc = this.dataset.screen;
-      document.querySelectorAll('.nav-item').forEach(function(n){ n.classList.remove('active'); });
-      this.classList.add('active');
-      showScreen(sc);
-    });
-  });
-}
-
-function showScreen(screen){
-  var screens = ['wheelScreen','challengeScreen','resultScreen','drawScreen','collectionScreen','rankingScreen'];
-  screens.forEach(function(id){
-    var el = document.getElementById(id);
-    if(el) el.style.display = 'none';
-  });
-  if(screen === 'wheel') document.getElementById('wheelScreen').style.display = 'flex';
-  else if(screen === 'draw') document.getElementById('drawScreen').style.display = 'flex';
-  else if(screen === 'collection') document.getElementById('collectionScreen').style.display = 'flex';
-  else if(screen === 'ranking') document.getElementById('rankingScreen').style.display = 'flex';
-}
-
-// ============================================================
-// BUTTONS
-// ============================================================
-function setupButtons(){
-  document.getElementById('resultShare').addEventListener('click', function(){
-    var text = '🏅 '+document.getElementById('resultTitle').textContent+' '+document.getElementById('resultScore').textContent+' sur Mewonen ! Et toi ? #MewonenChallenge';
-    if(navigator.share){
-      navigator.share({ title: 'Mewonen Challenge', text: text, url: 'https://mewonen.com' }).catch(function(){});
-    } else {
-      navigator.clipboard.writeText(text).then(function(){
-        showToast('📋 Texte copié ! Partage-le.');
-      }).catch(function(){});
-    }
-  });
-  document.getElementById('resultAgain').addEventListener('click', function(){
-    document.getElementById('resultScreen').classList.remove('active');
-    document.getElementById('wheelScreen').classList.add('active');
-  });
-  document.getElementById('resultCollection').addEventListener('click', function(){
-    document.getElementById('resultScreen').classList.remove('active');
-    document.getElementById('collectionScreen').style.display = 'flex';
-    document.querySelectorAll('.nav-item').forEach(function(n){ n.classList.remove('active'); });
-    document.querySelector('.nav-item[data-screen="collection"]').classList.add('active');
-  });
-  document.getElementById('collectionBack').addEventListener('click', function(){
-    document.getElementById('collectionScreen').style.display = 'none';
-    document.getElementById('wheelScreen').style.display = 'flex';
-    document.querySelectorAll('.nav-item').forEach(function(n){ n.classList.remove('active'); });
-    document.querySelector('.nav-item[data-screen="wheel"]').classList.add('active');
-  });
-  document.getElementById('rankingBack').addEventListener('click', function(){
-    document.getElementById('rankingScreen').style.display = 'none';
-    document.getElementById('wheelScreen').style.display = 'flex';
-    document.querySelectorAll('.nav-item').forEach(function(n){ n.classList.remove('active'); });
-    document.querySelector('.nav-item[data-screen="wheel"]').classList.add('active');
-  });
-}
-
-// ============================================================
-// NOTIFICATIONS
-// ============================================================
-function startLiveNotifications(){
-  var msgs = [
-    '🔥 Quelqu\'un vient de débloquer le badge Master of Anger !',
-    '🌈 Un nouvel utilisateur a prouvé Hope !',
-    '⭐ 5 personnes ont réussi le défi aujourd\'hui !',
-    '💎 Un badge rare a été débloqué !'
-  ];
-  setInterval(function(){
-    var notif = document.getElementById('liveNotification');
-    var text = document.getElementById('notifText');
-    text.textContent = msgs[Math.floor(Math.random()*msgs.length)];
-    notif.classList.add('show');
-    setTimeout(function(){ notif.classList.remove('show'); }, 4000);
-  }, 15000);
-}
-
-var notifCloseBtn = document.getElementById('notifClose');
-if (notifCloseBtn) {
-  notifCloseBtn.addEventListener('click', function(){
-    document.getElementById('liveNotification').classList.remove('show');
-  });
-}
-
-// ============================================================
-// ISME
-// ============================================================
-function setupIsme(){
-  var av = document.getElementById('ismeAv');
-  var bub = document.getElementById('ismeBub');
-  var close = document.getElementById('ismeClose');
-  av.addEventListener('click', function(){
-    if(bub.classList.contains('show')) { bub.classList.remove('show'); } else {
-      var msgs = ['Prêt à prouver ton émotion ? 🎡', 'Tu as '+userBadges.length+' badges sur 13 !', '🔥 Continue ta série !'];
-      var msg = msgs[Math.floor(Math.random()*msgs.length)];
-      showIsme(msg, 4000);
-    }
-  });
-  close.addEventListener('click', function(e){ e.stopPropagation(); bub.classList.remove('show'); });
-}
-
-function showIsme(text, duration){
-  var bub = document.getElementById('ismeBub');
-  var el = document.getElementById('ismeText');
-  el.textContent = text;
-  bub.classList.add('show');
-  clearTimeout(window.ismeTimer);
-  window.ismeTimer = setTimeout(function(){ bub.classList.remove('show'); }, duration || 3000);
-}
-
-function showToast(msg){
-  var t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(function(){ t.classList.remove('show'); }, 2500);
-}
-
-function spawnConfetti(){
-  var colors = ['#a78bfa','#7c3aed','#fbbf24','#34d399','#f472b6','#60a5fa','#f97316'];
-  for(var i=0;i<30;i++){
-    var el=document.createElement('div');
-    el.className='confetti';
-    el.style.left=Math.random()*100+'%';
-    el.style.top='-20px';
-    el.style.width=(3+Math.random()*6)+'px';
-    el.style.height=(3+Math.random()*6)+'px';
-    el.style.background=colors[Math.floor(Math.random()*colors.length)];
-    el.style.borderRadius=Math.random()>0.5?'50%':'2px';
-    el.style.animationDuration=(1.5+Math.random()*2)+'s';
-    el.style.animationDelay=Math.random()*0.5+'s';
-    document.body.appendChild(el);
-    setTimeout(function(){ el.remove(); }, 3000);
-  }
+// ==================== SKIP ONBOARDING IF DONE ====================
+if(localStorage.getItem('mw_onboarding_done') === '1'){
+    document.getElementById('onboarding').classList.add('hidden');
+    document.getElementById('app').style.display = 'flex';
 }
 </script>
 </body>
