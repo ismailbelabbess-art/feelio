@@ -22,58 +22,38 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{
-    --accent:#a78bfa;--accent2:#7c3aed;--bg:#0a0a18;
-    --surface:rgba(16,16,32,0.6);--text:#f0f0f0;--text2:#b0b0b0;--text3:#555;
-}
+:root{--accent:#a78bfa;--accent2:#7c3aed;--bg:#0a0a18;--surface:rgba(16,16,32,0.6);--text:#f0f0f0;--text2:#b0b0b0;--text3:#555;--nav-h:56px}
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-body{
-    font-family:'Inter',-apple-system,sans-serif;
-    background:var(--bg);color:var(--text);
-    -webkit-font-smoothing:antialiased;overflow-x:hidden;
-    user-select:none;-webkit-user-select:none;
-}
+body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;overflow:hidden;height:100vh;height:100dvh;user-select:none;-webkit-user-select:none}
 
-/* ONBOARDING */
-.onboarding{
-    position:fixed;inset:0;z-index:500;background:var(--bg);
-    display:flex;flex-direction:column;align-items:center;justify-content:center;
-    transition:transform 0.5s ease,opacity 0.5s ease;
-}
-.onboarding.hidden{transform:translateY(-100%);opacity:0;pointer-events:none}
-.swipe-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;width:100%;height:100%;-webkit-overflow-scrolling:touch;scrollbar-width:none}
-.swipe-track::-webkit-scrollbar{display:none}
-.swipe{
-    min-width:100%;height:100%;scroll-snap-align:center;
-    display:flex;flex-direction:column;align-items:center;justify-content:center;
-    padding:40px 30px;text-align:center;
-}
-.swipe-emoji{font-size:5rem;margin-bottom:20px;animation:breathe 3s ease-in-out infinite}
-@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
-.swipe h2{font-size:1.4rem;font-weight:300;line-height:1.5;margin-bottom:12px;color:#fff}
-.swipe p{font-size:0.85rem;color:rgba(255,255,255,0.5);line-height:1.6;max-width:300px}
-.swipe-dots{position:absolute;bottom:40px;display:flex;gap:8px}
-.dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.2);transition:all 0.3s ease}
-.dot.active{background:var(--accent);width:24px;border-radius:4px}
-.btn-skip{position:absolute;top:20px;right:20px;z-index:10;color:rgba(255,255,255,0.4);font-size:0.75rem;cursor:pointer;background:none;border:none}
-.btn-next{
-    position:absolute;bottom:80px;z-index:10;padding:12px 30px;border-radius:50px;
-    background:linear-gradient(135deg,var(--accent2),var(--accent));color:#fff;
-    font-size:0.85rem;font-weight:500;cursor:pointer;border:none;transition:all 0.2s ease;
-}
-.btn-next:active{transform:scale(0.96)}
+/* ONBOARDING TINDER */
+.onboarding{position:fixed;inset:0;z-index:500;background:var(--bg);display:flex;align-items:center;justify-content:center}
+.onboarding.hidden{display:none}
+.card-stack{position:relative;width:300px;height:400px}
+.onboard-card{position:absolute;width:100%;height:100%;border-radius:28px;background:var(--surface);border:1px solid rgba(139,92,246,0.2);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px;text-align:center;transition:transform 0.4s ease,opacity 0.4s ease;box-shadow:0 20px 60px rgba(0,0,0,0.4)}
+.onboard-card.swiping-left{transform:translateX(-150%) rotate(-20deg);opacity:0}
+.onboard-card.swiping-right{transform:translateX(150%) rotate(20deg);opacity:0}
+.onboard-card .ob-emoji{font-size:4rem;margin-bottom:16px}
+.onboard-card h2{font-size:1.2rem;font-weight:400;margin-bottom:8px;color:#fff}
+.onboard-card p{font-size:0.8rem;color:var(--text2)}
+.card-dots{position:absolute;bottom:-30px;left:50%;transform:translateX(-50%);display:flex;gap:6px}
+.card-dots .dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.2);transition:all 0.3s}
+.card-dots .dot.active{background:var(--accent);width:20px;border-radius:3px}
+.btn-skip-ob{position:absolute;top:20px;right:20px;z-index:10;color:rgba(255,255,255,0.4);font-size:0.75rem;cursor:pointer;background:none;border:none}
 
 /* CIRCLE */
-.circle-section{display:none;text-align:center;padding:40px 20px;min-height:100vh;flex-direction:column;align-items:center;justify-content:center}
+.circle-section{display:none;position:fixed;inset:0;z-index:400;background:var(--bg);flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px}
 .circle-section.active{display:flex}
 .circle-section h2{font-size:1.3rem;font-weight:200;margin-bottom:20px}
 .circle-input{width:100%;max-width:300px;padding:14px;border-radius:16px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.05);color:#fff;font-size:0.85rem;margin-bottom:10px;text-align:center;outline:none}
 .circle-input:focus{border-color:var(--accent)}
 
 /* APP */
-.app{display:none;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;min-height:100dvh;padding:20px;position:relative;text-align:center}
+.app{display:none;height:100vh;height:100dvh;flex-direction:column;position:relative}
 .app.active{display:flex}
-.app-bg{position:absolute;inset:0;background:radial-gradient(circle at 50% 40%,rgba(167,139,250,0.08) 0%,transparent 70%);z-index:0}
+.screen{flex:1;display:none;flex-direction:column;align-items:center;justify-content:center;padding:20px;overflow-y:auto}
+.screen.active{display:flex}
+.app-bg{position:absolute;inset:0;background:radial-gradient(circle at 50% 40%,rgba(167,139,250,0.08) 0%,transparent 70%);pointer-events:none;z-index:0}
 .app>*{position:relative;z-index:1}
 .logo{font-size:2rem;font-weight:100;letter-spacing:10px;color:#fff;margin-bottom:4px}
 .subtitle{color:var(--accent);font-size:0.7rem;letter-spacing:3px;margin-bottom:12px}
@@ -83,43 +63,39 @@ body{
 
 /* CANVAS */
 .canvas-wrap{position:relative;margin-bottom:12px}
-canvas#canvas{
-    width:260px;height:260px;border-radius:50%;
-    background:var(--surface);touch-action:none;cursor:crosshair;
-    border:2px solid rgba(139,92,246,0.3);
-    box-shadow:0 0 40px rgba(139,92,246,0.2);
-    transition:background 0.5s ease,box-shadow 0.5s ease;
-}
+canvas#canvas{width:260px;height:260px;border-radius:50%;background:var(--surface);touch-action:none;cursor:crosshair;border:2px solid rgba(139,92,246,0.3);box-shadow:0 0 40px rgba(139,92,246,0.2);transition:background 0.5s ease,box-shadow 0.5s ease}
 canvas#canvas.reactive-happy{background:rgba(251,191,36,0.15);box-shadow:0 0 50px rgba(251,191,36,0.3)}
 canvas#canvas.reactive-rain{background:rgba(59,130,246,0.15);box-shadow:0 0 50px rgba(59,130,246,0.3)}
 canvas#canvas.reactive-storm{background:rgba(139,92,246,0.2);box-shadow:0 0 50px rgba(139,92,246,0.4)}
 canvas#canvas.reactive-calm{background:rgba(99,102,241,0.15);box-shadow:0 0 50px rgba(99,102,241,0.3)}
-
 .result-emoji{font-size:3rem;margin-top:8px;min-height:60px}
 .result-phrase{color:#fff;font-size:0.8rem;margin-top:4px;max-width:300px}
 
-/* FEEL WHEEL */
-.wheel-section{display:none;text-align:center}
-.wheel-section.active{display:block}
-.wheel-container{position:relative;width:200px;height:200px;margin:20px auto}
-.wheel-svg{width:100%;height:100%;animation:spinWheel 3s ease-out forwards}
-@keyframes spinWheel{0%{transform:rotate(0deg)}100%{transform:rotate(720deg)}}
+/* PARTICULES */
+.particles{position:absolute;inset:0;pointer-events:none;z-index:0}
+.particle{position:absolute;width:3px;height:3px;border-radius:50%;background:var(--accent);animation:floatUp 6s linear infinite;opacity:0}
+@keyframes floatUp{0%{transform:translateY(100vh) scale(0);opacity:0}20%{opacity:0.8}100%{transform:translateY(-10vh) scale(2);opacity:0}}
 
-/* BUTTONS */
-.btn{
-    display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:50px;
-    font-size:0.8rem;font-weight:500;cursor:pointer;border:none;transition:all 0.2s ease;
-    text-decoration:none;letter-spacing:0.5px;margin:6px;
-}
-.btn-primary{background:linear-gradient(135deg,var(--accent2),var(--accent));color:#fff;box-shadow:0 4px 20px rgba(124,58,237,0.3)}
-.btn-outline{background:transparent;color:var(--accent);border:1px solid rgba(139,92,246,0.3)}
-.btn:active{transform:scale(0.96)}
+/* POPUP */
+.popup{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);z-index:200;background:rgba(22,22,44,0.97);border:1px solid rgba(139,92,246,0.3);border-radius:18px;padding:14px 20px;font-size:0.75rem;color:#fff;box-shadow:0 10px 40px rgba(0,0,0,0.5);animation:popIn 0.4s ease-out;display:none;text-align:center}
+.popup.show{display:block}
+@keyframes popIn{0%{transform:translateX(-50%) translateY(20px);opacity:0}100%{transform:translateX(-50%) translateY(0);opacity:1}}
+
+/* NAV */
+.nav{position:fixed;bottom:0;left:0;right:0;z-index:100;display:flex;justify-content:space-around;align-items:center;height:var(--nav-h);background:rgba(10,10,22,0.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:0.5px solid rgba(255,255,255,0.05)}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;color:var(--text3);transition:all 0.2s ease;min-width:44px}
+.nav-item.active{color:var(--accent)}
+.nav-item .nav-icon{font-size:1.2rem}
+.nav-item .nav-label{font-size:0.45rem;font-weight:500;opacity:0.7}
+.nav-item.active .nav-label{opacity:1}
+
+/* FEEL WHEEL */
+.wheel-section{text-align:center}
+.wheel-container{position:relative;width:180px;height:180px;margin:20px auto}
+.wheel-svg{width:100%;height:100%}
 
 /* SHARE CARD */
-.share-card{
-    display:none;background:linear-gradient(135deg,#1a1025,#0d1b2a);border-radius:24px;
-    padding:20px;text-align:center;max-width:300px;margin:10px auto;position:relative;
-}
+.share-card{display:none;background:linear-gradient(135deg,#1a1025,#0d1b2a);border-radius:24px;padding:20px;text-align:center;max-width:300px;margin:10px auto}
 .share-card.active{display:block}
 .share-card .card-emoji{font-size:4rem}
 .share-card .card-phrase{font-size:0.9rem;color:#fff;margin:8px 0}
@@ -127,36 +103,41 @@ canvas#canvas.reactive-calm{background:rgba(99,102,241,0.15);box-shadow:0 0 50px
 .share-card canvas{border-radius:16px;width:150px;height:150px;margin:8px 0}
 
 /* MASCOT */
-.mascot{position:fixed;bottom:16px;right:16px;z-index:100;display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.mascot{position:fixed;bottom:70px;right:16px;z-index:150;display:flex;flex-direction:column;align-items:flex-end;gap:6px}
 .mascot-bubble{background:rgba(22,22,44,0.97);border:1px solid rgba(139,92,246,0.3);border-radius:14px;padding:10px 14px;max-width:200px;font-size:0.65rem;color:#fff;cursor:pointer}
-.mascot-avatar{width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#a78bfa);display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:#fff;cursor:pointer;animation:bounce 2s ease-in-out infinite;box-shadow:0 4px 20px rgba(124,58,237,0.4)}
+.mascot-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#a78bfa);display:flex;align-items:center;justify-content:center;font-size:1.1rem;color:#fff;cursor:pointer;animation:bounce 2s ease-in-out infinite;box-shadow:0 4px 20px rgba(124,58,237,0.4)}
 @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 
 /* SOCIAL BAR */
-.social-bar{position:fixed;bottom:0;left:0;right:0;z-index:99;background:rgba(16,16,32,0.95);padding:6px;text-align:center;font-size:0.6rem;color:rgba(255,255,255,0.5);display:none}
+.social-bar{position:fixed;bottom:var(--nav-h);left:0;right:0;z-index:99;background:rgba(16,16,32,0.95);padding:6px;text-align:center;font-size:0.6rem;color:rgba(255,255,255,0.5);display:none}
 .social-bar.show{display:block}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;border-radius:50px;font-size:0.75rem;font-weight:500;cursor:pointer;border:none;transition:all 0.2s ease;text-decoration:none;letter-spacing:0.5px;margin:4px}
+.btn-primary{background:linear-gradient(135deg,var(--accent2),var(--accent));color:#fff;box-shadow:0 4px 20px rgba(124,58,237,0.3)}
+.btn-outline{background:transparent;color:var(--accent);border:1px solid rgba(139,92,246,0.3)}
+.btn:active{transform:scale(0.96)}
 </style>
 </head>
 <body>
 
-<!-- ONBOARDING -->
+<!-- ONBOARDING TINDER -->
 <div class="onboarding" id="onboarding">
-    <button class="btn-skip" onclick="skipOnboarding()">Skip</button>
-    <div class="swipe-track" id="swipeTrack">
-        <div class="swipe"><div class="swipe-emoji">🧠</div><h2>No one asked how you feel today.</h2><p>Except Mewonen.</p></div>
-        <div class="swipe"><div class="swipe-emoji">✍️</div><h2>Draw. No words needed.</h2><p>A line is enough. A scribble too.</p></div>
-        <div class="swipe"><div class="swipe-emoji">💜</div><h2>Mewonen understands.</h2><p>13 emotions. 7 languages. Zero data.</p></div>
-        <div class="swipe"><div class="swipe-emoji">🔥</div><h2>Come back every day.</h2><p>Your streak. Your journey. Your mirror.</p></div>
-        <div class="swipe"><div class="swipe-emoji">👥</div><h2>Invite someone.</h2><p>A circle of trust. Mewonen watches over you.</p></div>
+    <button class="btn-skip-ob" onclick="skipOnboarding()">Skip</button>
+    <div class="card-stack" id="cardStack">
+        <div class="onboard-card" id="card0"><div class="ob-emoji">🧠</div><h2>No one asked how you feel today.</h2><p>Except Mewonen. Swipe →</p></div>
+        <div class="onboard-card" id="card1" style="transform:scale(0.95) translateY(10px);z-index:-1"><div class="ob-emoji">✍️</div><h2>Draw. No words needed.</h2><p>A line is enough.</p></div>
+        <div class="onboard-card" id="card2" style="transform:scale(0.9) translateY(20px);z-index:-2"><div class="ob-emoji">💜</div><h2>Mewonen understands.</h2><p>13 emotions. 7 languages. Zero data.</p></div>
+        <div class="onboard-card" id="card3" style="transform:scale(0.85) translateY(30px);z-index:-3"><div class="ob-emoji">🔥</div><h2>Come back every day.</h2><p>Your streak. Your journey.</p></div>
+        <div class="onboard-card" id="card4" style="transform:scale(0.8) translateY(40px);z-index:-4"><div class="ob-emoji">👥</div><h2>Invite someone.</h2><p>Mewonen watches over you.</p></div>
     </div>
-    <div class="swipe-dots" id="dots"><span class="dot active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
-    <button class="btn-next" id="btnNext" onclick="nextSwipe()">Next →</button>
+    <div class="card-dots" id="cardDots" style="position:absolute;bottom:60px"><span class="dot active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
 </div>
 
 <!-- CIRCLE -->
 <div class="circle-section" id="circleSection">
     <h2>👥 Who should know you're okay?</h2>
-    <p style="color:rgba(255,255,255,0.4);font-size:0.7rem;margin-bottom:20px">Add 1 person you trust. They'll just know you're alive. Nothing else.</p>
+    <p style="color:rgba(255,255,255,0.4);font-size:0.7rem;margin-bottom:20px">Add 1 person. They'll just know you're alive. Nothing else.</p>
     <input class="circle-input" type="text" id="circleName" placeholder="Name (ex: Mom)">
     <input class="circle-input" type="email" id="circleEmail" placeholder="Email (optional)">
     <button class="btn btn-primary" onclick="saveCircle()">Save & Start →</button>
@@ -166,74 +147,66 @@ canvas#canvas.reactive-calm{background:rgba(99,102,241,0.15);box-shadow:0 0 50px
 <!-- APP -->
 <div class="app" id="app">
     <div class="app-bg"></div>
-    <div class="logo">MEWONEN</div>
-    <div class="subtitle">Draw your mood</div>
-    <div class="greeting" id="greeting"></div>
-    <div class="counter"><span id="liveCounter">0</span> people drew today</div>
+    <div class="particles" id="particles"></div>
 
-    <div class="canvas-wrap">
-        <canvas id="canvas" width="500" height="500" aria-label="Draw your mood"></canvas>
-    </div>
-    <div class="result-emoji" id="resultEmoji"></div>
-    <div class="result-phrase" id="resultPhrase"></div>
-
-    <button class="btn btn-outline" onclick="resetCanvas()">Clear</button>
-    <button class="btn btn-outline" onclick="openWheel()">🎡 Feel Wheel</button>
-
-    <!-- Share Card -->
-    <div class="share-card" id="shareCard">
-        <div class="card-emoji" id="cardEmoji"></div>
-        <div class="card-phrase" id="cardPhrase"></div>
-        <canvas id="cardCanvas" width="300" height="300"></canvas>
-        <div class="card-logo">mewonen.com 💜</div>
-        <button class="btn btn-primary" onclick="shareResult()">📤 Share</button>
+    <!-- DRAW SCREEN -->
+    <div class="screen active" id="screenDraw">
+        <div class="logo">MEWONEN</div>
+        <div class="subtitle">Draw your mood</div>
+        <div class="greeting" id="greeting"></div>
+        <div class="counter"><span id="liveCounter">0</span> people drew today</div>
+        <div class="canvas-wrap"><canvas id="canvas" width="500" height="500" aria-label="Draw your mood"></canvas></div>
+        <div class="result-emoji" id="resultEmoji"></div>
+        <div class="result-phrase" id="resultPhrase"></div>
+        <button class="btn btn-outline" onclick="resetCanvas()">Clear</button>
+        <button class="btn btn-outline" onclick="openWheel()">🎡 Feel Wheel</button>
+        <div class="share-card" id="shareCard"><div class="card-emoji" id="cardEmoji"></div><div class="card-phrase" id="cardPhrase"></div><canvas id="cardCanvas" width="300" height="300"></canvas><div class="card-logo">mewonen.com 💜</div><button class="btn btn-primary" onclick="shareResult()">📤 Share</button></div>
+        <div class="wheel-section" id="wheelSection"><h3 style="margin-bottom:10px">🎡 Spin the Feel Wheel</h3><div class="wheel-container"><svg class="wheel-svg" id="wheelSvg" viewBox="0 0 200 200"><circle cx="100" cy="100" r="95" fill="none" stroke="var(--accent)" stroke-width="2"/><text x="100" y="25" text-anchor="middle" fill="#fff" font-size="14">☀️</text><text x="175" y="105" text-anchor="middle" fill="#fff" font-size="14">🌧️</text><text x="100" y="185" text-anchor="middle" fill="#fff" font-size="14">🌪️</text><text x="25" y="105" text-anchor="middle" fill="#fff" font-size="14">🌈</text><text x="65" y="55" text-anchor="middle" fill="#fff" font-size="12">🔥</text><text x="135" y="55" text-anchor="middle" fill="#fff" font-size="12">🌙</text><text x="135" y="155" text-anchor="middle" fill="#fff" font-size="12">🙏</text><text x="65" y="155" text-anchor="middle" fill="#fff" font-size="12">🌱</text></svg></div><p style="color:rgba(255,255,255,0.5);font-size:0.7rem">Spin and draw the emotion you get!</p><button class="btn btn-primary" onclick="spinWheel()">🎡 SPIN</button><p id="wheelResult" style="margin-top:10px;font-size:1rem;color:#fff"></p></div>
     </div>
 
-    <!-- Wheel -->
-    <div class="wheel-section" id="wheelSection">
-        <h3 style="margin-bottom:10px">🎡 Spin the Feel Wheel</h3>
-        <div class="wheel-container">
-            <svg class="wheel-svg" id="wheelSvg" viewBox="0 0 200 200">
-                <circle cx="100" cy="100" r="95" fill="none" stroke="var(--accent)" stroke-width="2"/>
-                <text x="100" y="25" text-anchor="middle" fill="#fff" font-size="14">☀️</text>
-                <text x="175" y="105" text-anchor="middle" fill="#fff" font-size="14">🌧️</text>
-                <text x="100" y="185" text-anchor="middle" fill="#fff" font-size="14">🌪️</text>
-                <text x="25" y="105" text-anchor="middle" fill="#fff" font-size="14">🌈</text>
-                <text x="65" y="55" text-anchor="middle" fill="#fff" font-size="12">🔥</text>
-                <text x="135" y="55" text-anchor="middle" fill="#fff" font-size="12">🌙</text>
-                <text x="135" y="155" text-anchor="middle" fill="#fff" font-size="12">🙏</text>
-                <text x="65" y="155" text-anchor="middle" fill="#fff" font-size="12">🌱</text>
-            </svg>
-        </div>
-        <p style="color:rgba(255,255,255,0.5);font-size:0.7rem">Spin and draw the emotion you get!</p>
-        <button class="btn btn-primary" onclick="spinWheel()">🎡 SPIN</button>
-        <p id="wheelResult" style="margin-top:10px;font-size:1rem;color:#fff"></p>
-    </div>
+    <!-- HISTORY SCREEN -->
+    <div class="screen" id="screenHistory"><div style="font-size:1.2rem;font-weight:200;letter-spacing:4px;margin-bottom:4px">Your Week</div><div style="color:var(--text3);font-size:0.5rem;margin-bottom:12px">7-day emotional weather</div><div id="historyGrid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:5px;max-width:320px"></div><button class="btn btn-outline" onclick="clearHistory()" style="margin-top:10px">Clear</button></div>
+
+    <!-- STATS SCREEN -->
+    <div class="screen" id="screenStats"><div style="font-size:1.2rem;font-weight:200;letter-spacing:4px;margin-bottom:4px">Your Stats</div><div style="color:var(--text3);font-size:0.5rem;margin-bottom:12px">This month</div><div id="statsContainer"></div></div>
+</div>
+
+<!-- NAV -->
+<div class="nav">
+    <div class="nav-item active" data-screen="screenDraw"><span class="nav-icon">✍️</span><span class="nav-label">Draw</span></div>
+    <div class="nav-item" data-screen="screenHistory"><span class="nav-icon">📅</span><span class="nav-label">Week</span></div>
+    <div class="nav-item" data-screen="screenStats"><span class="nav-icon">📊</span><span class="nav-label">Stats</span></div>
 </div>
 
 <!-- MASCOT -->
-<div class="mascot" id="mascot">
-    <div class="mascot-bubble" id="mascotBubble" onclick="mascotClick()"><span id="mascotText">How are you feeling?</span></div>
-    <div class="mascot-avatar" onclick="mascotClick()">M</div>
-</div>
+<div class="mascot" id="mascot"><div class="mascot-bubble" id="mascotBubble" onclick="mascotClick()"><span id="mascotText">How are you feeling?</span></div><div class="mascot-avatar" onclick="mascotClick()">M</div></div>
 <div class="social-bar" id="socialBar"><span id="socialText">Someone just drew ☀️</span></div>
+<div class="popup" id="popup"></div>
 
 <script>
-// ==================== ONBOARDING ====================
-var currentSwipe=0,track=document.getElementById('swipeTrack'),dots=document.querySelectorAll('.dot'),btnNext=document.getElementById('btnNext');
-track.addEventListener('scroll',function(){currentSwipe=Math.round(track.scrollLeft/window.innerWidth);updateDots();btnNext.textContent=currentSwipe===4?'Begin →':'Next →'});
-function updateDots(){dots.forEach(function(d,i){d.classList.toggle('active',i===currentSwipe)})}
-function nextSwipe(){if(currentSwipe<4){currentSwipe++;track.scrollTo({left:currentSwipe*window.innerWidth,behavior:'smooth'})}else finishOnboarding()}
+// ==================== ONBOARDING TINDER ====================
+var currentCard=0,totalCards=5,cardStack=document.getElementById('cardStack'),cardDots=document.querySelectorAll('#cardDots .dot');
+var startX=0,startY=0;
+cardStack.addEventListener('touchstart',function(e){startX=e.touches[0].clientX;startY=e.touches[0].clientY});
+cardStack.addEventListener('touchend',function(e){var dx=e.changedTouches[0].clientX-startX;if(Math.abs(dx)>60){swipeCard(dx>0?'right':'left')}});
+function swipeCard(dir){var card=document.getElementById('card'+currentCard);card.classList.add(dir==='right'?'swiping-right':'swiping-left');cardDots[currentCard].classList.remove('active');currentCard++;if(currentCard>=totalCards){finishOnboarding()}else{cardDots[currentCard].classList.add('active');setTimeout(function(){updateCardStack()},400)}}
+function updateCardStack(){for(var i=0;i<totalCards;i++){var c=document.getElementById('card'+i);if(i<currentCard){c.style.display='none'}else{var offset=i-currentCard;c.style.transform='scale('+(1-offset*0.05)+') translateY('+(offset*10)+'px)';c.style.zIndex=-offset}}}
 function skipOnboarding(){finishOnboarding()}
 function finishOnboarding(){document.getElementById('onboarding').classList.add('hidden');document.getElementById('circleSection').classList.add('active')}
 
 // ==================== CIRCLE ====================
 function saveCircle(){var n=document.getElementById('circleName').value.trim();if(n){var c=JSON.parse(localStorage.getItem('mw_circle')||'[]');c.push({name:n,email:document.getElementById('circleEmail').value.trim(),added:new Date().toISOString()});localStorage.setItem('mw_circle',JSON.stringify(c))}startApp()}
 function skipCircle(){startApp()}
-function startApp(){document.getElementById('circleSection').classList.remove('active');document.getElementById('app').classList.add('active');localStorage.setItem('mw_onboarding_done','1');showGreeting()}
+function startApp(){document.getElementById('circleSection').classList.remove('active');document.getElementById('app').classList.add('active');localStorage.setItem('mw_onboarding_done','1');showGreeting();showPopup('Welcome! Draw how you feel today 💜');createParticles();showScreen('screenDraw');buildHistory();buildStats()}
 
 // ==================== GREETING ====================
-function showGreeting(){var h=JSON.parse(localStorage.getItem('mw_history')||'[]');if(h.length>0){var last=h[h.length-1];document.getElementById('greeting').textContent='Yesterday you felt '+last.emoji+'. And today?';}}
+function showGreeting(){var h=JSON.parse(localStorage.getItem('mw_history')||'[]');if(h.length>0){var last=h[h.length-1];document.getElementById('greeting').textContent='Yesterday you felt '+last.emoji+'. And today?'}}
+
+// ==================== POPUP ====================
+function showPopup(msg){var p=document.getElementById('popup');p.textContent=msg;p.classList.add('show');setTimeout(function(){p.classList.remove('show')},3000)}
+
+// ==================== PARTICULES ====================
+function createParticles(){var c=document.getElementById('particles');for(var i=0;i<20;i++){var p=document.createElement('div');p.className='particle';p.style.left=Math.random()*100+'%';p.style.animationDelay=Math.random()*6+'s';p.style.animationDuration=(4+Math.random()*6)+'s';c.appendChild(p)}}
 
 // ==================== COMPTEUR ====================
 var count=parseInt(localStorage.getItem('mw_landing_count')||'1547');count=Math.max(count,1500)+Math.floor(Math.random()*5);localStorage.setItem('mw_landing_count',count.toString());document.getElementById('liveCounter').textContent=count.toLocaleString();setInterval(function(){count+=Math.floor(Math.random()*3)+1;localStorage.setItem('mw_landing_count',count.toString());document.getElementById('liveCounter').textContent=count.toLocaleString()},25000);
@@ -244,23 +217,36 @@ var emotions=[{emoji:'☀️',p:'You are shining today',bg:'reactive-happy'},{em
 function getPos(e){var r=canvas.getBoundingClientRect(),sX=canvas.width/r.width,sY=canvas.height/r.height,cX=e.touches?e.touches[0].clientX:e.clientX,cY=e.touches?e.touches[0].clientY:e.clientY;return{x:(cX-r.left)*sX,y:(cY-r.top)*sY}}
 function startDraw(e){e.preventDefault();drawing=true;points=[];var p=getPos(e);points.push({x:p.x,y:p.y});ctx.beginPath();ctx.moveTo(p.x,p.y);canvas.className=''}
 function moveDraw(e){e.preventDefault();if(!drawing)return;var p=getPos(e);points.push({x:p.x,y:p.y});ctx.lineTo(p.x,p.y);ctx.strokeStyle='rgba(200,180,255,0.9)';ctx.lineWidth=4;ctx.lineCap='round';ctx.lineJoin='round';ctx.stroke()}
-function endDraw(){drawing=false;if(points.length<3)return;var d=0;for(var i=1;i<points.length;i++){var dx=points[i].x-points[i-1].x,dy=points[i].y-points[i-1].y;d+=Math.sqrt(dx*dx+dy*dy)}var idx=Math.floor(Math.random()*emotions.length);if(d>400)idx=0;else if(d>250)idx=4;else if(d>100)idx=1;else if(d<15)idx=12;var e=emotions[idx];document.getElementById('resultEmoji').textContent=e.emoji;document.getElementById('resultPhrase').textContent=e.p;canvas.className=e.bg;showShareCard(e);count++;localStorage.setItem('mw_landing_count',count.toString());document.getElementById('liveCounter').textContent=count.toLocaleString();saveHistory(e)}
+function endDraw(){drawing=false;if(points.length<3)return;var d=0;for(var i=1;i<points.length;i++){var dx=points[i].x-points[i-1].x,dy=points[i].y-points[i-1].y;d+=Math.sqrt(dx*dx+dy*dy)}var idx=Math.floor(Math.random()*emotions.length);if(d>400)idx=0;else if(d>250)idx=4;else if(d>100)idx=1;else if(d<15)idx=12;var e=emotions[idx];document.getElementById('resultEmoji').textContent=e.emoji;document.getElementById('resultPhrase').textContent=e.p;canvas.className=e.bg;showShareCard(e);count++;localStorage.setItem('mw_landing_count',count.toString());document.getElementById('liveCounter').textContent=count.toLocaleString();saveHistory(e);showPopup(e.emoji+' '+e.p)}
 function resetCanvas(){ctx.clearRect(0,0,canvas.width,canvas.height);document.getElementById('resultEmoji').textContent='';document.getElementById('resultPhrase').textContent='';canvas.className='';document.getElementById('shareCard').classList.remove('active')}
 canvas.addEventListener('touchstart',startDraw,{passive:false});canvas.addEventListener('touchmove',moveDraw,{passive:false});canvas.addEventListener('touchend',endDraw);canvas.addEventListener('mousedown',startDraw);canvas.addEventListener('mousemove',moveDraw);canvas.addEventListener('mouseup',endDraw);canvas.addEventListener('mouseleave',endDraw);
-function saveHistory(e){var h=JSON.parse(localStorage.getItem('mw_history')||'[]');h.push({emoji:e.emoji,date:new Date().toISOString().split('T')[0]});if(h.length>30)h.shift();localStorage.setItem('mw_history',JSON.stringify(h))}
+function saveHistory(e){var h=JSON.parse(localStorage.getItem('mw_history')||'[]');h.push({emoji:e.emoji,date:new Date().toISOString().split('T')[0]});if(h.length>30)h.shift();localStorage.setItem('mw_history',JSON.stringify(h));buildHistory();buildStats()}
 
 // ==================== SHARE CARD ====================
 function showShareCard(e){var card=document.getElementById('shareCard');card.classList.add('active');document.getElementById('cardEmoji').textContent=e.emoji;document.getElementById('cardPhrase').textContent=e.p;var cc=document.getElementById('cardCanvas'),cctx=cc.getContext('2d');cctx.clearRect(0,0,300,300);cctx.drawImage(canvas,0,0,300,300)}
 function shareResult(){var text=document.getElementById('cardEmoji').textContent+' "'+document.getElementById('cardPhrase').textContent+'"\n\nDraw yours on mewonen.com 💜';if(navigator.share)navigator.share({text:text});else if(navigator.clipboard)navigator.clipboard.writeText(text).then(function(){alert('Copied!')});else alert('Copy this:\n\n'+text)}
 
 // ==================== FEEL WHEEL ====================
-function openWheel(){document.getElementById('wheelSection').classList.toggle('active')}
-function spinWheel(){var svg=document.getElementById('wheelSvg');svg.style.animation='none';svg.offsetHeight;svg.style.animation='spinWheel 2s ease-out forwards';var emotionsW=['☀️','🌧️','🌪️','🌈','🔥','🌙','🙏','🌱'];setTimeout(function(){var e=emotionsW[Math.floor(Math.random()*emotionsW.length)];document.getElementById('wheelResult').textContent='🎯 Your challenge: Draw '+e+' now!';resetCanvas()},2100)}
+function openWheel(){document.getElementById('wheelSection').style.display=document.getElementById('wheelSection').style.display==='none'?'block':'none'}
+function spinWheel(){var svg=document.getElementById('wheelSvg');svg.style.animation='none';svg.offsetHeight;svg.style.animation='spinWheel 2s ease-out forwards';var em=['☀️','🌧️','🌪️','🌈','🔥','🌙','🙏','🌱'];setTimeout(function(){var e=em[Math.floor(Math.random()*em.length)];document.getElementById('wheelResult').textContent='🎯 Draw '+e+' now!';resetCanvas();showPopup('Challenge: Draw '+e+' in 10 seconds! ⏱️')},2100)}
 
 // ==================== MASCOT ====================
-var mascotTexts=["How are you feeling?","Draw your mood. It helps. 💜","Someone just drew ☀️. You?","You're not alone."],mascotIdx=0;setInterval(function(){mascotIdx=(mascotIdx+1)%mascotTexts.length;document.getElementById('mascotText').textContent=mascotTexts[mascotIdx]},4000);function mascotClick(){document.getElementById('mascotBubble').innerHTML='<span>Draw it on Mewonen. It helps. 💜</span>'}
+var mascotTexts=["How are you feeling?","Draw your mood. 💜","Someone just drew ☀️. You?","Come back tomorrow! 🔥"],mascotIdx=0;setInterval(function(){mascotIdx=(mascotIdx+1)%mascotTexts.length;document.getElementById('mascotText').textContent=mascotTexts[mascotIdx]},4000);function mascotClick(){document.getElementById('mascotBubble').innerHTML='<span>Draw it on Mewonen. It helps. 💜</span>'}
+
 // ==================== SOCIAL ====================
-var socialMsgs=["🇺🇸 just drew ☀️","🇯🇵 just drew 🌧️","🇧🇷 just drew 🌈"];function showSocial(){var b=document.getElementById('socialBar');b.classList.add('show');document.getElementById('socialText').textContent=socialMsgs[Math.floor(Math.random()*socialMsgs.length)];setTimeout(function(){b.classList.remove('show')},4000)}setInterval(showSocial,12000);showSocial();
+var socialMsgs=["🇺🇸 just drew ☀️","🇯🇵 just drew 🌧️","🇧🇷 just drew 🌈"];function showSocial(){var b=document.getElementById('socialBar');b.classList.add('show');document.getElementById('socialText').textContent=socialMsgs[Math.floor(Math.random()*socialMsgs.length)];setTimeout(function(){b.classList.remove('show')},4000)}setInterval(showSocial,15000);showSocial();
+
+// ==================== HISTORY ====================
+function buildHistory(){var h=JSON.parse(localStorage.getItem('mw_history')||'[]'),last7=h.slice(-7).reverse(),g=document.getElementById('historyGrid');g.innerHTML='';if(last7.length===0){g.innerHTML='<div style="color:var(--text3);text-align:center;grid-column:1/-1;padding:20px;font-size:0.6rem">No data yet.<br>Draw your first mood!</div>';return}last7.forEach(function(d){var div=document.createElement('div');div.style.cssText='display:flex;flex-direction:column;align-items:center;padding:12px 4px;background:rgba(255,255,255,0.02);border-radius:12px;font-size:0.44rem';div.innerHTML='<span style="font-size:1.1rem">'+d.emoji+'</span><span style="color:var(--text3);margin-top:2px">'+d.date.slice(5)+'</span>';g.appendChild(div)})}
+function clearHistory(){localStorage.removeItem('mw_history');buildHistory();showPopup('History cleared 🗑️')}
+
+// ==================== STATS ====================
+function buildStats(){var h=JSON.parse(localStorage.getItem('mw_history')||'[]'),counts={},c=document.getElementById('statsContainer');h.forEach(function(d){counts[d.emoji]=(counts[d.emoji]||0)+1});c.innerHTML='';if(Object.keys(counts).length===0){c.innerHTML='<div style="color:var(--text3);text-align:center;padding:20px;font-size:0.6rem">Draw your first mood to see stats.</div>';return}Object.entries(counts).sort(function(a,b){return b[1]-a[1]}).forEach(function(e){var div=document.createElement('div');div.style.cssText='display:flex;align-items:center;gap:12px;padding:14px 18px;background:rgba(255,255,255,0.02);border-radius:16px;margin:3px 0;max-width:300px';div.innerHTML='<span style="font-size:2rem">'+e[0]+'</span><div><span style="font-size:1.2rem;font-weight:500">'+e[1]+'</span><br><span style="color:var(--text3);font-size:0.5rem">'+e[0]+'</span></div>';c.appendChild(div)})}
+
+// ==================== NAVIGATION ====================
+function showScreen(name){document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active')});document.getElementById(name).classList.add('active');document.querySelectorAll('.nav-item').forEach(function(n){n.classList.toggle('active',n.dataset.screen===name)});if(name==='screenHistory')buildHistory();if(name==='screenStats')buildStats()}
+document.querySelectorAll('.nav-item').forEach(function(n){n.addEventListener('click',function(){showScreen(n.dataset.screen)})});
+
 // ==================== INIT ====================
 if(localStorage.getItem('mw_onboarding_done')==='1'){document.getElementById('onboarding').classList.add('hidden');startApp()}
 </script>
