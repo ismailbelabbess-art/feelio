@@ -1,27 +1,226 @@
-// ==================== HISTORY ====================
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Mewonen">
+<meta name="theme-color" content="#0a0a18">
+<meta name="copyright" content="© 2026 Mewonen. Ismail Belabbess. All rights reserved.">
+<meta name="description" content="Mewonen — Draw your mood. 100% private. Free forever.">
+<meta property="og:title" content="Mewonen — Draw your mood">
+<meta property="og:description" content="Draw your mood. Mewonen understands.">
+<meta property="og:url" content="https://mewonen.com">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Mewonen — Draw your mood">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3CradialGradient id='g' cx='50%25' cy='50%25'%3E%3Cstop offset='0%25' stop-color='%23c4b5fd'/%3E%3Cstop offset='100%25' stop-color='%237c3aed'/%3E%3C/radialGradient%3E%3C/defs%3E%3Ccircle cx='50' cy='50' r='48' fill='url(%23g)'/%3E%3Ctext x='50' y='65' text-anchor='middle' font-size='40' font-weight='200' fill='white'%3EM%3C/text%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3CradialGradient id='g' cx='50%25' cy='50%25'%3E%3Cstop offset='0%25' stop-color='%23c4b5fd'/%3E%3Cstop offset='100%25' stop-color='%237c3aed'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='20' fill='url(%23g)'/%3E%3Ctext x='50' y='65' text-anchor='middle' font-size='40' font-weight='200' fill='white'%3EM%3C/text%3E%3C/svg%3E">
+<link rel="manifest" href="data:application/manifest+json,%7B%22name%22:%22Mewonen%22,%22short_name%22:%22Mewonen%22,%22start_url%22:%22/%22,%22display%22:%22standalone%22,%22background_color%22:%22%230a0a18%22,%22theme_color%22:%22%230a0a18%22%7D">
+<title>Mewonen — Draw your mood</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--accent:#a78bfa;--accent2:#7c3aed;--bg:#0a0a18;--surface:rgba(16,16,32,0.6);--text:#f0f0f0;--text2:#b0b0b0;--text3:#555}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;overflow:hidden;height:100vh;height:100dvh;user-select:none;-webkit-user-select:none}
+
+.ob-overlay{position:fixed;inset:0;z-index:500;background:var(--bg);display:flex;align-items:center;justify-content:center}
+.ob-overlay.hidden{display:none}
+.ob-stack{position:relative;width:300px;height:420px}
+.ob-card{position:absolute;width:100%;height:100%;border-radius:28px;background:var(--surface);border:1px solid rgba(139,92,246,0.2);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px;text-align:center;transition:transform 0.4s ease,opacity 0.4s ease;box-shadow:0 20px 60px rgba(0,0,0,0.4)}
+.ob-card.swipe-l{transform:translateX(-150%) rotate(-20deg);opacity:0}
+.ob-card.swipe-r{transform:translateX(150%) rotate(20deg);opacity:0}
+.ob-emoji{font-size:4rem;margin-bottom:16px}
+.ob-card h2{font-size:1.2rem;font-weight:400;margin-bottom:8px;color:#fff}
+.ob-card p{font-size:0.8rem;color:var(--text2)}
+.ob-dots{position:absolute;bottom:-30px;left:50%;transform:translateX(-50%);display:flex;gap:6px}
+.ob-dots span{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.2);transition:all 0.3s}
+.ob-dots span.on{background:var(--accent);width:20px;border-radius:3px}
+.ob-skip{position:absolute;top:20px;right:20px;z-index:10;color:rgba(255,255,255,0.4);font-size:0.75rem;cursor:pointer;background:none;border:none}
+
+.circle-overlay{display:none;position:fixed;inset:0;z-index:400;background:var(--bg);flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px}
+.circle-overlay.on{display:flex}
+.circle-overlay h2{font-size:1.3rem;font-weight:200;margin-bottom:20px}
+.circle-inp{width:100%;max-width:300px;padding:14px;border-radius:16px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.05);color:#fff;font-size:0.85rem;margin-bottom:10px;text-align:center;outline:none}
+.circle-inp:focus{border-color:var(--accent)}
+
+.app{display:none;height:100vh;height:100dvh;position:relative}
+.app.on{display:flex}
+.app-bg{position:absolute;inset:0;background:radial-gradient(circle at 50% 40%,rgba(167,139,250,0.06) 0%,transparent 70%);pointer-events:none;z-index:0}
+.screen{flex:1;display:none;flex-direction:column;align-items:center;justify-content:center;padding:20px;overflow-y:auto;position:relative;z-index:1}
+.screen.on{display:flex}
+.particles{position:absolute;inset:0;pointer-events:none;z-index:0}
+.particle{position:absolute;width:2px;height:2px;border-radius:50%;background:var(--accent);animation:pUp 6s linear infinite;opacity:0}
+@keyframes pUp{0%{transform:translateY(100vh) scale(0);opacity:0}20%{opacity:0.6}100%{transform:translateY(-10vh) scale(2);opacity:0}}
+.logo{font-size:2rem;font-weight:100;letter-spacing:10px;color:#fff;margin-bottom:4px;position:relative;z-index:1}
+.subtitle{color:var(--accent);font-size:0.7rem;letter-spacing:3px;margin-bottom:12px;position:relative;z-index:1}
+.greeting{color:rgba(255,255,255,0.5);font-size:0.75rem;margin-bottom:16px;font-style:italic;position:relative;z-index:1}
+.counter{color:rgba(255,255,255,0.4);font-size:0.7rem;margin-bottom:16px;position:relative;z-index:1}
+.counter span{color:var(--accent);font-weight:500}
+
+.canvas-wrap{position:relative;margin-bottom:12px;z-index:1}
+canvas#canvas{width:260px;height:260px;border-radius:50%;background:var(--surface);touch-action:none;cursor:crosshair;border:2px solid rgba(139,92,246,0.3);box-shadow:0 0 40px rgba(139,92,246,0.2);transition:background 0.5s ease,box-shadow 0.5s ease}
+canvas#canvas.bg-happy{background:rgba(251,191,36,0.15);box-shadow:0 0 50px rgba(251,191,36,0.3)}
+canvas#canvas.bg-rain{background:rgba(59,130,246,0.15);box-shadow:0 0 50px rgba(59,130,246,0.3)}
+canvas#canvas.bg-storm{background:rgba(139,92,246,0.2);box-shadow:0 0 50px rgba(139,92,246,0.4)}
+canvas#canvas.bg-calm{background:rgba(99,102,241,0.15);box-shadow:0 0 50px rgba(99,102,241,0.3)}
+.result-emoji{font-size:3rem;margin-top:8px;min-height:60px;position:relative;z-index:1}
+.result-phrase{color:#fff;font-size:0.8rem;margin-top:4px;max-width:300px;position:relative;z-index:1}
+
+.menu-btn{position:fixed;right:16px;top:50%;transform:translateY(-50%);z-index:200;width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--accent2),var(--accent));display:flex;align-items:center;justify-content:center;font-size:1rem;cursor:pointer;color:#fff;box-shadow:0 4px 20px rgba(124,58,237,0.4)}
+.side-menu{position:fixed;right:-160px;top:50%;transform:translateY(-50%);z-index:199;display:flex;flex-direction:column;gap:10px;transition:right 0.3s ease}
+.side-menu.open{right:60px}
+.sm-item{width:40px;height:40px;border-radius:50%;background:rgba(22,22,44,0.9);border:1px solid rgba(139,92,246,0.2);display:flex;align-items:center;justify-content:center;font-size:1rem;cursor:pointer;color:var(--text3);transition:all 0.2s ease;backdrop-filter:blur(10px)}
+.sm-item.on{color:var(--accent);border-color:var(--accent);box-shadow:0 0 12px rgba(139,92,246,0.3)}
+
+.fw-btn{position:fixed;bottom:120px;right:16px;z-index:150;width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#fbbf24,#f59e0b);display:flex;align-items:center;justify-content:center;font-size:1.1rem;cursor:pointer;animation:wSpin 3s linear infinite;box-shadow:0 4px 20px rgba(251,191,36,0.3)}
+@keyframes wSpin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+
+.popup{position:fixed;bottom:180px;left:50%;transform:translateX(-50%);z-index:250;background:rgba(22,22,44,0.97);border:1px solid rgba(139,92,246,0.3);border-radius:18px;padding:14px 20px;font-size:0.75rem;color:#fff;box-shadow:0 10px 40px rgba(0,0,0,0.5);display:none;text-align:center;animation:popIn 0.4s ease-out;white-space:nowrap}
+.popup.show{display:block}
+@keyframes popIn{0%{transform:translateX(-50%) translateY(20px);opacity:0}100%{transform:translateX(-50%) translateY(0);opacity:1}}
+
+.share-card{display:none;background:linear-gradient(135deg,#1a1025,#0d1b2a);border-radius:24px;padding:20px;text-align:center;max-width:300px;margin:10px auto;position:relative;z-index:1}
+.share-card.on{display:block}
+.sc-emoji{font-size:4rem}
+.sc-phrase{font-size:0.9rem;color:#fff;margin:8px 0}
+.sc-logo{font-size:0.6rem;color:var(--accent);letter-spacing:3px}
+.share-card canvas{border-radius:16px;width:150px;height:150px;margin:8px 0}
+
+.hgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;max-width:320px;width:100%}
+.hday{display:flex;flex-direction:column;align-items:center;padding:12px 4px;background:rgba(255,255,255,0.02);border-radius:12px;font-size:0.44rem}
+.hday .he{font-size:1.1rem}.hday .hl{color:var(--text3);margin-top:2px}
+.srow{display:flex;align-items:center;gap:12px;padding:14px 18px;background:rgba(255,255,255,0.02);border-radius:16px;margin:3px 0;max-width:300px;width:100%}
+.srow .se{font-size:2rem}.srow .sc{font-size:1.2rem;font-weight:500}.srow .sl{color:var(--text3);font-size:0.5rem}
+.ggrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:300px;width:100%;margin-top:12px}
+.gitem{aspect-ratio:1;border-radius:12px;background:rgba(255,255,255,0.02);overflow:hidden}
+.gitem img{width:100%;height:100%;object-fit:cover}
+
+.mascot{position:fixed;bottom:120px;left:16px;z-index:150;display:flex;flex-direction:column;align-items:flex-start;gap:6px}
+.mbubble{background:rgba(22,22,44,0.97);border:1px solid rgba(139,92,246,0.3);border-radius:14px;padding:10px 14px;max-width:180px;font-size:0.65rem;color:#fff;cursor:pointer}
+.mavatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#a78bfa);display:flex;align-items:center;justify-content:center;font-size:1.1rem;color:#fff;cursor:pointer;animation:bounce 2s ease-in-out infinite;box-shadow:0 4px 20px rgba(124,58,237,0.4)}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.sbar{position:fixed;bottom:0;left:0;right:0;z-index:99;background:rgba(16,16,32,0.95);padding:6px;text-align:center;font-size:0.6rem;color:rgba(255,255,255,0.5);display:none}
+.sbar.show{display:block}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;border-radius:50px;font-size:0.75rem;font-weight:500;cursor:pointer;border:none;transition:all 0.2s ease;text-decoration:none;letter-spacing:0.5px;margin:4px;position:relative;z-index:1}
+.btn-p{background:linear-gradient(135deg,var(--accent2),var(--accent));color:#fff;box-shadow:0 4px 20px rgba(124,58,237,0.3)}
+.btn-o{background:transparent;color:var(--accent);border:1px solid rgba(139,92,246,0.3)}
+.btn:active{transform:scale(0.96)}
+</style>
+</head>
+<body>
+
+<div class="ob-overlay" id="ob">
+    <button class="ob-skip" onclick="skipOb()">Skip</button>
+    <div class="ob-stack" id="obStack">
+        <div class="ob-card" id="c0"><div class="ob-emoji">🧠</div><h2>No one asked how you feel today.</h2><p>Except Mewonen. Swipe →</p></div>
+        <div class="ob-card" id="c1" style="transform:scale(0.95) translateY(10px);z-index:-1"><div class="ob-emoji">✍️</div><h2>Draw. No words needed.</h2><p>A line is enough.</p></div>
+        <div class="ob-card" id="c2" style="transform:scale(0.9) translateY(20px);z-index:-2"><div class="ob-emoji">💜</div><h2>Mewonen understands.</h2><p>13 emotions. Zero data.</p></div>
+        <div class="ob-card" id="c3" style="transform:scale(0.85) translateY(30px);z-index:-3"><div class="ob-emoji">🔥</div><h2>Come back every day.</h2><p>Your streak. Your journey.</p></div>
+        <div class="ob-card" id="c4" style="transform:scale(0.8) translateY(40px);z-index:-4"><div class="ob-emoji">👥</div><h2>Invite someone.</h2><p>Mewonen watches over you.</p></div>
+    </div>
+    <div class="ob-dots" id="obDots"><span class="on"></span><span></span><span></span><span></span><span></span></div>
+</div>
+
+<div class="circle-overlay" id="circleOverlay">
+    <h2>👥 Who should know you're okay?</h2>
+    <p style="color:rgba(255,255,255,0.4);font-size:0.7rem;margin-bottom:20px">Add 1 person. They'll just know you're alive.</p>
+    <input class="circle-inp" type="text" id="cName" placeholder="Name (ex: Mom)">
+    <input class="circle-inp" type="email" id="cEmail" placeholder="Email (optional)">
+    <button class="btn btn-p" onclick="saveCircle()">Save & Start →</button>
+    <button class="btn btn-o" onclick="skipCircle()" style="margin-top:8px;opacity:0.5">Skip</button>
+</div>
+
+<div class="app" id="app">
+    <div class="app-bg"></div>
+    <div class="particles" id="particles"></div>
+    <div class="screen on" id="scrDraw">
+        <div class="logo">MEWONEN</div>
+        <div class="subtitle">Draw your mood</div>
+        <div class="greeting" id="greeting"></div>
+        <div class="counter"><span id="liveCounter">0</span> people drew today</div>
+        <div class="canvas-wrap"><canvas id="canvas" width="500" height="500"></canvas></div>
+        <div class="result-emoji" id="resultEmoji"></div>
+        <div class="result-phrase" id="resultPhrase"></div>
+        <button class="btn btn-o" onclick="resetCanvas()">Clear</button>
+        <div class="share-card" id="shareCard"><div class="sc-emoji" id="scEmoji"></div><div class="sc-phrase" id="scPhrase"></div><canvas id="scCanvas" width="300" height="300"></canvas><div class="sc-logo">mewonen.com 💜</div><button class="btn btn-p" onclick="shareResult()">📤 Share</button></div>
+    </div>
+    <div class="screen" id="scrHistory"><div style="font-size:1.2rem;font-weight:200;letter-spacing:4px;margin-bottom:4px">Your Week</div><div style="color:var(--text3);font-size:0.5rem;margin-bottom:12px">7-day emotional weather</div><div class="hgrid" id="historyGrid"></div><button class="btn btn-o" onclick="clearHistory()" style="margin-top:10px">Clear</button></div>
+    <div class="screen" id="scrStats"><div style="font-size:1.2rem;font-weight:200;letter-spacing:4px;margin-bottom:4px">Your Stats</div><div style="color:var(--text3);font-size:0.5rem;margin-bottom:12px">This month</div><div id="statsContainer" style="width:100%;max-width:300px"></div></div>
+    <div class="screen" id="scrGallery"><div style="font-size:1.2rem;font-weight:200;letter-spacing:4px;margin-bottom:4px">Gallery</div><div class="ggrid" id="galleryGrid"></div></div>
+    <div class="screen" id="scrSettings"><div style="font-size:1.2rem;font-weight:200;letter-spacing:4px;margin-bottom:12px">Settings</div><button class="btn btn-o" onclick="exportData()" style="width:100%;max-width:280px">📤 Export Data</button><button class="btn btn-o" onclick="deleteData()" style="width:100%;max-width:280px">🗑️ Delete All Data</button><button class="btn btn-o" onclick="resetOnboarding()" style="width:100%;max-width:280px">🔄 Reset Onboarding</button></div>
+</div>
+
+<div class="menu-btn" id="menuBtn" onclick="toggleMenu()">☰</div>
+<div class="side-menu" id="sideMenu">
+    <div class="sm-item on" data-scr="scrDraw" title="Draw">✍️</div>
+    <div class="sm-item" data-scr="scrHistory" title="Week">📅</div>
+    <div class="sm-item" data-scr="scrStats" title="Stats">📊</div>
+    <div class="sm-item" data-scr="scrGallery" title="Gallery">🖼️</div>
+    <div class="sm-item" data-scr="scrSettings" title="Settings">⚙️</div>
+</div>
+<div class="fw-btn" id="fwBtn" onclick="spinFW()">🎡</div>
+<div class="mascot" id="mascot"><div class="mbubble" id="mBubble" onclick="mascotClick()"><span id="mText">How are you feeling?</span></div><div class="mavatar" onclick="mascotClick()">M</div></div>
+<div class="sbar" id="sbar"><span id="sText">Someone just drew ☀️</span></div>
+<div class="popup" id="popup"></div>
+
+<script>
+var cur=0,total=5,stack=document.getElementById('obStack'),dots=document.querySelectorAll('#obDots span'),sX=0;
+stack.addEventListener('touchstart',function(e){sX=e.touches[0].clientX});
+stack.addEventListener('touchend',function(e){var d=e.changedTouches[0].clientX-sX;if(Math.abs(d)>60)swipeOb(d>0?'r':'l')});
+function swipeOb(dir){var c=document.getElementById('c'+cur);c.classList.add(dir==='r'?'swipe-r':'swipe-l');dots[cur].classList.remove('on');cur++;if(cur>=total){finishOb()}else{dots[cur].classList.add('on');for(var i=0;i<total;i++){var el=document.getElementById('c'+i);if(i<cur)el.style.display='none';else{var o=i-cur;el.style.transform='scale('+(1-o*0.05)+') translateY('+(o*10)+'px)';el.style.zIndex=-o}}}}
+function skipOb(){finishOb()}
+function finishOb(){document.getElementById('ob').classList.add('hidden');document.getElementById('circleOverlay').classList.add('on')}
+
+function saveCircle(){var n=document.getElementById('cName').value.trim();if(n){var c=JSON.parse(localStorage.getItem('mw_circle')||'[]');c.push({name:n,email:document.getElementById('cEmail').value.trim(),date:new Date().toISOString()});localStorage.setItem('mw_circle',JSON.stringify(c))}startApp()}
+function skipCircle(){startApp()}
+function startApp(){document.getElementById('circleOverlay').classList.remove('on');document.getElementById('app').classList.add('on');localStorage.setItem('mw_onboarding_done','1');showGreeting();showPopup('Welcome! Draw how you feel 💜');createParticles();buildHistory();buildStats();buildGallery()}
+
+function showGreeting(){var h=JSON.parse(localStorage.getItem('mw_history')||'[]');if(h.length>0){var last=h[h.length-1];document.getElementById('greeting').textContent='Yesterday you felt '+last.emoji+'. And today?'}}
+
+function showPopup(msg){var p=document.getElementById('popup');p.textContent=msg;p.classList.add('show');setTimeout(function(){p.classList.remove('show')},3000)}
+
+function createParticles(){var c=document.getElementById('particles');for(var i=0;i<20;i++){var p=document.createElement('div');p.className='particle';p.style.left=Math.random()*100+'%';p.style.animationDelay=Math.random()*6+'s';p.style.animationDuration=(4+Math.random()*6)+'s';c.appendChild(p)}}
+
+var count=parseInt(localStorage.getItem('mw_landing_count')||'1547');count=Math.max(count,1500)+Math.floor(Math.random()*5);localStorage.setItem('mw_landing_count',count.toString());document.getElementById('liveCounter').textContent=count.toLocaleString();setInterval(function(){count+=Math.floor(Math.random()*3)+1;localStorage.setItem('mw_landing_count',count.toString());document.getElementById('liveCounter').textContent=count.toLocaleString()},25000);
+
+var canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d'),drawing=false,points=[];
+var emotions=[{emoji:'☀️',p:'You are shining today',bg:'bg-happy'},{emoji:'🌧️',p:'Let it wash over you',bg:'bg-rain'},{emoji:'🌪️',p:'Even storms run out of rain',bg:'bg-storm'},{emoji:'🌈',p:'Look what you crossed',bg:'bg-happy'},{emoji:'⚡',p:'This energy is yours',bg:'bg-storm'},{emoji:'🌙',p:'Rest is not weakness',bg:'bg-calm'},{emoji:'🔥',p:'Passion is power',bg:'bg-storm'},{emoji:'🌱',p:'Hope whispers',bg:'bg-happy'},{emoji:'🙏',p:'Gratitude changes you',bg:'bg-calm'},{emoji:'💨',p:'Let the wind carry you',bg:'bg-calm'},{emoji:'🌫️',p:'Clarity comes slowly',bg:'bg-calm'},{emoji:'❄️',p:'Spring always comes',bg:'bg-calm'},{emoji:'🕳️',p:'Space waiting',bg:'bg-calm'}];
+function getPos(e){var r=canvas.getBoundingClientRect(),sX=canvas.width/r.width,sY=canvas.height/r.height,cX=e.touches?e.touches[0].clientX:e.clientX,cY=e.touches?e.touches[0].clientY:e.clientY;return{x:(cX-r.left)*sX,y:(cY-r.top)*sY}}
+function startDraw(e){e.preventDefault();drawing=true;points=[];var p=getPos(e);points.push({x:p.x,y:p.y});ctx.beginPath();ctx.moveTo(p.x,p.y);canvas.className=''}
+function moveDraw(e){e.preventDefault();if(!drawing)return;var p=getPos(e);points.push({x:p.x,y:p.y});ctx.lineTo(p.x,p.y);ctx.strokeStyle='rgba(200,180,255,0.9)';ctx.lineWidth=4;ctx.lineCap='round';ctx.lineJoin='round';ctx.stroke()}
+function endDraw(){drawing=false;if(points.length<3)return;var d=0;for(var i=1;i<points.length;i++){var dx=points[i].x-points[i-1].x,dy=points[i].y-points[i-1].y;d+=Math.sqrt(dx*dx+dy*dy)}var idx=Math.floor(Math.random()*emotions.length);if(d>400)idx=0;else if(d>250)idx=4;else if(d>100)idx=1;else if(d<15)idx=12;var e=emotions[idx];document.getElementById('resultEmoji').textContent=e.emoji;document.getElementById('resultPhrase').textContent=e.p;canvas.className=e.bg;showShareCard(e);count++;localStorage.setItem('mw_landing_count',count.toString());document.getElementById('liveCounter').textContent=count.toLocaleString();saveHistory(e);showPopup(e.emoji+' '+e.p)}
+function resetCanvas(){ctx.clearRect(0,0,canvas.width,canvas.height);document.getElementById('resultEmoji').textContent='';document.getElementById('resultPhrase').textContent='';canvas.className='';document.getElementById('shareCard').classList.remove('on')}
+canvas.addEventListener('touchstart',startDraw,{passive:false});canvas.addEventListener('touchmove',moveDraw,{passive:false});canvas.addEventListener('touchend',endDraw);canvas.addEventListener('mousedown',startDraw);canvas.addEventListener('mousemove',moveDraw);canvas.addEventListener('mouseup',endDraw);canvas.addEventListener('mouseleave',endDraw);
+function saveHistory(e){var h=JSON.parse(localStorage.getItem('mw_history')||'[]');h.push({emoji:e.emoji,date:new Date().toISOString().split('T')[0]});if(h.length>30)h.shift();localStorage.setItem('mw_history',JSON.stringify(h));buildHistory();buildStats();saveToGallery(e)}
+
+function showShareCard(e){var card=document.getElementById('shareCard');card.classList.add('on');document.getElementById('scEmoji').textContent=e.emoji;document.getElementById('scPhrase').textContent=e.p;var cc=document.getElementById('scCanvas'),cctx=cc.getContext('2d');cctx.clearRect(0,0,300,300);cctx.drawImage(canvas,0,0,300,300)}
+function shareResult(){var text=document.getElementById('scEmoji').textContent+' "'+document.getElementById('scPhrase').textContent+'"\n\nDraw yours on mewonen.com 💜';if(navigator.share)navigator.share({text:text});else if(navigator.clipboard)navigator.clipboard.writeText(text).then(function(){alert('Copied!')});else alert('Copy this:\n\n'+text)}
+
+function spinFW(){var em=['☀️','🌧️','🌪️','🌈','🔥','🌙','🙏','🌱'];var e=em[Math.floor(Math.random()*em.length)];resetCanvas();showPopup('🎡 Draw '+e+' now! ⏱️')}
+
+function saveToGallery(e){var g=JSON.parse(localStorage.getItem('mw_gallery')||'[]');g.unshift({data:canvas.toDataURL(),date:new Date().toISOString(),emoji:e.emoji});if(g.length>12)g.pop();localStorage.setItem('mw_gallery',JSON.stringify(g));buildGallery()}
+function buildGallery(){var g=JSON.parse(localStorage.getItem('mw_gallery')||'[]'),grid=document.getElementById('galleryGrid');grid.innerHTML='';if(g.length===0){grid.innerHTML='<div style="color:var(--text3);text-align:center;grid-column:1/-1;padding:20px;font-size:0.6rem">Your drawings will appear here.</div>';return}g.forEach(function(item){var d=document.createElement('div');d.className='gitem';var img=document.createElement('img');img.src=item.data;d.appendChild(img);grid.appendChild(d)})}
+
 function buildHistory(){var h=JSON.parse(localStorage.getItem('mw_history')||'[]'),last7=h.slice(-7).reverse(),g=document.getElementById('historyGrid');g.innerHTML='';if(last7.length===0){g.innerHTML='<div style="color:var(--text3);text-align:center;grid-column:1/-1;padding:20px;font-size:0.6rem">No data yet.<br>Draw your first mood!</div>';return}last7.forEach(function(d){var div=document.createElement('div');div.className='hday';div.innerHTML='<span class="he">'+d.emoji+'</span><span class="hl">'+d.date.slice(5)+'</span>';g.appendChild(div)})}
 function clearHistory(){localStorage.removeItem('mw_history');buildHistory();showPopup('History cleared 🗑️')}
 
-// ==================== STATS ====================
 function buildStats(){var h=JSON.parse(localStorage.getItem('mw_history')||'[]'),counts={},c=document.getElementById('statsContainer');h.forEach(function(d){counts[d.emoji]=(counts[d.emoji]||0)+1});c.innerHTML='';if(Object.keys(counts).length===0){c.innerHTML='<div style="color:var(--text3);text-align:center;padding:20px;font-size:0.6rem">Draw your first mood to see stats.</div>';return}Object.entries(counts).sort(function(a,b){return b[1]-a[1]}).forEach(function(e){var div=document.createElement('div');div.className='srow';div.innerHTML='<span class="se">'+e[0]+'</span><div><span class="sc">'+e[1]+'</span><br><span class="sl">'+e[0]+'</span></div>';c.appendChild(div)})}
 
-// ==================== SETTINGS ====================
 function exportData(){var d={history:localStorage.getItem('mw_history'),gallery:localStorage.getItem('mw_gallery'),circle:localStorage.getItem('mw_circle')};var b=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});var a=document.createElement('a');a.download='mewonen-data.json';a.href=URL.createObjectURL(b);a.click()}
 function deleteData(){if(confirm('Delete all your data? This cannot be undone.')){localStorage.clear();resetCanvas();buildHistory();buildStats();buildGallery();showPopup('All data deleted 🗑️')}}
 function resetOnboarding(){localStorage.removeItem('mw_onboarding_done');location.reload()}
 
-// ==================== NAVIGATION ====================
 function showScreen(name){document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('on')});document.getElementById(name).classList.add('on');document.querySelectorAll('.sm-item').forEach(function(i){i.classList.toggle('on',i.dataset.scr===name)});if(name==='scrHistory')buildHistory();if(name==='scrStats')buildStats();if(name==='scrGallery')buildGallery()}
 document.querySelectorAll('.sm-item').forEach(function(i){i.addEventListener('click',function(){showScreen(i.dataset.scr)})});
 function toggleMenu(){var m=document.getElementById('sideMenu');m.classList.toggle('open')}
 
-// ==================== MASCOT ====================
 var mascotTexts=["How are you feeling?","Draw your mood. 💜","Someone just drew ☀️. You?","Come back tomorrow! 🔥"],mascotIdx=0;setInterval(function(){mascotIdx=(mascotIdx+1)%mascotTexts.length;document.getElementById('mText').textContent=mascotTexts[mascotIdx]},4000);function mascotClick(){document.getElementById('mBubble').innerHTML='<span>Draw it on Mewonen. It helps. 💜</span>'}
 
-// ==================== SOCIAL BAR ====================
 var socialMsgs=["🇺🇸 just drew ☀️","🇯🇵 just drew 🌧️","🇧🇷 just drew 🌈"];function showSocial(){var b=document.getElementById('sbar');b.classList.add('show');document.getElementById('sText').textContent=socialMsgs[Math.floor(Math.random()*socialMsgs.length)];setTimeout(function(){b.classList.remove('show')},4000)}setInterval(showSocial,15000);showSocial();
 
-// ==================== INIT ====================
 if(localStorage.getItem('mw_onboarding_done')==='1'){document.getElementById('ob').classList.add('hidden');startApp()}
 </script>
 </body>
