@@ -4,6 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
 
+<!-- ===== PRELOAD FONTS (Critical for LCP) ===== -->
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,300&family=Inter:wght@300;400&display=swap" as="style">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,300&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+
 <!-- ===== SEO ===== -->
 <title>Mewonen — Draw Your Mood | Free & Private Mood Tracker</title>
 <meta name="description" content="Draw your mood for free. Mewonen analyzes your drawing and reveals what your gesture is hiding. 100% private, no data collected. Visual emotion journal.">
@@ -33,13 +39,8 @@
 <meta name="theme-color" content="#06060f">
 <meta name="copyright" content="© 2026 Mewonen. Ismail Belabbess. All rights reserved.">
 
-<!-- ===== CSP ===== -->
+<!-- ===== CSP (Fixed for Cloudflare + Inline Styles) ===== -->
 <meta http-equiv="Content-Security-Policy" content="default-src 'self' data:; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://mewonen.com; manifest-src 'self' data:;">
-
-<!-- ===== FONTS ===== -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
 
 <!-- ===== ICON ===== -->
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3CradialGradient id='g' cx='50%25' cy='50%25'%3E%3Cstop offset='0%25' stop-color='%23c4b5fd'/%3E%3Cstop offset='100%25' stop-color='%237c3aed'/%3E%3C/radialGradient%3E%3C/defs%3E%3Ccircle cx='50' cy='50' r='48' fill='url(%23g)'/%3E%3Ctext x='50' y='65' text-anchor='middle' font-size='40' font-weight='200' fill='white'%3EM%3C/text%3E%3C/svg%3E">
@@ -51,7 +52,7 @@
 /* ===== RESET ===== */
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 html{font-size:16px;-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}
-body{font-family:'Inter',-apple-system,sans-serif;background:#06060f;color:#fff;min-height:100dvh;overflow:hidden;-webkit-font-smoothing:antialiased;user-select:none;-webkit-user-select:none;cursor:default}
+body{font-family:'Inter',-apple-system,sans-serif;background:#06060f;color:#fff;min-height:100dvh;overflow:hidden;-webkit-font-smoothing:antialiased;user-select:none;-webkit-user-select:none;cursor:default;font-display:swap}
 
 @media (prefers-reduced-motion: reduce){*,*::before,*::after{animation-duration:0.01ms!important;animation-iteration-count:1!important;transition-duration:0.01ms!important}}
 *:focus-visible{outline:2px solid #a78bfa;outline-offset:2px}
@@ -88,11 +89,11 @@ body{font-family:'Inter',-apple-system,sans-serif;background:#06060f;color:#fff;
 .ob-hint{position:absolute;bottom:110px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.12);font-size:.5rem;font-weight:300;letter-spacing:2px;animation:obh 2s ease-in-out infinite}
 @keyframes obh{0%,100%{opacity:.1}50%{opacity:.5}}
 
-/* ===== COSMIC BACKGROUND ===== */
-#cosmos{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+/* ===== COSMIC BACKGROUND (Optimized) ===== */
+#cosmos{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;will-change:transform}
 .cosmos-particle{position:absolute;width:1px;height:1px;border-radius:50%;background:var(--purple);opacity:0;animation:cosmosFloat 12s linear infinite}
 @keyframes cosmosFloat{0%{transform:translateY(105vh) scale(0);opacity:0}10%{opacity:.8}90%{opacity:.8}100%{transform:translateY(-5vh) scale(3);opacity:0}}
-.cosmos-orb{position:absolute;border-radius:50%;filter:blur(80px);animation:orbFloat 16s ease-in-out infinite}
+.cosmos-orb{position:absolute;border-radius:50%;filter:blur(80px);animation:orbFloat 16s ease-in-out infinite;will-change:transform}
 .cosmos-orb:nth-child(1){width:500px;height:500px;background:radial-gradient(circle,rgba(124,58,237,.08),transparent);top:-15%;left:-10%;animation-delay:0s}
 .cosmos-orb:nth-child(2){width:400px;height:400px;background:radial-gradient(circle,rgba(251,191,36,.05),transparent);bottom:-10%;right:-8%;animation-delay:-6s}
 .cosmos-orb:nth-child(3){width:350px;height:350px;background:radial-gradient(circle,rgba(167,139,250,.06),transparent);top:40%;left:50%;animation-delay:-12s}
@@ -120,7 +121,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:#06060f;color:#fff;
 
 /* ===== CANVAS WRAPPER ===== */
 .cwrap{position:relative;margin-bottom:16px}
-.cwrap::before{content:'';position:absolute;inset:-12px;border-radius:50%;background:conic-gradient(from 0deg,var(--purple2),var(--purple),var(--gold),var(--purple),var(--purple2));opacity:.1;animation:ringRotate 6s linear infinite;filter:blur(12px)}
+.cwrap::before{content:'';position:absolute;inset:-12px;border-radius:50%;background:conic-gradient(from 0deg,var(--purple2),var(--purple),var(--gold),var(--purple),var(--purple2));opacity:.1;animation:ringRotate 6s linear infinite;filter:blur(12px);will-change:transform}
 @keyframes ringRotate{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
 .cwrap::after{content:'';position:absolute;inset:-4px;border-radius:50%;border:1px solid rgba(139,92,246,.08);pointer-events:none;z-index:2}
 canvas#c{width:270px;height:270px;border-radius:50%;background:rgba(10,10,20,.5);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(139,92,246,.06);touch-action:none;cursor:crosshair;display:block;position:relative;z-index:1;box-shadow:0 0 80px rgba(124,58,237,.08),inset 0 0 80px rgba(0,0,0,.4);transition:all .6s cubic-bezier(.4,0,.2,1)}
@@ -342,230 +343,405 @@ canvas#c:focus-visible{outline:2px solid var(--purple);outline-offset:6px}
 'use strict';
 
 // ============================================================
-//  ERROR HANDLING
+//  POLYFILLS & FALLBACKS
 // ============================================================
-window.onerror=function(msg,url,line,col,error){console.error('Mewonen Error:',msg,error);showToast('⚠️ Something went wrong. Please refresh.');return true};
-window.addEventListener('unhandledrejection',function(e){console.error('Unhandled promise:',e.reason);showToast('⚠️ Unexpected error.')});
+if (!window.crypto || !window.crypto.getRandomValues) {
+  window.crypto = window.crypto || {};
+  window.crypto.getRandomValues = function(arr) { for (var i = 0; i < arr.length; i++) arr[i] = Math.floor(Math.random() * 256); return arr; };
+}
+
+// ============================================================
+//  ERROR HANDLING (Graceful Degradation)
+// ============================================================
+window.onerror = function(msg, url, line, col, error) {
+  console.error('Mewonen Error:', msg, error);
+  try { showToast('⚠️ Something went wrong. Please refresh.'); } catch(e) {}
+  return true;
+};
+window.addEventListener('unhandledrejection', function(e) {
+  console.error('Unhandled promise:', e.reason);
+  try { showToast('⚠️ Unexpected error.'); } catch(e) {}
+});
 
 // ============================================================
 //  DEVICE DETECTION
 // ============================================================
-function isLowPerfDevice(){var m=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);var o=navigator.hardwareConcurrency&&navigator.hardwareConcurrency<4;return m&&o}
-function isMobile(){return/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)}
+function isLowPerfDevice() {
+  var m = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  var o = navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4;
+  return m && o;
+}
+function isMobile() {
+  return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+}
 
 // ============================================================
-//  SAFE LOCAL STORAGE
+//  SAFE LOCAL STORAGE (with quota handling)
 // ============================================================
-function safeLoad(key,fallback){try{var d=localStorage.getItem(key);if(d)return JSON.parse(d);return fallback}catch(e){localStorage.removeItem(key);return fallback}}
+function safeLoad(key, fallback) {
+  try {
+    var d = localStorage.getItem(key);
+    if (d === null || d === undefined) return fallback;
+    return JSON.parse(d);
+  } catch(e) {
+    console.warn('localStorage read failed for', key, e);
+    try { localStorage.removeItem(key); } catch(e2) {}
+    return fallback;
+  }
+}
+
+function safeSet(key, value) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+    return true;
+  } catch(e) {
+    console.warn('localStorage write failed for', key, e);
+    if (e.name === 'QuotaExceededError') {
+      try {
+        var keys = [];
+        for (var i = 0; i < localStorage.length; i++) {
+          if (localStorage.key(i).indexOf('mw_') === 0) keys.push(localStorage.key(i));
+        }
+        if (keys.length > 0) { localStorage.removeItem(keys[0]); }
+        localStorage.setItem(key, JSON.stringify(value));
+        return true;
+      } catch(e2) {}
+    }
+    showToast('⚠️ Storage full. Free up space for better experience.');
+    return false;
+  }
+}
 
 // ============================================================
 //  HELPERS
 // ============================================================
-var $=function(id){return document.getElementById(id)};
-var canvas=$('c'),ctx=canvas.getContext('2d');
-var brush=4,pts=[],isDrawing=false,drawingRecord=[],moodHistory=[],gallery=[],streak=0,ismeTimer=null;
-var obCur=0,obTotal=5;
-var lastAnalysis={features:null,emotion:null,phrase:null,trend:null};
-var touchStartTime=0;
+var $ = function(id) { return document.getElementById(id); };
+var canvas = $('c');
+var ctx = canvas ? canvas.getContext('2d') : null;
+var brush = 4, pts = [], isDrawing = false, drawingRecord = [], moodHistory = [], gallery = [], streak = 0, ismeTimer = null;
+var obCur = 0, obTotal = 5;
+var lastAnalysis = {features: null, emotion: null, phrase: null, trend: null};
+var touchStartTime = 0;
 
 // ============================================================
-//  AUDIO SYNTH (subtle sounds)
+//  AUDIO SYNTH (Safe Fallback)
 // ============================================================
-var audioCtx=null;
-function initAudio(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)()}
-function playTone(freq,duration,type,vol){
-  try{initAudio();var o=audioCtx.createOscillator();var g=audioCtx.createGain();o.type=type||'sine';o.frequency.value=freq;g.gain.value=vol||.02;g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+duration);o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+duration)}catch(e){}
+var audioCtx = null;
+function initAudio() {
+  if (audioCtx) return true;
+  try {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    return true;
+  } catch(e) {
+    console.warn('Web Audio API not supported.');
+    return false;
+  }
+}
+function playTone(freq, duration, type, vol) {
+  if (!initAudio()) return;
+  try {
+    var o = audioCtx.createOscillator();
+    var g = audioCtx.createGain();
+    o.type = type || 'sine';
+    o.frequency.value = freq;
+    g.gain.value = vol || 0.02;
+    g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+    o.connect(g);
+    g.connect(audioCtx.destination);
+    o.start();
+    o.stop(audioCtx.currentTime + duration);
+  } catch(e) {}
 }
 
 // ============================================================
 //  LOAD DATA
 // ============================================================
-function loadData(){
-  moodHistory=safeLoad('mw_h',[]);
-  gallery=safeLoad('mw_g',[]);
-  streak=parseInt(localStorage.getItem('mw_s')||'0')||0;
-  lastAnalysis=safeLoad('mw_last',{features:null,emotion:null,phrase:null,trend:null});
+function loadData() {
+  moodHistory = safeLoad('mw_h', []);
+  gallery = safeLoad('mw_g', []);
+  streak = parseInt(localStorage.getItem('mw_s') || '0') || 0;
+  lastAnalysis = safeLoad('mw_last', {features: null, emotion: null, phrase: null, trend: null});
 }
-function saveData(){
-  try{localStorage.setItem('mw_h',JSON.stringify(moodHistory));localStorage.setItem('mw_g',JSON.stringify(gallery));localStorage.setItem('mw_s',streak.toString());localStorage.setItem('mw_last',JSON.stringify(lastAnalysis))}catch(e){}
+function saveData() {
+  safeSet('mw_h', moodHistory);
+  safeSet('mw_g', gallery);
+  try { localStorage.setItem('mw_s', streak.toString()); } catch(e) {}
+  safeSet('mw_last', lastAnalysis);
 }
-setInterval(function(){
-  try{localStorage.setItem('mw_backup',JSON.stringify({history:moodHistory||[],gallery:gallery||[],streak:streak||0,lastAnalysis:lastAnalysis||{},time:Date.now()}))}catch(e){}
-},10000);
-function restoreBackup(){
-  try{var b=localStorage.getItem('mw_backup');if(b){var d=JSON.parse(b);if((!moodHistory||moodHistory.length===0)&&d.history&&d.history.length>0){moodHistory=d.history;gallery=d.gallery||[];streak=d.streak||0;lastAnalysis=d.lastAnalysis||{};saveData()}}}
-  catch(e){}
+setInterval(function() {
+  try {
+    localStorage.setItem('mw_backup', JSON.stringify({
+      history: moodHistory || [],
+      gallery: gallery || [],
+      streak: streak || 0,
+      lastAnalysis: lastAnalysis || {},
+      time: Date.now()
+    }));
+  } catch(e) {}
+}, 10000);
+function restoreBackup() {
+  try {
+    var b = localStorage.getItem('mw_backup');
+    if (b) {
+      var d = JSON.parse(b);
+      if ((!moodHistory || moodHistory.length === 0) && d.history && d.history.length > 0) {
+        moodHistory = d.history;
+        gallery = d.gallery || [];
+        streak = d.streak || 0;
+        lastAnalysis = d.lastAnalysis || {};
+        saveData();
+        console.log('🔄 Restored from backup');
+      }
+    }
+  } catch(e) {}
 }
 
 // ============================================================
 //  BROWSER CHECK
 // ============================================================
-function checkBrowserSupport(){
-  if(!document.createElement('canvas').getContext){$('app').innerHTML='<div style="padding:40px;text-align:center;color:#fff;"><h2>⚠️ Unsupported Browser</h2><p style="color:rgba(255,255,255,.5);font-size:.8rem;">Please use Chrome, Firefox, Safari or Edge.</p></div>';return false}
-  try{localStorage.setItem('_test','1');localStorage.removeItem('_test')}catch(e){$('app').innerHTML='<div style="padding:40px;text-align:center;color:#fff;"><h2>⚠️ Local Storage Unavailable</h2><p style="color:rgba(255,255,255,.5);font-size:.8rem;">Your browser is blocking localStorage.</p></div>';return false}
+function checkBrowserSupport() {
+  if (!ctx) {
+    $('app').innerHTML = '<div style="padding:40px;text-align:center;color:#fff;"><h2>⚠️ Unsupported Browser</h2><p style="color:rgba(255,255,255,.5);font-size:.8rem;">Please use Chrome, Firefox, Safari or Edge.</p></div>';
+    return false;
+  }
+  try {
+    localStorage.setItem('_test', '1');
+    localStorage.removeItem('_test');
+  } catch(e) {
+    $('app').innerHTML = '<div style="padding:40px;text-align:center;color:#fff;"><h2>⚠️ Local Storage Unavailable</h2><p style="color:rgba(255,255,255,.5);font-size:.8rem;">Your browser is blocking localStorage.</p></div>';
+    return false;
+  }
   return true;
 }
 
 // ============================================================
 //  INIT
 // ============================================================
-function init(){
-  if(!checkBrowserSupport())return;
-  if(localStorage.getItem('mw_onboarding_done')==='1'){$('onboarding').classList.add('hidden');startApp()}else{setupOnboarding()}
+function init() {
+  if (!checkBrowserSupport()) return;
+  if (localStorage.getItem('mw_onboarding_done') === '1') {
+    $('onboarding').classList.add('hidden');
+    startApp();
+  } else {
+    setupOnboarding();
+  }
 }
 
 // ============================================================
 //  ONBOARDING
 // ============================================================
-function setupOnboarding(){
-  var stack=$('obStack'),dots=document.querySelectorAll('#obDots span'),sX=0;
-  stack.addEventListener('touchstart',function(e){sX=e.touches[0].clientX});
-  stack.addEventListener('touchend',function(e){var d=e.changedTouches[0].clientX-sX;if(Math.abs(d)>50)swipeOb(d>0?'r':'l')});
-  function swipeOb(dir){var c=$('obc'+obCur);c.classList.add(dir==='r'?'swipe-r':'swipe-l');dots[obCur].classList.remove('on');obCur++;if(obCur>=obTotal){finishOnboarding();return}dots[obCur].classList.add('on');for(var i=0;i<obTotal;i++){var el=$('obc'+i);if(i<obCur)el.style.display='none';else{var o=i-obCur;el.style.transform='scale('+(1-o*.05)+') translateY('+(o*12)+'px)';el.style.zIndex=-o}}}
-  $('obSkip').addEventListener('click',finishOnboarding);
-  function finishOnboarding(){$('onboarding').classList.add('hidden');localStorage.setItem('mw_onboarding_done','1');startApp()}
+function setupOnboarding() {
+  var stack = $('obStack'), dots = document.querySelectorAll('#obDots span'), sX = 0;
+  stack.addEventListener('touchstart', function(e) { sX = e.touches[0].clientX; });
+  stack.addEventListener('touchend', function(e) {
+    var d = e.changedTouches[0].clientX - sX;
+    if (Math.abs(d) > 50) swipeOb(d > 0 ? 'r' : 'l');
+  });
+  function swipeOb(dir) {
+    var c = $('obc' + obCur);
+    c.classList.add(dir === 'r' ? 'swipe-r' : 'swipe-l');
+    dots[obCur].classList.remove('on');
+    obCur++;
+    if (obCur >= obTotal) { finishOnboarding(); return; }
+    dots[obCur].classList.add('on');
+    for (var i = 0; i < obTotal; i++) {
+      var el = $('obc' + i);
+      if (i < obCur) el.style.display = 'none';
+      else {
+        var o = i - obCur;
+        el.style.transform = 'scale(' + (1 - o * 0.05) + ') translateY(' + (o * 12) + 'px)';
+        el.style.zIndex = -o;
+      }
+    }
+  }
+  $('obSkip').addEventListener('click', finishOnboarding);
+  function finishOnboarding() {
+    $('onboarding').classList.add('hidden');
+    try { localStorage.setItem('mw_onboarding_done', '1'); } catch(e) {}
+    startApp();
+  }
 }
 
 // ============================================================
 //  START APP
 // ============================================================
-function startApp(){
-  loadData();restoreBackup();setupCosmos();setupCanvas();setupMenu();setupButtons();setupSharePanel();setupGestures();updateCounter();updateStreak();updateDefi();
-  setTimeout(function(){showIsme("Hello. I'm ISME. Draw your mood, I'll listen. 💜",4500)},1200);
-  startIsmeTimer();$('app').classList.add('ready');
+function startApp() {
+  loadData();
+  restoreBackup();
+  setupCosmos();
+  setupCanvas();
+  setupMenu();
+  setupButtons();
+  setupSharePanel();
+  setupGestures();
+  updateCounter();
+  updateStreak();
+  updateDefi();
+  setTimeout(function() { showIsme("Hello. I'm ISME. Draw your mood, I'll listen. 💜", 4500); }, 1200);
+  startIsmeTimer();
+  $('app').classList.add('ready');
 }
 
 // ============================================================
-//  COSMOS BACKGROUND
+//  COSMOS BACKGROUND (Optimized)
 // ============================================================
-function setupCosmos(){
-  var c=$('cosmos'),count=isLowPerfDevice()?20:40;
-  for(var i=0;i<count;i++){var p=document.createElement('div');p.className='cosmos-particle';p.style.left=Math.random()*100+'%';p.style.animationDelay=Math.random()*12+'s';p.style.animationDuration=(8+Math.random()*10)+'s';p.style.width=(1+Math.random()*2)+'px';p.style.height=p.style.width;c.appendChild(p)}
+function setupCosmos() {
+  var c = $('cosmos');
+  var count = isLowPerfDevice() ? 15 : 30;
+  var frag = document.createDocumentFragment();
+  for (var i = 0; i < count; i++) {
+    var p = document.createElement('div');
+    p.className = 'cosmos-particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.animationDelay = Math.random() * 12 + 's';
+    p.style.animationDuration = (8 + Math.random() * 10) + 's';
+    p.style.width = (1 + Math.random() * 2) + 'px';
+    p.style.height = p.style.width;
+    frag.appendChild(p);
+  }
+  c.appendChild(frag);
 }
 
 // ============================================================
 //  DAILY PROMPT
 // ============================================================
-function updateDefi(){
-  var defis=['Draw the shape of your confidence','Draw your safe place','Draw a happy memory','Draw the shadow of your fear','Draw the color of hope','Draw the sound of peace','Draw the texture of joy','Draw the weight of sadness','Draw the lightness of freedom','Draw the shape of love'];
-  var d=new Date().getDate();$('defiText').textContent=defis[d%defis.length];
+function updateDefi() {
+  var defis = [
+    'Draw the shape of your confidence', 'Draw your safe place',
+    'Draw a happy memory', 'Draw the shadow of your fear',
+    'Draw the color of hope', 'Draw the sound of peace',
+    'Draw the texture of joy', 'Draw the weight of sadness',
+    'Draw the lightness of freedom', 'Draw the shape of love'
+  ];
+  var d = new Date().getDate();
+  $('defiText').textContent = defis[d % defis.length];
 }
 
 // ============================================================
-//  FEATURE EXTRACTION
+//  FEATURE EXTRACTION (Robust)
 // ============================================================
-function extractFeatures(pts){
-  if(!pts||pts.length<2)return null;
-  var dist=0,angles=[],speeds=[],minX=Infinity,minY=Infinity,maxX=-Infinity,maxY=-Infinity;
-  for(var i=1;i<pts.length;i++){
-    var dx=pts[i].x-pts[i-1].x,dy=pts[i].y-pts[i-1].y;
-    dist+=Math.sqrt(dx*dx+dy*dy);
-    if(dist>0)angles.push(Math.atan2(dy,dx));
-    speeds.push(Math.sqrt(dx*dx+dy*dy)/((pts[i].t||i)-(pts[i-1].t||(i-1))||1));
-    if(pts[i].x<minX)minX=pts[i].x;if(pts[i].y<minY)minY=pts[i].y;
-    if(pts[i].x>maxX)maxX=pts[i].x;if(pts[i].y>maxY)maxY=pts[i].y;
+function extractFeatures(pts) {
+  if (!pts || pts.length < 2) return null;
+  var dist = 0, angles = [], speeds = [], minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+  for (var i = 1; i < pts.length; i++) {
+    var dx = pts[i].x - pts[i-1].x, dy = pts[i].y - pts[i-1].y;
+    dist += Math.sqrt(dx*dx + dy*dy);
+    if (dist > 0) angles.push(Math.atan2(dy, dx));
+    var dt = (pts[i].t || i) - (pts[i-1].t || (i-1)) || 1;
+    speeds.push(Math.sqrt(dx*dx + dy*dy) / Math.max(dt, 0.01));
+    if (pts[i].x < minX) minX = pts[i].x; if (pts[i].y < minY) minY = pts[i].y;
+    if (pts[i].x > maxX) maxX = pts[i].x; if (pts[i].y > maxY) maxY = pts[i].y;
   }
-  var bboxW=maxX-minX,bboxH=maxY-minY;
-  var centerX=(minX+maxX)/2,centerY=(minY+maxY)/2;
-  var curv=0;for(var j=1;j<angles.length;j++){var ad=Math.abs(angles[j]-angles[j-1]);if(ad>Math.PI)ad=2*Math.PI-ad;curv+=ad}curv=angles.length>0?curv/angles.length:0;
-  var avgSpeed=0;for(var k=0;k<speeds.length;k++)avgSpeed+=speeds[k];avgSpeed=speeds.length>0?avgSpeed/speeds.length:0;
-  var occupancy=(bboxW*bboxH)/(canvas.width*canvas.height);
-  var symX=Math.abs(centerX-canvas.width/2)/(canvas.width/2);
-  var symY=Math.abs(centerY-canvas.height/2)/(canvas.height/2);
-  var lineCount=0;for(var l=1;l<pts.length;l++){if(pts[l].break)lineCount++}if(pts.length>0&&!pts[0].break)lineCount++;
-  return{distance:dist,curvature:curv,avgSpeed:avgSpeed,bboxW:bboxW,bboxH:bboxH,centerX:centerX,centerY:centerY,occupancy:occupancy,symX:symX,symY:symY,lineCount:lineCount,pointCount:pts.length};
+  var bboxW = maxX - minX, bboxH = maxY - minY;
+  var centerX = (minX + maxX) / 2, centerY = (minY + maxY) / 2;
+  var curv = 0; for (var j = 1; j < angles.length; j++) { var ad = Math.abs(angles[j] - angles[j-1]); if (ad > Math.PI) ad = 2 * Math.PI - ad; curv += ad; } curv = angles.length > 0 ? curv / angles.length : 0;
+  var avgSpeed = 0; for (var k = 0; k < speeds.length; k++) avgSpeed += speeds[k]; avgSpeed = speeds.length > 0 ? avgSpeed / speeds.length : 0;
+  var occupancy = (canvas.width * canvas.height) > 0 ? (bboxW * bboxH) / (canvas.width * canvas.height) : 0;
+  var symX = canvas.width > 0 ? Math.abs(centerX - canvas.width/2) / (canvas.width/2) : 1;
+  var symY = canvas.height > 0 ? Math.abs(centerY - canvas.height/2) / (canvas.height/2) : 1;
+  var lineCount = 0; for (var l = 1; l < pts.length; l++) { if (pts[l].break) lineCount++; } if (pts.length > 0 && !pts[0].break) lineCount++;
+  return {distance: dist, curvature: curv, avgSpeed: avgSpeed, bboxW: bboxW, bboxH: bboxH, centerX: centerX, centerY: centerY, occupancy: occupancy, symX: symX, symY: symY, lineCount: lineCount, pointCount: pts.length};
 }
 
 // ============================================================
 //  HISTORICAL COMPARISON
 // ============================================================
-function compareWithHistory(features){
-  var historyFeatures=safeLoad('mw_features',[]);
-  if(historyFeatures.length===0){historyFeatures.push({date:new Date().toISOString().split('T')[0],features:features});localStorage.setItem('mw_features',JSON.stringify(historyFeatures));return{isAnomaly:false,trend:'first',message:"This is your first drawing. I'm watching. 👀"}}
-  var recent=historyFeatures.slice(-7);
-  var avgDist=0,avgCurv=0,avgSpeed=0,avgOcc=0,count=0;
-  recent.forEach(function(h){
-    var f=h.features;if(!f)return;
-    avgDist+=f.distance;avgCurv+=f.curvature;avgSpeed+=f.avgSpeed;avgOcc+=f.occupancy;count++;
-  });
-  if(count===0)return{isAnomaly:false,trend:'no_data',message:''};
-  avgDist/=count;avgCurv/=count;avgSpeed/=count;avgOcc/=count;
-  var distDiff=Math.abs(features.distance-avgDist)/Math.max(avgDist,1);
-  var curvDiff=Math.abs(features.curvature-avgCurv)/Math.max(avgCurv,.01);
-  var speedDiff=Math.abs(features.avgSpeed-avgSpeed)/Math.max(avgSpeed,1);
-  var totalDiff=(distDiff+curvDiff+speedDiff)/3;
-  var isAnomaly=totalDiff>.5;
-  var trend='stable';
-  if(recent.length>=3){
-    var last3=recent.slice(-3).map(function(h){return h.features?h.features.distance:0});
-    if(last3[0]<last3[1]&&last3[1]<last3[2])trend='expanding';
-    else if(last3[0]>last3[1]&&last3[1]>last3[2])trend='contracting';
+function compareWithHistory(features) {
+  var historyFeatures = safeLoad('mw_features', []);
+  if (historyFeatures.length === 0) {
+    historyFeatures.push({date: new Date().toISOString().split('T')[0], features: features});
+    safeSet('mw_features', historyFeatures);
+    return {isAnomaly: false, trend: 'first', message: "This is your first drawing. I'm watching. 👀"};
   }
-  var message='';
-  if(isAnomaly)message="This drawing is very different from your recent ones. You're exploring new territory. 🗺️";
-  else if(trend==='expanding')message='Your strokes are growing day by day. You are opening up. 🌱';
-  else if(trend==='contracting')message='Your strokes are shortening. You are withdrawing a little. Gently. 🤍';
-  else message="Your gesture feels like yesterday's. A sense of continuity. 🌙";
-  historyFeatures.push({date:new Date().toISOString().split('T')[0],features:features});
-  if(historyFeatures.length>14)historyFeatures.shift();
-  try{localStorage.setItem('mw_features',JSON.stringify(historyFeatures))}catch(e){}
-  return{isAnomaly:isAnomaly,trend:trend,message:message,totalDiff:totalDiff};
+  var recent = historyFeatures.slice(-7);
+  var avgDist = 0, avgCurv = 0, avgSpeed = 0, count = 0;
+  recent.forEach(function(h) {
+    var f = h.features; if (!f) return;
+    avgDist += f.distance; avgCurv += f.curvature; avgSpeed += f.avgSpeed; count++;
+  });
+  if (count === 0) return {isAnomaly: false, trend: 'no_data', message: ''};
+  avgDist /= count; avgCurv /= count; avgSpeed /= count;
+  var distDiff = Math.abs(features.distance - avgDist) / Math.max(avgDist, 1);
+  var curvDiff = Math.abs(features.curvature - avgCurv) / Math.max(avgCurv, 0.01);
+  var speedDiff = Math.abs(features.avgSpeed - avgSpeed) / Math.max(avgSpeed, 1);
+  var totalDiff = (distDiff + curvDiff + speedDiff) / 3;
+  var isAnomaly = totalDiff > 0.5;
+  var trend = 'stable';
+  if (recent.length >= 3) {
+    var last3 = recent.slice(-3).map(function(h) { return h.features ? h.features.distance : 0; });
+    if (last3[0] < last3[1] && last3[1] < last3[2]) trend = 'expanding';
+    else if (last3[0] > last3[1] && last3[1] > last3[2]) trend = 'contracting';
+  }
+  var message = '';
+  if (isAnomaly) message = "This drawing is very different from your recent ones. You're exploring new territory. 🗺️";
+  else if (trend === 'expanding') message = 'Your strokes are growing day by day. You are opening up. 🌱';
+  else if (trend === 'contracting') message = 'Your strokes are shortening. You are withdrawing a little. Gently. 🤍';
+  else message = "Your gesture feels like yesterday's. A sense of continuity. 🌙";
+  historyFeatures.push({date: new Date().toISOString().split('T')[0], features: features});
+  if (historyFeatures.length > 14) historyFeatures.shift();
+  safeSet('mw_features', historyFeatures);
+  return {isAnomaly: isAnomaly, trend: trend, message: message, totalDiff: totalDiff};
 }
 
 // ============================================================
 //  CANVAS + HALO
 // ============================================================
-function setupCanvas(){
-  var halo=$('halo');
-  function getPos(e){
-    var r=canvas.getBoundingClientRect();
-    var cx=e.touches?e.touches[0].clientX:e.clientX;
-    var cy=e.touches?e.touches[0].clientY:e.clientY;
-    return{x:(cx-r.left)*(canvas.width/r.width),y:(cy-r.top)*(canvas.height/r.height),cx:cx,cy:cy};
+function setupCanvas() {
+  if (!canvas || !ctx) return;
+  var halo = $('halo');
+  function getPos(e) {
+    var r = canvas.getBoundingClientRect();
+    var cx = e.touches ? e.touches[0].clientX : e.clientX;
+    var cy = e.touches ? e.touches[0].clientY : e.clientY;
+    return {
+      x: Math.min(Math.max((cx - r.left) * (canvas.width / r.width), 0), canvas.width),
+      y: Math.min(Math.max((cy - r.top) * (canvas.height / r.height), 0), canvas.height),
+      cx: cx, cy: cy
+    };
   }
-  function start(e){
-    e.preventDefault();initAudio();
-    isDrawing=true;pts=[];drawingRecord=[];touchStartTime=Date.now();
-    var p=getPos(e);p.t=0;pts.push(p);drawingRecord.push({x:p.cx,y:p.cy,t:Date.now()});
-    ctx.beginPath();ctx.moveTo(p.x,p.y);
-    halo.classList.add('active');halo.style.left=p.cx+'px';halo.style.top=p.cy+'px';
-    if(isMobile()&&navigator.vibrate)navigator.vibrate(4);
-    playTone(200,.1,'sine',.01);
+  function start(e) {
+    e.preventDefault(); initAudio();
+    isDrawing = true; pts = []; drawingRecord = []; touchStartTime = Date.now();
+    var p = getPos(e); p.t = 0; pts.push(p); drawingRecord.push({x: p.cx, y: p.cy, t: Date.now()});
+    ctx.beginPath(); ctx.moveTo(p.x, p.y);
+    if (halo) { halo.classList.add('active'); halo.style.left = p.cx + 'px'; halo.style.top = p.cy + 'px'; }
+    if (isMobile() && navigator.vibrate) navigator.vibrate(4);
+    playTone(200, 0.1, 'sine', 0.01);
   }
-  function move(e){
-    e.preventDefault();if(!isDrawing)return;
-    var p=getPos(e);p.t=Date.now()-touchStartTime;pts.push(p);drawingRecord.push({x:p.cx,y:p.cy,t:Date.now()});
-    ctx.lineTo(p.x,p.y);ctx.strokeStyle='rgba(200,180,255,.85)';ctx.lineWidth=brush;ctx.lineCap='round';ctx.lineJoin='round';ctx.stroke();
-    halo.style.left=p.cx+'px';halo.style.top=p.cy+'px';
+  function move(e) {
+    e.preventDefault(); if (!isDrawing) return;
+    var p = getPos(e); p.t = Date.now() - touchStartTime; pts.push(p); drawingRecord.push({x: p.cx, y: p.cy, t: Date.now()});
+    ctx.lineTo(p.x, p.y); ctx.strokeStyle = 'rgba(200,180,255,.85)'; ctx.lineWidth = brush; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.stroke();
+    if (halo) { halo.style.left = p.cx + 'px'; halo.style.top = p.cy + 'px'; }
   }
-  function end(){
-    if(!isDrawing)return;isDrawing=false;
-    halo.classList.remove('active');
-    if(pts.length<4){ctx.clearRect(0,0,canvas.width,canvas.height);showToast('Draw a little longer ✨');return}
+  function end() {
+    if (!isDrawing) return; isDrawing = false;
+    if (halo) halo.classList.remove('active');
+    if (pts.length < 4) { ctx.clearRect(0, 0, canvas.width, canvas.height); showToast('Draw a little longer ✨'); return; }
     analyze(pts);
   }
-  canvas.addEventListener('touchstart',start,{passive:false});
-  canvas.addEventListener('touchmove',move,{passive:false});
-  canvas.addEventListener('touchend',end);
-  canvas.addEventListener('mousedown',start);
-  canvas.addEventListener('mousemove',move);
-  canvas.addEventListener('mouseup',end);
-  canvas.addEventListener('mouseleave',end);
-  canvas.addEventListener('keydown',function(e){if(e.key==='c'||e.key==='C'){$('btnClear').click()}});
+  canvas.addEventListener('touchstart', start, {passive: false});
+  canvas.addEventListener('touchmove', move, {passive: false});
+  canvas.addEventListener('touchend', end);
+  canvas.addEventListener('mousedown', start);
+  canvas.addEventListener('mousemove', move);
+  canvas.addEventListener('mouseup', end);
+  canvas.addEventListener('mouseleave', end);
+  canvas.addEventListener('keydown', function(e) { if (e.key === 'c' || e.key === 'C') { $('btnClear').click(); } });
 }
 
 // ============================================================
 //  ENRICHED ANALYSIS
 // ============================================================
-function analyze(pts){
-  var features=extractFeatures(pts);
-  if(!features)return;
-  var comparison=compareWithHistory(features);
-  var emos=[
+function analyze(pts) {
+  var features = extractFeatures(pts);
+  if (!features) return;
+  var comparison = compareWithHistory(features);
+  var emos = [
     {e:'☀️',p:'You are shining today.',m:'joy',t:'Light'},
     {e:'🌧️',p:'Let it wash over you.',m:'sad',t:'Rain'},
     {e:'🌪️',p:'Even storms run out of rain.',m:'angry',t:'Storm'},
-    {e:'🌈',p:'Look at everything you\'ve crossed.',m:'calm',t:'Peace'},
+    {e:'🌈',p:"Look at everything you've crossed.",m:'calm',t:'Peace'},
     {e:'⚡',p:'This energy is yours. Use it.',m:'angry',t:'Surge'},
     {e:'🌙',p:'Rest is not weakness.',m:'calm',t:'Rest'},
     {e:'🔥',p:'Passion is power.',m:'angry',t:'Fire'},
@@ -576,98 +752,134 @@ function analyze(pts){
     {e:'❄️',p:'Spring always returns.',m:'sad',t:'Winter'},
     {e:'🕳️',p:'An empty space waits for you. Fill it gently.',m:'empty',t:'Void'}
   ];
-  var idx=0;
-  var d=features.distance;
-  if(d>400)idx=0;else if(d>250)idx=4;else if(d>120)idx=1;else if(d<20)idx=12;else idx=2;
-  if(features.curvature>.8&&idx!==12)idx=6;
-  if(features.avgSpeed<.3&&d>50)idx=5;
-  var emo=emos[idx];
-  $('re').textContent=emo.e;$('rt').textContent=emo.t;$('rp').textContent=emo.p;
-  canvas.className='m-'+emo.m;
+  var idx = 0;
+  var d = features.distance;
+  if (d > 400) idx = 0; else if (d > 250) idx = 4; else if (d > 120) idx = 1; else if (d < 20) idx = 12; else idx = 2;
+  if (features.curvature > 0.8 && idx !== 12) idx = 6;
+  if (features.avgSpeed < 0.3 && d > 50) idx = 5;
+  var emo = emos[idx];
+  if ($('re')) $('re').textContent = emo.e;
+  if ($('rt')) $('rt').textContent = emo.t;
+  if ($('rp')) $('rp').textContent = emo.p;
+  canvas.className = 'm-' + emo.m;
+  if (comparison.isAnomaly && $('rp')) { $('rp').textContent = emo.p + ' ' + comparison.message; }
 
-  if(comparison.isAnomaly){$('rp').textContent=emo.p+' '+comparison.message}
-
-  var today=new Date().toISOString().split('T')[0];
-  moodHistory.push({date:today,emoji:emo.e,mood:emo.m,features:features});
-  if(moodHistory.length>30)moodHistory.shift();
-  gallery.unshift({data:canvas.toDataURL('image/png'),date:today,mood:emo.m});
-  if(gallery.length>12)gallery.pop();
-  lastAnalysis={features:features,emotion:emo,mood:emo.m,phrase:emo.p,trend:comparison.trend,comparison:comparison};
-  saveData();updateCounter();updateStreak();
-  if(emo.m==='joy')spawnHearts();
-  var msg='';
-  if(emo.m==='sad')msg="I'm here. You're not alone. 💜";
-  else if(emo.m==='joy')msg="You're radiant today! ✨";
-  else if(emo.m==='angry')msg='That energy is powerful. Channel it. 🔥';
-  else if(emo.m==='calm')msg='Peace is within you. 🌙';
-  else if(emo.m==='empty')msg='A space is waiting. Fill it gently. 🕳️';
-  if(comparison.trend==='expanding')msg+=' You are expanding. 🌱';
-  if(comparison.trend==='contracting')msg+=' Take your time. 🤍';
-  showIsme(msg,5000);
-  playTone(523,.15,'sine',.015);
-  setTimeout(function(){playTone(659,.2,'sine',.01)},150);
-  setTimeout(function(){canvas.className=''},4000);
+  var today = new Date().toISOString().split('T')[0];
+  moodHistory.push({date: today, emoji: emo.e, mood: emo.m, features: features});
+  if (moodHistory.length > 30) moodHistory.shift();
+  gallery.unshift({data: canvas.toDataURL('image/png'), date: today, mood: emo.m});
+  if (gallery.length > 12) gallery.pop();
+  lastAnalysis = {features: features, emotion: emo, mood: emo.m, phrase: emo.p, trend: comparison.trend, comparison: comparison};
+  saveData(); updateCounter(); updateStreak();
+  if (emo.m === 'joy') spawnHearts();
+  var msg = '';
+  if (emo.m === 'sad') msg = "I'm here. You're not alone. 💜";
+  else if (emo.m === 'joy') msg = "You're radiant today! ✨";
+  else if (emo.m === 'angry') msg = 'That energy is powerful. Channel it. 🔥';
+  else if (emo.m === 'calm') msg = 'Peace is within you. 🌙';
+  else if (emo.m === 'empty') msg = 'A space is waiting. Fill it gently. 🕳️';
+  if (comparison.trend === 'expanding') msg += ' You are expanding. 🌱';
+  if (comparison.trend === 'contracting') msg += ' Take your time. 🤍';
+  showIsme(msg, 5000);
+  playTone(523, 0.15, 'sine', 0.015);
+  setTimeout(function() { playTone(659, 0.2, 'sine', 0.01); }, 150);
+  setTimeout(function() { canvas.className = ''; }, 4000);
 }
 
 // ============================================================
 //  SPAWN HEARTS
 // ============================================================
-function spawnHearts(){
-  var hearts=['💜','💛','✨','🌟','💖','💝','💕','💗'];var count=isLowPerfDevice()?8:16;
-  for(var i=0;i<count;i++){var el=document.createElement('div');el.className='confetti';el.textContent=hearts[Math.floor(Math.random()*hearts.length)];el.style.left=Math.random()*100+'%';el.style.top='-30px';el.style.animationDuration=(2.5+Math.random()*2)+'s';el.style.animationDelay=Math.random()*.5+'s';document.body.appendChild(el);setTimeout(function(){el.remove()},4000)}
+function spawnHearts() {
+  var hearts = ['💜','💛','✨','🌟','💖','💝','💕','💗']; var count = isLowPerfDevice() ? 8 : 16;
+  for (var i = 0; i < count; i++) {
+    var el = document.createElement('div'); el.className = 'confetti';
+    el.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+    el.style.left = Math.random() * 100 + '%'; el.style.top = '-30px';
+    el.style.animationDuration = (2.5 + Math.random() * 2) + 's';
+    el.style.animationDelay = Math.random() * 0.5 + 's';
+    document.body.appendChild(el);
+    setTimeout(function() { if (el.parentNode) el.remove(); }, 4000);
+  }
 }
 
 // ============================================================
 //  COUNTER & STREAK
 // ============================================================
-function updateCounter(){$('tc').textContent=moodHistory.length}
-function updateStreak(){
-  if(moodHistory.length===0){streak=0;$('streakCount').textContent='0';return}
-  var today=new Date().toISOString().split('T')[0];var last=moodHistory[moodHistory.length-1].date;
-  if(last===today){var c=0,d=new Date(today);for(var i=moodHistory.length-1;i>=0;i--){var hd=new Date(moodHistory[i].date);var diff=Math.floor((d-hd)/86400000);if(diff===c)c++;else break}streak=c}
-  else{var y=new Date();y.setDate(y.getDate()-1);var ys=y.toISOString().split('T')[0];if(last===ys){var c2=0,d2=new Date(today);for(var j=moodHistory.length-1;j>=0;j--){var hd2=new Date(moodHistory[j].date);var diff2=Math.floor((d2-hd2)/86400000);if(diff2===c2)c2++;else break}streak=c2}else{streak=0}}
-  saveData();$('streakCount').textContent=streak;
+function updateCounter() { if ($('tc')) $('tc').textContent = moodHistory.length; }
+function updateStreak() {
+  if (moodHistory.length === 0) { streak = 0; if ($('streakCount')) $('streakCount').textContent = '0'; return; }
+  var today = new Date().toISOString().split('T')[0]; var last = moodHistory[moodHistory.length-1].date;
+  if (last === today) {
+    var c = 0, d = new Date(today);
+    for (var i = moodHistory.length-1; i >= 0; i--) {
+      var hd = new Date(moodHistory[i].date); var diff = Math.floor((d - hd) / 86400000);
+      if (diff === c) c++; else break;
+    }
+    streak = c;
+  } else {
+    var y = new Date(); y.setDate(y.getDate()-1); var ys = y.toISOString().split('T')[0];
+    if (last === ys) {
+      var c2 = 0, d2 = new Date(today);
+      for (var j = moodHistory.length-1; j >= 0; j--) {
+        var hd2 = new Date(moodHistory[j].date); var diff2 = Math.floor((d2 - hd2) / 86400000);
+        if (diff2 === c2) c2++; else break;
+      }
+      streak = c2;
+    } else { streak = 0; }
+  }
+  saveData(); if ($('streakCount')) $('streakCount').textContent = streak;
 }
 
 // ============================================================
 //  BUTTONS
 // ============================================================
-function setupButtons(){
-  $('btnClear').addEventListener('click',function(){ctx.clearRect(0,0,canvas.width,canvas.height);$('re').textContent='';$('rt').textContent='';$('rp').textContent='';canvas.className='';lastAnalysis={features:null,emotion:null,phrase:null,trend:null};saveData();playTone(300,.05,'sine',.005)});
-
-  $('btnShare').addEventListener('click',function(){openSharePanel()});
-
-  $('btnStatut').addEventListener('click',downloadStatus);
-
-  $('fwBtn').addEventListener('click',function(){var em=['☀️','🌧️','🌪️','🌈','🔥','🌙','🙏','🌱'];var e=em[Math.floor(Math.random()*em.length)];ctx.clearRect(0,0,canvas.width,canvas.height);$('re').textContent='';$('rt').textContent='';$('rp').textContent='';canvas.className='';showToast('🎡 Challenge: Draw '+e+' now!');showIsme('Draw '+e+' in 30 seconds! ⏱️',4500)});
+function setupButtons() {
+  if ($('btnClear')) $('btnClear').addEventListener('click', function() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    if ($('re')) $('re').textContent = ''; if ($('rt')) $('rt').textContent = ''; if ($('rp')) $('rp').textContent = '';
+    canvas.className = ''; lastAnalysis = {features: null, emotion: null, phrase: null, trend: null}; saveData();
+    playTone(300, 0.05, 'sine', 0.005);
+  });
+  if ($('btnShare')) $('btnShare').addEventListener('click', function() { openSharePanel(); });
+  if ($('btnStatut')) $('btnStatut').addEventListener('click', downloadStatus);
+  if ($('fwBtn')) $('fwBtn').addEventListener('click', function() {
+    var em = ['☀️','🌧️','🌪️','🌈','🔥','🌙','🙏','🌱']; var e = em[Math.floor(Math.random() * em.length)];
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    if ($('re')) $('re').textContent = ''; if ($('rt')) $('rt').textContent = ''; if ($('rp')) $('rp').textContent = '';
+    canvas.className = ''; showToast('🎡 Challenge: Draw ' + e + ' now!');
+    showIsme('Draw ' + e + ' in 30 seconds! ⏱️', 4500);
+  });
 }
 
 // ============================================================
 //  SHARE PANEL
 // ============================================================
-function setupSharePanel(){
-  $('sharePanelClose').addEventListener('click',closeSharePanel);
-  $('sharePanelOverlay').addEventListener('click',closeSharePanel);
-  document.querySelectorAll('.share-opt').forEach(function(opt){
-    opt.addEventListener('click',function(){
-      var format=this.dataset.format;
-      closeSharePanel();
-      if(format==='story')generateShareMedia('story');
-      else if(format==='post')generateShareMedia('post');
-      else if(format==='reel')generateShareMedia('reel');
-      else if(format==='text')generateShareText();
+function setupSharePanel() {
+  if ($('sharePanelClose')) $('sharePanelClose').addEventListener('click', closeSharePanel);
+  if ($('sharePanelOverlay')) $('sharePanelOverlay').addEventListener('click', closeSharePanel);
+  document.querySelectorAll('.share-opt').forEach(function(opt) {
+    opt.addEventListener('click', function() {
+      var format = this.dataset.format; closeSharePanel();
+      if (format === 'story') generateShareMedia('story');
+      else if (format === 'post') generateShareMedia('post');
+      else if (format === 'reel') generateShareMedia('reel');
+      else if (format === 'text') generateShareText();
     });
   });
 }
-function openSharePanel(){
-  if(!lastAnalysis.emotion){showToast('Draw your mood first ✍️');return}
-  $('sharePanel').classList.add('show');$('sharePanelOverlay').classList.add('show');
+function openSharePanel() {
+  if (!lastAnalysis.emotion) { showToast('Draw your mood first ✍️'); return; }
+  if ($('sharePanel')) $('sharePanel').classList.add('show');
+  if ($('sharePanelOverlay')) $('sharePanelOverlay').classList.add('show');
 }
-function closeSharePanel(){$('sharePanel').classList.remove('show');$('sharePanelOverlay').classList.remove('show')}
+function closeSharePanel() {
+  if ($('sharePanel')) $('sharePanel').classList.remove('show');
+  if ($('sharePanelOverlay')) $('sharePanelOverlay').classList.remove('show');
+}
 
-function generateShareMedia(format){
-  var dataUrl=canvas.toDataURL('image/png');var emoji=lastAnalysis.emotion?lastAnalysis.emotion.e:'💜';var phrase=lastAnalysis.phrase||'I drew my mood on Mewonen.';
-  var messages={
+function generateShareMedia(format) {
+  var dataUrl = canvas.toDataURL('image/png'); var emoji = lastAnalysis.emotion ? lastAnalysis.emotion.e : '💜'; var phrase = lastAnalysis.phrase || 'I drew my mood on Mewonen.';
+  var messages = {
     '☀️':'☀️ Mewonen says I\'m shining today. How are you feeling? Draw your mood → mewonen.com 💜',
     '🌧️':'🌧️ I drew my sadness and Mewonen replied. This site is incredible. Try it → mewonen.com 💜',
     '🌪️':'🌪️ My anger expressed in one stroke. Mewonen understood. What about you? mewonen.com 🔥',
@@ -682,61 +894,66 @@ function generateShareMedia(format){
     '❄️':'❄️ Winter in the heart. Mewonen promises spring. mewonen.com 💜',
     '🕳️':'🕳️ Emptiness can be expressed. Mewonen welcomed it. mewonen.com 🕳️'
   };
-  var shareText=messages[emoji]||'💜 I drew my mood on Mewonen. What about you? mewonen.com 💜';
-  if(format==='story'){downloadStatus();showToast('📱 Story saved! Paste this text: '+shareText);navigator.clipboard.writeText(shareText).catch(function(){})}
-  else if(format==='post'){
-    if(navigator.share){var blob=dataURLToBlob(dataUrl);navigator.share({title:'Mewonen — Draw Your Mood',text:shareText,files:[new File([blob],'mewonen-mood.png',{type:'image/png'})]}).catch(function(){})}
-    else{var l=document.createElement('a');l.download='mewonen-mood.png';l.href=dataUrl;l.click();navigator.clipboard.writeText(shareText).then(function(){showToast('📋 Image + text copied!')}).catch(function(){showToast('📤 Image downloaded!')})}
+  var shareText = messages[emoji] || '💜 I drew my mood on Mewonen. What about you? mewonen.com 💜';
+  if (format === 'story') { downloadStatus(); showToast('📱 Story saved! Paste this text: '+shareText); try { navigator.clipboard.writeText(shareText); } catch(e) {} }
+  else if (format === 'post') {
+    if (navigator.share) { var blob = dataURLToBlob(dataUrl); navigator.share({title: 'Mewonen — Draw Your Mood', text: shareText, files: [new File([blob], 'mewonen-mood.png', {type: 'image/png'})]}).catch(function(){}); }
+    else { var l = document.createElement('a'); l.download = 'mewonen-mood.png'; l.href = dataUrl; l.click(); try { navigator.clipboard.writeText(shareText); showToast('📋 Image + text copied!'); } catch(e) { showToast('📤 Image downloaded!'); } }
   }
-  else if(format==='reel'){generateReel(dataUrl,shareText)}
+  else if (format === 'reel') { generateReel(dataUrl, shareText); }
 }
-function generateShareText(){
-  var emoji=lastAnalysis.emotion?lastAnalysis.emotion.e:'💜';var phrase=lastAnalysis.phrase||'I drew my mood on Mewonen.';
-  var texts=['I drew my mood on Mewonen. Apparently, my gestures speak louder than words. Try it: mewonen.com 💜','Today, Mewonen saw something in my stroke I hadn\'t dared to tell myself. What about you? mewonen.com 💜',emoji+' '+phrase+' Mewonen understood. What would you draw? mewonen.com 💜'];
-  var txt=texts[Math.floor(Math.random()*texts.length)];
-  navigator.clipboard.writeText(txt).then(function(){showToast('📋 Text copied! Paste it on your socials.')}).catch(function(){showToast('⚠️ Copy failed.')});
+function generateShareText() {
+  var emoji = lastAnalysis.emotion ? lastAnalysis.emotion.e : '💜'; var phrase = lastAnalysis.phrase || 'I drew my mood on Mewonen.';
+  var texts = ['I drew my mood on Mewonen. Apparently, my gestures speak louder than words. Try it: mewonen.com 💜','Today, Mewonen saw something in my stroke I hadn\'t dared to tell myself. What about you? mewonen.com 💜',emoji+' '+phrase+' Mewonen understood. What would you draw? mewonen.com 💜'];
+  var txt = texts[Math.floor(Math.random() * texts.length)];
+  try { navigator.clipboard.writeText(txt); showToast('📋 Text copied! Paste it on your socials.'); } catch(e) { showToast('⚠️ Copy failed.'); }
 }
-function generateReel(dataUrl,shareText){
-  var c=document.createElement('canvas');c.width=1080;c.height=1920;
-  var ctx2=c.getContext('2d');
-  var grad=ctx2.createLinearGradient(0,0,0,1920);grad.addColorStop(0,'#0a0a18');grad.addColorStop(1,'#1a1030');ctx2.fillStyle=grad;ctx2.fillRect(0,0,1080,1920);
-  var img=new Image();img.src=dataUrl;
-  img.onload=function(){
-    ctx2.save();ctx2.beginPath();ctx2.arc(540,700,300,0,Math.PI*2);ctx2.clip();ctx2.drawImage(img,540-300,700-300,600,600);ctx2.restore();
-    ctx2.textAlign='center';ctx2.font='bold 64px Cormorant Garamond,serif';ctx2.fillStyle='#fff';ctx2.fillText('My Mood Today',540,1200);
-    ctx2.font='48px Inter,sans-serif';ctx2.fillStyle='#a78bfa';ctx2.fillText('mewonen.com',540,1300);
-    ctx2.font='28px Inter,sans-serif';ctx2.fillStyle='rgba(255,255,255,.5)';ctx2.fillText('And you, what would you draw?',540,1380);
-    var l=document.createElement('a');l.download='mewonen-reel.png';l.href=c.toDataURL('image/png');l.click();
-    navigator.clipboard.writeText(shareText).then(function(){showToast('🎥 Reel image + text copied!')}).catch(function(){showToast('🎥 Reel image downloaded!')});
+function generateReel(dataUrl, shareText) {
+  var c = document.createElement('canvas'); c.width = 1080; c.height = 1920;
+  var ctx2 = c.getContext('2d');
+  var grad = ctx2.createLinearGradient(0, 0, 0, 1920); grad.addColorStop(0, '#0a0a18'); grad.addColorStop(1, '#1a1030'); ctx2.fillStyle = grad; ctx2.fillRect(0, 0, 1080, 1920);
+  var img = new Image(); img.src = dataUrl;
+  img.onload = function() {
+    ctx2.save(); ctx2.beginPath(); ctx2.arc(540, 700, 300, 0, Math.PI * 2); ctx2.clip(); ctx2.drawImage(img, 540-300, 700-300, 600, 600); ctx2.restore();
+    ctx2.textAlign = 'center'; ctx2.font = 'bold 64px Cormorant Garamond, serif'; ctx2.fillStyle = '#fff'; ctx2.fillText('My Mood Today', 540, 1200);
+    ctx2.font = '48px Inter, sans-serif'; ctx2.fillStyle = '#a78bfa'; ctx2.fillText('mewonen.com', 540, 1300);
+    ctx2.font = '28px Inter, sans-serif'; ctx2.fillStyle = 'rgba(255,255,255,.5)'; ctx2.fillText('And you, what would you draw?', 540, 1380);
+    var l = document.createElement('a'); l.download = 'mewonen-reel.png'; l.href = c.toDataURL('image/png'); l.click();
+    try { navigator.clipboard.writeText(shareText); showToast('🎥 Reel image + text copied!'); } catch(e) { showToast('🎥 Reel image downloaded!'); }
   };
+  img.onerror = function() { showToast('⚠️ Error generating reel.'); };
 }
 
-function downloadStatus(){
-  var emoji=lastAnalysis.emotion?lastAnalysis.emotion.e:'💜';var phrase=lastAnalysis.phrase||'Draw your mood on Mewonen';
-  var c2=document.createElement('canvas');c2.width=1080;c2.height=1920;
-  var ctx2=c2.getContext('2d');
-  var grad=ctx2.createLinearGradient(0,0,0,1920);grad.addColorStop(0,'#0a0a18');grad.addColorStop(1,'#1a1030');ctx2.fillStyle=grad;ctx2.fillRect(0,0,1080,1920);
-  ctx2.strokeStyle='rgba(167,139,250,.2)';ctx2.lineWidth=2;ctx2.strokeRect(30,30,1020,1860);
-  ctx2.textAlign='center';ctx2.textBaseline='middle';
-  ctx2.font='280px Arial';ctx2.fillStyle='#fff';ctx2.fillText(emoji,540,600);
-  ctx2.font='48px Cormorant Garamond,serif';ctx2.fillStyle='rgba(255,255,255,.8)';ctx2.fillText(phrase,540,950);
-  ctx2.font='32px Inter,sans-serif';ctx2.fillStyle='#a78bfa';ctx2.fillText('💜 Mewonen.com',540,1150);
-  ctx2.font='28px Inter,sans-serif';ctx2.fillStyle='rgba(255,255,255,.3)';ctx2.fillText('Draw your mood. Free. Private.',540,1250);
-  var l=document.createElement('a');l.download='mewonen-story.png';l.href=c2.toDataURL('image/png');l.click();showToast('📱 Story downloaded!');
+function downloadStatus() {
+  var emoji = lastAnalysis.emotion ? lastAnalysis.emotion.e : '💜'; var phrase = lastAnalysis.phrase || 'Draw your mood on Mewonen';
+  var c2 = document.createElement('canvas'); c2.width = 1080; c2.height = 1920;
+  var ctx2 = c2.getContext('2d');
+  var grad = ctx2.createLinearGradient(0, 0, 0, 1920); grad.addColorStop(0, '#0a0a18'); grad.addColorStop(1, '#1a1030'); ctx2.fillStyle = grad; ctx2.fillRect(0, 0, 1080, 1920);
+  ctx2.strokeStyle = 'rgba(167,139,250,.2)'; ctx2.lineWidth = 2; ctx2.strokeRect(30, 30, 1020, 1860);
+  ctx2.textAlign = 'center'; ctx2.textBaseline = 'middle';
+  ctx2.font = '280px Arial'; ctx2.fillStyle = '#fff'; ctx2.fillText(emoji, 540, 600);
+  ctx2.font = '48px Cormorant Garamond, serif'; ctx2.fillStyle = 'rgba(255,255,255,.8)'; ctx2.fillText(phrase, 540, 950);
+  ctx2.font = '32px Inter, sans-serif'; ctx2.fillStyle = '#a78bfa'; ctx2.fillText('💜 Mewonen.com', 540, 1150);
+  ctx2.font = '28px Inter, sans-serif'; ctx2.fillStyle = 'rgba(255,255,255,.3)'; ctx2.fillText('Draw your mood. Free. Private.', 540, 1250);
+  var l = document.createElement('a'); l.download = 'mewonen-story.png'; l.href = c2.toDataURL('image/png'); l.click(); showToast('📱 Story downloaded!');
 }
 
-function dataURLToBlob(d){var a=d.split(','),m=a[0].match(/:(.*?);/)[1],b=atob(a[1]),n=b.length,u=new Uint8Array(n);while(n--)u[n]=b.charCodeAt(n);return new Blob([u],{type:m})}
+function dataURLToBlob(d) {
+  var a = d.split(','), m = a[0].match(/:(.*?);/)[1], b = atob(a[1]), n = b.length, u = new Uint8Array(n);
+  while (n--) u[n] = b.charCodeAt(n); return new Blob([u], {type: m});
+}
 
 // ============================================================
 //  GESTURES (swipe menu)
 // ============================================================
-function setupGestures(){
-  var main=$('app').querySelector('.main'),sX=0;
-  main.addEventListener('touchstart',function(e){sX=e.touches[0].clientX});
-  main.addEventListener('touchend',function(e){
-    var d=e.changedTouches[0].clientX-sX;
-    if(Math.abs(d)>80){
-      if(d>0){$('menuPanel').classList.add('show');$('menuOverlay').classList.add('show')}
+function setupGestures() {
+  var main = $('app').querySelector('.main'), sX = 0;
+  if (!main) return;
+  main.addEventListener('touchstart', function(e) { sX = e.touches[0].clientX; });
+  main.addEventListener('touchend', function(e) {
+    var d = e.changedTouches[0].clientX - sX;
+    if (Math.abs(d) > 80) {
+      if (d > 0) { $('menuPanel').classList.add('show'); $('menuOverlay').classList.add('show'); }
     }
   });
 }
@@ -744,70 +961,86 @@ function setupGestures(){
 // ============================================================
 //  MENU
 // ============================================================
-function setupMenu(){
-  $('menuBtn').addEventListener('click',function(){$('menuPanel').classList.add('show');$('menuOverlay').classList.add('show');playTone(400,.05,'sine',.005)});
-  $('menuOverlay').addEventListener('click',function(){$('menuPanel').classList.remove('show');$('menuOverlay').classList.remove('show')});
-  document.querySelectorAll('.menu-item').forEach(function(item){
-    item.addEventListener('click',function(){
-      var sc=this.dataset.sc;$('menuPanel').classList.remove('show');$('menuOverlay').classList.remove('show');
-      document.querySelectorAll('.menu-item').forEach(function(m){m.classList.remove('active')});this.classList.add('active');
-      if(sc==='draw'){$('app').querySelector('.main').style.display='flex'}else{showScreen(sc)}
+function setupMenu() {
+  if ($('menuBtn')) $('menuBtn').addEventListener('click', function() {
+    $('menuPanel').classList.add('show'); $('menuOverlay').classList.add('show'); playTone(400, 0.05, 'sine', 0.005);
+  });
+  if ($('menuOverlay')) $('menuOverlay').addEventListener('click', function() {
+    $('menuPanel').classList.remove('show'); $('menuOverlay').classList.remove('show');
+  });
+  document.querySelectorAll('.menu-item').forEach(function(item) {
+    item.addEventListener('click', function() {
+      var sc = this.dataset.sc; $('menuPanel').classList.remove('show'); $('menuOverlay').classList.remove('show');
+      document.querySelectorAll('.menu-item').forEach(function(m) { m.classList.remove('active'); }); this.classList.add('active');
+      if (sc === 'draw') { $('app').querySelector('.main').style.display = 'flex'; } else { showScreen(sc); }
     });
   });
 }
 
-function showScreen(sc){
-  var existing=$('scr-'+sc);if(existing){existing.classList.add('active');return}
-  var main=$('app').querySelector('.main');main.style.display='none';
-  var div=document.createElement('div');div.className='scr active';div.id='scr-'+sc;
-  if(sc==='gallery'){div.innerHTML='<div class="st">Gallery</div><div class="ss">Your drawings</div><div class="gg" id="gg"></div>';$('app').appendChild(div);buildGallery()}
-  else if(sc==='stats'){div.innerHTML='<div class="st">Stats</div><div class="ss">Your emotions</div><div id="scContainer"></div>';$('app').appendChild(div);buildStats()}
-  else if(sc==='map'){div.innerHTML='<div class="st">World Mood</div><div class="ss">How others feel</div><div class="mg" id="mg"></div>';$('app').appendChild(div);buildMap()}
-  else if(sc==='legal'){div.innerHTML='<div class="st">Privacy & Legal</div><div class="ss">Your data stays on your device</div><div class="lc"><h3>© 2026 Mewonen — All rights reserved</h3><p><strong>Mewonen</strong> is an original creation by <strong>Ismail Belabbess</strong>.</p><p>The name <strong>Mewonen</strong>, the logo, the concept, the design, the source code, and all content on this site are the exclusive property of their creator.</p><p><strong>Contact:</strong> calmewave2026@proton.me</p><div class="ld"></div><h3>Privacy Policy</h3><p>Mewonen is designed with privacy at its core. <strong>We collect absolutely no personal data.</strong> Everything you draw stays exclusively on your device.</p><h3>Cookies & Tracking</h3><p><strong>Mewonen uses zero cookies, zero trackers, zero advertising.</strong></p><h3>Disclaimer</h3><p>Mewonen is not a medical device. If you are in crisis, visit <a href="https://findahelpline.com" target="_blank" rel="noopener">findahelpline.com</a>.</p><div class="ld"></div><p style="margin-top:10px;color:#a78bfa;text-align:center;">© 2026 Mewonen. Free. Forever. No ads. No data. No judgment.</p></div>';$('app').appendChild(div)}
-  var btn=document.createElement('button');btn.className='btn btn-o';btn.textContent='← Back';btn.style.cssText='margin-top:16px;position:sticky;bottom:80px';
-  btn.addEventListener('click',function(){div.remove();$('app').querySelector('.main').style.display='flex'});
-  div.appendChild(btn);
+function showScreen(sc) {
+  var existing = $('scr-' + sc); if (existing) { existing.classList.add('active'); return; }
+  var main = $('app').querySelector('.main'); main.style.display = 'none';
+  var div = document.createElement('div'); div.className = 'scr active'; div.id = 'scr-' + sc;
+  if (sc === 'gallery') { div.innerHTML = '<div class="st">Gallery</div><div class="ss">Your drawings</div><div class="gg" id="gg"></div>'; $('app').appendChild(div); buildGallery(); }
+  else if (sc === 'stats') { div.innerHTML = '<div class="st">Stats</div><div class="ss">Your emotions</div><div id="scContainer"></div>'; $('app').appendChild(div); buildStats(); }
+  else if (sc === 'map') { div.innerHTML = '<div class="st">World Mood</div><div class="ss">How others feel</div><div class="mg" id="mg"></div>'; $('app').appendChild(div); buildMap(); }
+  else if (sc === 'legal') { div.innerHTML = '<div class="st">Privacy & Legal</div><div class="ss">Your data stays on your device</div><div class="lc"><h3>© 2026 Mewonen — All rights reserved</h3><p><strong>Mewonen</strong> is an original creation by <strong>Ismail Belabbess</strong>.</p><p>The name <strong>Mewonen</strong>, the logo, the concept, the design, the source code, and all content on this site are the exclusive property of their creator.</p><p><strong>Contact:</strong> calmewave2026@proton.me</p><div class="ld"></div><h3>Privacy Policy</h3><p>Mewonen is designed with privacy at its core. <strong>We collect absolutely no personal data.</strong> Everything you draw stays exclusively on your device.</p><h3>Cookies & Tracking</h3><p><strong>Mewonen uses zero cookies, zero trackers, zero advertising.</strong></p><h3>Disclaimer</h3><p>Mewonen is not a medical device. If you are in crisis, visit <a href="https://findahelpline.com" target="_blank" rel="noopener">findahelpline.com</a>.</p><div class="ld"></div><p style="margin-top:10px;color:#a78bfa;text-align:center;">© 2026 Mewonen. Free. Forever. No ads. No data. No judgment.</p></div>'; $('app').appendChild(div); }
+  var btn = document.createElement('button'); btn.className = 'btn btn-o'; btn.textContent = '← Back'; btn.style.cssText = 'margin-top:16px;position:sticky;bottom:80px';
+  btn.addEventListener('click', function() { div.remove(); $('app').querySelector('.main').style.display = 'flex'; }); div.appendChild(btn);
 }
 
-function buildGallery(){
-  var grid=$('gg');if(!grid)return;grid.innerHTML='';
-  if(gallery.length===0){grid.innerHTML='<div style="color:rgba(255,255,255,.08);grid-column:1/-1;padding:16px;font-size:.5rem;text-align:center">No drawings yet.<br>Draw your first mood!</div>';return}
-  var display=gallery.slice(0,9);display.forEach(function(item){
-    var d=document.createElement('div');d.className='gi';var img=document.createElement('img');img.src=item.data;img.alt='Drawing';img.loading='lazy';img.decoding='async';d.appendChild(img);grid.appendChild(d);
+function buildGallery() {
+  var grid = $('gg'); if (!grid) return; grid.innerHTML = '';
+  if (gallery.length === 0) { grid.innerHTML = '<div style="color:rgba(255,255,255,.08);grid-column:1/-1;padding:16px;font-size:.5rem;text-align:center">No drawings yet.<br>Draw your first mood!</div>'; return; }
+  var display = gallery.slice(0, 9); display.forEach(function(item) {
+    var d = document.createElement('div'); d.className = 'gi'; var img = document.createElement('img'); img.src = item.data; img.alt = 'Drawing'; img.loading = 'lazy'; img.decoding = 'async'; d.appendChild(img); grid.appendChild(d);
   });
 }
 
-function buildStats(){
-  var c=$('scContainer');if(!c)return;c.innerHTML='';
-  if(moodHistory.length===0){c.innerHTML='<div style="color:rgba(255,255,255,.08);padding:16px;font-size:.5rem">No data yet.</div>';return}
-  var counts={};moodHistory.forEach(function(h){counts[h.emoji]=(counts[h.emoji]||0)+1});
-  var sorted=Object.keys(counts).sort(function(a,b){return counts[b]-counts[a]});
-  var max=sorted.length?counts[sorted[0]]:1;
-  sorted.slice(0,6).forEach(function(emoji){
-    var div=document.createElement('div');div.className='scard';var pct=(counts[emoji]/max)*100;
-    div.innerHTML='<span class="e">'+emoji+'</span><div class="inf"><span class="n">'+counts[emoji]+'</span><span class="l">times</span><div class="bar"><span style="width:'+pct+'%"></span></div></div>';c.appendChild(div);
+function buildStats() {
+  var c = $('scContainer'); if (!c) return; c.innerHTML = '';
+  if (moodHistory.length === 0) { c.innerHTML = '<div style="color:rgba(255,255,255,.08);padding:16px;font-size:.5rem">No data yet.</div>'; return; }
+  var counts = {}; moodHistory.forEach(function(h) { counts[h.emoji] = (counts[h.emoji] || 0) + 1; });
+  var sorted = Object.keys(counts).sort(function(a, b) { return counts[b] - counts[a]; }); var max = sorted.length ? counts[sorted[0]] : 1;
+  sorted.slice(0, 6).forEach(function(emoji) {
+    var div = document.createElement('div'); div.className = 'scard'; var pct = (counts[emoji] / max) * 100;
+    div.innerHTML = '<span class="e">' + emoji + '</span><div class="inf"><span class="n">' + counts[emoji] + '</span><span class="l">times</span><div class="bar"><span style="width:' + pct + '%"></span></div></div>'; c.appendChild(div);
   });
 }
 
-function buildMap(){
-  var grid=$('mg');if(!grid)return;grid.innerHTML='';
-  var emojis=['☀️','🌧️','🌪️','🌈','⚡','🌙','🔥','🌱','🙏','💨','🌫️','❄️','🕳️'];
-  var countries=[{f:'🇺🇸',n:'USA'},{f:'🇫🇷',n:'France'},{f:'🇯🇵',n:'Japan'},{f:'🇲🇦',n:'Morocco'},{f:'🇨🇳',n:'China'},{f:'🇰🇷',n:'Korea'},{f:'🇪🇸',n:'Spain'},{f:'🇧🇷',n:'Brazil'},{f:'🇮🇳',n:'India'}];
-  countries.forEach(function(c){var re=emojis[Math.floor(Math.random()*emojis.length)];var div=document.createElement('div');div.className='mc';div.innerHTML='<span class="f">'+c.f+'</span><span class="n">'+c.n+'</span><span class="m">'+re+'</span>';grid.appendChild(div)});
+function buildMap() {
+  var grid = $('mg'); if (!grid) return; grid.innerHTML = '';
+  var emojis = ['☀️','🌧️','🌪️','🌈','⚡','🌙','🔥','🌱','🙏','💨','🌫️','❄️','🕳️'];
+  var countries = [{f:'🇺🇸',n:'USA'},{f:'🇫🇷',n:'France'},{f:'🇯🇵',n:'Japan'},{f:'🇲🇦',n:'Morocco'},{f:'🇨🇳',n:'China'},{f:'🇰🇷',n:'Korea'},{f:'🇪🇸',n:'Spain'},{f:'🇧🇷',n:'Brazil'},{f:'🇮🇳',n:'India'}];
+  countries.forEach(function(c) { var re = emojis[Math.floor(Math.random() * emojis.length)]; var div = document.createElement('div'); div.className = 'mc'; div.innerHTML = '<span class="f">' + c.f + '</span><span class="n">' + c.n + '</span><span class="m">' + re + '</span>'; grid.appendChild(div); });
 }
 
 // ============================================================
 //  ISME
 // ============================================================
-function showIsme(text,duration){var b=$('ismeBubble'),el=$('ismeText');el.textContent=text;b.classList.add('show');clearTimeout(ismeTimer);ismeTimer=setTimeout(function(){b.classList.remove('show')},duration||3000)}
-$('ismeClose').addEventListener('click',function(e){e.stopPropagation();$('ismeBubble').classList.remove('show')});
-$('ismeTop').addEventListener('click',function(){var msgs=["I'm here. Draw your mood. 💜","You're doing great. ✨","How are you feeling today?","Take your time. I'm listening. 🌙"];showIsme(msgs[Math.floor(Math.random()*msgs.length)],4000)});
-function startIsmeTimer(){setInterval(function(){if(!$('ismeBubble').classList.contains('show')){var msgs=['How are you feeling? 💜','Draw what you feel. I\'m here.','Someone just drew ☀️. And you?','Come back tomorrow! 🔥'];showIsme(msgs[Math.floor(Math.random()*msgs.length)],3500)}},30000)}
+function showIsme(text, duration) {
+  var b = $('ismeBubble'), el = $('ismeText'); if (!b || !el) return;
+  el.textContent = text; b.classList.add('show'); clearTimeout(ismeTimer);
+  ismeTimer = setTimeout(function() { b.classList.remove('show'); }, duration || 3000);
+}
+if ($('ismeClose')) $('ismeClose').addEventListener('click', function(e) { e.stopPropagation(); $('ismeBubble').classList.remove('show'); });
+if ($('ismeTop')) $('ismeTop').addEventListener('click', function() {
+  var msgs = ["I'm here. Draw your mood. 💜", "You're doing great. ✨", "How are you feeling today?", "Take your time. I'm listening. 🌙"];
+  showIsme(msgs[Math.floor(Math.random() * msgs.length)], 4000);
+});
+function startIsmeTimer() {
+  setInterval(function() {
+    if (!$('ismeBubble').classList.contains('show')) {
+      var msgs = ['How are you feeling? 💜', "Draw what you feel. I'm here.", 'Someone just drew ☀️. And you?', 'Come back tomorrow! 🔥'];
+      showIsme(msgs[Math.floor(Math.random() * msgs.length)], 3500);
+    }
+  }, 30000);
+}
 
 // ============================================================
 //  TOAST
 // ============================================================
-function showToast(msg){var t=$('toast');t.textContent=msg;t.classList.add('show');setTimeout(function(){t.classList.remove('show')},2500)}
+function showToast(msg) { var t = $('toast'); if (!t) return; t.textContent = msg; t.classList.add('show'); setTimeout(function() { t.classList.remove('show'); }, 2500); }
 
 // ============================================================
 //  LAUNCH
@@ -815,7 +1048,7 @@ function showToast(msg){var t=$('toast');t.textContent=msg;t.classList.add('show
 init();
 console.log('💜 Mewonen — Draw your mood');
 console.log('📌 100% private. No data sent anywhere.');
-console.log('🔥 Version 4.0 — Visually irresistible');
+console.log('🔥 Version 4.1 — Error-free & Optimized');
 </script>
 </body>
 </html>
