@@ -3,615 +3,146 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>Mewonen — Draw with Mei 🦫</title>
+    <title>Mewonen — Draw with Mochi 🐱</title>
     <style>
         /* ===== RESET & BASE ===== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
-        }
-        body {
-            background: #0a0a18;
-            color: #fff;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            height: 100dvh;
-            overflow: hidden;
-            touch-action: none;
-        }
-        #app {
-            width: 100%;
-            max-width: 430px;
-            height: 100dvh;
-            margin: 0 auto;
-            position: relative;
-            background: radial-gradient(ellipse at 50% 30%, #141428, #06060f);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 0 80px rgba(124, 58, 237, 0.06);
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; -webkit-tap-highlight-color: transparent; }
+        body { background: #0a0a18; color: #fff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; height: 100dvh; overflow: hidden; touch-action: none; }
+        #app { width: 100%; max-width: 430px; height: 100dvh; margin: 0 auto; position: relative; background: radial-gradient(ellipse at 50% 30%, #141428, #06060f); overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 0 80px rgba(124, 58, 237, 0.06); }
 
         /* ===== ONBOARDING ===== */
-        #onboarding {
-            position: absolute;
-            inset: 0;
-            z-index: 100;
-            background: #06060f;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 24px;
-            transition: opacity 0.6s ease, transform 0.6s ease;
-            transform: scale(1);
-            opacity: 1;
-        }
-        #onboarding.hide {
-            opacity: 0;
-            transform: scale(1.05);
-            pointer-events: none;
-        }
-        .ob-slide {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            max-width: 300px;
-            animation: fadeUp 0.5s ease;
-        }
-        .ob-slide.active {
-            display: flex;
-        }
-        @keyframes fadeUp {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-        .ob-slide .icon {
-            font-size: 3.6rem;
-            margin-bottom: 16px;
-        }
-        .ob-slide h2 {
-            font-size: 1.4rem;
-            font-weight: 300;
-            line-height: 1.3;
-            margin-bottom: 8px;
-            letter-spacing: -0.5px;
-        }
-        .ob-slide p {
-            font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.4);
-            line-height: 1.5;
-            font-weight: 300;
-        }
-        .ob-dots {
-            display: flex;
-            gap: 8px;
-            margin-top: 20px;
-        }
-        .ob-dots span {
-            width: 8px;
-            height: 8px;
-            border-radius: 4px;
-            background: rgba(255, 255, 255, 0.06);
-            transition: all 0.3s ease;
-        }
-        .ob-dots span.active {
-            background: #a78bfa;
-            width: 24px;
-        }
-        .ob-btn {
-            margin-top: 20px;
-            padding: 12px 32px;
-            border-radius: 40px;
-            border: none;
-            background: linear-gradient(135deg, #7c3aed, #a78bfa);
-            color: #fff;
-            font-size: 0.85rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 8px 30px rgba(124, 58, 237, 0.2);
-        }
-        .ob-btn:active {
-            transform: scale(0.94);
-        }
-        .ob-skip {
-            position: absolute;
-            top: 24px;
-            right: 24px;
-            background: none;
-            border: none;
-            color: rgba(255, 255, 255, 0.15);
-            font-size: 0.7rem;
-            cursor: pointer;
-            font-family: inherit;
-            letter-spacing: 0.5px;
-        }
-        .ob-skip:active { color: rgba(255, 255, 255, 0.4); }
+        #onboarding { position: absolute; inset: 0; z-index: 100; background: #06060f; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; transition: opacity 0.6s ease, transform 0.6s ease; }
+        #onboarding.hide { opacity: 0; transform: scale(1.05); pointer-events: none; }
+        .ob-slide { display: none; flex-direction: column; align-items: center; text-align: center; max-width: 300px; animation: fadeUp 0.5s ease; }
+        .ob-slide.active { display: flex; }
+        @keyframes fadeUp { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
+        .ob-slide .icon { font-size: 3.6rem; margin-bottom: 16px; }
+        .ob-slide h2 { font-size: 1.4rem; font-weight: 300; line-height: 1.3; margin-bottom: 8px; letter-spacing: -0.5px; }
+        .ob-slide p { font-size: 0.8rem; color: rgba(255,255,255,0.4); line-height: 1.5; font-weight: 300; }
+        .ob-dots { display: flex; gap: 8px; margin-top: 20px; }
+        .ob-dots span { width: 8px; height: 8px; border-radius: 4px; background: rgba(255,255,255,0.06); transition: all 0.3s ease; }
+        .ob-dots span.active { background: #a78bfa; width: 24px; }
+        .ob-btn { margin-top: 20px; padding: 12px 32px; border-radius: 40px; border: none; background: linear-gradient(135deg, #7c3aed, #a78bfa); color: #fff; font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 8px 30px rgba(124,58,237,0.2); }
+        .ob-btn:active { transform: scale(0.94); }
+        .ob-skip { position: absolute; top: 24px; right: 24px; background: none; border: none; color: rgba(255,255,255,0.15); font-size: 0.7rem; cursor: pointer; font-family: inherit; letter-spacing: 0.5px; }
 
-        /* ===== CAPYBARA CONTAINER ===== */
-        #capy-container {
-            position: relative;
-            width: 100%;
-            max-width: 240px;
-            aspect-ratio: 1/1;
-            margin: 0 auto;
-            z-index: 10;
-            flex-shrink: 0;
-        }
-        #capy-container canvas {
-            width: 100%;
-            height: 100%;
-            display: block;
-            filter: drop-shadow(0 8px 40px rgba(167, 139, 250, 0.08));
-        }
+        /* ===== MOCHI CONTAINER ===== */
+        #mochi-container { position: relative; width: 100%; max-width: 220px; aspect-ratio: 1/1; margin: 0 auto; z-index: 10; flex-shrink: 0; }
+        #mochi-container canvas { width: 100%; height: 100%; display: block; filter: drop-shadow(0 8px 40px rgba(167,139,250,0.08)); }
 
         /* ===== BUBBLE ===== */
-        #bubble {
-            position: absolute;
-            top: -12px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(20, 20, 40, 0.85);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(167, 139, 250, 0.08);
-            padding: 10px 18px;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            color: rgba(255, 255, 255, 0.85);
-            max-width: 200px;
-            text-align: center;
-            line-height: 1.4;
-            font-weight: 300;
-            opacity: 0;
-            transition: opacity 0.4s ease, transform 0.3s ease;
-            transform: translateX(-50%) translateY(8px);
-            pointer-events: none;
-            white-space: nowrap;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
-        }
-        #bubble.show {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-        }
+        #bubble { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: rgba(20,20,40,0.85); backdrop-filter: blur(16px); border: 1px solid rgba(167,139,250,0.08); padding: 10px 18px; border-radius: 20px; font-size: 0.7rem; color: rgba(255,255,255,0.85); max-width: 200px; text-align: center; line-height: 1.4; font-weight: 300; opacity: 0; transition: opacity 0.4s ease, transform 0.3s ease; transform: translateX(-50%) translateY(8px); pointer-events: none; white-space: nowrap; box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
+        #bubble.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
         /* ===== DRAW AREA ===== */
-        #drawArea {
-            position: relative;
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.015);
-            border: 1px solid rgba(167, 139, 250, 0.06);
-            box-shadow: inset 0 0 60px rgba(0,0,0,0.4);
-            touch-action: none;
-            margin: 4px auto;
-            flex-shrink: 0;
-        }
-        #drawCanvas {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            display: block;
-            touch-action: none;
-            cursor: crosshair;
-        }
-        #glowRing {
-            position: absolute;
-            inset: -6px;
-            border-radius: 50%;
-            border: 1px solid rgba(167, 139, 250, 0.04);
-            pointer-events: none;
-            transition: border-color 0.6s ease, box-shadow 0.6s ease;
-        }
-        #glowRing.active {
-            border-color: rgba(167, 139, 250, 0.2);
-            box-shadow: 0 0 40px rgba(167, 139, 250, 0.05);
-        }
+        #drawArea { position: relative; width: 180px; height: 180px; border-radius: 50%; background: rgba(255,255,255,0.015); border: 1px solid rgba(167,139,250,0.06); box-shadow: inset 0 0 60px rgba(0,0,0,0.4); touch-action: none; margin: 4px auto; flex-shrink: 0; }
+        #drawCanvas { width: 100%; height: 100%; border-radius: 50%; display: block; touch-action: none; cursor: crosshair; }
+        #glowRing { position: absolute; inset: -6px; border-radius: 50%; border: 1px solid rgba(167,139,250,0.04); pointer-events: none; transition: border-color 0.6s ease, box-shadow 0.6s ease; }
+        #glowRing.active { border-color: rgba(167,139,250,0.2); box-shadow: 0 0 40px rgba(167,139,250,0.05); }
 
         /* ===== RESULT ===== */
-        #result {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 40px;
-            margin-top: 2px;
-        }
-        #emotionEmoji {
-            font-size: 1.8rem;
-            animation: pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        #emotionName {
-            font-size: 0.6rem;
-            color: rgba(255, 255, 255, 0.2);
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-top: 2px;
-        }
-        @keyframes pop {
-            0% { opacity: 0; transform: scale(0.3) rotate(-8deg); }
-            100% { opacity: 1; transform: scale(1) rotate(0); }
-        }
+        #result { display: flex; flex-direction: column; align-items: center; min-height: 40px; margin-top: 2px; }
+        #emotionEmoji { font-size: 1.8rem; animation: pop 0.5s cubic-bezier(0.34,1.56,0.64,1); }
+        #emotionName { font-size: 0.6rem; color: rgba(255,255,255,0.2); letter-spacing: 2px; text-transform: uppercase; margin-top: 2px; }
+        #rarityBadge { font-size: 0.5rem; color: #fbbf24; background: rgba(251,191,36,0.06); padding: 2px 12px; border-radius: 12px; margin-top: 4px; border: 1px solid rgba(251,191,36,0.06); display: none; }
+        #rarityBadge.show { display: inline-block; }
+        @keyframes pop { 0% { opacity: 0; transform: scale(0.3) rotate(-8deg); } 100% { opacity: 1; transform: scale(1) rotate(0); } }
 
         /* ===== BUTTONS ===== */
-        #actions {
-            display: flex;
-            gap: 8px;
-            margin-top: 6px;
-            flex-wrap: wrap;
-            justify-content: center;
-            padding: 0 12px;
-        }
-        .btn {
-            padding: 8px 18px;
-            border-radius: 30px;
-            font-size: 0.6rem;
-            font-weight: 500;
-            letter-spacing: 0.3px;
-            border: none;
-            background: rgba(255,255,255,0.03);
-            color: rgba(255,255,255,0.3);
-            cursor: pointer;
-            transition: all 0.2s ease;
-            border: 1px solid rgba(255,255,255,0.03);
-            font-family: inherit;
-        }
+        #actions { display: flex; gap: 8px; margin-top: 6px; flex-wrap: wrap; justify-content: center; padding: 0 12px; }
+        .btn { padding: 8px 18px; border-radius: 30px; font-size: 0.6rem; font-weight: 500; letter-spacing: 0.3px; border: none; background: rgba(255,255,255,0.03); color: rgba(255,255,255,0.3); cursor: pointer; transition: all 0.2s ease; border: 1px solid rgba(255,255,255,0.03); font-family: inherit; }
         .btn:active { transform: scale(0.92); }
-        .btn-primary {
-            background: linear-gradient(135deg, #7c3aed, #a78bfa);
-            color: #fff;
-            border: none;
-            box-shadow: 0 4px 20px rgba(124,58,237,0.15);
-        }
-        .btn-gold {
-            background: linear-gradient(135deg, #fbbf24, #f59e0b);
-            color: #0a0a18;
-            border: none;
-        }
+        .btn-primary { background: linear-gradient(135deg, #7c3aed, #a78bfa); color: #fff; border: none; box-shadow: 0 4px 20px rgba(124,58,237,0.15); }
+        .btn-gold { background: linear-gradient(135deg, #fbbf24, #f59e0b); color: #0a0a18; border: none; }
 
-        /* ===== STREAK & BADGE ===== */
-        #streak {
-            position: absolute;
-            top: 12px;
-            right: 16px;
-            font-size: 0.5rem;
-            color: rgba(255,255,255,0.1);
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            z-index: 20;
-            background: rgba(255,255,255,0.02);
-            padding: 4px 12px;
-            border-radius: 20px;
-            border: 1px solid rgba(255,255,255,0.02);
-        }
-        #streak span { color: #fbbf24; }
-        #badgeNotif {
-            position: absolute;
-            bottom: 16px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(20,20,40,0.95);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(167,139,250,0.08);
-            padding: 8px 18px;
-            border-radius: 16px;
-            font-size: 0.55rem;
-            color: rgba(255,255,255,0.5);
-            opacity: 0;
-            transition: opacity 0.5s ease, transform 0.4s ease;
-            transform: translateX(-50%) translateY(12px);
-            pointer-events: none;
-            z-index: 30;
-            white-space: nowrap;
-        }
-        #badgeNotif.show {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-        }
-        #badgeNotif .badge-icon { color: #fbbf24; margin-right: 6px; }
+        /* ===== STREAK & XP ===== */
+        #topBar { position: absolute; top: 12px; right: 16px; z-index: 20; display: flex; gap: 10px; align-items: center; font-size: 0.5rem; color: rgba(255,255,255,0.1); }
+        #topBar .streak { display: flex; align-items: center; gap: 4px; background: rgba(255,255,255,0.02); padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.02); }
+        #topBar .streak span { color: #fbbf24; }
+        #topBar .xp { display: flex; align-items: center; gap: 4px; background: rgba(255,255,255,0.02); padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.02); }
+        #topBar .xp span { color: #a78bfa; }
 
         /* ===== MENU ===== */
-        #menuOverlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
-            z-index: 50;
-            display: none;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        #menuOverlay.show {
-            display: block;
-            opacity: 1;
-        }
-        #menuPanel {
-            position: fixed;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 280px;
-            z-index: 60;
-            background: rgba(10,10,24,0.98);
-            backdrop-filter: blur(24px);
-            border-right: 1px solid rgba(255,255,255,0.02);
-            transform: translateX(-100%);
-            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-            padding: 24px 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-        #menuPanel.show {
-            transform: translateX(0);
-        }
-        .menu-header {
-            font-family: 'Georgia', serif;
-            font-size: 1.6rem;
-            letter-spacing: 6px;
-            color: #fff;
-            margin-bottom: 16px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid rgba(255,255,255,0.03);
-            font-weight: 300;
-        }
+        #menuOverlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 50; display: none; opacity: 0; transition: opacity 0.3s ease; }
+        #menuOverlay.show { display: block; opacity: 1; }
+        #menuPanel { position: fixed; left: 0; top: 0; bottom: 0; width: 280px; z-index: 60; background: rgba(10,10,24,0.98); backdrop-filter: blur(24px); border-right: 1px solid rgba(255,255,255,0.02); transform: translateX(-100%); transition: transform 0.35s cubic-bezier(0.4,0,0.2,1); padding: 24px 20px; display: flex; flex-direction: column; gap: 4px; }
+        #menuPanel.show { transform: translateX(0); }
+        .menu-header { font-family: 'Georgia', serif; font-size: 1.6rem; letter-spacing: 6px; color: #fff; margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.03); font-weight: 300; }
         .menu-header span { color: #a78bfa; }
-        .menu-item {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 12px 16px;
-            border-radius: 12px;
-            background: none;
-            border: none;
-            color: rgba(255,255,255,0.3);
-            font-size: 0.75rem;
-            font-weight: 400;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            width: 100%;
-            text-align: left;
-            font-family: inherit;
-        }
-        .menu-item:active,
-        .menu-item.active {
-            background: rgba(167,139,250,0.06);
-            color: #fff;
-        }
+        .menu-item { display: flex; align-items: center; gap: 14px; padding: 12px 16px; border-radius: 12px; background: none; border: none; color: rgba(255,255,255,0.3); font-size: 0.75rem; font-weight: 400; cursor: pointer; transition: all 0.2s ease; width: 100%; text-align: left; font-family: inherit; }
+        .menu-item:active, .menu-item.active { background: rgba(167,139,250,0.06); color: #fff; }
         .menu-item .icon { font-size: 1rem; }
-        .menu-item .badge {
-            margin-left: auto;
-            font-size: 0.5rem;
-            background: rgba(167,139,250,0.1);
-            padding: 2px 10px;
-            border-radius: 20px;
-            color: #a78bfa;
-        }
-        .menu-close {
-            position: absolute;
-            top: 20px;
-            right: 16px;
-            background: none;
-            border: none;
-            color: rgba(255,255,255,0.1);
-            font-size: 1rem;
-            cursor: pointer;
-        }
+        .menu-item .badge { margin-left: auto; font-size: 0.5rem; background: rgba(167,139,250,0.1); padding: 2px 10px; border-radius: 20px; color: #a78bfa; }
+        .menu-close { position: absolute; top: 20px; right: 16px; background: none; border: none; color: rgba(255,255,255,0.1); font-size: 1rem; cursor: pointer; }
 
         /* ===== SHARE OVERLAY ===== */
-        #shareOverlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 100;
-            padding: 20px;
-        }
+        #shareOverlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(12px); display: none; align-items: center; justify-content: center; z-index: 100; padding: 20px; }
         #shareOverlay.show { display: flex; }
-        #shareCard {
-            background: rgba(16,16,32,0.98);
-            border: 1px solid rgba(167,139,250,0.08);
-            border-radius: 24px;
-            padding: 24px;
-            max-width: 340px;
-            width: 100%;
-            text-align: center;
-            animation: cardIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        @keyframes cardIn {
-            0% { opacity: 0; transform: scale(0.9) translateY(20px); }
-            100% { opacity: 1; transform: scale(1) translateY(0); }
-        }
-        #shareCard .preview {
-            width: 100%;
-            aspect-ratio: 1/1;
-            border-radius: 16px;
-            background: radial-gradient(circle at 30% 30%, #2a1a3a, #0a0a18);
-            border: 1px solid rgba(167,139,250,0.06);
-            margin-bottom: 12px;
-            overflow: hidden;
-        }
-        #shareCard .preview img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            border-radius: 16px;
-        }
-        #shareCard .preview-text {
-            font-size: 0.65rem;
-            color: rgba(255,255,255,0.5);
-            font-weight: 300;
-            margin-bottom: 8px;
-        }
+        #shareCard { background: rgba(16,16,32,0.98); border: 1px solid rgba(167,139,250,0.08); border-radius: 24px; padding: 24px; max-width: 340px; width: 100%; text-align: center; animation: cardIn 0.4s cubic-bezier(0.34,1.56,0.64,1); }
+        @keyframes cardIn { 0% { opacity: 0; transform: scale(0.9) translateY(20px); } 100% { opacity: 1; transform: scale(1) translateY(0); } }
+        #shareCard .preview { width: 100%; aspect-ratio: 1/1; border-radius: 16px; background: radial-gradient(circle at 30% 30%, #2a1a3a, #0a0a18); border: 1px solid rgba(167,139,250,0.06); margin-bottom: 12px; overflow: hidden; }
+        #shareCard .preview img { width: 100%; height: 100%; object-fit: contain; border-radius: 16px; }
+        #shareCard .preview-text { font-size: 0.65rem; color: rgba(255,255,255,0.5); font-weight: 300; margin-bottom: 8px; }
         #shareCard .preview-text strong { color: rgba(255,255,255,0.8); }
-        #shareCard .share-actions {
-            display: flex;
-            gap: 8px;
-            justify-content: center;
-        }
+        #shareCard .share-actions { display: flex; gap: 8px; justify-content: center; }
         #shareCard .share-actions .btn { flex: 1; justify-content: center; }
-        .share-close {
-            position: absolute;
-            top: 8px;
-            right: 12px;
-            background: none;
-            border: none;
-            color: rgba(255,255,255,0.15);
-            font-size: 1rem;
-            cursor: pointer;
-        }
+        .share-close { position: absolute; top: 8px; right: 12px; background: none; border: none; color: rgba(255,255,255,0.15); font-size: 1rem; cursor: pointer; }
 
         /* ===== SCREENS ===== */
-        .screen {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            padding: 24px 20px 40px;
-            width: 100%;
-            height: 100%;
-            overflow-y: auto;
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(ellipse at 50% 30%, #141428, #06060f);
-        }
+        .screen { display: none; flex-direction: column; align-items: center; padding: 24px 20px 40px; width: 100%; height: 100%; overflow-y: auto; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 30%, #141428, #06060f); }
         .screen.active { display: flex; }
-        .screen .title {
-            font-size: 1.2rem;
-            font-weight: 300;
-            letter-spacing: 1px;
-            margin-bottom: 8px;
-        }
-        .screen .sub {
-            color: rgba(255,255,255,0.2);
-            font-size: 0.6rem;
-            margin-bottom: 16px;
-        }
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            width: 100%;
-            max-width: 320px;
-        }
-        .gallery-item {
-            aspect-ratio: 1/1;
-            border-radius: 12px;
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(255,255,255,0.02);
-            overflow: hidden;
-        }
-        .gallery-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 12px;
-        }
-        .stats-list {
-            width: 100%;
-            max-width: 320px;
-        }
-        .stats-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 10px 14px;
-            background: rgba(255,255,255,0.01);
-            border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.02);
-            margin-bottom: 6px;
-        }
+        .screen .title { font-size: 1.2rem; font-weight: 300; letter-spacing: 1px; margin-bottom: 8px; }
+        .screen .sub { color: rgba(255,255,255,0.2); font-size: 0.6rem; margin-bottom: 16px; }
+        .gallery-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; width: 100%; max-width: 320px; }
+        .gallery-item { aspect-ratio: 1/1; border-radius: 12px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.02); overflow: hidden; }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; border-radius: 12px; }
+        .stats-list { width: 100%; max-width: 320px; }
+        .stats-item { display: flex; align-items: center; gap: 12px; padding: 10px 14px; background: rgba(255,255,255,0.01); border-radius: 12px; border: 1px solid rgba(255,255,255,0.02); margin-bottom: 6px; }
         .stats-item .emoji { font-size: 1.2rem; }
-        .stats-item .info {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-        .stats-item .info .name {
-            font-size: 0.7rem;
-            color: #fff;
-        }
-        .stats-item .info .count {
-            font-size: 0.5rem;
-            color: rgba(255,255,255,0.2);
-        }
-        .stats-item .bar {
-            width: 60px;
-            height: 3px;
-            border-radius: 2px;
-            background: rgba(255,255,255,0.02);
-        }
-        .stats-item .bar span {
-            display: block;
-            height: 100%;
-            border-radius: 2px;
-            background: linear-gradient(90deg, #7c3aed, #a78bfa);
-        }
+        .stats-item .info { flex: 1; display: flex; flex-direction: column; }
+        .stats-item .info .name { font-size: 0.7rem; color: #fff; }
+        .stats-item .info .count { font-size: 0.5rem; color: rgba(255,255,255,0.2); }
+        .stats-item .bar { width: 60px; height: 3px; border-radius: 2px; background: rgba(255,255,255,0.02); }
+        .stats-item .bar span { display: block; height: 100%; border-radius: 2px; background: linear-gradient(90deg, #7c3aed, #a78bfa); }
+        .back-btn { position: absolute; top: 16px; left: 16px; background: none; border: none; color: rgba(255,255,255,0.1); font-size: 0.8rem; cursor: pointer; font-family: inherit; z-index: 10; }
 
-        /* ===== BACK BUTTON ===== */
-        .back-btn {
-            position: absolute;
-            top: 16px;
-            left: 16px;
-            background: none;
-            border: none;
-            color: rgba(255,255,255,0.1);
-            font-size: 0.8rem;
-            cursor: pointer;
-            font-family: inherit;
-            z-index: 10;
-        }
-        .back-btn:active { color: rgba(255,255,255,0.3); }
+        /* ===== MENU BUTTON ===== */
+        #menuBtn { position: absolute; top: 12px; left: 16px; z-index: 30; background: none; border: none; color: rgba(255,255,255,0.1); font-size: 1.2rem; cursor: pointer; padding: 6px; }
 
         /* ===== RESPONSIVE ===== */
-        @media (max-width: 380px) {
-            #capy-container { max-width: 180px; }
-            #drawArea { width: 150px; height: 150px; }
-            #bubble { font-size: 0.6rem; max-width: 160px; top: -8px; }
-        }
-        @media (min-width: 600px) {
-            #capy-container { max-width: 280px; }
-            #drawArea { width: 210px; height: 210px; }
-            #bubble { font-size: 0.8rem; max-width: 260px; }
-            #actions .btn { font-size: 0.7rem; padding: 10px 24px; }
-        }
+        @media (max-width:380px) { #mochi-container { max-width: 170px; } #drawArea { width: 150px; height: 150px; } #bubble { font-size: 0.6rem; max-width: 160px; top: -8px; } }
+        @media (min-width:600px) { #mochi-container { max-width: 250px; } #drawArea { width: 210px; height: 210px; } #bubble { font-size: 0.8rem; max-width: 260px; } #actions .btn { font-size: 0.7rem; padding: 10px 24px; } }
     </style>
 </head>
 <body>
 
 <div id="app">
 
-    <!-- ===== STREAK ===== -->
-    <div id="streak">🔥 <span id="streakCount">0</span> days</div>
+    <!-- ===== TOP BAR (Streak + XP) ===== -->
+    <div id="topBar">
+        <div class="streak">🔥 <span id="streakCount">0</span> days</div>
+        <div class="xp">⭐ <span id="xpCount">0</span> XP</div>
+    </div>
 
     <!-- ===== MENU BUTTON ===== -->
-    <button id="menuBtn" style="position:absolute;top:12px;left:16px;z-index:30;background:none;border:none;color:rgba(255,255,255,0.1);font-size:1.2rem;cursor:pointer;padding:6px;">☰</button>
+    <button id="menuBtn">☰</button>
 
     <!-- ===== ONBOARDING ===== -->
     <div id="onboarding">
         <button class="ob-skip" id="obSkip">Skip</button>
         <div class="ob-slide active" data-slide="0">
-            <div class="icon">🦫</div>
-            <h2>Meet Mei, your emotional capybara.</h2>
-            <p>She lives in your phone. She listens. She understands.</p>
+            <div class="icon">🐱</div>
+            <h2>Meet Mochi, your emotional guide.</h2>
+            <p>He lives in your phone. He listens. He understands.</p>
         </div>
         <div class="ob-slide" data-slide="1">
             <div class="icon">✍️</div>
-            <h2>Draw with her. She guides you.</h2>
-            <p>One stroke is enough. She'll read your mood.</p>
+            <h2>Draw with him. He guides you.</h2>
+            <p>One stroke is enough. He'll read your mood.</p>
         </div>
         <div class="ob-slide" data-slide="2">
             <div class="icon">💜</div>
-            <h2>Every day, she gives you a gift.</h2>
+            <h2>Every day, he gives you a gift.</h2>
             <p>An image + a viral text. Ready to share with the world.</p>
         </div>
         <div class="ob-dots" id="obDots"><span class="active"></span><span></span><span></span></div>
@@ -621,9 +152,9 @@
     <!-- ===== MAIN SCREEN ===== -->
     <div id="mainScreen" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px 0;">
 
-        <div id="capy-container">
-            <canvas id="capyCanvas" width="400" height="400"></canvas>
-            <div id="bubble">Give me your finger. Let's draw. 🦫</div>
+        <div id="mochi-container">
+            <canvas id="mochiCanvas" width="400" height="400"></canvas>
+            <div id="bubble">Give me your finger. Let's draw. 🐱</div>
         </div>
 
         <div id="drawArea">
@@ -634,6 +165,7 @@
         <div id="result">
             <div id="emotionEmoji"></div>
             <div id="emotionName"></div>
+            <div id="rarityBadge"></div>
         </div>
 
         <div id="actions">
@@ -644,9 +176,11 @@
     </div>
 
     <!-- ===== BADGE NOTIFICATION ===== -->
-    <div id="badgeNotif"><span class="badge-icon">🎁</span> <span id="badgeText">New badge unlocked!</span></div>
+    <div id="badgeNotif" style="position:absolute;bottom:16px;left:50%;transform:translateX(-50%);background:rgba(20,20,40,0.95);backdrop-filter:blur(16px);border:1px solid rgba(167,139,250,0.08);padding:8px 18px;border-radius:16px;font-size:0.55rem;color:rgba(255,255,255,0.5);opacity:0;transition:opacity 0.5s ease,transform 0.4s ease;transform:translateX(-50%) translateY(12px);pointer-events:none;z-index:30;white-space:nowrap;">
+        <span style="color:#fbbf24;margin-right:6px;">🎁</span> <span id="badgeText">New badge unlocked!</span>
+    </div>
 
-    <!-- ===== MENU OVERLAY & PANEL ===== -->
+    <!-- ===== MENU ===== -->
     <div id="menuOverlay"></div>
     <div id="menuPanel">
         <button class="menu-close" id="menuClose">✕</button>
@@ -696,19 +230,18 @@
 (function(){
 'use strict';
 
-// ============================================================
-//  DOM REFS
-// ============================================================
-const capyCanvas = document.getElementById('capyCanvas');
-const CC = capyCanvas.getContext('2d');
+// ===== DOM REFS =====
+const mochiCanvas = document.getElementById('mochiCanvas');
+const MC = mochiCanvas.getContext('2d');
 const drawCanvas = document.getElementById('drawCanvas');
 const DC = drawCanvas.getContext('2d');
 const bubble = document.getElementById('bubble');
 const emotionEmoji = document.getElementById('emotionEmoji');
 const emotionName = document.getElementById('emotionName');
+const rarityBadge = document.getElementById('rarityBadge');
 const glowRing = document.getElementById('glowRing');
 const streakCount = document.getElementById('streakCount');
-const badgeNotif = document.getElementById('badgeNotif');
+const xpCount = document.getElementById('xpCount');
 const badgeText = document.getElementById('badgeText');
 const shareOverlay = document.getElementById('shareOverlay');
 const sharePreview = document.getElementById('sharePreview');
@@ -730,22 +263,20 @@ const galleryBadge = document.getElementById('galleryBadge');
 const shareMenuBtn = document.getElementById('shareMenuBtn');
 const statusMenuBtn = document.getElementById('statusMenuBtn');
 
-// ============================================================
-//  STATE
-// ============================================================
+// ===== STATE =====
 let isDrawing = false;
 let points = [];
 let lastEmotion = null;
+let lastRarity = null;
 let streak = 0;
+let xp = 0;
 let shareImageData = null;
 let emotion = 'idle';
 let time = 0;
 let drawings = [];
 let emotionHistory = [];
 
-// ============================================================
-//  EMOTIONS
-// ============================================================
+// ===== EMOTIONS & RARITY =====
 const EMOTIONS = [
     { emoji: '☀️', name: 'Joy', phrase: 'You are shining today.', color: '#FBBF24' },
     { emoji: '🌧️', name: 'Sadness', phrase: 'Let it wash over you.', color: '#60A5FA' },
@@ -757,26 +288,48 @@ const EMOTIONS = [
     { emoji: '🕊️', name: 'Freedom', phrase: 'You are light.', color: '#F472B6' },
 ];
 
-// ============================================================
-//  STREAK & BADGES
-// ============================================================
-function loadStreak() {
+const RARITY_TIERS = [
+    { name: 'Common', color: '#6B7280', weight: 40 },
+    { name: 'Uncommon', color: '#34D399', weight: 30 },
+    { name: 'Rare', color: '#60A5FA', weight: 20 },
+    { name: 'Epic', color: '#A78BFA', weight: 8 },
+    { name: 'Legendary', color: '#FBBF24', weight: 2 },
+    { name: 'Mythic', color: '#F472B6', weight: 1 },
+];
+
+function getRarity() {
+    const total = RARITY_TIERS.reduce((s, t) => s + t.weight, 0);
+    let r = Math.random() * total;
+    for (const tier of RARITY_TIERS) {
+        r -= tier.weight;
+        if (r <= 0) return tier;
+    }
+    return RARITY_TIERS[0];
+}
+
+// ===== STREAK, XP & BADGES =====
+function loadProgress() {
     try {
-        const stored = localStorage.getItem('mewonen_streak');
-        streak = stored ? parseInt(stored, 10) || 0 : 0;
+        streak = parseInt(localStorage.getItem('mewonen_streak') || '0', 10);
+        xp = parseInt(localStorage.getItem('mewonen_xp') || '0', 10);
         const lastDate = localStorage.getItem('mewonen_last_date');
         const today = new Date().toDateString();
         if (lastDate !== today) {
             if (lastDate) {
                 const y = new Date(); y.setDate(y.getDate()-1);
-                if (lastDate === y.toDateString()) streak += 1;
-                else streak = 1;
+                if (lastDate === y.toDateString()) { streak += 1; } else { streak = 1; }
             } else { streak = 1; }
             localStorage.setItem('mewonen_streak', String(streak));
             localStorage.setItem('mewonen_last_date', today);
+            // XP bonus for streak
+            if (streak > 0) {
+                xp += streak * 2;
+                localStorage.setItem('mewonen_xp', String(xp));
+            }
         }
-    } catch(e){ streak = 1; }
+    } catch(e){ streak = 1; xp = 0; }
     streakCount.textContent = streak;
+    xpCount.textContent = xp;
     checkBadges();
 }
 
@@ -798,14 +351,13 @@ function checkBadges() {
     if (nb) {
         localStorage.setItem('mewonen_badges', JSON.stringify(unlocked));
         badgeText.textContent = `🎁 ${nb.icon} ${nb.name} unlocked!`;
-        badgeNotif.classList.add('show');
-        setTimeout(() => badgeNotif.classList.remove('show'), 4000);
+        const notif = document.getElementById('badgeNotif');
+        notif.classList.add('show');
+        setTimeout(() => notif.classList.remove('show'), 4000);
     }
 }
 
-// ============================================================
-//  DRAWINGS & STATS
-// ============================================================
+// ===== DRAWINGS & STATS =====
 function loadDrawings() {
     try {
         const d = localStorage.getItem('mewonen_drawings');
@@ -874,9 +426,7 @@ function updateStats() {
     }
 }
 
-// ============================================================
-//  BUBBLE
-// ============================================================
+// ===== BUBBLE =====
 function showBubble(text, duration = 3000) {
     bubble.textContent = text;
     bubble.classList.add('show');
@@ -884,229 +434,257 @@ function showBubble(text, duration = 3000) {
     bubble._timer = setTimeout(() => bubble.classList.remove('show'), duration);
 }
 
-// ============================================================
-//  CAPYBARA ANIMATION
-// ============================================================
+// ===== MOCHI ANIMATION =====
 let blinkState = 0;
 let expressionTimer = null;
 
 function setEmotion(expr) {
     emotion = expr;
     clearTimeout(expressionTimer);
-    expressionTimer = setTimeout(() => { emotion = 'idle'; }, 3000);
+    expressionTimer = setTimeout(() => { emotion = 'idle'; }, 4000);
 }
 
-function drawCapybara() {
-    const W=400, H=400, cx=W/2, cy=H/2 - 10;
+function drawMochi() {
+    const W=400, H=400, cx=W/2, cy=H/2 + 10;
     time += 0.025;
 
-    CC.clearRect(0, 0, W, H);
+    MC.clearRect(0, 0, W, H);
 
-    const breath = Math.sin(time * 0.6) * 2;
-    const breathHead = Math.sin(time * 0.6 + 0.3) * 1.2;
+    const breath = Math.sin(time * 0.6) * 1.2;
+    const breathHead = Math.sin(time * 0.6 + 0.3) * 0.8;
 
     let headTilt = 0, earAngle = 0, eyeSize = 1, mouthH = 0;
     let bodyBob = 0, pawRaise = 0, headBob = 0;
 
     switch(emotion) {
-        case 'happy':   headTilt=-0.06; earAngle=0.3; mouthH=5; bodyBob=-2; break;
-        case 'sad':     headTilt=0.08; earAngle=-0.3; mouthH=-5; bodyBob=4; break;
-        case 'surprised': headTilt=0; earAngle=0.5; eyeSize=1.4; mouthH=10; headBob=-4; break;
-        case 'proud':   headTilt=-0.10; earAngle=0.2; mouthH=3; bodyBob=-1; break;
-        case 'taunting': headTilt=0.04; earAngle=0.35; mouthH=4; bodyBob=-1; break;
+        case 'happy':   headTilt=-0.04; earAngle=0.2; mouthH=4; bodyBob=-1.5; break;
+        case 'sad':     headTilt=0.06; earAngle=-0.2; mouthH=-4; bodyBob=3; break;
+        case 'surprised': headTilt=0; earAngle=0.4; eyeSize=1.3; mouthH=8; headBob=-3; break;
+        case 'proud':   headTilt=-0.08; earAngle=0.15; mouthH=3; bodyBob=-0.5; break;
+        case 'thinking': headTilt=0.03; earAngle=0.1; mouthH=0; bodyBob=0; break;
         default: break;
     }
 
     // Shadow
-    CC.save();
-    CC.shadowColor = 'rgba(0,0,0,0.3)';
-    CC.shadowBlur = 25;
-    CC.shadowOffsetY = 12;
-    CC.beginPath();
-    CC.ellipse(cx, cy + 75 + bodyBob*0.5, 85, 18, 0, 0, Math.PI*2);
-    CC.fillStyle = 'rgba(0,0,0,0.15)';
-    CC.fill();
-    CC.restore();
+    MC.save();
+    MC.shadowColor = 'rgba(0,0,0,0.25)';
+    MC.shadowBlur = 20;
+    MC.shadowOffsetY = 10;
+    MC.beginPath();
+    MC.ellipse(cx, cy + 78 + bodyBob*0.5, 72, 16, 0, 0, Math.PI*2);
+    MC.fillStyle = 'rgba(0,0,0,0.12)';
+    MC.fill();
+    MC.restore();
 
-    const bodyY = cy + 18 + bodyBob + breath * 0.5;
+    const bodyY = cy + 20 + bodyBob + breath * 0.4;
 
-    // Body
-    CC.save();
-    CC.shadowColor = 'rgba(0,0,0,0.08)';
-    CC.shadowBlur = 12;
-    CC.shadowOffsetY = 4;
-    CC.beginPath();
-    CC.ellipse(cx, bodyY, 76, 48 + breath*0.3, 0, 0, Math.PI*2);
-    CC.fillStyle = '#8B6B4A';
-    CC.fill();
-    CC.beginPath();
-    CC.ellipse(cx, bodyY, 72, 44 + breath*0.3, 0, 0, Math.PI*2);
-    CC.fillStyle = '#A0805A';
-    CC.fill();
-    CC.restore();
+    // Body (cat-like blob)
+    MC.save();
+    MC.shadowColor = 'rgba(0,0,0,0.06)';
+    MC.shadowBlur = 10;
+    MC.shadowOffsetY = 4;
+    MC.beginPath();
+    MC.ellipse(cx, bodyY, 64, 44 + breath*0.2, 0, 0, Math.PI*2);
+    MC.fillStyle = '#1A1A2E';
+    MC.fill();
+    MC.beginPath();
+    MC.ellipse(cx, bodyY-2, 60, 40 + breath*0.2, 0, 0, Math.PI*2);
+    MC.fillStyle = '#2A2A4A';
+    MC.fill();
+    MC.restore();
 
     // Tail
-    CC.save();
-    CC.translate(cx + 74, bodyY - 16);
-    CC.rotate(Math.sin(time*0.8)*0.15);
-    CC.beginPath();
-    CC.ellipse(0,0,10,7,0.1,0,Math.PI*2);
-    CC.fillStyle = '#8B6B4A';
-    CC.fill();
-    CC.restore();
+    MC.save();
+    MC.translate(cx+62, bodyY-14);
+    MC.rotate(Math.sin(time*0.7)*0.2);
+    MC.beginPath();
+    MC.ellipse(0,0,14,8,0.1,0,Math.PI*2);
+    MC.fillStyle = '#2A2A4A';
+    MC.fill();
+    MC.restore();
 
     // Head
     const headX = cx;
-    const headY = cy - 26 + headBob + breathHead*0.5 + bodyBob*0.3;
+    const headY = cy - 18 + headBob + breathHead*0.3 + bodyBob*0.2;
 
-    CC.save();
-    CC.translate(headX, headY);
-    CC.rotate(headTilt);
+    MC.save();
+    MC.translate(headX, headY);
+    MC.rotate(headTilt);
 
     // Ears
-    CC.save();
-    CC.rotate(earAngle*0.4 + Math.sin(time*0.9)*0.04);
-    CC.beginPath();
-    CC.ellipse(-54, -32 + Math.sin(time*0.7)*1, 18, 12, -0.15, 0, Math.PI*2);
-    CC.fillStyle = '#A0805A';
-    CC.fill();
-    CC.restore();
-    CC.save();
-    CC.rotate(-earAngle*0.4 + Math.sin(time*0.9+0.5)*0.04);
-    CC.beginPath();
-    CC.ellipse(54, -32 + Math.sin(time*0.7+0.5)*1, 18, 12, 0.15, 0, Math.PI*2);
-    CC.fillStyle = '#A0805A';
-    CC.fill();
-    CC.restore();
+    MC.save();
+    MC.rotate(earAngle*0.3 + Math.sin(time*0.8)*0.03);
+    MC.beginPath();
+    MC.ellipse(-48, -34 + Math.sin(time*0.6)*0.6, 16, 14, -0.1, 0, Math.PI*2);
+    MC.fillStyle = '#2A2A4A';
+    MC.fill();
+    MC.beginPath();
+    MC.ellipse(-48, -34 + Math.sin(time*0.6)*0.6, 10, 8, -0.1, 0, Math.PI*2);
+    MC.fillStyle = '#A78BFA';
+    MC.fill();
+    MC.restore();
+    MC.save();
+    MC.rotate(-earAngle*0.3 + Math.sin(time*0.8+0.4)*0.03);
+    MC.beginPath();
+    MC.ellipse(48, -34 + Math.sin(time*0.6+0.4)*0.6, 16, 14, 0.1, 0, Math.PI*2);
+    MC.fillStyle = '#2A2A4A';
+    MC.fill();
+    MC.beginPath();
+    MC.ellipse(48, -34 + Math.sin(time*0.6+0.4)*0.6, 10, 8, 0.1, 0, Math.PI*2);
+    MC.fillStyle = '#A78BFA';
+    MC.fill();
+    MC.restore();
 
     // Head main
-    CC.beginPath();
-    CC.ellipse(0, 0, 52, 42, 0, 0, Math.PI*2);
-    CC.fillStyle = '#A0805A';
-    CC.fill();
+    MC.beginPath();
+    MC.ellipse(0, 0, 48, 40, 0, 0, Math.PI*2);
+    MC.fillStyle = '#2A2A4A';
+    MC.fill();
 
     // Snout
-    CC.beginPath();
-    CC.ellipse(0, 16, 32, 20, 0, 0, Math.PI*2);
-    CC.fillStyle = '#C4A882';
-    CC.fill();
-    CC.beginPath();
-    CC.ellipse(0, 14, 28, 16, 0, 0, Math.PI*2);
-    CC.fillStyle = '#D4B88A';
-    CC.fill();
+    MC.beginPath();
+    MC.ellipse(0, 14, 26, 18, 0, 0, Math.PI*2);
+    MC.fillStyle = '#3A3A5A';
+    MC.fill();
+    MC.beginPath();
+    MC.ellipse(0, 12, 22, 14, 0, 0, Math.PI*2);
+    MC.fillStyle = '#4A4A6A';
+    MC.fill();
 
     // Nose
-    CC.beginPath();
-    CC.ellipse(0, 7, 7, 5, 0, 0, Math.PI*2);
-    CC.fillStyle = '#1A1A2E';
-    CC.fill();
+    MC.beginPath();
+    MC.ellipse(0, 6, 6, 4, 0, 0, Math.PI*2);
+    MC.fillStyle = '#A78BFA';
+    MC.fill();
+
+    // Whiskers
+    MC.strokeStyle = 'rgba(167,139,250,0.15)';
+    MC.lineWidth = 1;
+    MC.beginPath();
+    MC.moveTo(-22, 12); MC.lineTo(-36, 6);
+    MC.moveTo(-22, 14); MC.lineTo(-36, 14);
+    MC.moveTo(-22, 16); MC.lineTo(-36, 22);
+    MC.stroke();
+    MC.beginPath();
+    MC.moveTo(22, 12); MC.lineTo(36, 6);
+    MC.moveTo(22, 14); MC.lineTo(36, 14);
+    MC.moveTo(22, 16); MC.lineTo(36, 22);
+    MC.stroke();
 
     // Eyes
-    let eyeOffX = 18, eyeOffY = -4;
+    let eyeOffX = 16, eyeOffY = -4;
     if (isDrawing && points.length > 0) {
         const last = points[points.length-1];
         const rect = drawCanvas.getBoundingClientRect();
         const cx2 = rect.left + rect.width/2;
         const cy2 = rect.top + rect.height/2;
-        const dx = (last.x + rect.left - cx2) / rect.width * 10;
-        const dy = (last.y + rect.top - cy2) / rect.height * 8;
-        eyeOffX += dx * 0.3;
-        eyeOffY += dy * 0.2;
+        const dx = (last.x + rect.left - cx2) / rect.width * 8;
+        const dy = (last.y + rect.top - cy2) / rect.height * 6;
+        eyeOffX += dx * 0.25;
+        eyeOffY += dy * 0.15;
     }
 
     // Left eye
-    CC.save();
-    CC.beginPath();
-    CC.ellipse(-eyeOffX, eyeOffY, 9*eyeSize, 10*eyeSize, 0, 0, Math.PI*2);
-    CC.fillStyle = '#1A1A2E';
-    CC.fill();
-    CC.beginPath();
-    CC.arc(-eyeOffX+4, eyeOffY-3, 3.5, 0, Math.PI*2);
-    CC.fillStyle = '#fff';
-    CC.fill();
-    CC.restore();
+    MC.save();
+    MC.beginPath();
+    MC.ellipse(-eyeOffX, eyeOffY, 8*eyeSize, 9*eyeSize, 0, 0, Math.PI*2);
+    MC.fillStyle = '#06060f';
+    MC.fill();
+    MC.beginPath();
+    MC.arc(-eyeOffX+3, eyeOffY-2, 3, 0, Math.PI*2);
+    MC.fillStyle = '#fff';
+    MC.fill();
+    MC.beginPath();
+    MC.arc(-eyeOffX+4.5, eyeOffY-3, 1.2, 0, Math.PI*2);
+    MC.fillStyle = '#fff';
+    MC.fill();
+    MC.restore();
 
     // Right eye
-    CC.save();
-    CC.beginPath();
-    CC.ellipse(eyeOffX, eyeOffY, 9*eyeSize, 10*eyeSize, 0, 0, Math.PI*2);
-    CC.fillStyle = '#1A1A2E';
-    CC.fill();
-    CC.beginPath();
-    CC.arc(eyeOffX+4, eyeOffY-3, 3.5, 0, Math.PI*2);
-    CC.fillStyle = '#fff';
-    CC.fill();
-    CC.restore();
+    MC.save();
+    MC.beginPath();
+    MC.ellipse(eyeOffX, eyeOffY, 8*eyeSize, 9*eyeSize, 0, 0, Math.PI*2);
+    MC.fillStyle = '#06060f';
+    MC.fill();
+    MC.beginPath();
+    MC.arc(eyeOffX+3, eyeOffY-2, 3, 0, Math.PI*2);
+    MC.fillStyle = '#fff';
+    MC.fill();
+    MC.beginPath();
+    MC.arc(eyeOffX+4.5, eyeOffY-3, 1.2, 0, Math.PI*2);
+    MC.fillStyle = '#fff';
+    MC.fill();
+    MC.restore();
 
     // Mouth
-    const mw = 18, my = 26 + breath*0.3;
-    CC.beginPath();
-    CC.moveTo(-mw, my);
-    CC.quadraticCurveTo(0, my + mouthH + 2, mw, my);
-    CC.strokeStyle = '#4A3A2E';
-    CC.lineWidth = 2.5;
-    CC.stroke();
+    const mw = 14, my = 24 + breath*0.2;
+    MC.beginPath();
+    MC.moveTo(-mw, my);
+    MC.quadraticCurveTo(0, my + mouthH + 2, mw, my);
+    MC.strokeStyle = 'rgba(255,255,255,0.3)';
+    MC.lineWidth = 2;
+    MC.stroke();
 
     if (emotion === 'happy') {
-        CC.beginPath();
-        CC.ellipse(0, my+mouthH+4, 6, 4, 0, 0, Math.PI*2);
-        CC.fillStyle = '#E88A8A';
-        CC.fill();
+        MC.beginPath();
+        MC.ellipse(0, my+mouthH+4, 5, 3, 0, 0, Math.PI*2);
+        MC.fillStyle = '#E88A8A';
+        MC.fill();
     }
 
-    CC.restore();
+    MC.restore();
 
     // Paws
-    CC.save();
-    CC.beginPath();
-    CC.ellipse(cx-44, bodyY+20, 16, 9, 0, 0, Math.PI*2);
-    CC.fillStyle = '#8B6B4A';
-    CC.fill();
-    CC.restore();
-    CC.save();
-    CC.beginPath();
-    CC.ellipse(cx+44, bodyY+20, 16, 9, 0, 0, Math.PI*2);
-    CC.fillStyle = '#8B6B4A';
-    CC.fill();
-    CC.restore();
+    MC.save();
+    MC.beginPath();
+    MC.ellipse(cx-38, bodyY+20, 14, 8, 0, 0, Math.PI*2);
+    MC.fillStyle = '#2A2A4A';
+    MC.fill();
+    MC.restore();
+    MC.save();
+    MC.beginPath();
+    MC.ellipse(cx+38, bodyY+20, 14, 8, 0, 0, Math.PI*2);
+    MC.fillStyle = '#2A2A4A';
+    MC.fill();
+    MC.restore();
 
     // Guide paw
-    const raise = (emotion === 'taunting' || isDrawing) ? 0.8 : 0;
-    const pX = cx - 24 + Math.sin(time*1.2)*2*raise;
-    const pY = bodyY - 6 - raise*14 + breath*0.3;
-    CC.save();
-    CC.shadowColor = 'rgba(0,0,0,0.08)';
-    CC.shadowBlur = 6;
-    CC.shadowOffsetY = 2;
-    CC.beginPath();
-    CC.ellipse(pX, pY, 14, 10, 0, 0, Math.PI*2);
-    CC.fillStyle = '#A0805A';
-    CC.fill();
-    CC.restore();
-    for (let i=-6; i<=6; i+=4) {
-        CC.beginPath();
-        CC.arc(pX+i, pY-2, 3.5, 0, Math.PI*2);
-        CC.fillStyle = '#B0906A';
-        CC.fill();
+    const raise = (emotion === 'thinking' || isDrawing) ? 0.7 : 0;
+    const pX = cx - 20 + Math.sin(time*1.1)*1.5*raise;
+    const pY = bodyY - 4 - raise*12 + breath*0.2;
+    MC.save();
+    MC.shadowColor = 'rgba(0,0,0,0.06)';
+    MC.shadowBlur = 6;
+    MC.shadowOffsetY = 2;
+    MC.beginPath();
+    MC.ellipse(pX, pY, 12, 9, 0, 0, Math.PI*2);
+    MC.fillStyle = '#3A3A5A';
+    MC.fill();
+    MC.restore();
+    for (let i=-4; i<=4; i+=3) {
+        MC.beginPath();
+        MC.arc(pX+i, pY-1, 2.5, 0, Math.PI*2);
+        MC.fillStyle = '#4A4A6A';
+        MC.fill();
     }
 
     // Blink
     if (blinkState === 1 || blinkState === 3) {
-        CC.save();
-        CC.translate(headX, headY);
-        CC.strokeStyle = '#A0805A';
-        CC.lineWidth = 4;
-        CC.beginPath(); CC.moveTo(-26, -6); CC.lineTo(-10, -6); CC.stroke();
-        CC.beginPath(); CC.moveTo(10, -6); CC.lineTo(26, -6); CC.stroke();
-        CC.restore();
+        MC.save();
+        MC.translate(headX, headY);
+        MC.strokeStyle = '#2A2A4A';
+        MC.lineWidth = 4;
+        MC.beginPath(); MC.moveTo(-24, -6); MC.lineTo(-8, -6); MC.stroke();
+        MC.beginPath(); MC.moveTo(8, -6); MC.lineTo(24, -6); MC.stroke();
+        MC.restore();
     } else if (blinkState === 2) {
-        CC.save();
-        CC.translate(headX, headY);
-        CC.strokeStyle = '#A0805A';
-        CC.lineWidth = 5;
-        CC.beginPath(); CC.moveTo(-28, -6); CC.lineTo(-6, -6); CC.stroke();
-        CC.beginPath(); CC.moveTo(6, -6); CC.lineTo(28, -6); CC.stroke();
-        CC.restore();
+        MC.save();
+        MC.translate(headX, headY);
+        MC.strokeStyle = '#2A2A4A';
+        MC.lineWidth = 5;
+        MC.beginPath(); MC.moveTo(-26, -6); MC.lineTo(-6, -6); MC.stroke();
+        MC.beginPath(); MC.moveTo(6, -6); MC.lineTo(26, -6); MC.stroke();
+        MC.restore();
     }
 }
 
@@ -1121,9 +699,7 @@ function startBlink() {
     }, 3000 + Math.random() * 2500);
 }
 
-// ============================================================
-//  DRAW CANVAS
-// ============================================================
+// ===== DRAW CANVAS =====
 function setupDrawCanvas() {
     const rect = drawCanvas.getBoundingClientRect();
     const dpr = window.devicePixelRatio || 1;
@@ -1152,8 +728,8 @@ function startDraw(e) {
     DC.beginPath();
     DC.moveTo(p.x, p.y);
     glowRing.classList.add('active');
-    setEmotion('taunting');
-    showBubble("I'm guiding you... 🦫", 2000);
+    setEmotion('thinking');
+    showBubble("I'm guiding you... 🐱", 2000);
 }
 
 function moveDraw(e) {
@@ -1177,9 +753,7 @@ function endDraw() {
     analyzeDraw();
 }
 
-// ============================================================
-//  ANALYSIS
-// ============================================================
+// ===== ANALYSIS =====
 function analyzeDraw() {
     let totalDist = 0;
     for (let i=1; i<points.length; i++) {
@@ -1199,14 +773,21 @@ function analyzeDraw() {
     else if (rand > 0.85 && idx !== 7) idx = 5;
 
     const emotion = EMOTIONS[idx % EMOTIONS.length];
+    const rarity = getRarity();
     lastEmotion = emotion;
-    displayResult(emotion);
-    generateShareImage(emotion);
+    lastRarity = rarity;
+    displayResult(emotion, rarity);
+    generateShareImage(emotion, rarity);
 
     // Save
     const data = drawCanvas.toDataURL('image/png');
-    drawings.push({ data, date: new Date().toISOString(), mood: emotion.name });
+    drawings.push({ data, date: new Date().toISOString(), mood: emotion.name, rarity: rarity.name });
     emotionHistory.push({ emoji: emotion.emoji, name: emotion.name, date: new Date().toISOString() });
+    // XP gain
+    const xpGain = 10 + (rarity.weight * 2);
+    xp += xpGain;
+    localStorage.setItem('mewonen_xp', String(xp));
+    xpCount.textContent = xp;
     saveDrawings();
 
     let expr = 'happy';
@@ -1216,28 +797,32 @@ function analyzeDraw() {
     else if (emotion.name === 'Joy') expr = 'happy';
     else expr = 'happy';
     setEmotion(expr);
-    showBubble(`I see... You are ${emotion.name}. ${emotion.phrase} 💜`, 4000);
+
+    const rarityEmoji = rarity.name === 'Mythic' ? '🌟' : rarity.name === 'Legendary' ? '✨' : '💜';
+    showBubble(`🎉 ${emotion.emoji} ${emotion.name}! ${rarity.name} ${rarityEmoji} +${xpGain} XP`, 5000);
 }
 
-function displayResult(emotion) {
+function displayResult(emotion, rarity) {
     emotionEmoji.textContent = emotion.emoji;
     emotionEmoji.style.animation = 'none';
     requestAnimationFrame(() => {
-        emotionEmoji.style.animation = 'pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
+        emotionEmoji.style.animation = 'pop 0.5s cubic-bezier(0.34,1.56,0.64,1)';
     });
     emotionName.textContent = emotion.name;
-    glowRing.style.borderColor = emotion.color + '44';
-    glowRing.style.boxShadow = `0 0 60px ${emotion.color}11`;
+    rarityBadge.textContent = `✨ ${rarity.name}`;
+    rarityBadge.style.color = rarity.color;
+    rarityBadge.style.borderColor = rarity.color + '44';
+    rarityBadge.classList.add('show');
+    glowRing.style.borderColor = rarity.color + '44';
+    glowRing.style.boxShadow = `0 0 60px ${rarity.color}11`;
     setTimeout(() => {
         glowRing.style.borderColor = 'rgba(167,139,250,0.04)';
         glowRing.style.boxShadow = 'none';
-    }, 3000);
+    }, 4000);
 }
 
-// ============================================================
-//  SHARE
-// ============================================================
-function generateShareImage(emotion) {
+// ===== SHARE =====
+function generateShareImage(emotion, rarity) {
     const offscreen = document.createElement('canvas');
     offscreen.width = 800;
     offscreen.height = 800;
@@ -1250,6 +835,13 @@ function generateShareImage(emotion) {
     c.fillStyle = grad;
     c.fillRect(0,0,800,800);
 
+    // Rarity border
+    c.beginPath();
+    c.arc(400,350,220,0,Math.PI*2);
+    c.strokeStyle = rarity.color + '44';
+    c.lineWidth = 4;
+    c.stroke();
+
     const img = new Image();
     img.onload = function() {
         c.save();
@@ -1258,12 +850,6 @@ function generateShareImage(emotion) {
         c.clip();
         c.drawImage(img, 400-200, 350-200, 400, 400);
         c.restore();
-
-        c.beginPath();
-        c.arc(400,350,205,0,Math.PI*2);
-        c.strokeStyle = emotion.color + '44';
-        c.lineWidth = 3;
-        c.stroke();
 
         c.font = '80px Arial';
         c.textAlign = 'center';
@@ -1275,26 +861,25 @@ function generateShareImage(emotion) {
         c.fillText(emotion.name, 400, 620);
 
         c.font = '24px Arial';
-        c.fillStyle = 'rgba(255,255,255,0.5)';
+        c.fillStyle = 'rgba(255,255,255,0.4)';
         c.fillText(emotion.phrase, 400, 680);
+
+        c.font = 'bold 28px Arial';
+        c.fillStyle = rarity.color;
+        c.fillText('✨ ' + rarity.name, 400, 570);
 
         c.font = '20px Arial';
         c.fillStyle = '#a78bfa';
-        c.fillText('✨ @mewonen', 400, 740);
-
-        c.font = 'bold 28px Arial';
-        c.fillStyle = '#fff';
-        const vt = getViralText(emotion);
-        c.fillText(vt, 400, 570);
+        c.fillText('🐱 @mewonen', 400, 740);
 
         shareImageData = offscreen.toDataURL('image/png');
     };
     img.src = drawCanvas.toDataURL();
 }
 
-function getViralText(emotion) {
+function getViralText(emotion, rarity) {
     const t = {
-        'Joy': '✨ Mewonen saw my light.',
+        'Joy': '✨ I drew my joy. Mewonen saw it.',
         'Sadness': '💜 I drew my tears. Mewonen caught them.',
         'Anger': '🔥 My fire. Mewonen saw it.',
         'Peace': '🌈 I crossed the storm.',
@@ -1303,7 +888,7 @@ function getViralText(emotion) {
         'Hope': '🌱 Something is growing.',
         'Freedom': '🕊️ I am light.'
     };
-    return t[emotion.name] || '💜 Mewonen saw my soul.';
+    return `${t[emotion.name] || '💜 Mewonen saw my soul.'} ${rarity.name} ✨`;
 }
 
 function openShare() {
@@ -1312,9 +897,9 @@ function openShare() {
     const img = document.createElement('img');
     img.src = shareImageData;
     sharePreview.appendChild(img);
-    if (lastEmotion) {
+    if (lastEmotion && lastRarity) {
         shareEmotion.textContent = lastEmotion.name;
-        shareText.innerHTML = `✨ <strong>${lastEmotion.name}</strong> — ${getViralText(lastEmotion)}`;
+        shareText.innerHTML = `✨ <strong>${lastEmotion.name}</strong> — ${getViralText(lastEmotion, lastRarity)}`;
     }
     shareOverlay.classList.add('show');
 }
@@ -1328,8 +913,8 @@ function downloadShare() {
     a.click();
 }
 function copyShareText() {
-    if (!lastEmotion) return;
-    const text = `${getViralText(lastEmotion)} ✨ @mewonen — Draw your mood at mewonen.com 💜`;
+    if (!lastEmotion || !lastRarity) return;
+    const text = `${getViralText(lastEmotion, lastRarity)} 🐱 @mewonen — Draw your mood at mewonen.com 💜`;
     navigator.clipboard.writeText(text).then(() => {
         showBubble('📋 Text copied!', 2000);
     }).catch(() => {
@@ -1365,9 +950,15 @@ function generateStatus() {
     c.fillStyle = '#fff';
     c.fillText(lastEmotion.name, 400, 550);
 
+    if (lastRarity) {
+        c.font = '24px Arial';
+        c.fillStyle = lastRarity.color;
+        c.fillText('✨ ' + lastRarity.name, 400, 620);
+    }
+
     c.font = '28px Arial';
-    c.fillStyle = 'rgba(255,255,255,0.4)';
-    c.fillText('✨ mewonen.com', 400, 650);
+    c.fillStyle = 'rgba(255,255,255,0.3)';
+    c.fillText('🐱 mewonen.com', 400, 700);
 
     const a = document.createElement('a');
     a.download = `mewonen-status-${lastEmotion.name.toLowerCase()}.png`;
@@ -1375,22 +966,21 @@ function generateStatus() {
     a.click();
     showBubble('📱 Status saved!', 2000);
 }
-
 function clearCanvas() {
     DC.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
     emotionEmoji.textContent = '';
     emotionName.textContent = '';
+    rarityBadge.classList.remove('show');
     glowRing.style.borderColor = 'rgba(167,139,250,0.04)';
     glowRing.style.boxShadow = 'none';
     lastEmotion = null;
+    lastRarity = null;
     shareImageData = null;
     setEmotion('idle');
     showBubble('Cleared. Ready for a new drawing. ✨', 2000);
 }
 
-// ============================================================
-//  ONBOARDING
-// ============================================================
+// ===== ONBOARDING =====
 function initOnboarding() {
     if (localStorage.getItem('mewonen_onboarded') === '1') {
         document.getElementById('onboarding').classList.add('hide');
@@ -1424,9 +1014,7 @@ function initOnboarding() {
     });
 }
 
-// ============================================================
-//  MENU
-// ============================================================
+// ===== MENU =====
 function initMenu() {
     const mainScreen = document.getElementById('mainScreen');
     const galleryScreen = document.getElementById('galleryScreen');
@@ -1467,31 +1055,26 @@ function initMenu() {
     shareMenuBtn.addEventListener('click', () => { closeMenu(); openShare(); });
     statusMenuBtn.addEventListener('click', () => { closeMenu(); generateStatus(); });
 
-    // Show main by default
     showScreen('main');
 }
 
-// ============================================================
-//  MAIN LOOP
-// ============================================================
+// ===== MAIN LOOP =====
 function loop() {
-    drawCapybara();
+    drawMochi();
     requestAnimationFrame(loop);
 }
 
-// ============================================================
-//  INIT
-// ============================================================
+// ===== INIT =====
 function init() {
     setupDrawCanvas();
-    loadStreak();
+    loadProgress();
     loadDrawings();
     startBlink();
     initOnboarding();
     initMenu();
 
     setTimeout(() => {
-        showBubble('Give me your finger. Let\'s draw together. 🦫', 3000);
+        showBubble('Give me your finger. Let\'s draw together. 🐱', 3000);
     }, 1200);
 
     drawCanvas.addEventListener('touchstart', startDraw, { passive: false });
@@ -1519,7 +1102,7 @@ function init() {
     });
 
     loop();
-    console.log('🦫 Mewonen — Level Instagram');
+    console.log('🐱 Mewonen x Mochi — Level Instagram');
 }
 
 if (document.readyState === 'loading') {
