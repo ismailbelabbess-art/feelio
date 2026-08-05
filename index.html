@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>Mewonen — Draw with Mei 🦫</title>
+    <title>Mewonen — Draw with Mei 3D 🦫</title>
 
     <style>
         * {
@@ -20,46 +20,29 @@
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             height: 100dvh;
             overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             touch-action: none;
         }
 
         #app {
             width: 100%;
-            max-width: 420px;
             height: 100dvh;
-            max-height: 780px;
             position: relative;
-            background: radial-gradient(ellipse at 50% 30%, #141428, #06060f);
-            overflow: hidden;
-            border-radius: 0;
-            box-shadow: 0 0 80px rgba(124, 58, 237, 0.08);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
         }
 
-        #capy-container {
-            position: relative;
-            width: 220px;
-            height: 200px;
-            margin-bottom: 10px;
-            z-index: 10;
-        }
-
-        #capy-container svg {
+        #three-container {
             width: 100%;
-            height: 100%;
-            display: block;
-            filter: drop-shadow(0 8px 30px rgba(167, 139, 250, 0.15));
+            height: 60%;
+            position: relative;
+            z-index: 1;
         }
 
         #bubble {
             position: absolute;
-            top: -18px;
+            top: 18%;
             left: 50%;
             transform: translateX(-50%);
             background: rgba(255, 255, 255, 0.04);
@@ -68,9 +51,9 @@
             border: 1px solid rgba(167, 139, 250, 0.10);
             padding: 10px 18px;
             border-radius: 20px;
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             color: rgba(255, 255, 255, 0.85);
-            max-width: 220px;
+            max-width: 260px;
             text-align: center;
             line-height: 1.5;
             font-weight: 300;
@@ -79,6 +62,7 @@
             transition: opacity 0.5s ease, transform 0.3s ease;
             transform: translateX(-50%) translateY(8px);
             pointer-events: none;
+            z-index: 10;
             white-space: nowrap;
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
             font-family: 'Segoe UI', system-ui, sans-serif;
@@ -91,15 +75,15 @@
 
         #drawArea {
             position: relative;
-            width: 220px;
-            height: 220px;
+            width: 180px;
+            height: 180px;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(167, 139, 250, 0.08);
             box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.5);
             touch-action: none;
-            margin: 6px 0 4px;
-            transition: all 0.4s ease;
+            margin-top: 4px;
+            z-index: 2;
         }
 
         #drawCanvas {
@@ -130,24 +114,24 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-top: 6px;
-            min-height: 40px;
+            min-height: 36px;
+            z-index: 2;
+            margin-top: 2px;
         }
 
         #emotionEmoji {
-            font-size: 2rem;
-            min-height: 40px;
+            font-size: 1.8rem;
+            min-height: 32px;
             animation: pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         #emotionName {
-            font-size: 0.7rem;
+            font-size: 0.6rem;
             color: rgba(255, 255, 255, 0.25);
             font-weight: 300;
             letter-spacing: 2px;
             text-transform: uppercase;
-            margin-top: 2px;
-            min-height: 18px;
+            min-height: 16px;
         }
 
         @keyframes pop {
@@ -163,16 +147,17 @@
 
         #actions {
             display: flex;
-            gap: 8px;
-            margin-top: 8px;
+            gap: 6px;
+            margin-top: 4px;
             flex-wrap: wrap;
             justify-content: center;
+            z-index: 2;
         }
 
         .btn {
-            padding: 8px 16px;
+            padding: 6px 14px;
             border-radius: 30px;
-            font-size: 0.6rem;
+            font-size: 0.55rem;
             font-weight: 400;
             letter-spacing: 0.5px;
             border: none;
@@ -207,9 +192,9 @@
 
         #streak {
             position: absolute;
-            top: 16px;
-            right: 16px;
-            font-size: 0.5rem;
+            top: 12px;
+            right: 12px;
+            font-size: 0.45rem;
             color: rgba(255, 255, 255, 0.12);
             letter-spacing: 0.5px;
             display: flex;
@@ -228,16 +213,16 @@
 
         #badgeNotif {
             position: absolute;
-            bottom: 20px;
+            bottom: 16px;
             left: 50%;
             transform: translateX(-50%);
             background: rgba(20, 20, 40, 0.95);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(167, 139, 250, 0.08);
-            padding: 8px 18px;
+            padding: 6px 16px;
             border-radius: 16px;
-            font-size: 0.6rem;
+            font-size: 0.55rem;
             color: rgba(255, 255, 255, 0.5);
             opacity: 0;
             transition: opacity 0.5s ease, transform 0.4s ease;
@@ -278,7 +263,7 @@
             background: rgba(16, 16, 32, 0.98);
             border: 1px solid rgba(167, 139, 250, 0.08);
             border-radius: 24px;
-            padding: 24px;
+            padding: 20px;
             max-width: 340px;
             width: 100%;
             text-align: center;
@@ -306,7 +291,7 @@
             justify-content: center;
             font-size: 4rem;
             border: 1px solid rgba(167, 139, 250, 0.06);
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             position: relative;
             overflow: hidden;
         }
@@ -319,7 +304,7 @@
         }
 
         #shareCard .preview-text {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: rgba(255, 255, 255, 0.5);
             font-weight: 300;
             margin-bottom: 6px;
@@ -333,7 +318,7 @@
             display: flex;
             gap: 8px;
             justify-content: center;
-            margin-top: 10px;
+            margin-top: 8px;
         }
 
         #shareCard .share-actions .btn {
@@ -353,34 +338,33 @@
         }
 
         @media (max-width: 380px) {
-            #capy-container {
-                width: 170px;
-                height: 155px;
-            }
             #drawArea {
-                width: 180px;
-                height: 180px;
+                width: 150px;
+                height: 150px;
             }
             #bubble {
                 font-size: 0.6rem;
                 padding: 6px 12px;
                 max-width: 160px;
+                top: 15%;
+            }
+            #three-container {
+                height: 50%;
             }
         }
 
         @media (min-width: 600px) {
-            #capy-container {
-                width: 260px;
-                height: 230px;
-            }
             #drawArea {
-                width: 260px;
-                height: 260px;
+                width: 220px;
+                height: 220px;
             }
             #bubble {
                 font-size: 0.85rem;
                 padding: 14px 24px;
                 max-width: 280px;
+            }
+            #three-container {
+                height: 65%;
             }
         }
     </style>
@@ -390,59 +374,9 @@
     <div id="app">
         <div id="streak">🔥 <span id="streakCount">0</span> days</div>
 
-        <div id="capy-container">
-            <svg viewBox="0 0 200 180" xmlns="http://www.w3.org/2000/svg" id="capySvg">
-                <!-- Shadow -->
-                <ellipse cx="100" cy="158" rx="72" ry="8" fill="rgba(0,0,0,0.15)" />
+        <div id="three-container"></div>
 
-                <!-- Body -->
-                <ellipse cx="100" cy="120" rx="70" ry="50" fill="#8B6B4A" id="body" />
-                <ellipse cx="100" cy="120" rx="66" ry="46" fill="#A0805A" />
-
-                <!-- Head group -->
-                <g id="head">
-                    <ellipse cx="100" cy="70" rx="48" ry="40" fill="#A0805A" />
-                    <!-- Snout -->
-                    <ellipse cx="100" cy="88" rx="28" ry="18" fill="#8B6B4A" />
-                    <ellipse cx="100" cy="86" rx="24" ry="14" fill="#C4A882" />
-                    <!-- Nose -->
-                    <ellipse cx="100" cy="80" rx="6" ry="4" fill="#4A3A2A" id="nose" />
-
-                    <!-- Left eye -->
-                    <g id="eyeL">
-                        <ellipse cx="80" cy="62" rx="8" ry="9" fill="#1A1A2E" />
-                        <ellipse cx="82" cy="59" rx="3" ry="3" fill="white" id="eyeLHigh" />
-                    </g>
-
-                    <!-- Right eye -->
-                    <g id="eyeR">
-                        <ellipse cx="120" cy="62" rx="8" ry="9" fill="#1A1A2E" />
-                        <ellipse cx="122" cy="59" rx="3" ry="3" fill="white" id="eyeRHigh" />
-                    </g>
-
-                    <!-- Ears -->
-                    <ellipse cx="60" cy="42" rx="14" ry="12" fill="#A0805A" id="earL" />
-                    <ellipse cx="140" cy="42" rx="14" ry="12" fill="#A0805A" id="earR" />
-
-                    <!-- Mouth / Smile -->
-                    <path d="M90 94 Q100 100 110 94" stroke="#4A3A2A" stroke-width="2" fill="none" id="mouth" />
-                </g>
-
-                <!-- Paws -->
-                <ellipse cx="60" cy="150" rx="16" ry="10" fill="#8B6B4A" />
-                <ellipse cx="140" cy="150" rx="16" ry="10" fill="#8B6B4A" />
-
-                <!-- Guide paw (front left) -->
-                <g id="pawGuide">
-                    <ellipse cx="100" cy="150" rx="14" ry="10" fill="#A0805A" />
-                </g>
-
-                <!-- Tail -->
-                <ellipse cx="170" cy="120" rx="8" ry="6" fill="#8B6B4A" />
-            </svg>
-
-            <div id="bubble"></div>
-        </div>
+        <div id="bubble">Give me your finger. Let's draw. 🦫</div>
 
         <div id="drawArea">
             <div id="glowRing"></div>
@@ -475,16 +409,19 @@
         </div>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js">
+    </script>
     <script>
         // ============================================================
-        //  MEWONEN x CAPYBARA — FULLY ANIMATED
-        //  ENGLISH ONLY
+        //  MEWONEN 3D — CAPYBARA WITH THREE.JS
+        //  English only — Streaks, Badges, Gifts & Viral Share
         // ============================================================
 
         (function() {
             'use strict';
 
             // ===== DOM REFS =====
+            const container = document.getElementById('three-container');
             const canvas = document.getElementById('drawCanvas');
             const ctx = canvas.getContext('2d');
             const bubble = document.getElementById('bubble');
@@ -505,18 +442,263 @@
             const copyBtn = document.getElementById('copyBtn');
             const shareClose = document.getElementById('shareClose');
 
-            // ===== SVG PARTS =====
-            const head = document.getElementById('head');
-            const eyeL = document.getElementById('eyeL');
-            const eyeR = document.getElementById('eyeR');
-            const eyeLHigh = document.getElementById('eyeLHigh');
-            const eyeRHigh = document.getElementById('eyeRHigh');
-            const mouth = document.getElementById('mouth');
-            const earL = document.getElementById('earL');
-            const earR = document.getElementById('earR');
-            const pawGuide = document.getElementById('pawGuide');
-            const nose = document.getElementById('nose');
-            const body = document.getElementById('body');
+            // ===== THREE.JS SETUP =====
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
+            camera.position.set(0, 1.5, 7);
+            camera.lookAt(0, 0.8, 0);
+
+            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            renderer.toneMapping = THREE.ACESFilmicToneMapping;
+            renderer.toneMappingExposure = 1.2;
+            container.appendChild(renderer.domElement);
+
+            // ===== LIGHTS =====
+            const ambientLight = new THREE.AmbientLight(0x404060, 0.6);
+            scene.add(ambientLight);
+
+            const mainLight = new THREE.DirectionalLight(0xffeedd, 1.8);
+            mainLight.position.set(3, 5, 5);
+            mainLight.castShadow = true;
+            mainLight.shadow.mapSize.width = 256;
+            mainLight.shadow.mapSize.height = 256;
+            scene.add(mainLight);
+
+            const fillLight = new THREE.DirectionalLight(0x8888ff, 0.5);
+            fillLight.position.set(-3, 2, -2);
+            scene.add(fillLight);
+
+            const rimLight = new THREE.DirectionalLight(0xa78bfa, 0.4);
+            rimLight.position.set(0, -1, -5);
+            scene.add(rimLight);
+
+            const pointLight = new THREE.PointLight(0xa78bfa, 0.3, 10);
+            pointLight.position.set(0, 2, 2);
+            scene.add(pointLight);
+
+            // ===== GROUND (invisible shadow catcher) =====
+            const groundGeo = new THREE.PlaneGeometry(10, 10);
+            const groundMat = new THREE.ShadowMaterial({ opacity: 0.3 });
+            const ground = new THREE.Mesh(groundGeo, groundMat);
+            ground.rotation.x = -Math.PI / 2;
+            ground.position.y = -0.2;
+            ground.receiveShadow = true;
+            scene.add(ground);
+
+            // ===== CAPYBARA GROUP =====
+            const capybara = new THREE.Group();
+            scene.add(capybara);
+
+            // ----- BODY -----
+            const bodyGeo = new THREE.SphereGeometry(0.9, 32, 32);
+            const bodyMat = new THREE.MeshPhysicalMaterial({
+                color: 0x8B6B4A,
+                roughness: 0.7,
+                metalness: 0.0,
+                clearcoat: 0.1,
+                clearcoatRoughness: 0.4,
+            });
+            const body = new THREE.Mesh(bodyGeo, bodyMat);
+            body.scale.set(1.6, 1.0, 1.2);
+            body.position.y = 0.6;
+            body.castShadow = true;
+            capybara.add(body);
+
+            // ----- HEAD -----
+            const headGroup = new THREE.Group();
+            headGroup.position.set(0, 1.2, 0.6);
+            capybara.add(headGroup);
+
+            const headGeo = new THREE.SphereGeometry(0.65, 32, 32);
+            const headMat = new THREE.MeshPhysicalMaterial({
+                color: 0xA0805A,
+                roughness: 0.6,
+                metalness: 0.0,
+                clearcoat: 0.1,
+            });
+            const head = new THREE.Mesh(headGeo, headMat);
+            head.scale.set(1.3, 1.0, 1.1);
+            head.castShadow = true;
+            headGroup.add(head);
+
+            // ----- SNOUT -----
+            const snoutGeo = new THREE.SphereGeometry(0.35, 24, 24);
+            const snoutMat = new THREE.MeshPhysicalMaterial({
+                color: 0xC4A882,
+                roughness: 0.8,
+                metalness: 0.0,
+            });
+            const snout = new THREE.Mesh(snoutGeo, snoutMat);
+            snout.scale.set(1.2, 0.8, 0.7);
+            snout.position.set(0, -0.05, 0.45);
+            headGroup.add(snout);
+
+            // ----- NOSE -----
+            const noseGeo = new THREE.SphereGeometry(0.08, 16, 16);
+            const noseMat = new THREE.MeshPhysicalMaterial({
+                color: 0x1A1A2E,
+                roughness: 0.9,
+                metalness: 0.0,
+            });
+            const nose = new THREE.Mesh(noseGeo, noseMat);
+            nose.scale.set(1.2, 0.8, 0.6);
+            nose.position.set(0, 0.0, 0.7);
+            headGroup.add(nose);
+
+            // ----- EYES -----
+            const eyeWhiteMat = new THREE.MeshPhysicalMaterial({
+                color: 0xffffff,
+                roughness: 0.1,
+                metalness: 0.0,
+                emissive: 0xffffff,
+                emissiveIntensity: 0.2,
+            });
+            const pupilMat = new THREE.MeshPhysicalMaterial({
+                color: 0x1A1A2E,
+                roughness: 0.0,
+                metalness: 0.0,
+                emissive: 0x1A1A2E,
+                emissiveIntensity: 0.3,
+            });
+
+            const eyeGroupL = new THREE.Group();
+            eyeGroupL.position.set(-0.35, 0.15, 0.5);
+            headGroup.add(eyeGroupL);
+
+            const eyeWhiteL = new THREE.Mesh(new THREE.SphereGeometry(0.15, 24, 24), eyeWhiteMat);
+            eyeGroupL.add(eyeWhiteL);
+
+            const pupilL = new THREE.Mesh(new THREE.SphereGeometry(0.08, 16, 16), pupilMat);
+            pupilL.position.set(0, 0, 0.15);
+            eyeGroupL.add(pupilL);
+
+            const eyeGroupR = new THREE.Group();
+            eyeGroupR.position.set(0.35, 0.15, 0.5);
+            headGroup.add(eyeGroupR);
+
+            const eyeWhiteR = new THREE.Mesh(new THREE.SphereGeometry(0.15, 24, 24), eyeWhiteMat);
+            eyeGroupR.add(eyeWhiteR);
+
+            const pupilR = new THREE.Mesh(new THREE.SphereGeometry(0.08, 16, 16), pupilMat);
+            pupilR.position.set(0, 0, 0.15);
+            eyeGroupR.add(pupilR);
+
+            // ----- EARS -----
+            const earMat = new THREE.MeshPhysicalMaterial({
+                color: 0xA0805A,
+                roughness: 0.7,
+                metalness: 0.0,
+            });
+            const earGeo = new THREE.SphereGeometry(0.15, 16, 16);
+
+            const earL = new THREE.Mesh(earGeo, earMat);
+            earL.scale.set(1.0, 1.0, 0.4);
+            earL.position.set(-0.55, 0.55, 0.3);
+            headGroup.add(earL);
+
+            const earR = new THREE.Mesh(earGeo, earMat);
+            earR.scale.set(1.0, 1.0, 0.4);
+            earR.position.set(0.55, 0.55, 0.3);
+            headGroup.add(earR);
+
+            // ----- MOUTH (a simple curved line as geometry) -----
+            const mouthPoints = [
+                new THREE.Vector3(-0.12, -0.12, 0.65),
+                new THREE.Vector3(0, -0.02, 0.7),
+                new THREE.Vector3(0.12, -0.12, 0.65),
+            ];
+            const mouthCurve = new THREE.CatmullRomCurve3(mouthPoints);
+            const mouthTube = new THREE.TubeGeometry(mouthCurve, 20, 0.015, 8, false);
+            const mouthMat = new THREE.MeshPhysicalMaterial({
+                color: 0x4A3A2A,
+                roughness: 0.9,
+                metalness: 0.0,
+            });
+            const mouth = new THREE.Mesh(mouthTube, mouthMat);
+            headGroup.add(mouth);
+
+            // ----- PAWS -----
+            const pawMat = new THREE.MeshPhysicalMaterial({
+                color: 0x8B6B4A,
+                roughness: 0.8,
+                metalness: 0.0,
+            });
+            const pawGeo = new THREE.SphereGeometry(0.15, 16, 16);
+
+            const pawFL = new THREE.Mesh(pawGeo, pawMat);
+            pawFL.scale.set(1.0, 0.8, 1.4);
+            pawFL.position.set(-0.5, 0.1, 1.0);
+            capybara.add(pawFL);
+
+            const pawFR = new THREE.Mesh(pawGeo, pawMat);
+            pawFR.scale.set(1.0, 0.8, 1.4);
+            pawFR.position.set(0.5, 0.1, 1.0);
+            capybara.add(pawFR);
+
+            const pawBL = new THREE.Mesh(pawGeo, pawMat);
+            pawBL.scale.set(1.0, 0.8, 1.4);
+            pawBL.position.set(-0.55, 0.1, -0.8);
+            capybara.add(pawBL);
+
+            const pawBR = new THREE.Mesh(pawGeo, pawMat);
+            pawBR.scale.set(1.0, 0.8, 1.4);
+            pawBR.position.set(0.55, 0.1, -0.8);
+            capybara.add(pawBR);
+
+            // ----- GUIDE PAW (front left, raised) -----
+            const guidePawMat = new THREE.MeshPhysicalMaterial({
+                color: 0xA0805A,
+                roughness: 0.7,
+                metalness: 0.0,
+            });
+            const guidePaw = new THREE.Mesh(
+                new THREE.SphereGeometry(0.16, 16, 16),
+                guidePawMat
+            );
+            guidePaw.scale.set(1.0, 0.8, 1.4);
+            guidePaw.position.set(-0.5, 0.4, 0.9);
+            capybara.add(guidePaw);
+
+            // ----- TAIL -----
+            const tailMat = new THREE.MeshPhysicalMaterial({
+                color: 0x8B6B4A,
+                roughness: 0.8,
+                metalness: 0.0,
+            });
+            const tail = new THREE.Mesh(
+                new THREE.SphereGeometry(0.1, 16, 16),
+                tailMat
+            );
+            tail.scale.set(0.6, 0.6, 1.8);
+            tail.position.set(0, 0.5, -1.3);
+            capybara.add(tail);
+
+            // Store references for animation
+            const parts = {
+                body,
+                headGroup,
+                head,
+                snout,
+                nose,
+                eyeL: eyeGroupL,
+                eyeR: eyeGroupR,
+                pupilL,
+                pupilR,
+                earL,
+                earR,
+                mouth,
+                guidePaw,
+                pawFL,
+                pawFR,
+                pawBL,
+                pawBR,
+                tail,
+                capybara,
+            };
 
             // ===== STATE =====
             let isDrawing = false;
@@ -524,10 +706,13 @@
             let lastEmotion = null;
             let streak = 0;
             let shareImageData = null;
-            let animFrame = null;
-            let blinkTimer = null;
             let expression = 'idle';
-            let isAnimating = false;
+            let expressionTimer = null;
+            let breathePhase = 0;
+            let targetHeadRotX = 0;
+            let targetHeadRotY = 0;
+            let currentHeadRotX = 0;
+            let currentHeadRotY = 0;
 
             // ===== EMOTIONS =====
             const EMOTIONS = [
@@ -566,147 +751,93 @@
                 { id: 'phoenix', name: 'Risen', icon: '🦋', condition: 10 },
             ];
 
-            // ===== ANIMATION ENGINE =====
+            // ===== EXPRESSIONS =====
+            function setExpression(expr) {
+                expression = expr;
+                clearTimeout(expressionTimer);
 
-            function animateCapybara(targetExpression, duration = 500) {
-                if (isAnimating) return;
-                isAnimating = true;
-                expression = targetExpression;
-                const startTime = performance.now();
+                // Reset all
+                const defaultMouth = [
+                    new THREE.Vector3(-0.12, -0.12, 0.65),
+                    new THREE.Vector3(0, -0.02, 0.7),
+                    new THREE.Vector3(0.12, -0.12, 0.65),
+                ];
 
-                // Store original positions
-                const origHeadY = 70;
-                const origEarLY = 42;
-                const origEarRY = 42;
-                const origPawX = 100;
-                const origPawY = 150;
-                const origMouth = 'M90 94 Q100 100 110 94';
-
-                let targetHeadY = origHeadY;
-                let targetEarLY = origEarLY;
-                let targetEarRY = origEarRY;
-                let targetPawX = origPawX;
-                let targetPawY = origPawY;
-                let targetMouth = origMouth;
+                let mouthPoints = defaultMouth;
                 let eyeScale = 1;
-                let eyeY = 0;
+                let earAngle = 0;
+                let headTilt = 0;
 
-                // Set targets based on expression
-                switch (targetExpression) {
+                switch (expr) {
                     case 'happy':
-                        targetHeadY = 68;
-                        targetEarLY = 40;
-                        targetEarRY = 40;
-                        targetMouth = 'M85 92 Q100 102 115 92';
+                        mouthPoints = [
+                            new THREE.Vector3(-0.12, -0.05, 0.65),
+                            new THREE.Vector3(0, 0.08, 0.7),
+                            new THREE.Vector3(0.12, -0.05, 0.65),
+                        ];
+                        earAngle = 0.3;
                         break;
                     case 'sad':
-                        targetHeadY = 72;
-                        targetEarLY = 44;
-                        targetEarRY = 44;
-                        targetMouth = 'M90 96 Q100 92 110 96';
+                        mouthPoints = [
+                            new THREE.Vector3(-0.12, 0.0, 0.65),
+                            new THREE.Vector3(0, -0.10, 0.7),
+                            new THREE.Vector3(0.12, 0.0, 0.65),
+                        ];
+                        earAngle = -0.3;
+                        headTilt = 0.05;
                         break;
                     case 'surprised':
-                        targetHeadY = 66;
-                        targetEarLY = 38;
-                        targetEarRY = 38;
-                        targetMouth = 'M92 90 Q100 82 108 90';
-                        eyeScale = 1.4;
+                        mouthPoints = [
+                            new THREE.Vector3(-0.08, 0.05, 0.65),
+                            new THREE.Vector3(0, 0.15, 0.7),
+                            new THREE.Vector3(0.08, 0.05, 0.65),
+                        ];
+                        eyeScale = 1.5;
+                        earAngle = 0.5;
                         break;
                     case 'proud':
-                        targetHeadY = 66;
-                        targetEarLY = 38;
-                        targetEarRY = 38;
-                        targetMouth = 'M88 92 Q100 100 112 92';
+                        mouthPoints = [
+                            new THREE.Vector3(-0.10, -0.08, 0.65),
+                            new THREE.Vector3(0, 0.02, 0.7),
+                            new THREE.Vector3(0.10, -0.08, 0.65),
+                        ];
+                        earAngle = 0.2;
+                        headTilt = -0.08;
                         break;
                     case 'taunting':
-                        targetHeadY = 68;
-                        targetEarLY = 40;
-                        targetEarRY = 40;
-                        targetMouth = 'M88 90 Q100 96 112 90';
-                        break;
-                    case 'guiding':
-                        targetPawX = 80;
-                        targetPawY = 140;
+                        mouthPoints = [
+                            new THREE.Vector3(-0.10, -0.10, 0.65),
+                            new THREE.Vector3(0, 0.05, 0.7),
+                            new THREE.Vector3(0.10, -0.10, 0.65),
+                        ];
+                        earAngle = 0.4;
                         break;
                     default:
                         break;
                 }
 
-                function animateStep(time) {
-                    const progress = Math.min((time - startTime) / duration, 1);
-                    const ease = 1 - Math.pow(1 - progress, 3);
+                // Update mouth geometry
+                const curve = new THREE.CatmullRomCurve3(mouthPoints);
+                const newGeo = new THREE.TubeGeometry(curve, 20, 0.015, 8, false);
+                mouth.geometry.dispose();
+                mouth.geometry = newGeo;
 
-                    // Interpolate head
-                    const currentHeadY = origHeadY + (targetHeadY - origHeadY) * ease;
-                    head.setAttribute('transform', `translate(0, ${currentHeadY - origHeadY})`);
+                // Update eyes
+                const scale = eyeScale;
+                eyeGroupL.scale.set(scale, scale, scale);
+                eyeGroupR.scale.set(scale, scale, scale);
 
-                    // Interpolate ears
-                    const currentEarLY = origEarLY + (targetEarLY - origEarLY) * ease;
-                    const currentEarRY = origEarRY + (targetEarRY - origEarRY) * ease;
-                    earL.setAttribute('transform', `translate(0, ${currentEarLY - origEarLY})`);
-                    earR.setAttribute('transform', `translate(0, ${currentEarRY - origEarRY})`);
+                // Update ears
+                earL.rotation.z = earAngle;
+                earR.rotation.z = -earAngle;
 
-                    // Interpolate mouth
-                    if (targetMouth !== origMouth) {
-                        const currentMouth = targetMouth;
-                        mouth.setAttribute('d', currentMouth);
-                    }
+                // Update head tilt
+                headGroup.rotation.z = headTilt;
 
-                    // Interpolate paw
-                    const currentPawX = origPawX + (targetPawX - origPawX) * ease;
-                    const currentPawY = origPawY + (targetPawY - origPawY) * ease;
-                    pawGuide.setAttribute('transform', `translate(${currentPawX - origPawX}, ${currentPawY - origPawY})`);
-
-                    // Eye scaling
-                    if (eyeScale !== 1) {
-                        const scale = 1 + (eyeScale - 1) * ease;
-                        eyeL.setAttribute('transform', `scale(${scale}, ${scale}) translate(${80 * (1 - scale) / scale}, ${62 * (1 - scale) / scale})`);
-                        eyeR.setAttribute('transform', `scale(${scale}, ${scale}) translate(${120 * (1 - scale) / scale}, ${62 * (1 - scale) / scale})`);
-                    }
-
-                    if (progress < 1) {
-                        requestAnimationFrame(animateStep);
-                    } else {
-                        isAnimating = false;
-                        // Reset after a moment
-                        setTimeout(() => {
-                            if (expression !== 'idle') {
-                                resetCapybara();
-                            }
-                        }, 3000);
-                    }
-                }
-
-                requestAnimationFrame(animateStep);
-            }
-
-            function resetCapybara() {
-                expression = 'idle';
-                head.setAttribute('transform', 'translate(0, 0)');
-                earL.setAttribute('transform', 'translate(0, 0)');
-                earR.setAttribute('transform', 'translate(0, 0)');
-                pawGuide.setAttribute('transform', 'translate(0, 0)');
-                mouth.setAttribute('d', 'M90 94 Q100 100 110 94');
-                eyeL.setAttribute('transform', '');
-                eyeR.setAttribute('transform', '');
-                isAnimating = false;
-            }
-
-            // ===== BLINK =====
-            function blink() {
-                eyeLHigh.style.opacity = '0';
-                eyeRHigh.style.opacity = '0';
-                setTimeout(() => {
-                    eyeLHigh.style.opacity = '1';
-                    eyeRHigh.style.opacity = '1';
-                }, 150);
-            }
-
-            function startBlinkTimer() {
-                clearInterval(blinkTimer);
-                blinkTimer = setInterval(() => {
-                    if (Math.random() > 0.3) blink();
-                }, 3000 + Math.random() * 2000);
+                // Auto-reset after 3 seconds
+                expressionTimer = setTimeout(() => {
+                    setExpression('idle');
+                }, 3000);
             }
 
             // ===== BUBBLE =====
@@ -726,9 +857,7 @@
                     streak = stored ? parseInt(stored, 10) || 0 : 0;
                     const lastDate = localStorage.getItem('mewonen_last_date');
                     const today = new Date().toDateString();
-                    if (lastDate === today) {
-                        // already visited
-                    } else if (lastDate) {
+                    if (lastDate === today) {} else if (lastDate) {
                         const yesterday = new Date();
                         yesterday.setDate(yesterday.getDate() - 1);
                         if (lastDate === yesterday.toDateString()) {
@@ -762,11 +891,11 @@
                     localStorage.setItem('mewonen_badges', JSON.stringify(unlocked));
                     badgeText.textContent = `🎁 ${newBadge.icon} ${newBadge.name} unlocked!`;
                     badgeNotif.classList.add('show');
+                    setExpression('happy');
                     setTimeout(() => badgeNotif.classList.remove('show'), 4000);
                 }
             }
 
-            // ===== CAPY MOOD =====
             function getCapyMood() {
                 const today = new Date();
                 const start = new Date(2025, 0, 1);
@@ -803,7 +932,7 @@
                 ctx.beginPath();
                 ctx.moveTo(p.x, p.y);
                 glowRing.classList.add('active');
-                animateCapybara('guiding', 300);
+                setExpression('taunting');
                 showBubble('I\'m guiding you... 🦫', 2000);
             }
 
@@ -814,15 +943,25 @@
                 points.push(p);
                 ctx.lineTo(p.x, p.y);
                 ctx.stroke();
+                // Update head to follow finger
+                const rect = canvas.getBoundingClientRect();
+                const cx = rect.left + rect.width / 2;
+                const cy = rect.top + rect.height / 2;
+                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                targetHeadRotY = ((clientX - cx) / rect.width) * 0.3;
+                targetHeadRotX = ((cy - clientY) / rect.height) * 0.15;
             }
 
             function endDraw() {
                 if (!isDrawing) return;
                 isDrawing = false;
                 glowRing.classList.remove('active');
+                targetHeadRotX = 0;
+                targetHeadRotY = 0;
                 if (points.length < 5) {
                     showBubble('Draw a little more... ✍️', 2000);
-                    resetCapybara();
+                    setExpression('idle');
                     return;
                 }
                 analyzeDraw();
@@ -853,7 +992,6 @@
                 displayResult(emotion);
                 generateShareImage(emotion);
 
-                // Capybara reacts
                 let capyExpression = 'happy';
                 if (emotion.name === 'Sadness') capyExpression = 'sad';
                 else if (emotion.name === 'Anger') capyExpression = 'surprised';
@@ -861,7 +999,7 @@
                 else if (emotion.name === 'Joy') capyExpression = 'happy';
                 else capyExpression = 'happy';
 
-                animateCapybara(capyExpression, 600);
+                setExpression(capyExpression);
                 showBubble(`I see... You are ${emotion.name}. ${emotion.phrase} 💜`, 4000);
             }
 
@@ -1051,23 +1189,59 @@
                 glowRing.style.boxShadow = 'none';
                 lastEmotion = null;
                 shareImageData = null;
-                resetCapybara();
+                setExpression('idle');
                 showBubble('Cleared. Ready for a new drawing. ✨', 2000);
             }
+
+            // ===== 3D ANIMATION LOOP =====
+            function animate3D() {
+                requestAnimationFrame(animate3D);
+
+                // Breathing
+                breathePhase += 0.02;
+                const breathe = Math.sin(breathePhase) * 0.015;
+                body.position.y = 0.6 + breathe;
+                headGroup.position.y = 1.2 + breathe * 0.5;
+
+                // Smooth head rotation
+                currentHeadRotX += (targetHeadRotX - currentHeadRotX) * 0.08;
+                currentHeadRotY += (targetHeadRotY - currentHeadRotY) * 0.08;
+                headGroup.rotation.x = currentHeadRotX;
+                headGroup.rotation.y = currentHeadRotY;
+
+                // Guide paw animation (slight bobbing when guiding)
+                if (expression === 'taunting' || isDrawing) {
+                    guidePaw.position.y = 0.4 + Math.sin(breathePhase * 1.5) * 0.08;
+                } else {
+                    guidePaw.position.y = 0.4;
+                }
+
+                renderer.render(scene, camera);
+            }
+
+            // ===== RESIZE =====
+            function onResize() {
+                const width = container.clientWidth;
+                const height = container.clientHeight;
+                camera.aspect = width / height;
+                camera.updateProjectionMatrix();
+                renderer.setSize(width, height);
+            }
+
+            window.addEventListener('resize', onResize);
 
             // ===== INIT =====
             function init() {
                 setupCanvas();
                 loadStreak();
-                startBlinkTimer();
 
                 setTimeout(() => {
                     showBubble(getCapyMood(), 4000);
-                }, 500);
+                }, 800);
 
                 setTimeout(() => {
                     showBubble('Give me your finger. Let\'s draw together. 🦫', 3000);
-                }, 4500);
+                }, 4800);
 
                 canvas.addEventListener('touchstart', startDraw, { passive: false });
                 canvas.addEventListener('touchmove', moveDraw, { passive: false });
@@ -1090,11 +1264,17 @@
                 let resizeTimer;
                 window.addEventListener('resize', function() {
                     clearTimeout(resizeTimer);
-                    resizeTimer = setTimeout(setupCanvas, 100);
+                    resizeTimer = setTimeout(() => {
+                        setupCanvas();
+                        onResize();
+                    }, 100);
                 });
 
-                console.log('🦫 Mewonen x Capybara — Fully Animated');
-                console.log('💜 English Only — Ready');
+                // Start 3D animation
+                animate3D();
+
+                console.log('🦫 Mewonen 3D — Fully Animated Capybara');
+                console.log('💜 English Only — Streaks, Badges, Gifts & Viral Share');
             }
 
             if (document.readyState === 'loading') {
