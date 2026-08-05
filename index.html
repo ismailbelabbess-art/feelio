@@ -42,38 +42,35 @@
             justify-content: center;
         }
 
-        /* ===== CAPYBARA CONTAINER ===== */
-        #capy {
+        #capy-container {
             position: relative;
-            width: 200px;
-            height: 180px;
+            width: 220px;
+            height: 200px;
             margin-bottom: 10px;
-            transition: all 0.3s ease;
             z-index: 10;
         }
 
-        #capy svg {
+        #capy-container svg {
             width: 100%;
             height: 100%;
             display: block;
             filter: drop-shadow(0 8px 30px rgba(167, 139, 250, 0.15));
         }
 
-        /* ===== BUBBLE ===== */
         #bubble {
             position: absolute;
-            top: -20px;
+            top: -18px;
             left: 50%;
             transform: translateX(-50%);
             background: rgba(255, 255, 255, 0.04);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(167, 139, 250, 0.10);
-            padding: 12px 20px;
+            padding: 10px 18px;
             border-radius: 20px;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: rgba(255, 255, 255, 0.85);
-            max-width: 240px;
+            max-width: 220px;
             text-align: center;
             line-height: 1.5;
             font-weight: 300;
@@ -84,6 +81,7 @@
             pointer-events: none;
             white-space: nowrap;
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+            font-family: 'Segoe UI', system-ui, sans-serif;
         }
 
         #bubble.show {
@@ -91,7 +89,6 @@
             transform: translateX(-50%) translateY(0);
         }
 
-        /* ===== CANVAS ===== */
         #drawArea {
             position: relative;
             width: 220px;
@@ -105,10 +102,6 @@
             transition: all 0.4s ease;
         }
 
-        #drawArea:active {
-            border-color: rgba(167, 139, 250, 0.25);
-        }
-
         #drawCanvas {
             width: 100%;
             height: 100%;
@@ -118,7 +111,6 @@
             cursor: crosshair;
         }
 
-        /* ===== GLOW RING ===== */
         #glowRing {
             position: absolute;
             inset: -6px;
@@ -134,14 +126,12 @@
             box-shadow: 0 0 40px rgba(167, 139, 250, 0.05);
         }
 
-        /* ===== RESULT ===== */
         #result {
             display: flex;
             flex-direction: column;
             align-items: center;
             margin-top: 6px;
             min-height: 40px;
-            transition: all 0.4s ease;
         }
 
         #emotionEmoji {
@@ -171,7 +161,6 @@
             }
         }
 
-        /* ===== BUTTONS ===== */
         #actions {
             display: flex;
             gap: 8px;
@@ -209,10 +198,6 @@
             box-shadow: 0 4px 20px rgba(124, 58, 237, 0.2);
         }
 
-        .btn-primary:active {
-            box-shadow: 0 2px 10px rgba(124, 58, 237, 0.15);
-        }
-
         .btn-gold {
             background: linear-gradient(135deg, #fbbf24, #f59e0b);
             color: #0a0a18;
@@ -220,7 +205,6 @@
             font-weight: 500;
         }
 
-        /* ===== STREAK ===== */
         #streak {
             position: absolute;
             top: 16px;
@@ -242,7 +226,6 @@
             color: #fbbf24;
         }
 
-        /* ===== BADGE NOTIFICATION ===== */
         #badgeNotif {
             position: absolute;
             bottom: 20px;
@@ -274,7 +257,6 @@
             margin-right: 6px;
         }
 
-        /* ===== SHARE OVERLAY ===== */
         #shareOverlay {
             position: fixed;
             inset: 0;
@@ -329,10 +311,11 @@
             overflow: hidden;
         }
 
-        #shareCard .preview canvas {
+        #shareCard .preview img {
             width: 100%;
             height: 100%;
-            display: block;
+            object-fit: contain;
+            border-radius: 16px;
         }
 
         #shareCard .preview-text {
@@ -369,27 +352,26 @@
             cursor: pointer;
         }
 
-        /* ===== RESPONSIVE ===== */
         @media (max-width: 380px) {
-            #capy {
-                width: 150px;
-                height: 135px;
+            #capy-container {
+                width: 170px;
+                height: 155px;
             }
             #drawArea {
                 width: 180px;
                 height: 180px;
             }
             #bubble {
-                font-size: 0.65rem;
-                padding: 8px 14px;
-                max-width: 180px;
+                font-size: 0.6rem;
+                padding: 6px 12px;
+                max-width: 160px;
             }
         }
 
         @media (min-width: 600px) {
-            #capy {
-                width: 240px;
-                height: 210px;
+            #capy-container {
+                width: 260px;
+                height: 230px;
             }
             #drawArea {
                 width: 260px;
@@ -401,83 +383,86 @@
                 max-width: 280px;
             }
         }
-
-        /* ===== HIDDEN ===== */
-        .hidden {
-            display: none !important;
-        }
     </style>
 </head>
 <body>
 
-    <!-- ===== APP ===== -->
     <div id="app">
-
-        <!-- Streak -->
         <div id="streak">🔥 <span id="streakCount">0</span> days</div>
 
-        <!-- Capybara -->
-        <div id="capy">
-            <!-- SVG Capybara -->
-            <svg viewBox="0 0 200 180" xmlns="http://www.w3.org/2000/svg">
-                <!-- Corps -->
-                <ellipse cx="100" cy="120" rx="70" ry="50" fill="#8B6B4A" />
+        <div id="capy-container">
+            <svg viewBox="0 0 200 180" xmlns="http://www.w3.org/2000/svg" id="capySvg">
+                <!-- Shadow -->
+                <ellipse cx="100" cy="158" rx="72" ry="8" fill="rgba(0,0,0,0.15)" />
+
+                <!-- Body -->
+                <ellipse cx="100" cy="120" rx="70" ry="50" fill="#8B6B4A" id="body" />
                 <ellipse cx="100" cy="120" rx="66" ry="46" fill="#A0805A" />
-                <!-- Tête -->
-                <ellipse cx="100" cy="70" rx="48" ry="40" fill="#A0805A" />
-                <!-- Museau -->
-                <ellipse cx="100" cy="88" rx="28" ry="18" fill="#8B6B4A" />
-                <ellipse cx="100" cy="86" rx="24" ry="14" fill="#C4A882" />
-                <!-- Nez -->
-                <ellipse cx="100" cy="80" rx="6" ry="4" fill="#4A3A2A" />
-                <!-- Œil gauche -->
-                <ellipse cx="80" cy="62" rx="8" ry="9" fill="#1A1A2E" id="eyeL" />
-                <ellipse cx="82" cy="60" rx="3" ry="3" fill="white" id="eyeLHigh" />
-                <!-- Œil droit -->
-                <ellipse cx="120" cy="62" rx="8" ry="9" fill="#1A1A2E" id="eyeR" />
-                <ellipse cx="122" cy="60" rx="3" ry="3" fill="white" id="eyeRHigh" />
-                <!-- Oreilles -->
-                <ellipse cx="60" cy="42" rx="14" ry="12" fill="#A0805A" id="earL" />
-                <ellipse cx="140" cy="42" rx="14" ry="12" fill="#A0805A" id="earR" />
-                <!-- Pattes -->
+
+                <!-- Head group -->
+                <g id="head">
+                    <ellipse cx="100" cy="70" rx="48" ry="40" fill="#A0805A" />
+                    <!-- Snout -->
+                    <ellipse cx="100" cy="88" rx="28" ry="18" fill="#8B6B4A" />
+                    <ellipse cx="100" cy="86" rx="24" ry="14" fill="#C4A882" />
+                    <!-- Nose -->
+                    <ellipse cx="100" cy="80" rx="6" ry="4" fill="#4A3A2A" id="nose" />
+
+                    <!-- Left eye -->
+                    <g id="eyeL">
+                        <ellipse cx="80" cy="62" rx="8" ry="9" fill="#1A1A2E" />
+                        <ellipse cx="82" cy="59" rx="3" ry="3" fill="white" id="eyeLHigh" />
+                    </g>
+
+                    <!-- Right eye -->
+                    <g id="eyeR">
+                        <ellipse cx="120" cy="62" rx="8" ry="9" fill="#1A1A2E" />
+                        <ellipse cx="122" cy="59" rx="3" ry="3" fill="white" id="eyeRHigh" />
+                    </g>
+
+                    <!-- Ears -->
+                    <ellipse cx="60" cy="42" rx="14" ry="12" fill="#A0805A" id="earL" />
+                    <ellipse cx="140" cy="42" rx="14" ry="12" fill="#A0805A" id="earR" />
+
+                    <!-- Mouth / Smile -->
+                    <path d="M90 94 Q100 100 110 94" stroke="#4A3A2A" stroke-width="2" fill="none" id="mouth" />
+                </g>
+
+                <!-- Paws -->
                 <ellipse cx="60" cy="150" rx="16" ry="10" fill="#8B6B4A" />
                 <ellipse cx="140" cy="150" rx="16" ry="10" fill="#8B6B4A" />
-                <!-- Patte avant (pour guider) -->
-                <ellipse cx="100" cy="150" rx="14" ry="10" fill="#A0805A" id="pawGuide" />
-                <!-- Queue -->
+
+                <!-- Guide paw (front left) -->
+                <g id="pawGuide">
+                    <ellipse cx="100" cy="150" rx="14" ry="10" fill="#A0805A" />
+                </g>
+
+                <!-- Tail -->
                 <ellipse cx="170" cy="120" rx="8" ry="6" fill="#8B6B4A" />
-                <!-- Sourire -->
-                <path d="M90 94 Q100 100 110 94" stroke="#4A3A2A" stroke-width="2" fill="none" id="smile" />
             </svg>
 
-            <!-- Bulle -->
             <div id="bubble"></div>
         </div>
 
-        <!-- Zone de dessin -->
         <div id="drawArea">
             <div id="glowRing"></div>
             <canvas id="drawCanvas" width="400" height="400"></canvas>
         </div>
 
-        <!-- Résultat -->
         <div id="result">
             <div id="emotionEmoji"></div>
             <div id="emotionName"></div>
         </div>
 
-        <!-- Actions -->
         <div id="actions">
             <button class="btn" id="clearBtn">Clear</button>
             <button class="btn btn-primary" id="shareBtn">📤 Share</button>
             <button class="btn btn-gold" id="statusBtn">📱 Status</button>
         </div>
 
-        <!-- Badge notification -->
         <div id="badgeNotif"><span class="badge-icon">🎁</span> <span id="badgeText">New badge unlocked!</span></div>
     </div>
 
-    <!-- ===== SHARE OVERLAY ===== -->
     <div id="shareOverlay">
         <div id="shareCard">
             <button class="share-close" id="shareClose">✕</button>
@@ -492,14 +477,14 @@
 
     <script>
         // ============================================================
-        //  MEWONEN X CAPYBARA — v1.0
-        //  Tout en un, sans bug, prêt à l'emploi
+        //  MEWONEN x CAPYBARA — FULLY ANIMATED
+        //  ENGLISH ONLY
         // ============================================================
 
         (function() {
             'use strict';
 
-            // ---- DOM ----
+            // ===== DOM REFS =====
             const canvas = document.getElementById('drawCanvas');
             const ctx = canvas.getContext('2d');
             const bubble = document.getElementById('bubble');
@@ -520,16 +505,31 @@
             const copyBtn = document.getElementById('copyBtn');
             const shareClose = document.getElementById('shareClose');
 
-            // ---- State ----
+            // ===== SVG PARTS =====
+            const head = document.getElementById('head');
+            const eyeL = document.getElementById('eyeL');
+            const eyeR = document.getElementById('eyeR');
+            const eyeLHigh = document.getElementById('eyeLHigh');
+            const eyeRHigh = document.getElementById('eyeRHigh');
+            const mouth = document.getElementById('mouth');
+            const earL = document.getElementById('earL');
+            const earR = document.getElementById('earR');
+            const pawGuide = document.getElementById('pawGuide');
+            const nose = document.getElementById('nose');
+            const body = document.getElementById('body');
+
+            // ===== STATE =====
             let isDrawing = false;
             let points = [];
             let lastEmotion = null;
             let streak = 0;
-            let dayIndex = 0;
-            let currentBadge = null;
             let shareImageData = null;
+            let animFrame = null;
+            let blinkTimer = null;
+            let expression = 'idle';
+            let isAnimating = false;
 
-            // ---- Emotions ----
+            // ===== EMOTIONS =====
             const EMOTIONS = [
                 { emoji: '☀️', name: 'Joy', phrase: 'You are shining today.', color: '#FBBF24' },
                 { emoji: '🌧️', name: 'Sadness', phrase: 'Let it wash over you.', color: '#60A5FA' },
@@ -541,7 +541,6 @@
                 { emoji: '🕊️', name: 'Freedom', phrase: 'You are light.', color: '#F472B6' },
             ];
 
-            // ---- Capybara moods (par jour) ----
             const CAPY_MOODS = [
                 'Hey! I was waiting for you. 🦫',
                 'Curious... what are you hiding today?',
@@ -559,7 +558,6 @@
                 'TWO WEEKS together! 🎉'
             ];
 
-            // ---- Badges ----
             const BADGES = [
                 { id: 'first', name: 'First Stroke', icon: '✍️', condition: 1 },
                 { id: 'week', name: 'Week Warrior', icon: '🔥', condition: 7 },
@@ -568,17 +566,168 @@
                 { id: 'phoenix', name: 'Risen', icon: '🦋', condition: 10 },
             ];
 
-            // ---- Streak ----
+            // ===== ANIMATION ENGINE =====
+
+            function animateCapybara(targetExpression, duration = 500) {
+                if (isAnimating) return;
+                isAnimating = true;
+                expression = targetExpression;
+                const startTime = performance.now();
+
+                // Store original positions
+                const origHeadY = 70;
+                const origEarLY = 42;
+                const origEarRY = 42;
+                const origPawX = 100;
+                const origPawY = 150;
+                const origMouth = 'M90 94 Q100 100 110 94';
+
+                let targetHeadY = origHeadY;
+                let targetEarLY = origEarLY;
+                let targetEarRY = origEarRY;
+                let targetPawX = origPawX;
+                let targetPawY = origPawY;
+                let targetMouth = origMouth;
+                let eyeScale = 1;
+                let eyeY = 0;
+
+                // Set targets based on expression
+                switch (targetExpression) {
+                    case 'happy':
+                        targetHeadY = 68;
+                        targetEarLY = 40;
+                        targetEarRY = 40;
+                        targetMouth = 'M85 92 Q100 102 115 92';
+                        break;
+                    case 'sad':
+                        targetHeadY = 72;
+                        targetEarLY = 44;
+                        targetEarRY = 44;
+                        targetMouth = 'M90 96 Q100 92 110 96';
+                        break;
+                    case 'surprised':
+                        targetHeadY = 66;
+                        targetEarLY = 38;
+                        targetEarRY = 38;
+                        targetMouth = 'M92 90 Q100 82 108 90';
+                        eyeScale = 1.4;
+                        break;
+                    case 'proud':
+                        targetHeadY = 66;
+                        targetEarLY = 38;
+                        targetEarRY = 38;
+                        targetMouth = 'M88 92 Q100 100 112 92';
+                        break;
+                    case 'taunting':
+                        targetHeadY = 68;
+                        targetEarLY = 40;
+                        targetEarRY = 40;
+                        targetMouth = 'M88 90 Q100 96 112 90';
+                        break;
+                    case 'guiding':
+                        targetPawX = 80;
+                        targetPawY = 140;
+                        break;
+                    default:
+                        break;
+                }
+
+                function animateStep(time) {
+                    const progress = Math.min((time - startTime) / duration, 1);
+                    const ease = 1 - Math.pow(1 - progress, 3);
+
+                    // Interpolate head
+                    const currentHeadY = origHeadY + (targetHeadY - origHeadY) * ease;
+                    head.setAttribute('transform', `translate(0, ${currentHeadY - origHeadY})`);
+
+                    // Interpolate ears
+                    const currentEarLY = origEarLY + (targetEarLY - origEarLY) * ease;
+                    const currentEarRY = origEarRY + (targetEarRY - origEarRY) * ease;
+                    earL.setAttribute('transform', `translate(0, ${currentEarLY - origEarLY})`);
+                    earR.setAttribute('transform', `translate(0, ${currentEarRY - origEarRY})`);
+
+                    // Interpolate mouth
+                    if (targetMouth !== origMouth) {
+                        const currentMouth = targetMouth;
+                        mouth.setAttribute('d', currentMouth);
+                    }
+
+                    // Interpolate paw
+                    const currentPawX = origPawX + (targetPawX - origPawX) * ease;
+                    const currentPawY = origPawY + (targetPawY - origPawY) * ease;
+                    pawGuide.setAttribute('transform', `translate(${currentPawX - origPawX}, ${currentPawY - origPawY})`);
+
+                    // Eye scaling
+                    if (eyeScale !== 1) {
+                        const scale = 1 + (eyeScale - 1) * ease;
+                        eyeL.setAttribute('transform', `scale(${scale}, ${scale}) translate(${80 * (1 - scale) / scale}, ${62 * (1 - scale) / scale})`);
+                        eyeR.setAttribute('transform', `scale(${scale}, ${scale}) translate(${120 * (1 - scale) / scale}, ${62 * (1 - scale) / scale})`);
+                    }
+
+                    if (progress < 1) {
+                        requestAnimationFrame(animateStep);
+                    } else {
+                        isAnimating = false;
+                        // Reset after a moment
+                        setTimeout(() => {
+                            if (expression !== 'idle') {
+                                resetCapybara();
+                            }
+                        }, 3000);
+                    }
+                }
+
+                requestAnimationFrame(animateStep);
+            }
+
+            function resetCapybara() {
+                expression = 'idle';
+                head.setAttribute('transform', 'translate(0, 0)');
+                earL.setAttribute('transform', 'translate(0, 0)');
+                earR.setAttribute('transform', 'translate(0, 0)');
+                pawGuide.setAttribute('transform', 'translate(0, 0)');
+                mouth.setAttribute('d', 'M90 94 Q100 100 110 94');
+                eyeL.setAttribute('transform', '');
+                eyeR.setAttribute('transform', '');
+                isAnimating = false;
+            }
+
+            // ===== BLINK =====
+            function blink() {
+                eyeLHigh.style.opacity = '0';
+                eyeRHigh.style.opacity = '0';
+                setTimeout(() => {
+                    eyeLHigh.style.opacity = '1';
+                    eyeRHigh.style.opacity = '1';
+                }, 150);
+            }
+
+            function startBlinkTimer() {
+                clearInterval(blinkTimer);
+                blinkTimer = setInterval(() => {
+                    if (Math.random() > 0.3) blink();
+                }, 3000 + Math.random() * 2000);
+            }
+
+            // ===== BUBBLE =====
+            function showBubble(text, duration = 3000) {
+                bubble.textContent = text;
+                bubble.classList.add('show');
+                clearTimeout(bubble._timer);
+                bubble._timer = setTimeout(() => {
+                    bubble.classList.remove('show');
+                }, duration);
+            }
+
+            // ===== STREAK =====
             function loadStreak() {
                 try {
                     const stored = localStorage.getItem('mewonen_streak');
-                    if (stored) {
-                        streak = parseInt(stored, 10) || 0;
-                    }
+                    streak = stored ? parseInt(stored, 10) || 0 : 0;
                     const lastDate = localStorage.getItem('mewonen_last_date');
                     const today = new Date().toDateString();
                     if (lastDate === today) {
-                        // Already visited today
+                        // already visited
                     } else if (lastDate) {
                         const yesterday = new Date();
                         yesterday.setDate(yesterday.getDate() - 1);
@@ -595,8 +744,7 @@
                 } catch (e) {
                     streak = 1;
                 }
-                document.getElementById('streakCount').textContent = streak;
-                // Check badges
+                streakCount.textContent = streak;
                 checkBadges();
             }
 
@@ -612,38 +760,21 @@
                 }
                 if (newBadge) {
                     localStorage.setItem('mewonen_badges', JSON.stringify(unlocked));
-                    showBadgeNotif(newBadge);
+                    badgeText.textContent = `🎁 ${newBadge.icon} ${newBadge.name} unlocked!`;
+                    badgeNotif.classList.add('show');
+                    setTimeout(() => badgeNotif.classList.remove('show'), 4000);
                 }
             }
 
-            function showBadgeNotif(badge) {
-                badgeText.textContent = `🎁 ${badge.icon} ${badge.name} unlocked!`;
-                badgeNotif.classList.add('show');
-                setTimeout(() => {
-                    badgeNotif.classList.remove('show');
-                }, 4000);
-            }
-
-            // ---- Capybara bubble ----
-            function showBubble(text, duration = 3000) {
-                bubble.textContent = text;
-                bubble.classList.add('show');
-                clearTimeout(bubble._timer);
-                bubble._timer = setTimeout(() => {
-                    bubble.classList.remove('show');
-                }, duration);
-            }
-
-            // ---- Get capybara mood for today ----
+            // ===== CAPY MOOD =====
             function getCapyMood() {
                 const today = new Date();
                 const start = new Date(2025, 0, 1);
                 const diff = Math.floor((today - start) / (1000 * 60 * 60 * 24));
-                const index = diff % CAPY_MOODS.length;
-                return CAPY_MOODS[index];
+                return CAPY_MOODS[diff % CAPY_MOODS.length];
             }
 
-            // ---- Canvas drawing ----
+            // ===== CANVAS =====
             function setupCanvas() {
                 const rect = canvas.getBoundingClientRect();
                 const dpr = window.devicePixelRatio || 1;
@@ -660,10 +791,7 @@
                 const rect = canvas.getBoundingClientRect();
                 const clientX = e.touches ? e.touches[0].clientX : e.clientX;
                 const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-                return {
-                    x: (clientX - rect.left),
-                    y: (clientY - rect.top),
-                };
+                return { x: clientX - rect.left, y: clientY - rect.top };
             }
 
             function startDraw(e) {
@@ -675,7 +803,7 @@
                 ctx.beginPath();
                 ctx.moveTo(p.x, p.y);
                 glowRing.classList.add('active');
-                // Capybara guide
+                animateCapybara('guiding', 300);
                 showBubble('I\'m guiding you... 🦫', 2000);
             }
 
@@ -694,12 +822,13 @@
                 glowRing.classList.remove('active');
                 if (points.length < 5) {
                     showBubble('Draw a little more... ✍️', 2000);
+                    resetCapybara();
                     return;
                 }
                 analyzeDraw();
             }
 
-            // ---- Analysis ----
+            // ===== ANALYSIS =====
             function analyzeDraw() {
                 let totalDist = 0;
                 for (let i = 1; i < points.length; i++) {
@@ -707,7 +836,6 @@
                     const dy = points[i].y - points[i - 1].y;
                     totalDist += Math.sqrt(dx * dx + dy * dy);
                 }
-
                 const avgDist = totalDist / points.length;
                 let idx = 0;
                 if (avgDist > 8) idx = 0;
@@ -716,7 +844,6 @@
                 else if (avgDist < 1) idx = 7;
                 else idx = 4;
 
-                // Add some randomness so it's not always the same
                 const rand = Math.random();
                 if (rand < 0.15 && idx !== 7) idx = 2;
                 else if (rand > 0.85 && idx !== 7) idx = 5;
@@ -725,6 +852,16 @@
                 lastEmotion = emotion;
                 displayResult(emotion);
                 generateShareImage(emotion);
+
+                // Capybara reacts
+                let capyExpression = 'happy';
+                if (emotion.name === 'Sadness') capyExpression = 'sad';
+                else if (emotion.name === 'Anger') capyExpression = 'surprised';
+                else if (emotion.name === 'Peace') capyExpression = 'proud';
+                else if (emotion.name === 'Joy') capyExpression = 'happy';
+                else capyExpression = 'happy';
+
+                animateCapybara(capyExpression, 600);
                 showBubble(`I see... You are ${emotion.name}. ${emotion.phrase} 💜`, 4000);
             }
 
@@ -735,7 +872,6 @@
                     emotionEmoji.style.animation = 'pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
                 });
                 emotionName.textContent = emotion.name;
-                // Glow
                 glowRing.style.borderColor = emotion.color + '44';
                 glowRing.style.boxShadow = `0 0 60px ${emotion.color}11`;
                 setTimeout(() => {
@@ -744,14 +880,13 @@
                 }, 3000);
             }
 
-            // ---- Generate share image ----
+            // ===== SHARE IMAGE =====
             function generateShareImage(emotion) {
                 const offscreen = document.createElement('canvas');
                 offscreen.width = 800;
                 offscreen.height = 800;
                 const c = offscreen.getContext('2d');
 
-                // Background gradient
                 const grad = c.createRadialGradient(400, 400, 100, 400, 400, 500);
                 grad.addColorStop(0, '#2a1a3a');
                 grad.addColorStop(0.5, '#1a1030');
@@ -759,7 +894,6 @@
                 c.fillStyle = grad;
                 c.fillRect(0, 0, 800, 800);
 
-                // Glow circles
                 for (let i = 0; i < 5; i++) {
                     c.beginPath();
                     c.arc(400 + (Math.random() - 0.5) * 300, 400 + (Math.random() - 0.5) * 300,
@@ -768,14 +902,9 @@
                     c.fill();
                 }
 
-                // Draw the user's drawing on the share image
                 const drawingData = canvas.toDataURL();
                 const img = new Image();
                 img.onload = function() {
-                    const size = Math.min(img.width, img.height);
-                    const x = (img.width - size) / 2;
-                    const y = (img.height - size) / 2;
-                    // Center the drawing in a circle
                     c.save();
                     c.beginPath();
                     c.arc(400, 350, 200, 0, Math.PI * 2);
@@ -783,35 +912,29 @@
                     c.drawImage(img, 400 - 200, 350 - 200, 400, 400);
                     c.restore();
 
-                    // Border ring
                     c.beginPath();
                     c.arc(400, 350, 205, 0, Math.PI * 2);
                     c.strokeStyle = emotion.color + '44';
                     c.lineWidth = 3;
                     c.stroke();
 
-                    // Emotion emoji
                     c.font = '80px Arial';
                     c.textAlign = 'center';
                     c.textBaseline = 'middle';
                     c.fillText(emotion.emoji, 400, 150);
 
-                    // Emotion name
                     c.font = 'bold 48px Arial';
                     c.fillStyle = '#fff';
                     c.fillText(emotion.name, 400, 620);
 
-                    // Phrase
                     c.font = '24px Arial';
                     c.fillStyle = 'rgba(255,255,255,0.5)';
                     c.fillText(emotion.phrase, 400, 680);
 
-                    // Mewonen brand
                     c.font = '20px Arial';
                     c.fillStyle = '#a78bfa';
                     c.fillText('✨ @mewonen', 400, 740);
 
-                    // Viral text
                     c.font = 'bold 28px Arial';
                     c.fillStyle = '#fff';
                     const viralText = getViralText(emotion);
@@ -836,21 +959,16 @@
                 return texts[emotion.name] || '💜 Mewonen saw my soul.';
             }
 
-            // ---- Share overlay ----
+            // ===== SHARE OVERLAY =====
             function openShare() {
                 if (!shareImageData) {
                     showBubble('Draw something first! ✍️', 2000);
                     return;
                 }
-                const preview = document.getElementById('sharePreview');
-                preview.innerHTML = '';
+                sharePreview.innerHTML = '';
                 const img = document.createElement('img');
                 img.src = shareImageData;
-                img.style.width = '100%';
-                img.style.height = '100%';
-                img.style.objectFit = 'contain';
-                img.style.borderRadius = '16px';
-                preview.appendChild(img);
+                sharePreview.appendChild(img);
                 if (lastEmotion) {
                     shareEmotion.textContent = lastEmotion.name;
                     shareText.innerHTML =
@@ -863,7 +981,6 @@
                 shareOverlay.classList.remove('show');
             }
 
-            // ---- Download share image ----
             function downloadShare() {
                 if (!shareImageData) return;
                 const link = document.createElement('a');
@@ -872,14 +989,13 @@
                 link.click();
             }
 
-            // ---- Copy text ----
             function copyShareText() {
                 if (!lastEmotion) return;
-                const text = `${getViralText(lastEmotion)} ✨ @mewonen — Draw your mood at mewonen.com 💜`;
+                const text =
+                    `${getViralText(lastEmotion)} ✨ @mewonen — Draw your mood at mewonen.com 💜`;
                 navigator.clipboard.writeText(text).then(() => {
                     showBubble('📋 Text copied!', 2000);
                 }).catch(() => {
-                    // Fallback
                     const ta = document.createElement('textarea');
                     ta.value = text;
                     document.body.appendChild(ta);
@@ -890,7 +1006,6 @@
                 });
             }
 
-            // ---- Status image ----
             function generateStatus() {
                 if (!lastEmotion) {
                     showBubble('Draw something first! ✍️', 2000);
@@ -928,7 +1043,6 @@
                 showBubble('📱 Status saved!', 2000);
             }
 
-            // ---- Clear ----
             function clearCanvas() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 emotionEmoji.textContent = '';
@@ -937,25 +1051,24 @@
                 glowRing.style.boxShadow = 'none';
                 lastEmotion = null;
                 shareImageData = null;
+                resetCapybara();
                 showBubble('Cleared. Ready for a new drawing. ✨', 2000);
             }
 
-            // ---- Init ----
+            // ===== INIT =====
             function init() {
                 setupCanvas();
                 loadStreak();
+                startBlinkTimer();
 
-                // Show capybara greeting
                 setTimeout(() => {
                     showBubble(getCapyMood(), 4000);
                 }, 500);
 
-                // After a moment, invite to draw
                 setTimeout(() => {
-                    showBubble('Give me your finger. Let\'s draw. 🦫', 3000);
+                    showBubble('Give me your finger. Let\'s draw together. 🦫', 3000);
                 }, 4500);
 
-                // Canvas events
                 canvas.addEventListener('touchstart', startDraw, { passive: false });
                 canvas.addEventListener('touchmove', moveDraw, { passive: false });
                 canvas.addEventListener('touchend', endDraw);
@@ -964,7 +1077,6 @@
                 canvas.addEventListener('mouseup', endDraw);
                 canvas.addEventListener('mouseleave', endDraw);
 
-                // Buttons
                 clearBtn.addEventListener('click', clearCanvas);
                 shareBtn.addEventListener('click', openShare);
                 statusBtn.addEventListener('click', generateStatus);
@@ -975,18 +1087,16 @@
                     if (e.target === this) closeShare();
                 });
 
-                // Handle resize
                 let resizeTimer;
                 window.addEventListener('resize', function() {
                     clearTimeout(resizeTimer);
                     resizeTimer = setTimeout(setupCanvas, 100);
                 });
 
-                console.log('🦫 Mewonen x Capybara — Ready');
-                console.log('💜 Draw your emotion. Mei is here.');
+                console.log('🦫 Mewonen x Capybara — Fully Animated');
+                console.log('💜 English Only — Ready');
             }
 
-            // ---- Start ----
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', init);
             } else {
@@ -995,6 +1105,5 @@
 
         })();
     </script>
-
 </body>
 </html>
