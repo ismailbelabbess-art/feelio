@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>Mewonen — Draw with Mei 3D 🦫</title>
-
+    <title>Mewonen — Draw with Mei 🦫</title>
     <style>
         * {
             margin: 0;
@@ -13,47 +12,58 @@
             user-select: none;
             -webkit-tap-highlight-color: transparent;
         }
-
         body {
             background: #0a0a18;
             color: #fff;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-family: 'Segoe UI', system-ui, sans-serif;
             height: 100dvh;
             overflow: hidden;
             touch-action: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-
         #app {
             width: 100%;
+            max-width: 420px;
             height: 100dvh;
+            max-height: 780px;
             position: relative;
+            background: radial-gradient(ellipse at 50% 30%, #141428, #06060f);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
+            border-radius: 0;
+            box-shadow: 0 0 80px rgba(124, 58, 237, 0.08);
         }
-
-        #three-container {
-            width: 100%;
-            height: 60%;
+        #capy-container {
             position: relative;
-            z-index: 1;
+            width: 220px;
+            height: 200px;
+            margin-bottom: 6px;
+            z-index: 10;
         }
-
+        #capy-container canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+            filter: drop-shadow(0 8px 30px rgba(167, 139, 250, 0.15));
+        }
         #bubble {
             position: absolute;
-            top: 18%;
+            top: -18px;
             left: 50%;
             transform: translateX(-50%);
             background: rgba(255, 255, 255, 0.04);
             backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(167, 139, 250, 0.10);
             padding: 10px 18px;
             border-radius: 20px;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: rgba(255, 255, 255, 0.85);
-            max-width: 260px;
+            max-width: 220px;
             text-align: center;
             line-height: 1.5;
             font-weight: 300;
@@ -62,30 +72,25 @@
             transition: opacity 0.5s ease, transform 0.3s ease;
             transform: translateX(-50%) translateY(8px);
             pointer-events: none;
-            z-index: 10;
             white-space: nowrap;
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
             font-family: 'Segoe UI', system-ui, sans-serif;
         }
-
         #bubble.show {
             opacity: 1;
             transform: translateX(-50%) translateY(0);
         }
-
         #drawArea {
             position: relative;
-            width: 180px;
-            height: 180px;
+            width: 200px;
+            height: 200px;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(167, 139, 250, 0.08);
             box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.5);
             touch-action: none;
-            margin-top: 4px;
-            z-index: 2;
+            margin: 4px 0;
         }
-
         #drawCanvas {
             width: 100%;
             height: 100%;
@@ -94,7 +99,6 @@
             touch-action: none;
             cursor: crosshair;
         }
-
         #glowRing {
             position: absolute;
             inset: -6px;
@@ -104,27 +108,22 @@
             transition: border-color 0.6s ease, box-shadow 0.6s ease;
             z-index: 0;
         }
-
         #glowRing.active {
             border-color: rgba(167, 139, 250, 0.25);
             box-shadow: 0 0 40px rgba(167, 139, 250, 0.05);
         }
-
         #result {
             display: flex;
             flex-direction: column;
             align-items: center;
             min-height: 36px;
-            z-index: 2;
             margin-top: 2px;
         }
-
         #emotionEmoji {
             font-size: 1.8rem;
             min-height: 32px;
             animation: pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-
         #emotionName {
             font-size: 0.6rem;
             color: rgba(255, 255, 255, 0.25);
@@ -133,27 +132,17 @@
             text-transform: uppercase;
             min-height: 16px;
         }
-
         @keyframes pop {
-            0% {
-                opacity: 0;
-                transform: scale(0.3) rotate(-8deg);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1) rotate(0);
-            }
+            0% { opacity: 0; transform: scale(0.3) rotate(-8deg); }
+            100% { opacity: 1; transform: scale(1) rotate(0); }
         }
-
         #actions {
             display: flex;
             gap: 6px;
             margin-top: 4px;
             flex-wrap: wrap;
             justify-content: center;
-            z-index: 2;
         }
-
         .btn {
             padding: 6px 14px;
             border-radius: 30px;
@@ -161,69 +150,57 @@
             font-weight: 400;
             letter-spacing: 0.5px;
             border: none;
-            background: rgba(255, 255, 255, 0.03);
-            color: rgba(255, 255, 255, 0.3);
+            background: rgba(255,255,255,0.03);
+            color: rgba(255,255,255,0.3);
             cursor: pointer;
             transition: all 0.25s ease;
             backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
-            border: 1px solid rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255,255,255,0.04);
             touch-action: manipulation;
             font-family: inherit;
         }
-
-        .btn:active {
-            transform: scale(0.92);
-        }
-
+        .btn:active { transform: scale(0.92); }
         .btn-primary {
             background: linear-gradient(135deg, #7c3aed, #a78bfa);
             color: #fff;
             border: none;
-            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.2);
+            box-shadow: 0 4px 20px rgba(124,58,237,0.2);
         }
-
         .btn-gold {
             background: linear-gradient(135deg, #fbbf24, #f59e0b);
             color: #0a0a18;
             border: none;
             font-weight: 500;
         }
-
         #streak {
             position: absolute;
             top: 12px;
             right: 12px;
             font-size: 0.45rem;
-            color: rgba(255, 255, 255, 0.12);
+            color: rgba(255,255,255,0.12);
             letter-spacing: 0.5px;
             display: flex;
             align-items: center;
             gap: 4px;
             z-index: 20;
-            background: rgba(255, 255, 255, 0.02);
+            background: rgba(255,255,255,0.02);
             padding: 4px 10px;
             border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255,255,255,0.03);
         }
-
-        #streak span {
-            color: #fbbf24;
-        }
-
+        #streak span { color: #fbbf24; }
         #badgeNotif {
             position: absolute;
             bottom: 16px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(20, 20, 40, 0.95);
+            background: rgba(20,20,40,0.95);
             backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(167, 139, 250, 0.08);
+            border: 1px solid rgba(167,139,250,0.08);
             padding: 6px 16px;
             border-radius: 16px;
             font-size: 0.55rem;
-            color: rgba(255, 255, 255, 0.5);
+            color: rgba(255,255,255,0.5);
             opacity: 0;
             transition: opacity 0.5s ease, transform 0.4s ease;
             transform: translateX(-50%) translateY(12px);
@@ -231,37 +208,26 @@
             z-index: 30;
             white-space: nowrap;
         }
-
         #badgeNotif.show {
             opacity: 1;
             transform: translateX(-50%) translateY(0);
         }
-
-        #badgeNotif .badge-icon {
-            color: #fbbf24;
-            margin-right: 6px;
-        }
-
+        #badgeNotif .badge-icon { color: #fbbf24; margin-right: 6px; }
         #shareOverlay {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0,0,0,0.7);
             backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
             display: none;
             align-items: center;
             justify-content: center;
             z-index: 100;
             padding: 20px;
         }
-
-        #shareOverlay.show {
-            display: flex;
-        }
-
+        #shareOverlay.show { display: flex; }
         #shareCard {
-            background: rgba(16, 16, 32, 0.98);
-            border: 1px solid rgba(167, 139, 250, 0.08);
+            background: rgba(16,16,32,0.98);
+            border: 1px solid rgba(167,139,250,0.08);
             border-radius: 24px;
             padding: 20px;
             max-width: 340px;
@@ -269,1021 +235,875 @@
             text-align: center;
             animation: cardIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-
         @keyframes cardIn {
-            0% {
-                opacity: 0;
-                transform: scale(0.9) translateY(20px);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1) translateY(0);
-            }
+            0% { opacity: 0; transform: scale(0.9) translateY(20px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
         }
-
         #shareCard .preview {
             width: 100%;
-            aspect-ratio: 1 / 1;
+            aspect-ratio: 1/1;
             border-radius: 16px;
             background: radial-gradient(circle at 30% 30%, #2a1a3a, #0a0a18);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 4rem;
-            border: 1px solid rgba(167, 139, 250, 0.06);
+            border: 1px solid rgba(167,139,250,0.06);
             margin-bottom: 10px;
-            position: relative;
             overflow: hidden;
         }
-
         #shareCard .preview img {
             width: 100%;
             height: 100%;
             object-fit: contain;
             border-radius: 16px;
         }
-
         #shareCard .preview-text {
             font-size: 0.65rem;
-            color: rgba(255, 255, 255, 0.5);
+            color: rgba(255,255,255,0.5);
             font-weight: 300;
             margin-bottom: 6px;
         }
-
-        #shareCard .preview-text strong {
-            color: rgba(255, 255, 255, 0.8);
-        }
-
+        #shareCard .preview-text strong { color: rgba(255,255,255,0.8); }
         #shareCard .share-actions {
             display: flex;
             gap: 8px;
             justify-content: center;
             margin-top: 8px;
         }
-
-        #shareCard .share-actions .btn {
-            flex: 1;
-            justify-content: center;
-        }
-
+        #shareCard .share-actions .btn { flex: 1; justify-content: center; }
         .share-close {
             position: absolute;
             top: 8px;
             right: 12px;
             background: none;
             border: none;
-            color: rgba(255, 255, 255, 0.15);
+            color: rgba(255,255,255,0.15);
             font-size: 1rem;
             cursor: pointer;
         }
-
         @media (max-width: 380px) {
-            #drawArea {
-                width: 150px;
-                height: 150px;
-            }
-            #bubble {
-                font-size: 0.6rem;
-                padding: 6px 12px;
-                max-width: 160px;
-                top: 15%;
-            }
-            #three-container {
-                height: 50%;
-            }
+            #capy-container { width: 170px; height: 155px; }
+            #drawArea { width: 160px; height: 160px; }
+            #bubble { font-size: 0.6rem; padding: 6px 12px; max-width: 160px; top: -14px; }
         }
-
         @media (min-width: 600px) {
-            #drawArea {
-                width: 220px;
-                height: 220px;
-            }
-            #bubble {
-                font-size: 0.85rem;
-                padding: 14px 24px;
-                max-width: 280px;
-            }
-            #three-container {
-                height: 65%;
-            }
+            #capy-container { width: 260px; height: 230px; }
+            #drawArea { width: 240px; height: 240px; }
+            #bubble { font-size: 0.85rem; padding: 14px 24px; max-width: 280px; }
         }
     </style>
 </head>
 <body>
 
-    <div id="app">
-        <div id="streak">🔥 <span id="streakCount">0</span> days</div>
+<div id="app">
+    <div id="streak">🔥 <span id="streakCount">0</span> days</div>
 
-        <div id="three-container"></div>
-
+    <div id="capy-container">
+        <canvas id="capyCanvas" width="400" height="370"></canvas>
         <div id="bubble">Give me your finger. Let's draw. 🦫</div>
-
-        <div id="drawArea">
-            <div id="glowRing"></div>
-            <canvas id="drawCanvas" width="400" height="400"></canvas>
-        </div>
-
-        <div id="result">
-            <div id="emotionEmoji"></div>
-            <div id="emotionName"></div>
-        </div>
-
-        <div id="actions">
-            <button class="btn" id="clearBtn">Clear</button>
-            <button class="btn btn-primary" id="shareBtn">📤 Share</button>
-            <button class="btn btn-gold" id="statusBtn">📱 Status</button>
-        </div>
-
-        <div id="badgeNotif"><span class="badge-icon">🎁</span> <span id="badgeText">New badge unlocked!</span></div>
     </div>
 
-    <div id="shareOverlay">
-        <div id="shareCard">
-            <button class="share-close" id="shareClose">✕</button>
-            <div class="preview" id="sharePreview"></div>
-            <div class="preview-text" id="shareText">✨ <strong id="shareEmotion">Joy</strong> — Mewonen saw your soul</div>
-            <div class="share-actions">
-                <button class="btn btn-primary" id="downloadBtn">💾 Download</button>
-                <button class="btn btn-gold" id="copyBtn">📋 Copy Text</button>
-            </div>
-        </div>
+    <div id="drawArea">
+        <div id="glowRing"></div>
+        <canvas id="drawCanvas" width="400" height="400"></canvas>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js">
-    </script>
-    <script>
-        // ============================================================
-        //  MEWONEN 3D — CAPYBARA WITH THREE.JS
-        //  English only — Streaks, Badges, Gifts & Viral Share
-        // ============================================================
+    <div id="result">
+        <div id="emotionEmoji"></div>
+        <div id="emotionName"></div>
+    </div>
 
-        (function() {
-            'use strict';
+    <div id="actions">
+        <button class="btn" id="clearBtn">Clear</button>
+        <button class="btn btn-primary" id="shareBtn">📤 Share</button>
+        <button class="btn btn-gold" id="statusBtn">📱 Status</button>
+    </div>
 
-            // ===== DOM REFS =====
-            const container = document.getElementById('three-container');
-            const canvas = document.getElementById('drawCanvas');
-            const ctx = canvas.getContext('2d');
-            const bubble = document.getElementById('bubble');
-            const emotionEmoji = document.getElementById('emotionEmoji');
-            const emotionName = document.getElementById('emotionName');
-            const glowRing = document.getElementById('glowRing');
-            const streakCount = document.getElementById('streakCount');
-            const badgeNotif = document.getElementById('badgeNotif');
-            const badgeText = document.getElementById('badgeText');
-            const shareOverlay = document.getElementById('shareOverlay');
-            const sharePreview = document.getElementById('sharePreview');
-            const shareEmotion = document.getElementById('shareEmotion');
-            const shareText = document.getElementById('shareText');
-            const clearBtn = document.getElementById('clearBtn');
-            const shareBtn = document.getElementById('shareBtn');
-            const statusBtn = document.getElementById('statusBtn');
-            const downloadBtn = document.getElementById('downloadBtn');
-            const copyBtn = document.getElementById('copyBtn');
-            const shareClose = document.getElementById('shareClose');
+    <div id="badgeNotif"><span class="badge-icon">🎁</span> <span id="badgeText">New badge unlocked!</span></div>
+</div>
 
-            // ===== THREE.JS SETUP =====
-            const scene = new THREE.Scene();
-            const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
-            camera.position.set(0, 1.5, 7);
-            camera.lookAt(0, 0.8, 0);
+<div id="shareOverlay">
+    <div id="shareCard">
+        <button class="share-close" id="shareClose">✕</button>
+        <div class="preview" id="sharePreview"></div>
+        <div class="preview-text" id="shareText">✨ <strong id="shareEmotion">Joy</strong> — Mewonen saw your soul</div>
+        <div class="share-actions">
+            <button class="btn btn-primary" id="downloadBtn">💾 Download</button>
+            <button class="btn btn-gold" id="copyBtn">📋 Copy Text</button>
+        </div>
+    </div>
+</div>
 
-            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-            renderer.setSize(container.clientWidth, container.clientHeight);
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-            renderer.shadowMap.enabled = true;
-            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-            renderer.toneMapping = THREE.ACESFilmicToneMapping;
-            renderer.toneMappingExposure = 1.2;
-            container.appendChild(renderer.domElement);
+<script>
+(function() {
+    'use strict';
 
-            // ===== LIGHTS =====
-            const ambientLight = new THREE.AmbientLight(0x404060, 0.6);
-            scene.add(ambientLight);
+    // ============================================================
+    //  DOM REFS
+    // ============================================================
+    const capyCanvas = document.getElementById('capyCanvas');
+    const capyCtx = capyCanvas.getContext('2d');
+    const drawCanvas = document.getElementById('drawCanvas');
+    const drawCtx = drawCanvas.getContext('2d');
+    const bubble = document.getElementById('bubble');
+    const emotionEmoji = document.getElementById('emotionEmoji');
+    const emotionName = document.getElementById('emotionName');
+    const glowRing = document.getElementById('glowRing');
+    const streakCount = document.getElementById('streakCount');
+    const badgeNotif = document.getElementById('badgeNotif');
+    const badgeText = document.getElementById('badgeText');
+    const shareOverlay = document.getElementById('shareOverlay');
+    const sharePreview = document.getElementById('sharePreview');
+    const shareEmotion = document.getElementById('shareEmotion');
+    const shareText = document.getElementById('shareText');
+    const clearBtn = document.getElementById('clearBtn');
+    const shareBtn = document.getElementById('shareBtn');
+    const statusBtn = document.getElementById('statusBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const copyBtn = document.getElementById('copyBtn');
+    const shareClose = document.getElementById('shareClose');
 
-            const mainLight = new THREE.DirectionalLight(0xffeedd, 1.8);
-            mainLight.position.set(3, 5, 5);
-            mainLight.castShadow = true;
-            mainLight.shadow.mapSize.width = 256;
-            mainLight.shadow.mapSize.height = 256;
-            scene.add(mainLight);
+    // ============================================================
+    //  STATE
+    // ============================================================
+    let isDrawing = false;
+    let points = [];
+    let lastEmotion = null;
+    let streak = 0;
+    let shareImageData = null;
 
-            const fillLight = new THREE.DirectionalLight(0x8888ff, 0.5);
-            fillLight.position.set(-3, 2, -2);
-            scene.add(fillLight);
+    // Capybara animation state
+    let blinkTimer = 0;
+    let blinkState = 0; // 0=open, 1=closing, 2=closed, 3=opening
+    let breathePhase = 0;
+    let expression = 'idle'; // idle, happy, sad, surprised, proud, taunting
+    let expressionTimer = null;
+    let headBob = 0;
+    let earAngle = 0;
+    let eyeScale = 1;
+    let mouthCurve = 0;
+    let pawRaise = 0;
 
-            const rimLight = new THREE.DirectionalLight(0xa78bfa, 0.4);
-            rimLight.position.set(0, -1, -5);
-            scene.add(rimLight);
+    // ============================================================
+    //  EMOTIONS
+    // ============================================================
+    const EMOTIONS = [
+        { emoji: '☀️', name: 'Joy', phrase: 'You are shining today.', color: '#FBBF24' },
+        { emoji: '🌧️', name: 'Sadness', phrase: 'Let it wash over you.', color: '#60A5FA' },
+        { emoji: '🌪️', name: 'Anger', phrase: 'Even storms run out of rain.', color: '#EF4444' },
+        { emoji: '🌈', name: 'Peace', phrase: 'You crossed the storm.', color: '#A78BFA' },
+        { emoji: '🔥', name: 'Passion', phrase: 'Your fire is powerful.', color: '#F97316' },
+        { emoji: '🌙', name: 'Calm', phrase: 'Rest is not weakness.', color: '#8B5CF6' },
+        { emoji: '🌱', name: 'Hope', phrase: 'Something is growing.', color: '#34D399' },
+        { emoji: '🕊️', name: 'Freedom', phrase: 'You are light.', color: '#F472B6' },
+    ];
 
-            const pointLight = new THREE.PointLight(0xa78bfa, 0.3, 10);
-            pointLight.position.set(0, 2, 2);
-            scene.add(pointLight);
+    const CAPY_MOODS = [
+        'Hey! I was waiting for you. 🦫',
+        'Curious... what are you hiding today?',
+        'I remember yesterday. You did great.',
+        'Hehe... I have a secret for you.',
+        'I\'m glad you\'re here. Really.',
+        'Let\'s do something amazing today!',
+        'I thought about you last night.',
+        'I prepared something special!',
+        'Today I\'m calm. Just vibing.',
+        'You know what? I like you.',
+        'I thought you wouldn\'t come back...',
+        'Thank you for being here.',
+        'There\'s something I haven\'t told you...',
+        'TWO WEEKS together! 🎉'
+    ];
 
-            // ===== GROUND (invisible shadow catcher) =====
-            const groundGeo = new THREE.PlaneGeometry(10, 10);
-            const groundMat = new THREE.ShadowMaterial({ opacity: 0.3 });
-            const ground = new THREE.Mesh(groundGeo, groundMat);
-            ground.rotation.x = -Math.PI / 2;
-            ground.position.y = -0.2;
-            ground.receiveShadow = true;
-            scene.add(ground);
+    const BADGES = [
+        { id: 'first', name: 'First Stroke', icon: '✍️', condition: 1 },
+        { id: 'week', name: 'Week Warrior', icon: '🔥', condition: 7 },
+        { id: 'month', name: 'Monthly Master', icon: '👑', condition: 30 },
+        { id: 'rainbow', name: 'Rainbow Soul', icon: '🌈', condition: 5 },
+        { id: 'phoenix', name: 'Risen', icon: '🦋', condition: 10 },
+    ];
 
-            // ===== CAPYBARA GROUP =====
-            const capybara = new THREE.Group();
-            scene.add(capybara);
-
-            // ----- BODY -----
-            const bodyGeo = new THREE.SphereGeometry(0.9, 32, 32);
-            const bodyMat = new THREE.MeshPhysicalMaterial({
-                color: 0x8B6B4A,
-                roughness: 0.7,
-                metalness: 0.0,
-                clearcoat: 0.1,
-                clearcoatRoughness: 0.4,
-            });
-            const body = new THREE.Mesh(bodyGeo, bodyMat);
-            body.scale.set(1.6, 1.0, 1.2);
-            body.position.y = 0.6;
-            body.castShadow = true;
-            capybara.add(body);
-
-            // ----- HEAD -----
-            const headGroup = new THREE.Group();
-            headGroup.position.set(0, 1.2, 0.6);
-            capybara.add(headGroup);
-
-            const headGeo = new THREE.SphereGeometry(0.65, 32, 32);
-            const headMat = new THREE.MeshPhysicalMaterial({
-                color: 0xA0805A,
-                roughness: 0.6,
-                metalness: 0.0,
-                clearcoat: 0.1,
-            });
-            const head = new THREE.Mesh(headGeo, headMat);
-            head.scale.set(1.3, 1.0, 1.1);
-            head.castShadow = true;
-            headGroup.add(head);
-
-            // ----- SNOUT -----
-            const snoutGeo = new THREE.SphereGeometry(0.35, 24, 24);
-            const snoutMat = new THREE.MeshPhysicalMaterial({
-                color: 0xC4A882,
-                roughness: 0.8,
-                metalness: 0.0,
-            });
-            const snout = new THREE.Mesh(snoutGeo, snoutMat);
-            snout.scale.set(1.2, 0.8, 0.7);
-            snout.position.set(0, -0.05, 0.45);
-            headGroup.add(snout);
-
-            // ----- NOSE -----
-            const noseGeo = new THREE.SphereGeometry(0.08, 16, 16);
-            const noseMat = new THREE.MeshPhysicalMaterial({
-                color: 0x1A1A2E,
-                roughness: 0.9,
-                metalness: 0.0,
-            });
-            const nose = new THREE.Mesh(noseGeo, noseMat);
-            nose.scale.set(1.2, 0.8, 0.6);
-            nose.position.set(0, 0.0, 0.7);
-            headGroup.add(nose);
-
-            // ----- EYES -----
-            const eyeWhiteMat = new THREE.MeshPhysicalMaterial({
-                color: 0xffffff,
-                roughness: 0.1,
-                metalness: 0.0,
-                emissive: 0xffffff,
-                emissiveIntensity: 0.2,
-            });
-            const pupilMat = new THREE.MeshPhysicalMaterial({
-                color: 0x1A1A2E,
-                roughness: 0.0,
-                metalness: 0.0,
-                emissive: 0x1A1A2E,
-                emissiveIntensity: 0.3,
-            });
-
-            const eyeGroupL = new THREE.Group();
-            eyeGroupL.position.set(-0.35, 0.15, 0.5);
-            headGroup.add(eyeGroupL);
-
-            const eyeWhiteL = new THREE.Mesh(new THREE.SphereGeometry(0.15, 24, 24), eyeWhiteMat);
-            eyeGroupL.add(eyeWhiteL);
-
-            const pupilL = new THREE.Mesh(new THREE.SphereGeometry(0.08, 16, 16), pupilMat);
-            pupilL.position.set(0, 0, 0.15);
-            eyeGroupL.add(pupilL);
-
-            const eyeGroupR = new THREE.Group();
-            eyeGroupR.position.set(0.35, 0.15, 0.5);
-            headGroup.add(eyeGroupR);
-
-            const eyeWhiteR = new THREE.Mesh(new THREE.SphereGeometry(0.15, 24, 24), eyeWhiteMat);
-            eyeGroupR.add(eyeWhiteR);
-
-            const pupilR = new THREE.Mesh(new THREE.SphereGeometry(0.08, 16, 16), pupilMat);
-            pupilR.position.set(0, 0, 0.15);
-            eyeGroupR.add(pupilR);
-
-            // ----- EARS -----
-            const earMat = new THREE.MeshPhysicalMaterial({
-                color: 0xA0805A,
-                roughness: 0.7,
-                metalness: 0.0,
-            });
-            const earGeo = new THREE.SphereGeometry(0.15, 16, 16);
-
-            const earL = new THREE.Mesh(earGeo, earMat);
-            earL.scale.set(1.0, 1.0, 0.4);
-            earL.position.set(-0.55, 0.55, 0.3);
-            headGroup.add(earL);
-
-            const earR = new THREE.Mesh(earGeo, earMat);
-            earR.scale.set(1.0, 1.0, 0.4);
-            earR.position.set(0.55, 0.55, 0.3);
-            headGroup.add(earR);
-
-            // ----- MOUTH (a simple curved line as geometry) -----
-            const mouthPoints = [
-                new THREE.Vector3(-0.12, -0.12, 0.65),
-                new THREE.Vector3(0, -0.02, 0.7),
-                new THREE.Vector3(0.12, -0.12, 0.65),
-            ];
-            const mouthCurve = new THREE.CatmullRomCurve3(mouthPoints);
-            const mouthTube = new THREE.TubeGeometry(mouthCurve, 20, 0.015, 8, false);
-            const mouthMat = new THREE.MeshPhysicalMaterial({
-                color: 0x4A3A2A,
-                roughness: 0.9,
-                metalness: 0.0,
-            });
-            const mouth = new THREE.Mesh(mouthTube, mouthMat);
-            headGroup.add(mouth);
-
-            // ----- PAWS -----
-            const pawMat = new THREE.MeshPhysicalMaterial({
-                color: 0x8B6B4A,
-                roughness: 0.8,
-                metalness: 0.0,
-            });
-            const pawGeo = new THREE.SphereGeometry(0.15, 16, 16);
-
-            const pawFL = new THREE.Mesh(pawGeo, pawMat);
-            pawFL.scale.set(1.0, 0.8, 1.4);
-            pawFL.position.set(-0.5, 0.1, 1.0);
-            capybara.add(pawFL);
-
-            const pawFR = new THREE.Mesh(pawGeo, pawMat);
-            pawFR.scale.set(1.0, 0.8, 1.4);
-            pawFR.position.set(0.5, 0.1, 1.0);
-            capybara.add(pawFR);
-
-            const pawBL = new THREE.Mesh(pawGeo, pawMat);
-            pawBL.scale.set(1.0, 0.8, 1.4);
-            pawBL.position.set(-0.55, 0.1, -0.8);
-            capybara.add(pawBL);
-
-            const pawBR = new THREE.Mesh(pawGeo, pawMat);
-            pawBR.scale.set(1.0, 0.8, 1.4);
-            pawBR.position.set(0.55, 0.1, -0.8);
-            capybara.add(pawBR);
-
-            // ----- GUIDE PAW (front left, raised) -----
-            const guidePawMat = new THREE.MeshPhysicalMaterial({
-                color: 0xA0805A,
-                roughness: 0.7,
-                metalness: 0.0,
-            });
-            const guidePaw = new THREE.Mesh(
-                new THREE.SphereGeometry(0.16, 16, 16),
-                guidePawMat
-            );
-            guidePaw.scale.set(1.0, 0.8, 1.4);
-            guidePaw.position.set(-0.5, 0.4, 0.9);
-            capybara.add(guidePaw);
-
-            // ----- TAIL -----
-            const tailMat = new THREE.MeshPhysicalMaterial({
-                color: 0x8B6B4A,
-                roughness: 0.8,
-                metalness: 0.0,
-            });
-            const tail = new THREE.Mesh(
-                new THREE.SphereGeometry(0.1, 16, 16),
-                tailMat
-            );
-            tail.scale.set(0.6, 0.6, 1.8);
-            tail.position.set(0, 0.5, -1.3);
-            capybara.add(tail);
-
-            // Store references for animation
-            const parts = {
-                body,
-                headGroup,
-                head,
-                snout,
-                nose,
-                eyeL: eyeGroupL,
-                eyeR: eyeGroupR,
-                pupilL,
-                pupilR,
-                earL,
-                earR,
-                mouth,
-                guidePaw,
-                pawFL,
-                pawFR,
-                pawBL,
-                pawBR,
-                tail,
-                capybara,
-            };
-
-            // ===== STATE =====
-            let isDrawing = false;
-            let points = [];
-            let lastEmotion = null;
-            let streak = 0;
-            let shareImageData = null;
-            let expression = 'idle';
-            let expressionTimer = null;
-            let breathePhase = 0;
-            let targetHeadRotX = 0;
-            let targetHeadRotY = 0;
-            let currentHeadRotX = 0;
-            let currentHeadRotY = 0;
-
-            // ===== EMOTIONS =====
-            const EMOTIONS = [
-                { emoji: '☀️', name: 'Joy', phrase: 'You are shining today.', color: '#FBBF24' },
-                { emoji: '🌧️', name: 'Sadness', phrase: 'Let it wash over you.', color: '#60A5FA' },
-                { emoji: '🌪️', name: 'Anger', phrase: 'Even storms run out of rain.', color: '#EF4444' },
-                { emoji: '🌈', name: 'Peace', phrase: 'You crossed the storm.', color: '#A78BFA' },
-                { emoji: '🔥', name: 'Passion', phrase: 'Your fire is powerful.', color: '#F97316' },
-                { emoji: '🌙', name: 'Calm', phrase: 'Rest is not weakness.', color: '#8B5CF6' },
-                { emoji: '🌱', name: 'Hope', phrase: 'Something is growing.', color: '#34D399' },
-                { emoji: '🕊️', name: 'Freedom', phrase: 'You are light.', color: '#F472B6' },
-            ];
-
-            const CAPY_MOODS = [
-                'Hey! I was waiting for you. 🦫',
-                'Curious... what are you hiding today?',
-                'I remember yesterday. You did great.',
-                'Hehe... I have a secret for you.',
-                'I\'m glad you\'re here. Really.',
-                'Let\'s do something amazing today!',
-                'I thought about you last night.',
-                'I prepared something special!',
-                'Today I\'m calm. Just vibing.',
-                'You know what? I like you.',
-                'I thought you wouldn\'t come back...',
-                'Thank you for being here.',
-                'There\'s something I haven\'t told you...',
-                'TWO WEEKS together! 🎉'
-            ];
-
-            const BADGES = [
-                { id: 'first', name: 'First Stroke', icon: '✍️', condition: 1 },
-                { id: 'week', name: 'Week Warrior', icon: '🔥', condition: 7 },
-                { id: 'month', name: 'Monthly Master', icon: '👑', condition: 30 },
-                { id: 'rainbow', name: 'Rainbow Soul', icon: '🌈', condition: 5 },
-                { id: 'phoenix', name: 'Risen', icon: '🦋', condition: 10 },
-            ];
-
-            // ===== EXPRESSIONS =====
-            function setExpression(expr) {
-                expression = expr;
-                clearTimeout(expressionTimer);
-
-                // Reset all
-                const defaultMouth = [
-                    new THREE.Vector3(-0.12, -0.12, 0.65),
-                    new THREE.Vector3(0, -0.02, 0.7),
-                    new THREE.Vector3(0.12, -0.12, 0.65),
-                ];
-
-                let mouthPoints = defaultMouth;
-                let eyeScale = 1;
-                let earAngle = 0;
-                let headTilt = 0;
-
-                switch (expr) {
-                    case 'happy':
-                        mouthPoints = [
-                            new THREE.Vector3(-0.12, -0.05, 0.65),
-                            new THREE.Vector3(0, 0.08, 0.7),
-                            new THREE.Vector3(0.12, -0.05, 0.65),
-                        ];
-                        earAngle = 0.3;
-                        break;
-                    case 'sad':
-                        mouthPoints = [
-                            new THREE.Vector3(-0.12, 0.0, 0.65),
-                            new THREE.Vector3(0, -0.10, 0.7),
-                            new THREE.Vector3(0.12, 0.0, 0.65),
-                        ];
-                        earAngle = -0.3;
-                        headTilt = 0.05;
-                        break;
-                    case 'surprised':
-                        mouthPoints = [
-                            new THREE.Vector3(-0.08, 0.05, 0.65),
-                            new THREE.Vector3(0, 0.15, 0.7),
-                            new THREE.Vector3(0.08, 0.05, 0.65),
-                        ];
-                        eyeScale = 1.5;
-                        earAngle = 0.5;
-                        break;
-                    case 'proud':
-                        mouthPoints = [
-                            new THREE.Vector3(-0.10, -0.08, 0.65),
-                            new THREE.Vector3(0, 0.02, 0.7),
-                            new THREE.Vector3(0.10, -0.08, 0.65),
-                        ];
-                        earAngle = 0.2;
-                        headTilt = -0.08;
-                        break;
-                    case 'taunting':
-                        mouthPoints = [
-                            new THREE.Vector3(-0.10, -0.10, 0.65),
-                            new THREE.Vector3(0, 0.05, 0.7),
-                            new THREE.Vector3(0.10, -0.10, 0.65),
-                        ];
-                        earAngle = 0.4;
-                        break;
-                    default:
-                        break;
-                }
-
-                // Update mouth geometry
-                const curve = new THREE.CatmullRomCurve3(mouthPoints);
-                const newGeo = new THREE.TubeGeometry(curve, 20, 0.015, 8, false);
-                mouth.geometry.dispose();
-                mouth.geometry = newGeo;
-
-                // Update eyes
-                const scale = eyeScale;
-                eyeGroupL.scale.set(scale, scale, scale);
-                eyeGroupR.scale.set(scale, scale, scale);
-
-                // Update ears
-                earL.rotation.z = earAngle;
-                earR.rotation.z = -earAngle;
-
-                // Update head tilt
-                headGroup.rotation.z = headTilt;
-
-                // Auto-reset after 3 seconds
-                expressionTimer = setTimeout(() => {
-                    setExpression('idle');
-                }, 3000);
-            }
-
-            // ===== BUBBLE =====
-            function showBubble(text, duration = 3000) {
-                bubble.textContent = text;
-                bubble.classList.add('show');
-                clearTimeout(bubble._timer);
-                bubble._timer = setTimeout(() => {
-                    bubble.classList.remove('show');
-                }, duration);
-            }
-
-            // ===== STREAK =====
-            function loadStreak() {
-                try {
-                    const stored = localStorage.getItem('mewonen_streak');
-                    streak = stored ? parseInt(stored, 10) || 0 : 0;
-                    const lastDate = localStorage.getItem('mewonen_last_date');
-                    const today = new Date().toDateString();
-                    if (lastDate === today) {} else if (lastDate) {
-                        const yesterday = new Date();
-                        yesterday.setDate(yesterday.getDate() - 1);
-                        if (lastDate === yesterday.toDateString()) {
-                            streak += 1;
-                        } else {
-                            streak = 1;
-                        }
-                    } else {
-                        streak = 1;
-                    }
-                    localStorage.setItem('mewonen_streak', String(streak));
-                    localStorage.setItem('mewonen_last_date', today);
-                } catch (e) {
+    // ============================================================
+    //  STREAK / BADGES
+    // ============================================================
+    function loadStreak() {
+        try {
+            const stored = localStorage.getItem('mewonen_streak');
+            streak = stored ? parseInt(stored, 10) || 0 : 0;
+            const lastDate = localStorage.getItem('mewonen_last_date');
+            const today = new Date().toDateString();
+            if (lastDate === today) { /* already visited */ }
+            else if (lastDate) {
+                const yesterday = new Date();
+                yesterday.setDate(yesterday.getDate() - 1);
+                if (lastDate === yesterday.toDateString()) {
+                    streak += 1;
+                } else {
                     streak = 1;
                 }
-                streakCount.textContent = streak;
-                checkBadges();
-            }
-
-            function checkBadges() {
-                const unlocked = JSON.parse(localStorage.getItem('mewonen_badges') || '[]');
-                let newBadge = null;
-                for (const b of BADGES) {
-                    if (!unlocked.includes(b.id) && streak >= b.condition) {
-                        unlocked.push(b.id);
-                        newBadge = b;
-                        break;
-                    }
-                }
-                if (newBadge) {
-                    localStorage.setItem('mewonen_badges', JSON.stringify(unlocked));
-                    badgeText.textContent = `🎁 ${newBadge.icon} ${newBadge.name} unlocked!`;
-                    badgeNotif.classList.add('show');
-                    setExpression('happy');
-                    setTimeout(() => badgeNotif.classList.remove('show'), 4000);
-                }
-            }
-
-            function getCapyMood() {
-                const today = new Date();
-                const start = new Date(2025, 0, 1);
-                const diff = Math.floor((today - start) / (1000 * 60 * 60 * 24));
-                return CAPY_MOODS[diff % CAPY_MOODS.length];
-            }
-
-            // ===== CANVAS =====
-            function setupCanvas() {
-                const rect = canvas.getBoundingClientRect();
-                const dpr = window.devicePixelRatio || 1;
-                canvas.width = rect.width * dpr;
-                canvas.height = rect.height * dpr;
-                ctx.scale(dpr, dpr);
-                ctx.lineWidth = 4;
-                ctx.lineCap = 'round';
-                ctx.lineJoin = 'round';
-                ctx.strokeStyle = 'rgba(200, 180, 255, 0.85)';
-            }
-
-            function getPos(e) {
-                const rect = canvas.getBoundingClientRect();
-                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-                return { x: clientX - rect.left, y: clientY - rect.top };
-            }
-
-            function startDraw(e) {
-                e.preventDefault();
-                isDrawing = true;
-                points = [];
-                const p = getPos(e);
-                points.push(p);
-                ctx.beginPath();
-                ctx.moveTo(p.x, p.y);
-                glowRing.classList.add('active');
-                setExpression('taunting');
-                showBubble('I\'m guiding you... 🦫', 2000);
-            }
-
-            function moveDraw(e) {
-                e.preventDefault();
-                if (!isDrawing) return;
-                const p = getPos(e);
-                points.push(p);
-                ctx.lineTo(p.x, p.y);
-                ctx.stroke();
-                // Update head to follow finger
-                const rect = canvas.getBoundingClientRect();
-                const cx = rect.left + rect.width / 2;
-                const cy = rect.top + rect.height / 2;
-                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-                targetHeadRotY = ((clientX - cx) / rect.width) * 0.3;
-                targetHeadRotX = ((cy - clientY) / rect.height) * 0.15;
-            }
-
-            function endDraw() {
-                if (!isDrawing) return;
-                isDrawing = false;
-                glowRing.classList.remove('active');
-                targetHeadRotX = 0;
-                targetHeadRotY = 0;
-                if (points.length < 5) {
-                    showBubble('Draw a little more... ✍️', 2000);
-                    setExpression('idle');
-                    return;
-                }
-                analyzeDraw();
-            }
-
-            // ===== ANALYSIS =====
-            function analyzeDraw() {
-                let totalDist = 0;
-                for (let i = 1; i < points.length; i++) {
-                    const dx = points[i].x - points[i - 1].x;
-                    const dy = points[i].y - points[i - 1].y;
-                    totalDist += Math.sqrt(dx * dx + dy * dy);
-                }
-                const avgDist = totalDist / points.length;
-                let idx = 0;
-                if (avgDist > 8) idx = 0;
-                else if (avgDist > 4) idx = 3;
-                else if (avgDist > 2) idx = 1;
-                else if (avgDist < 1) idx = 7;
-                else idx = 4;
-
-                const rand = Math.random();
-                if (rand < 0.15 && idx !== 7) idx = 2;
-                else if (rand > 0.85 && idx !== 7) idx = 5;
-
-                const emotion = EMOTIONS[idx % EMOTIONS.length];
-                lastEmotion = emotion;
-                displayResult(emotion);
-                generateShareImage(emotion);
-
-                let capyExpression = 'happy';
-                if (emotion.name === 'Sadness') capyExpression = 'sad';
-                else if (emotion.name === 'Anger') capyExpression = 'surprised';
-                else if (emotion.name === 'Peace') capyExpression = 'proud';
-                else if (emotion.name === 'Joy') capyExpression = 'happy';
-                else capyExpression = 'happy';
-
-                setExpression(capyExpression);
-                showBubble(`I see... You are ${emotion.name}. ${emotion.phrase} 💜`, 4000);
-            }
-
-            function displayResult(emotion) {
-                emotionEmoji.textContent = emotion.emoji;
-                emotionEmoji.style.animation = 'none';
-                requestAnimationFrame(() => {
-                    emotionEmoji.style.animation = 'pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
-                });
-                emotionName.textContent = emotion.name;
-                glowRing.style.borderColor = emotion.color + '44';
-                glowRing.style.boxShadow = `0 0 60px ${emotion.color}11`;
-                setTimeout(() => {
-                    glowRing.style.borderColor = 'rgba(167, 139, 250, 0.06)';
-                    glowRing.style.boxShadow = 'none';
-                }, 3000);
-            }
-
-            // ===== SHARE IMAGE =====
-            function generateShareImage(emotion) {
-                const offscreen = document.createElement('canvas');
-                offscreen.width = 800;
-                offscreen.height = 800;
-                const c = offscreen.getContext('2d');
-
-                const grad = c.createRadialGradient(400, 400, 100, 400, 400, 500);
-                grad.addColorStop(0, '#2a1a3a');
-                grad.addColorStop(0.5, '#1a1030');
-                grad.addColorStop(1, '#0a0a18');
-                c.fillStyle = grad;
-                c.fillRect(0, 0, 800, 800);
-
-                for (let i = 0; i < 5; i++) {
-                    c.beginPath();
-                    c.arc(400 + (Math.random() - 0.5) * 300, 400 + (Math.random() - 0.5) * 300,
-                        50 + Math.random() * 80, 0, Math.PI * 2);
-                    c.fillStyle = `rgba(167, 139, 250, ${0.02 + Math.random() * 0.04})`;
-                    c.fill();
-                }
-
-                const drawingData = canvas.toDataURL();
-                const img = new Image();
-                img.onload = function() {
-                    c.save();
-                    c.beginPath();
-                    c.arc(400, 350, 200, 0, Math.PI * 2);
-                    c.clip();
-                    c.drawImage(img, 400 - 200, 350 - 200, 400, 400);
-                    c.restore();
-
-                    c.beginPath();
-                    c.arc(400, 350, 205, 0, Math.PI * 2);
-                    c.strokeStyle = emotion.color + '44';
-                    c.lineWidth = 3;
-                    c.stroke();
-
-                    c.font = '80px Arial';
-                    c.textAlign = 'center';
-                    c.textBaseline = 'middle';
-                    c.fillText(emotion.emoji, 400, 150);
-
-                    c.font = 'bold 48px Arial';
-                    c.fillStyle = '#fff';
-                    c.fillText(emotion.name, 400, 620);
-
-                    c.font = '24px Arial';
-                    c.fillStyle = 'rgba(255,255,255,0.5)';
-                    c.fillText(emotion.phrase, 400, 680);
-
-                    c.font = '20px Arial';
-                    c.fillStyle = '#a78bfa';
-                    c.fillText('✨ @mewonen', 400, 740);
-
-                    c.font = 'bold 28px Arial';
-                    c.fillStyle = '#fff';
-                    const viralText = getViralText(emotion);
-                    c.fillText(viralText, 400, 570);
-
-                    shareImageData = offscreen.toDataURL('image/png');
-                };
-                img.src = drawingData;
-            }
-
-            function getViralText(emotion) {
-                const texts = {
-                    'Joy': '✨ Mewonen saw my light.',
-                    'Sadness': '💜 I drew my tears. Mewonen caught them.',
-                    'Anger': '🔥 My fire. Mewonen saw it.',
-                    'Peace': '🌈 I crossed the storm.',
-                    'Passion': '💫 This is my power.',
-                    'Calm': '🌙 This is my peace.',
-                    'Hope': '🌱 Something is growing.',
-                    'Freedom': '🕊️ I am light.'
-                };
-                return texts[emotion.name] || '💜 Mewonen saw my soul.';
-            }
-
-            // ===== SHARE OVERLAY =====
-            function openShare() {
-                if (!shareImageData) {
-                    showBubble('Draw something first! ✍️', 2000);
-                    return;
-                }
-                sharePreview.innerHTML = '';
-                const img = document.createElement('img');
-                img.src = shareImageData;
-                sharePreview.appendChild(img);
-                if (lastEmotion) {
-                    shareEmotion.textContent = lastEmotion.name;
-                    shareText.innerHTML =
-                        `✨ <strong id="shareEmotion">${lastEmotion.name}</strong> — ${getViralText(lastEmotion)}`;
-                }
-                shareOverlay.classList.add('show');
-            }
-
-            function closeShare() {
-                shareOverlay.classList.remove('show');
-            }
-
-            function downloadShare() {
-                if (!shareImageData) return;
-                const link = document.createElement('a');
-                link.download = `mewonen-${lastEmotion ? lastEmotion.name.toLowerCase() : 'mood'}.png`;
-                link.href = shareImageData;
-                link.click();
-            }
-
-            function copyShareText() {
-                if (!lastEmotion) return;
-                const text =
-                    `${getViralText(lastEmotion)} ✨ @mewonen — Draw your mood at mewonen.com 💜`;
-                navigator.clipboard.writeText(text).then(() => {
-                    showBubble('📋 Text copied!', 2000);
-                }).catch(() => {
-                    const ta = document.createElement('textarea');
-                    ta.value = text;
-                    document.body.appendChild(ta);
-                    ta.select();
-                    document.execCommand('copy');
-                    ta.remove();
-                    showBubble('📋 Text copied!', 2000);
-                });
-            }
-
-            function generateStatus() {
-                if (!lastEmotion) {
-                    showBubble('Draw something first! ✍️', 2000);
-                    return;
-                }
-                const offscreen = document.createElement('canvas');
-                offscreen.width = 800;
-                offscreen.height = 800;
-                const c = offscreen.getContext('2d');
-
-                const grad = c.createRadialGradient(400, 400, 100, 400, 400, 500);
-                grad.addColorStop(0, '#2a1a3a');
-                grad.addColorStop(0.5, '#1a1030');
-                grad.addColorStop(1, '#0a0a18');
-                c.fillStyle = grad;
-                c.fillRect(0, 0, 800, 800);
-
-                c.font = '200px Arial';
-                c.textAlign = 'center';
-                c.textBaseline = 'middle';
-                c.fillText(lastEmotion.emoji, 400, 350);
-
-                c.font = '48px Arial';
-                c.fillStyle = '#fff';
-                c.fillText(lastEmotion.name, 400, 550);
-
-                c.font = '28px Arial';
-                c.fillStyle = 'rgba(255,255,255,0.4)';
-                c.fillText('✨ mewonen.com', 400, 650);
-
-                const link = document.createElement('a');
-                link.download = `mewonen-status-${lastEmotion.name.toLowerCase()}.png`;
-                link.href = offscreen.toDataURL('image/png');
-                link.click();
-                showBubble('📱 Status saved!', 2000);
-            }
-
-            function clearCanvas() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                emotionEmoji.textContent = '';
-                emotionName.textContent = '';
-                glowRing.style.borderColor = 'rgba(167, 139, 250, 0.06)';
-                glowRing.style.boxShadow = 'none';
-                lastEmotion = null;
-                shareImageData = null;
-                setExpression('idle');
-                showBubble('Cleared. Ready for a new drawing. ✨', 2000);
-            }
-
-            // ===== 3D ANIMATION LOOP =====
-            function animate3D() {
-                requestAnimationFrame(animate3D);
-
-                // Breathing
-                breathePhase += 0.02;
-                const breathe = Math.sin(breathePhase) * 0.015;
-                body.position.y = 0.6 + breathe;
-                headGroup.position.y = 1.2 + breathe * 0.5;
-
-                // Smooth head rotation
-                currentHeadRotX += (targetHeadRotX - currentHeadRotX) * 0.08;
-                currentHeadRotY += (targetHeadRotY - currentHeadRotY) * 0.08;
-                headGroup.rotation.x = currentHeadRotX;
-                headGroup.rotation.y = currentHeadRotY;
-
-                // Guide paw animation (slight bobbing when guiding)
-                if (expression === 'taunting' || isDrawing) {
-                    guidePaw.position.y = 0.4 + Math.sin(breathePhase * 1.5) * 0.08;
-                } else {
-                    guidePaw.position.y = 0.4;
-                }
-
-                renderer.render(scene, camera);
-            }
-
-            // ===== RESIZE =====
-            function onResize() {
-                const width = container.clientWidth;
-                const height = container.clientHeight;
-                camera.aspect = width / height;
-                camera.updateProjectionMatrix();
-                renderer.setSize(width, height);
-            }
-
-            window.addEventListener('resize', onResize);
-
-            // ===== INIT =====
-            function init() {
-                setupCanvas();
-                loadStreak();
-
-                setTimeout(() => {
-                    showBubble(getCapyMood(), 4000);
-                }, 800);
-
-                setTimeout(() => {
-                    showBubble('Give me your finger. Let\'s draw together. 🦫', 3000);
-                }, 4800);
-
-                canvas.addEventListener('touchstart', startDraw, { passive: false });
-                canvas.addEventListener('touchmove', moveDraw, { passive: false });
-                canvas.addEventListener('touchend', endDraw);
-                canvas.addEventListener('mousedown', startDraw);
-                canvas.addEventListener('mousemove', moveDraw);
-                canvas.addEventListener('mouseup', endDraw);
-                canvas.addEventListener('mouseleave', endDraw);
-
-                clearBtn.addEventListener('click', clearCanvas);
-                shareBtn.addEventListener('click', openShare);
-                statusBtn.addEventListener('click', generateStatus);
-                downloadBtn.addEventListener('click', downloadShare);
-                copyBtn.addEventListener('click', copyShareText);
-                shareClose.addEventListener('click', closeShare);
-                shareOverlay.addEventListener('click', function(e) {
-                    if (e.target === this) closeShare();
-                });
-
-                let resizeTimer;
-                window.addEventListener('resize', function() {
-                    clearTimeout(resizeTimer);
-                    resizeTimer = setTimeout(() => {
-                        setupCanvas();
-                        onResize();
-                    }, 100);
-                });
-
-                // Start 3D animation
-                animate3D();
-
-                console.log('🦫 Mewonen 3D — Fully Animated Capybara');
-                console.log('💜 English Only — Streaks, Badges, Gifts & Viral Share');
-            }
-
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', init);
             } else {
-                init();
+                streak = 1;
             }
+            localStorage.setItem('mewonen_streak', String(streak));
+            localStorage.setItem('mewonen_last_date', today);
+        } catch(e) { streak = 1; }
+        streakCount.textContent = streak;
+        checkBadges();
+    }
 
-        })();
-    </script>
+    function checkBadges() {
+        const unlocked = JSON.parse(localStorage.getItem('mewonen_badges') || '[]');
+        let newBadge = null;
+        for (const b of BADGES) {
+            if (!unlocked.includes(b.id) && streak >= b.condition) {
+                unlocked.push(b.id);
+                newBadge = b;
+                break;
+            }
+        }
+        if (newBadge) {
+            localStorage.setItem('mewonen_badges', JSON.stringify(unlocked));
+            badgeText.textContent = `🎁 ${newBadge.icon} ${newBadge.name} unlocked!`;
+            badgeNotif.classList.add('show');
+            setExpression('happy');
+            setTimeout(() => badgeNotif.classList.remove('show'), 4000);
+        }
+    }
+
+    function getCapyMood() {
+        const today = new Date();
+        const start = new Date(2025, 0, 1);
+        const diff = Math.floor((today - start) / (1000*60*60*24));
+        return CAPY_MOODS[diff % CAPY_MOODS.length];
+    }
+
+    // ============================================================
+    //  BUBBLE
+    // ============================================================
+    function showBubble(text, duration = 3000) {
+        bubble.textContent = text;
+        bubble.classList.add('show');
+        clearTimeout(bubble._timer);
+        bubble._timer = setTimeout(() => bubble.classList.remove('show'), duration);
+    }
+
+    // ============================================================
+    //  SET EXPRESSION
+    // ============================================================
+    function setExpression(expr) {
+        expression = expr;
+        clearTimeout(expressionTimer);
+
+        switch(expr) {
+            case 'happy':
+                mouthCurve = 1.0;
+                eyeScale = 1.0;
+                earAngle = 0.25;
+                break;
+            case 'sad':
+                mouthCurve = -0.8;
+                eyeScale = 0.9;
+                earAngle = -0.3;
+                break;
+            case 'surprised':
+                mouthCurve = 1.5;
+                eyeScale = 1.4;
+                earAngle = 0.5;
+                break;
+            case 'proud':
+                mouthCurve = 0.5;
+                eyeScale = 1.0;
+                earAngle = 0.15;
+                break;
+            case 'taunting':
+                mouthCurve = 0.6;
+                eyeScale = 1.0;
+                earAngle = 0.4;
+                break;
+            default:
+                mouthCurve = 0.0;
+                eyeScale = 1.0;
+                earAngle = 0.0;
+        }
+
+        // Auto-reset after 3s
+        expressionTimer = setTimeout(() => {
+            setExpression('idle');
+        }, 3000);
+    }
+
+    // ============================================================
+    //  DRAW CAPYBARA (frame by frame, animated)
+    // ============================================================
+    function drawCapybara() {
+        const W = 400, H = 370;
+        const cx = W/2, cy = H/2 - 20;
+
+        // Clear
+        capyCtx.clearRect(0, 0, W, H);
+
+        // ---- SHADOW ----
+        capyCtx.save();
+        capyCtx.shadowColor = 'rgba(0,0,0,0.3)';
+        capyCtx.shadowBlur = 20;
+        capyCtx.shadowOffsetY = 10;
+        capyCtx.beginPath();
+        capyCtx.ellipse(cx, cy + 70, 75, 20, 0, 0, Math.PI*2);
+        capyCtx.fillStyle = 'rgba(0,0,0,0.2)';
+        capyCtx.fill();
+        capyCtx.restore();
+
+        // ---- BODY ----
+        const bodyY = cy + 15 + Math.sin(breathePhase)*1.5;
+        capyCtx.save();
+        capyCtx.shadowColor = 'rgba(0,0,0,0.15)';
+        capyCtx.shadowBlur = 15;
+        capyCtx.shadowOffsetY = 4;
+        capyCtx.beginPath();
+        capyCtx.ellipse(cx, bodyY, 70, 45, 0, 0, Math.PI*2);
+        capyCtx.fillStyle = '#8B6B4A';
+        capyCtx.fill();
+        capyCtx.closePath();
+        capyCtx.beginPath();
+        capyCtx.ellipse(cx, bodyY, 66, 41, 0, 0, Math.PI*2);
+        capyCtx.fillStyle = '#A0805A';
+        capyCtx.fill();
+        capyCtx.restore();
+
+        // ---- HEAD (with bob) ----
+        const headY = cy - 25 + Math.sin(breathePhase)*0.8;
+        capyCtx.save();
+        capyCtx.translate(cx, headY);
+
+        // Head tilt based on expression
+        let headTilt = 0;
+        if (expression === 'proud') headTilt = -0.08;
+        if (expression === 'sad') headTilt = 0.05;
+        if (expression === 'taunting') headTilt = 0.03;
+        if (expression === 'surprised') headTilt = 0.0;
+
+        // Ears (with earAngle)
+        capyCtx.save();
+        capyCtx.rotate(earAngle * 0.3);
+        capyCtx.beginPath();
+        capyCtx.ellipse(-50, -28, 16, 10, -0.2, 0, Math.PI*2);
+        capyCtx.fillStyle = '#A0805A';
+        capyCtx.fill();
+        capyCtx.restore();
+
+        capyCtx.save();
+        capyCtx.rotate(-earAngle * 0.3);
+        capyCtx.beginPath();
+        capyCtx.ellipse(50, -28, 16, 10, 0.2, 0, Math.PI*2);
+        capyCtx.fillStyle = '#A0805A';
+        capyCtx.fill();
+        capyCtx.restore();
+
+        // Head main
+        capyCtx.save();
+        capyCtx.rotate(headTilt);
+        capyCtx.beginPath();
+        capyCtx.ellipse(0, 0, 48, 38, 0, 0, Math.PI*2);
+        capyCtx.fillStyle = '#A0805A';
+        capyCtx.fill();
+        capyCtx.closePath();
+        capyCtx.restore();
+
+        // Snout
+        capyCtx.beginPath();
+        capyCtx.ellipse(0, 16, 28, 16, 0, 0, Math.PI*2);
+        capyCtx.fillStyle = '#C4A882';
+        capyCtx.fill();
+        capyCtx.closePath();
+        capyCtx.beginPath();
+        capyCtx.ellipse(0, 14, 24, 12, 0, 0, Math.PI*2);
+        capyCtx.fillStyle = '#D4B88A';
+        capyCtx.fill();
+
+        // Nose
+        capyCtx.beginPath();
+        capyCtx.ellipse(0, 8, 6, 4, 0, 0, Math.PI*2);
+        capyCtx.fillStyle = '#1A1A2E';
+        capyCtx.fill();
+
+        // ---- EYES ----
+        const eyeOff = 16;
+        const eyeY = -6;
+        const eyeSize = 9 * eyeScale;
+        const pupilSize = 4.5 * eyeScale;
+
+        // Left eye
+        capyCtx.beginPath();
+        capyCtx.ellipse(-eyeOff, eyeY, eyeSize, eyeSize*1.1, 0, 0, Math.PI*2);
+        capyCtx.fillStyle = '#1A1A2E';
+        capyCtx.fill();
+        // highlight
+        capyCtx.beginPath();
+        capyCtx.arc(-eyeOff+4, eyeY-3, 3, 0, Math.PI*2);
+        capyCtx.fillStyle = '#fff';
+        capyCtx.fill();
+
+        // Right eye
+        capyCtx.beginPath();
+        capyCtx.ellipse(eyeOff, eyeY, eyeSize, eyeSize*1.1, 0, 0, Math.PI*2);
+        capyCtx.fillStyle = '#1A1A2E';
+        capyCtx.fill();
+        capyCtx.beginPath();
+        capyCtx.arc(eyeOff+4, eyeY-3, 3, 0, Math.PI*2);
+        capyCtx.fillStyle = '#fff';
+        capyCtx.fill();
+
+        // ---- MOUTH ----
+        // Draw a dynamic curve based on expression
+        const mouthY = 22;
+        const mw = 14;
+        let mouthH = 0;
+        if (mouthCurve > 0) {
+            mouthH = 4 + mouthCurve * 4;
+        } else if (mouthCurve < 0) {
+            mouthH = -4 + mouthCurve * 2;
+        } else {
+            mouthH = 0;
+        }
+
+        capyCtx.beginPath();
+        capyCtx.moveTo(-mw, mouthY);
+        capyCtx.quadraticCurveTo(0, mouthY + mouthH + 2, mw, mouthY);
+        capyCtx.strokeStyle = '#4A3A2A';
+        capyCtx.lineWidth = 2.5;
+        capyCtx.stroke();
+
+        // ---- PAWS ----
+        capyCtx.beginPath();
+        capyCtx.ellipse(-40, 40, 14, 8, 0, 0, Math.PI*2);
+        capyCtx.fillStyle = '#8B6B4A';
+        capyCtx.fill();
+        capyCtx.beginPath();
+        capyCtx.ellipse(40, 40, 14, 8, 0, 0, Math.PI*2);
+        capyCtx.fillStyle = '#8B6B4A';
+        capyCtx.fill();
+
+        // ---- GUIDE PAW (front left, raised when guiding) ----
+        const pawY = 38 - pawRaise * 8;
+        const pawX = -20 + pawRaise * 4;
+        capyCtx.beginPath();
+        capyCtx.ellipse(pawX, pawY, 12, 8, 0, 0, Math.PI*2);
+        capyCtx.fillStyle = '#A0805A';
+        capyCtx.fill();
+        // little fingers
+        for (let i=-6; i<=6; i+=4) {
+            capyCtx.beginPath();
+            capyCtx.arc(pawX+i, pawY-2, 3, 0, Math.PI*2);
+            capyCtx.fillStyle = '#B0906A';
+            capyCtx.fill();
+        }
+
+        capyCtx.restore();
+
+        // ---- TAIL ----
+        capyCtx.save();
+        capyCtx.translate(cx+65, bodyY-20);
+        capyCtx.beginPath();
+        capyCtx.ellipse(0, 0, 8, 6, 0.2, 0, Math.PI*2);
+        capyCtx.fillStyle = '#8B6B4A';
+        capyCtx.fill();
+        capyCtx.restore();
+
+        // ---- BLINK ----
+        if (blinkState === 1 || blinkState === 3) {
+            // closing or opening, eye goes half
+            capyCtx.save();
+            capyCtx.translate(cx, headY);
+            // cover eyes with a line
+            capyCtx.strokeStyle = '#A0805A';
+            capyCtx.lineWidth = 4;
+            capyCtx.beginPath();
+            capyCtx.moveTo(-22, -6);
+            capyCtx.lineTo(-10, -6);
+            capyCtx.stroke();
+            capyCtx.beginPath();
+            capyCtx.moveTo(10, -6);
+            capyCtx.lineTo(22, -6);
+            capyCtx.stroke();
+            capyCtx.restore();
+        } else if (blinkState === 2) {
+            // fully closed
+            capyCtx.save();
+            capyCtx.translate(cx, headY);
+            capyCtx.strokeStyle = '#A0805A';
+            capyCtx.lineWidth = 5;
+            capyCtx.beginPath();
+            capyCtx.moveTo(-24, -6);
+            capyCtx.lineTo(-6, -6);
+            capyCtx.stroke();
+            capyCtx.beginPath();
+            capyCtx.moveTo(6, -6);
+            capyCtx.lineTo(24, -6);
+            capyCtx.stroke();
+            capyCtx.restore();
+        }
+
+        // update breathe
+        breathePhase += 0.03;
+    }
+
+    // ============================================================
+    //  CANVAS DRAWING
+    // ============================================================
+    function setupDrawCanvas() {
+        const rect = drawCanvas.getBoundingClientRect();
+        const dpr = window.devicePixelRatio || 1;
+        drawCanvas.width = rect.width * dpr;
+        drawCanvas.height = rect.height * dpr;
+        drawCtx.scale(dpr, dpr);
+        drawCtx.lineWidth = 4;
+        drawCtx.lineCap = 'round';
+        drawCtx.lineJoin = 'round';
+        drawCtx.strokeStyle = 'rgba(200,180,255,0.85)';
+    }
+
+    function getPos(e) {
+        const rect = drawCanvas.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        return { x: clientX - rect.left, y: clientY - rect.top };
+    }
+
+    function startDraw(e) {
+        e.preventDefault();
+        isDrawing = true;
+        points = [];
+        const p = getPos(e);
+        points.push(p);
+        drawCtx.beginPath();
+        drawCtx.moveTo(p.x, p.y);
+        glowRing.classList.add('active');
+        setExpression('taunting');
+        pawRaise = 0.8;
+        showBubble('I\'m guiding you... 🦫', 2000);
+    }
+
+    function moveDraw(e) {
+        e.preventDefault();
+        if (!isDrawing) return;
+        const p = getPos(e);
+        points.push(p);
+        drawCtx.lineTo(p.x, p.y);
+        drawCtx.stroke();
+    }
+
+    function endDraw() {
+        if (!isDrawing) return;
+        isDrawing = false;
+        glowRing.classList.remove('active');
+        pawRaise = 0;
+        if (points.length < 5) {
+            showBubble('Draw a little more... ✍️', 2000);
+            setExpression('idle');
+            return;
+        }
+        analyzeDraw();
+    }
+
+    // ============================================================
+    //  ANALYSIS
+    // ============================================================
+    function analyzeDraw() {
+        let totalDist = 0;
+        for (let i=1; i<points.length; i++) {
+            const dx = points[i].x - points[i-1].x;
+            const dy = points[i].y - points[i-1].y;
+            totalDist += Math.sqrt(dx*dx + dy*dy);
+        }
+        const avgDist = totalDist / points.length;
+        let idx = 0;
+        if (avgDist > 8) idx = 0;
+        else if (avgDist > 4) idx = 3;
+        else if (avgDist > 2) idx = 1;
+        else if (avgDist < 1) idx = 7;
+        else idx = 4;
+
+        const rand = Math.random();
+        if (rand < 0.15 && idx !== 7) idx = 2;
+        else if (rand > 0.85 && idx !== 7) idx = 5;
+
+        const emotion = EMOTIONS[idx % EMOTIONS.length];
+        lastEmotion = emotion;
+        displayResult(emotion);
+        generateShareImage(emotion);
+
+        let capyExpression = 'happy';
+        if (emotion.name === 'Sadness') capyExpression = 'sad';
+        else if (emotion.name === 'Anger') capyExpression = 'surprised';
+        else if (emotion.name === 'Peace') capyExpression = 'proud';
+        else if (emotion.name === 'Joy') capyExpression = 'happy';
+        else capyExpression = 'happy';
+
+        setExpression(capyExpression);
+        showBubble(`I see... You are ${emotion.name}. ${emotion.phrase} 💜`, 4000);
+    }
+
+    function displayResult(emotion) {
+        emotionEmoji.textContent = emotion.emoji;
+        emotionEmoji.style.animation = 'none';
+        requestAnimationFrame(() => {
+            emotionEmoji.style.animation = 'pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
+        });
+        emotionName.textContent = emotion.name;
+        glowRing.style.borderColor = emotion.color + '44';
+        glowRing.style.boxShadow = `0 0 60px ${emotion.color}11`;
+        setTimeout(() => {
+            glowRing.style.borderColor = 'rgba(167,139,250,0.06)';
+            glowRing.style.boxShadow = 'none';
+        }, 3000);
+    }
+
+    // ============================================================
+    //  SHARE IMAGE
+    // ============================================================
+    function generateShareImage(emotion) {
+        const offscreen = document.createElement('canvas');
+        offscreen.width = 800;
+        offscreen.height = 800;
+        const c = offscreen.getContext('2d');
+
+        const grad = c.createRadialGradient(400,400,100,400,400,500);
+        grad.addColorStop(0,'#2a1a3a');
+        grad.addColorStop(0.5,'#1a1030');
+        grad.addColorStop(1,'#0a0a18');
+        c.fillStyle = grad;
+        c.fillRect(0,0,800,800);
+
+        for (let i=0; i<5; i++) {
+            c.beginPath();
+            c.arc(400+(Math.random()-0.5)*300, 400+(Math.random()-0.5)*300, 50+Math.random()*80, 0, Math.PI*2);
+            c.fillStyle = `rgba(167,139,250,${0.02+Math.random()*0.04})`;
+            c.fill();
+        }
+
+        const drawingData = drawCanvas.toDataURL();
+        const img = new Image();
+        img.onload = function() {
+            c.save();
+            c.beginPath();
+            c.arc(400,350,200,0,Math.PI*2);
+            c.clip();
+            c.drawImage(img, 400-200, 350-200, 400, 400);
+            c.restore();
+
+            c.beginPath();
+            c.arc(400,350,205,0,Math.PI*2);
+            c.strokeStyle = emotion.color + '44';
+            c.lineWidth = 3;
+            c.stroke();
+
+            c.font = '80px Arial';
+            c.textAlign = 'center';
+            c.textBaseline = 'middle';
+            c.fillText(emotion.emoji, 400, 150);
+
+            c.font = 'bold 48px Arial';
+            c.fillStyle = '#fff';
+            c.fillText(emotion.name, 400, 620);
+
+            c.font = '24px Arial';
+            c.fillStyle = 'rgba(255,255,255,0.5)';
+            c.fillText(emotion.phrase, 400, 680);
+
+            c.font = '20px Arial';
+            c.fillStyle = '#a78bfa';
+            c.fillText('✨ @mewonen', 400, 740);
+
+            c.font = 'bold 28px Arial';
+            c.fillStyle = '#fff';
+            const viralText = getViralText(emotion);
+            c.fillText(viralText, 400, 570);
+
+            shareImageData = offscreen.toDataURL('image/png');
+        };
+        img.src = drawingData;
+    }
+
+    function getViralText(emotion) {
+        const texts = {
+            'Joy': '✨ Mewonen saw my light.',
+            'Sadness': '💜 I drew my tears. Mewonen caught them.',
+            'Anger': '🔥 My fire. Mewonen saw it.',
+            'Peace': '🌈 I crossed the storm.',
+            'Passion': '💫 This is my power.',
+            'Calm': '🌙 This is my peace.',
+            'Hope': '🌱 Something is growing.',
+            'Freedom': '🕊️ I am light.'
+        };
+        return texts[emotion.name] || '💜 Mewonen saw my soul.';
+    }
+
+    // ============================================================
+    //  SHARE OVERLAY
+    // ============================================================
+    function openShare() {
+        if (!shareImageData) {
+            showBubble('Draw something first! ✍️', 2000);
+            return;
+        }
+        sharePreview.innerHTML = '';
+        const img = document.createElement('img');
+        img.src = shareImageData;
+        sharePreview.appendChild(img);
+        if (lastEmotion) {
+            shareEmotion.textContent = lastEmotion.name;
+            shareText.innerHTML = `✨ <strong id="shareEmotion">${lastEmotion.name}</strong> — ${getViralText(lastEmotion)}`;
+        }
+        shareOverlay.classList.add('show');
+    }
+
+    function closeShare() { shareOverlay.classList.remove('show'); }
+    function downloadShare() {
+        if (!shareImageData) return;
+        const link = document.createElement('a');
+        link.download = `mewonen-${lastEmotion ? lastEmotion.name.toLowerCase() : 'mood'}.png`;
+        link.href = shareImageData;
+        link.click();
+    }
+    function copyShareText() {
+        if (!lastEmotion) return;
+        const text = `${getViralText(lastEmotion)} ✨ @mewonen — Draw your mood at mewonen.com 💜`;
+        navigator.clipboard.writeText(text).then(() => {
+            showBubble('📋 Text copied!', 2000);
+        }).catch(() => {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            ta.remove();
+            showBubble('📋 Text copied!', 2000);
+        });
+    }
+
+    function generateStatus() {
+        if (!lastEmotion) {
+            showBubble('Draw something first! ✍️', 2000);
+            return;
+        }
+        const offscreen = document.createElement('canvas');
+        offscreen.width = 800;
+        offscreen.height = 800;
+        const c = offscreen.getContext('2d');
+
+        const grad = c.createRadialGradient(400,400,100,400,400,500);
+        grad.addColorStop(0,'#2a1a3a');
+        grad.addColorStop(0.5,'#1a1030');
+        grad.addColorStop(1,'#0a0a18');
+        c.fillStyle = grad;
+        c.fillRect(0,0,800,800);
+
+        c.font = '200px Arial';
+        c.textAlign = 'center';
+        c.textBaseline = 'middle';
+        c.fillText(lastEmotion.emoji, 400, 350);
+
+        c.font = '48px Arial';
+        c.fillStyle = '#fff';
+        c.fillText(lastEmotion.name, 400, 550);
+
+        c.font = '28px Arial';
+        c.fillStyle = 'rgba(255,255,255,0.4)';
+        c.fillText('✨ mewonen.com', 400, 650);
+
+        const link = document.createElement('a');
+        link.download = `mewonen-status-${lastEmotion.name.toLowerCase()}.png`;
+        link.href = offscreen.toDataURL('image/png');
+        link.click();
+        showBubble('📱 Status saved!', 2000);
+    }
+
+    function clearCanvas() {
+        drawCtx.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
+        emotionEmoji.textContent = '';
+        emotionName.textContent = '';
+        glowRing.style.borderColor = 'rgba(167,139,250,0.06)';
+        glowRing.style.boxShadow = 'none';
+        lastEmotion = null;
+        shareImageData = null;
+        setExpression('idle');
+        showBubble('Cleared. Ready for a new drawing. ✨', 2000);
+    }
+
+    // ============================================================
+    //  BLINK TIMER
+    // ============================================================
+    function startBlink() {
+        setInterval(() => {
+            if (Math.random() > 0.3) {
+                blinkState = 1;
+                setTimeout(() => { blinkState = 2; }, 80);
+                setTimeout(() => { blinkState = 3; }, 200);
+                setTimeout(() => { blinkState = 0; }, 300);
+            }
+        }, 3000 + Math.random() * 2500);
+    }
+
+    // ============================================================
+    //  MAIN LOOP
+    // ============================================================
+    function loop() {
+        drawCapybara();
+        requestAnimationFrame(loop);
+    }
+
+    // ============================================================
+    //  INIT
+    // ============================================================
+    function init() {
+        setupDrawCanvas();
+        loadStreak();
+        startBlink();
+
+        setTimeout(() => {
+            showBubble(getCapyMood(), 4000);
+        }, 800);
+
+        setTimeout(() => {
+            showBubble('Give me your finger. Let\'s draw together. 🦫', 3000);
+        }, 4800);
+
+        drawCanvas.addEventListener('touchstart', startDraw, { passive: false });
+        drawCanvas.addEventListener('touchmove', moveDraw, { passive: false });
+        drawCanvas.addEventListener('touchend', endDraw);
+        drawCanvas.addEventListener('mousedown', startDraw);
+        drawCanvas.addEventListener('mousemove', moveDraw);
+        drawCanvas.addEventListener('mouseup', endDraw);
+        drawCanvas.addEventListener('mouseleave', endDraw);
+
+        clearBtn.addEventListener('click', clearCanvas);
+        shareBtn.addEventListener('click', openShare);
+        statusBtn.addEventListener('click', generateStatus);
+        downloadBtn.addEventListener('click', downloadShare);
+        copyBtn.addEventListener('click', copyShareText);
+        shareClose.addEventListener('click', closeShare);
+        shareOverlay.addEventListener('click', function(e) {
+            if (e.target === this) closeShare();
+        });
+
+        let resizeTimer;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                setupDrawCanvas();
+            }, 100);
+        });
+
+        loop();
+
+        console.log('🦫 Mewonen — Fully Animated 2D Capybara');
+        console.log('💜 English Only — Streaks, Badges, Gifts & Viral Share');
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+
+})();
+</script>
 </body>
 </html>
