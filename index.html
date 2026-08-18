@@ -30,202 +30,231 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            box-shadow: 0 0 80px rgba(255, 107, 53, 0.08);
         }
 
-        /* ===== ONBOARDING ===== */
+        /* ===== ONBOARDING (SWIPE) ===== */
         #onboarding {
             position: absolute;
             inset: 0;
-            z-index: 100;
+            z-index: 200;
             background: #0D1B2A;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s ease;
+            transform: translateX(0);
+            opacity: 1;
+        }
+        #onboarding.hide {
+            transform: translateX(-100%);
+            opacity: 0;
+            pointer-events: none;
+        }
+        .ob-container {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+            touch-action: pan-y;
+        }
+        .ob-slides {
+            display: flex;
+            width: 300%;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: transform;
+        }
+        .ob-slide {
+            width: 33.333%;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 24px;
-            transition: opacity 0.6s ease, transform 0.6s ease;
-        }
-        #onboarding.hide {
-            opacity: 0;
-            transform: scale(1.05);
-            pointer-events: none;
-        }
-        .ob-slide {
-            display: none;
-            flex-direction: column;
-            align-items: center;
+            padding: 40px 30px;
             text-align: center;
-            max-width: 300px;
-            animation: fadeUp 0.5s ease;
-        }
-        .ob-slide.active {
-            display: flex;
-        }
-        @keyframes fadeUp {
-            0% {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            flex-shrink: 0;
         }
         .ob-slide .icon {
-            font-size: 3.6rem;
-            margin-bottom: 16px;
+            font-size: 4.5rem;
+            margin-bottom: 20px;
+            animation: floatIcon 3s ease-in-out infinite;
+        }
+        @keyframes floatIcon {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-12px);
+            }
         }
         .ob-slide h2 {
-            font-size: 1.4rem;
+            font-size: 1.6rem;
             font-weight: 300;
             line-height: 1.3;
-            margin-bottom: 8px;
-            letter-spacing: -0.5px;
+            margin-bottom: 12px;
             color: #fff;
         }
         .ob-slide h2 span {
-            color: #FF6B35;
+            background: linear-gradient(135deg, #FF6B35, #FF1493);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         .ob-slide p {
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             color: rgba(255, 255, 255, 0.4);
-            line-height: 1.5;
-            font-weight: 300;
+            line-height: 1.6;
+            max-width: 280px;
         }
         .ob-dots {
             display: flex;
-            gap: 8px;
-            margin-top: 20px;
+            gap: 10px;
+            justify-content: center;
+            padding: 20px 0 10px;
         }
         .ob-dots span {
             width: 8px;
             height: 8px;
-            border-radius: 4px;
+            border-radius: 50%;
             background: rgba(255, 255, 255, 0.06);
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
         }
         .ob-dots span.active {
             background: #FF6B35;
-            width: 24px;
+            width: 30px;
+            border-radius: 4px;
         }
-        .ob-btn {
-            margin-top: 20px;
-            padding: 12px 32px;
-            border-radius: 40px;
+
+        /* ===== PERMISSIONS ===== */
+        #permissions {
+            padding: 16px 24px 24px;
+            display: none;
+            flex-direction: column;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.02);
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+        }
+        #permissions.show {
+            display: flex;
+        }
+        #permissions .title {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.2);
+            text-align: center;
+            letter-spacing: 1px;
+        }
+        .perm-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .perm-item:active {
+            transform: scale(0.97);
+        }
+        .perm-item .icon {
+            font-size: 1.3rem;
+        }
+        .perm-item .info {
+            flex: 1;
+        }
+        .perm-item .info .name {
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+        .perm-item .info .desc {
+            font-size: 0.5rem;
+            color: rgba(255, 255, 255, 0.15);
+        }
+        .perm-item .check {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.06);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-size: 0.7rem;
+            color: transparent;
+        }
+        .perm-item.active .check {
+            background: linear-gradient(135deg, #FF6B35, #FF1493);
+            border-color: #FF6B35;
+            color: #fff;
+        }
+        .perm-btn {
+            padding: 12px;
+            border-radius: 30px;
             border: none;
             background: linear-gradient(135deg, #FF6B35, #FF1493);
             color: #fff;
-            font-size: 0.85rem;
-            font-weight: 500;
+            font-size: 0.8rem;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 8px 30px rgba(255, 107, 53, 0.3);
+            transition: all 0.3s ease;
+            font-family: inherit;
+            box-shadow: 0 8px 30px rgba(255, 107, 53, 0.2);
         }
-        .ob-btn:active {
+        .perm-btn:active {
             transform: scale(0.94);
         }
-        .ob-skip {
-            position: absolute;
-            top: 24px;
-            right: 24px;
-            background: none;
-            border: none;
-            color: rgba(255, 255, 255, 0.15);
-            font-size: 0.7rem;
-            cursor: pointer;
-            font-family: inherit;
-            letter-spacing: 0.5px;
+
+        /* ===== MAIN APP ===== */
+        #mainApp {
+            flex: 1;
+            display: none;
+            flex-direction: column;
+            padding: 16px 20px 20px;
+            overflow-y: auto;
+        }
+        #mainApp.show {
+            display: flex;
         }
 
         /* ===== TOP BAR ===== */
         #topBar {
-            position: absolute;
-            top: 12px;
-            right: 16px;
-            z-index: 20;
             display: flex;
-            gap: 10px;
+            justify-content: space-between;
             align-items: center;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+            flex-shrink: 0;
+        }
+        #topBar .logo {
+            font-family: 'Georgia', serif;
+            font-size: 1.2rem;
+            letter-spacing: 4px;
+            color: #fff;
+        }
+        #topBar .logo span {
+            color: #FF6B35;
+        }
+        #topBar .stats {
+            display: flex;
+            gap: 12px;
             font-size: 0.5rem;
             color: rgba(255, 255, 255, 0.1);
         }
-        #topBar .streak {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            background: rgba(255, 255, 255, 0.02);
-            padding: 4px 12px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.02);
-        }
-        #topBar .streak span {
+        #topBar .stats span {
             color: #FFD700;
         }
-        #topBar .xp {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            background: rgba(255, 255, 255, 0.02);
-            padding: 4px 12px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.02);
-        }
-        #topBar .xp span {
-            color: #FF6B35;
-        }
 
-        /* ===== MENU BUTTON ===== */
-        #menuBtn {
-            position: absolute;
-            top: 12px;
-            left: 16px;
-            z-index: 30;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            border-radius: 12px;
-            padding: 8px 10px;
-            color: rgba(255, 255, 255, 0.3);
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        #menuBtn:active {
-            transform: scale(0.92);
-            background: rgba(255, 107, 53, 0.1);
-        }
-        #menuBtn span {
-            font-size: 0.5rem;
-            letter-spacing: 1px;
-            color: rgba(255, 255, 255, 0.15);
-        }
-
-        /* ===== MAIN CONTENT ===== */
-        #mainScreen {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 16px 20px 70px;
-            overflow-y: auto;
-            scroll-behavior: smooth;
-        }
-
+        /* ===== DRAW AREA ===== */
         #drawArea {
             position: relative;
-            width: 240px;
-            height: 240px;
+            width: 100%;
+            max-width: 280px;
+            aspect-ratio: 1/1;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.015);
             border: 1px solid rgba(255, 107, 53, 0.06);
             box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.4);
             touch-action: none;
-            margin: 0 auto;
+            margin: 12px auto;
             flex-shrink: 0;
         }
         #drawCanvas {
@@ -238,42 +267,90 @@
         }
         #glowRing {
             position: absolute;
-            inset: -6px;
+            inset: -8px;
             border-radius: 50%;
             border: 1px solid rgba(255, 107, 53, 0.04);
             pointer-events: none;
-            transition: border-color 0.6s ease, box-shadow 0.6s ease;
+            transition: all 0.6s ease;
         }
         #glowRing.active {
             border-color: rgba(255, 107, 53, 0.3);
             box-shadow: 0 0 60px rgba(255, 107, 53, 0.08);
         }
 
+        /* ===== REVEAL BUTTON ===== */
+        #revealBtn {
+            padding: 14px 32px;
+            border-radius: 40px;
+            border: none;
+            background: linear-gradient(135deg, #FF6B35, #FF1493);
+            color: #fff;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            box-shadow: 0 8px 30px rgba(255, 107, 53, 0.3);
+            position: relative;
+            overflow: hidden;
+            margin: 8px auto 0;
+            animation: pulseBtn 2s ease-in-out infinite;
+        }
+        @keyframes pulseBtn {
+            0%,
+            100% {
+                box-shadow: 0 8px 30px rgba(255, 107, 53, 0.3);
+            }
+            50% {
+                box-shadow: 0 8px 60px rgba(255, 107, 53, 0.6);
+            }
+        }
+        #revealBtn:active {
+            transform: scale(0.94);
+        }
+        #revealBtn .ripple {
+            position: absolute;
+            inset: 0;
+            border-radius: 40px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            animation: rippleOut 1.5s ease-out infinite;
+        }
+        @keyframes rippleOut {
+            0% {
+                transform: scale(0.8);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1.4);
+                opacity: 0;
+            }
+        }
+
+        /* ===== RESULT ===== */
         #result {
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 50px;
-            margin-top: 8px;
+            min-height: 40px;
+            margin-top: 4px;
         }
         #emotionEmoji {
             font-size: 2rem;
             animation: pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
         #emotionName {
-            font-size: 0.7rem;
-            color: rgba(255, 255, 255, 0.2);
+            font-size: 0.6rem;
+            color: rgba(255, 255, 255, 0.15);
             letter-spacing: 2px;
             text-transform: uppercase;
-            margin-top: 2px;
         }
         #rarityBadge {
-            font-size: 0.5rem;
+            font-size: 0.45rem;
             color: #FFD700;
             background: rgba(255, 215, 0, 0.06);
             padding: 2px 12px;
             border-radius: 12px;
-            margin-top: 4px;
+            margin-top: 2px;
             border: 1px solid rgba(255, 215, 0, 0.06);
             display: none;
         }
@@ -291,159 +368,184 @@
             }
         }
 
-        /* ===== REELS ===== */
-        #reelsContainer {
-            width: 100%;
-            max-width: 340px;
-            margin-top: 12px;
+        /* ===== REELS GRID ===== */
+        #reelsGrid {
             display: none;
-            flex-direction: column;
-            gap: 12px;
-            max-height: 300px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+            margin-top: 12px;
+            padding: 4px;
+            max-height: 320px;
             overflow-y: auto;
             scrollbar-width: thin;
             scrollbar-color: rgba(255, 107, 53, 0.1) transparent;
-            padding: 4px;
         }
-        #reelsContainer.show {
-            display: flex;
+        #reelsGrid.show {
+            display: grid;
         }
-        #reelsContainer::-webkit-scrollbar {
+        #reelsGrid::-webkit-scrollbar {
             width: 3px;
         }
-        #reelsContainer::-webkit-scrollbar-thumb {
+        #reelsGrid::-webkit-scrollbar-thumb {
             background: rgba(255, 107, 53, 0.2);
             border-radius: 10px;
         }
-        .reel-item {
+        .reel-card {
+            aspect-ratio: 9/16;
+            border-radius: 12px;
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(255, 255, 255, 0.03);
-            border-radius: 16px;
-            padding: 12px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            text-decoration: none;
-            color: #fff;
-        }
-        .reel-item:active {
-            transform: scale(0.97);
-            background: rgba(255, 107, 53, 0.04);
-        }
-        .reel-item .thumb {
-            width: 60px;
-            height: 60px;
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.04);
-            flex-shrink: 0;
             overflow: hidden;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            font-size: 1.6rem;
-        }
-        .reel-item .thumb img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 12px;
-        }
-        .reel-item .info {
-            flex: 1;
-            min-width: 0;
-        }
-        .reel-item .info .title {
-            font-size: 0.65rem;
-            color: rgba(255, 255, 255, 0.6);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .reel-item .info .meta {
-            font-size: 0.5rem;
-            color: rgba(255, 255, 255, 0.15);
-            margin-top: 2px;
-        }
-        .reel-item .play-icon {
-            font-size: 1.2rem;
-            color: rgba(255, 255, 255, 0.1);
-        }
-
-        /* ===== BUTTONS ===== */
-        #actions {
-            display: flex;
-            gap: 8px;
-            margin-top: 8px;
-            flex-wrap: wrap;
-            justify-content: center;
-            padding: 0 12px;
-        }
-        .btn {
-            padding: 8px 18px;
-            border-radius: 30px;
-            font-size: 0.6rem;
-            font-weight: 500;
-            letter-spacing: 0.3px;
-            border: none;
-            background: rgba(255, 255, 255, 0.03);
-            color: rgba(255, 255, 255, 0.3);
-            cursor: pointer;
-            transition: all 0.2s ease;
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            font-family: inherit;
-        }
-        .btn:active {
-            transform: scale(0.92);
-        }
-        .btn-primary {
-            background: linear-gradient(135deg, #FF6B35, #FF1493);
-            color: #fff;
-            border: none;
-            box-shadow: 0 4px 20px rgba(255, 107, 53, 0.2);
-        }
-        .btn-gold {
-            background: linear-gradient(135deg, #FFD700, #FF6B35);
-            color: #0D1B2A;
-            border: none;
-            font-weight: 600;
-        }
-
-        /* ===== SHARE APP BUTTON ===== */
-        #shareAppBtn {
-            position: absolute;
-            bottom: 16px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 40;
-            padding: 10px 24px;
-            border-radius: 40px;
-            border: none;
-            background: linear-gradient(135deg, #FFD700, #FF6B35);
-            color: #0D1B2A;
-            font-size: 0.7rem;
-            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 8px 30px rgba(255, 215, 0, 0.3);
+            text-decoration: none;
+            color: #fff;
+            position: relative;
+        }
+        .reel-card:active {
+            transform: scale(0.94);
+        }
+        .reel-card .thumb {
+            width: 100%;
+            flex: 1;
             display: flex;
             align-items: center;
-            gap: 8px;
+            justify-content: center;
+            font-size: 2.2rem;
+            background: rgba(255, 255, 255, 0.01);
+        }
+        .reel-card .reel-info {
+            width: 100%;
+            padding: 4px 6px;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+            font-size: 0.4rem;
+            color: rgba(255, 255, 255, 0.3);
+            display: flex;
+            justify-content: space-between;
+        }
+        .reel-card .play-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .reel-card:active .play-overlay {
+            opacity: 1;
+        }
+        .reel-card .play-overlay span {
+            font-size: 2rem;
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* ===== MENU ===== */
+        #menuBtn {
+            position: absolute;
+            top: 12px;
+            left: 16px;
+            z-index: 30;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 10px;
+            padding: 6px 10px;
+            color: rgba(255, 255, 255, 0.2);
+            font-size: 1rem;
+            cursor: pointer;
             font-family: inherit;
-            animation: pulseGold 2s ease-in-out infinite;
         }
-        #shareAppBtn:active {
-            transform: translateX(-50%) scale(0.94);
+        #menuBtn:active {
+            transform: scale(0.92);
         }
-        @keyframes pulseGold {
-            0%,
-            100% {
-                box-shadow: 0 8px 30px rgba(255, 215, 0, 0.2);
-            }
-            50% {
-                box-shadow: 0 8px 50px rgba(255, 215, 0, 0.5);
-            }
+
+        #menuOverlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 50;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        #menuOverlay.show {
+            display: block;
+            opacity: 1;
+        }
+        #menuPanel {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 270px;
+            z-index: 60;
+            background: rgba(13, 27, 42, 0.98);
+            backdrop-filter: blur(24px);
+            border-right: 1px solid rgba(255, 255, 255, 0.02);
+            transform: translateX(-100%);
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 24px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        #menuPanel.show {
+            transform: translateX(0);
+        }
+        .menu-header {
+            font-family: 'Georgia', serif;
+            font-size: 1.4rem;
+            letter-spacing: 6px;
+            color: #fff;
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            font-weight: 300;
+        }
+        .menu-header span {
+            color: #FF6B35;
+        }
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 16px;
+            border-radius: 12px;
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.7rem;
+            font-weight: 400;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+            text-align: left;
+            font-family: inherit;
+        }
+        .menu-item:active,
+        .menu-item.active {
+            background: rgba(255, 107, 53, 0.08);
+            color: #fff;
+        }
+        .menu-item .icon {
+            font-size: 1rem;
+        }
+        .menu-close {
+            position: absolute;
+            top: 20px;
+            right: 16px;
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.1);
+            font-size: 1rem;
+            cursor: pointer;
         }
 
         /* ===== SHARE OVERLAY ===== */
@@ -514,6 +616,34 @@
             flex: 1;
             justify-content: center;
         }
+        .btn {
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-size: 0.6rem;
+            font-weight: 500;
+            border: none;
+            background: rgba(255, 255, 255, 0.03);
+            color: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            font-family: inherit;
+        }
+        .btn:active {
+            transform: scale(0.92);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #FF6B35, #FF1493);
+            color: #fff;
+            border: none;
+            box-shadow: 0 4px 20px rgba(255, 107, 53, 0.2);
+        }
+        .btn-gold {
+            background: linear-gradient(135deg, #FFD700, #FF6B35);
+            color: #0D1B2A;
+            border: none;
+            font-weight: 600;
+        }
         .share-close {
             position: absolute;
             top: 8px;
@@ -524,97 +654,17 @@
             font-size: 1rem;
             cursor: pointer;
         }
-
-        /* ===== MENU PANEL ===== */
-        #menuOverlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(4px);
-            z-index: 50;
-            display: none;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        #menuOverlay.show {
-            display: block;
-            opacity: 1;
-        }
-        #menuPanel {
-            position: fixed;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 280px;
-            z-index: 60;
-            background: rgba(13, 27, 42, 0.98);
-            backdrop-filter: blur(24px);
-            border-right: 1px solid rgba(255, 255, 255, 0.02);
-            transform: translateX(-100%);
-            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-            padding: 24px 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-        #menuPanel.show {
-            transform: translateX(0);
-        }
-        .menu-header {
-            font-family: 'Georgia', serif;
-            font-size: 1.6rem;
-            letter-spacing: 6px;
-            color: #fff;
-            margin-bottom: 16px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-            font-weight: 300;
-        }
-        .menu-header span {
-            color: #FF6B35;
-        }
-        .menu-item {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 12px 16px;
-            border-radius: 12px;
-            background: none;
-            border: none;
-            color: rgba(255, 255, 255, 0.3);
-            font-size: 0.75rem;
-            font-weight: 400;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            width: 100%;
-            text-align: left;
-            font-family: inherit;
-        }
-        .menu-item:active,
-        .menu-item.active {
-            background: rgba(255, 107, 53, 0.08);
-            color: #fff;
-        }
-        .menu-item .icon {
-            font-size: 1rem;
-        }
-        .menu-item .badge {
-            margin-left: auto;
-            font-size: 0.5rem;
-            background: rgba(255, 107, 53, 0.1);
-            padding: 2px 10px;
-            border-radius: 20px;
-            color: #FF6B35;
-        }
-        .menu-close {
+        .back-btn {
             position: absolute;
-            top: 20px;
-            right: 16px;
+            top: 16px;
+            left: 16px;
             background: none;
             border: none;
             color: rgba(255, 255, 255, 0.1);
-            font-size: 1rem;
+            font-size: 0.8rem;
             cursor: pointer;
+            font-family: inherit;
+            z-index: 10;
         }
 
         /* ===== GALLERY & STATS ===== */
@@ -641,9 +691,6 @@
             margin-bottom: 8px;
             margin-top: 30px;
             color: #fff;
-        }
-        .screen .title span {
-            color: #FF6B35;
         }
         .screen .sub {
             color: rgba(255, 255, 255, 0.2);
@@ -712,100 +759,72 @@
             border-radius: 2px;
             background: linear-gradient(90deg, #FF6B35, #FF1493);
         }
-        .back-btn {
-            position: absolute;
-            top: 16px;
-            left: 16px;
-            background: none;
-            border: none;
-            color: rgba(255, 255, 255, 0.1);
-            font-size: 0.8rem;
-            cursor: pointer;
-            font-family: inherit;
-            z-index: 10;
-        }
 
-        /* ===== BADGE NOTIFICATION ===== */
-        #badgeNotif {
-            position: absolute;
-            bottom: 70px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(13, 27, 42, 0.95);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 107, 53, 0.08);
-            padding: 8px 18px;
-            border-radius: 16px;
-            font-size: 0.55rem;
-            color: rgba(255, 255, 255, 0.5);
-            opacity: 0;
-            transition: opacity 0.5s ease, transform 0.4s ease;
-            transform: translateX(-50%) translateY(12px);
-            pointer-events: none;
-            z-index: 30;
-            white-space: nowrap;
-        }
-        #badgeNotif.show {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-        }
-        #badgeNotif .badge-icon {
-            color: #FFD700;
-            margin-right: 6px;
-        }
-
-        /* ===== LEGAL SCREEN ===== */
+        /* ===== LEGAL ===== */
         #legalScreen .legal-content {
             max-width: 340px;
             text-align: left;
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             line-height: 1.8;
             color: rgba(255, 255, 255, 0.5);
             padding: 8px 0;
         }
         #legalScreen .legal-content h3 {
             color: rgba(255, 255, 255, 0.8);
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 500;
             margin-top: 12px;
             margin-bottom: 4px;
-        }
-        #legalScreen .legal-content p {
-            margin-bottom: 6px;
         }
         #legalScreen .legal-content .highlight {
             color: #FF6B35;
         }
 
-        /* ===== CONNECT BUTTON ===== */
-        #connectContainer {
-            margin-top: 8px;
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-            justify-content: center;
+        /* ===== TOAST ===== */
+        #toast {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(13, 27, 42, 0.95);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 107, 53, 0.08);
+            padding: 10px 24px;
+            border-radius: 16px;
+            font-size: 0.6rem;
+            color: rgba(255, 255, 255, 0.8);
+            z-index: 200;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+            white-space: nowrap;
         }
-        .social-btn {
-            padding: 6px 14px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            background: rgba(255, 255, 255, 0.02);
-            color: rgba(255, 255, 255, 0.2);
-            font-size: 0.5rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: inherit;
-            display: flex;
-            align-items: center;
-            gap: 4px;
+        #toast.show {
+            opacity: 1;
         }
-        .social-btn:active {
-            transform: scale(0.92);
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 380px) {
+            .ob-slide h2 {
+                font-size: 1.3rem;
+            }
+            .ob-slide .icon {
+                font-size: 3.5rem;
+            }
+            #drawArea {
+                max-width: 200px;
+            }
+            #reelsGrid {
+                gap: 4px;
+            }
         }
-        .social-btn.connected {
-            background: rgba(255, 107, 53, 0.08);
-            border-color: rgba(255, 107, 53, 0.15);
-            color: #FF6B35;
+        @media (min-width: 600px) {
+            #drawArea {
+                max-width: 320px;
+            }
+            #reelsGrid {
+                gap: 8px;
+            }
         }
     </style>
 </head>
@@ -813,77 +832,72 @@
 
     <div id="app">
 
-        <!-- ===== ONBOARDING ===== -->
+        <!-- ===== ONBOARDING (SWIPE) ===== -->
         <div id="onboarding">
-            <button class="ob-skip" id="obSkip">Skip</button>
-            <div class="ob-slide active" data-slide="0">
-                <div class="icon">🎨</div>
-                <h2>Draw your <span>emotion</span>.</h2>
-                <p>One stroke. One feeling. Mewonen reads it.</p>
+            <div class="ob-container" id="obContainer">
+                <div class="ob-slides" id="obSlides">
+                    <div class="ob-slide">
+                        <div class="icon">🎨</div>
+                        <h2>Draw your <span>emotion</span></h2>
+                        <p>One stroke. One feeling. Mewonen reads what you draw.</p>
+                    </div>
+                    <div class="ob-slide">
+                        <div class="icon">🧠</div>
+                        <h2>Mewonen <span>reacts</span></h2>
+                        <p>It finds Reels that match your mood. Calm, chill, healing.</p>
+                    </div>
+                    <div class="ob-slide">
+                        <div class="icon">💜</div>
+                        <h2>You <span>share</span></h2>
+                        <p>An image + viral text. Ready for Instagram, TikTok, anywhere.</p>
+                    </div>
+                </div>
             </div>
-            <div class="ob-slide" data-slide="1">
-                <div class="icon">🧠</div>
-                <h2>Mewonen <span>reacts</span>.</h2>
-                <p>It finds Reels that match your mood. Calm, chill, or healing.</p>
-            </div>
-            <div class="ob-slide" data-slide="2">
-                <div class="icon">💜</div>
-                <h2>You <span>share</span>.</h2>
-                <p>An image + viral text. Ready for Instagram, TikTok, anywhere.</p>
-            </div>
-            <div class="ob-dots" id="obDots"><span class="active"></span><span></span><span></span></div>
-            <button class="ob-btn" id="obNext">Continue →</button>
-        </div>
-
-        <!-- ===== TOP BAR ===== -->
-        <div id="topBar">
-            <div class="streak">🔥 <span id="streakCount">0</span> days</div>
-            <div class="xp">⭐ <span id="xpCount">0</span> XP</div>
-        </div>
-
-        <!-- ===== MENU BUTTON ===== -->
-        <button id="menuBtn">☰ <span>MENU</span></button>
-
-        <!-- ===== SHARE APP BUTTON ===== -->
-        <button id="shareAppBtn">📤 Share Mewonen</button>
-
-        <!-- ===== MAIN SCREEN ===== -->
-        <div id="mainScreen">
-            <div id="drawArea">
-                <div id="glowRing"></div>
-                <canvas id="drawCanvas" width="400" height="400"></canvas>
+            <div class="ob-dots" id="obDots">
+                <span class="active"></span>
+                <span></span>
+                <span></span>
             </div>
 
-            <div id="result">
-                <div id="emotionEmoji"></div>
-                <div id="emotionName"></div>
-                <div id="rarityBadge"></div>
+            <!-- PERMISSIONS -->
+            <div id="permissions" class="show">
+                <div class="title">🔗 Connect your accounts to see your Reels</div>
+                <div class="perm-item" data-account="instagram">
+                    <span class="icon">📸</span>
+                    <div class="info">
+                        <div class="name">Instagram</div>
+                        <div class="desc">Allow Mewonen to read your Reels</div>
+                    </div>
+                    <div class="check">✓</div>
+                </div>
+                <div class="perm-item" data-account="tiktok">
+                    <span class="icon">🎵</span>
+                    <div class="info">
+                        <div class="name">TikTok</div>
+                        <div class="desc">Allow Mewonen to read your videos</div>
+                    </div>
+                    <div class="check">✓</div>
+                </div>
+                <div class="perm-item" data-account="meta">
+                    <span class="icon">📱</span>
+                    <div class="info">
+                        <div class="name">Meta</div>
+                        <div class="desc">Allow Mewonen to read your Facebook Reels</div>
+                    </div>
+                    <div class="check">✓</div>
+                </div>
+                <button class="perm-btn" id="permBtn">✅ Continue to Mewonen</button>
             </div>
-
-            <div id="actions">
-                <button class="btn" id="clearBtn">Clear</button>
-                <button class="btn btn-primary" id="analyzeBtn">Reveal</button>
-                <button class="btn btn-gold" id="shareBtn">📤 Share</button>
-            </div>
-
-            <!-- Connect accounts -->
-            <div id="connectContainer">
-                <button class="social-btn" id="connectInsta">📸 Instagram</button>
-                <button class="social-btn" id="connectTikTok">🎵 TikTok</button>
-                <button class="social-btn" id="connectMeta">📱 Meta</button>
-            </div>
-
-            <!-- Reels Container -->
-            <div id="reelsContainer"></div>
         </div>
 
         <!-- ===== MENU ===== -->
+        <button id="menuBtn">☰</button>
         <div id="menuOverlay"></div>
         <div id="menuPanel">
             <button class="menu-close" id="menuClose">✕</button>
             <div class="menu-header">MEWO<span>NEN</span></div>
             <button class="menu-item active" data-screen="main"><span class="icon">✍️</span> Draw</button>
-            <button class="menu-item" data-screen="gallery"><span class="icon">🖼️</span> Gallery <span class="badge" id="galleryBadge">0</span></button>
+            <button class="menu-item" data-screen="gallery"><span class="icon">🖼️</span> Gallery</button>
             <button class="menu-item" data-screen="stats"><span class="icon">📊</span> Stats</button>
             <button class="menu-item" data-screen="legal"><span class="icon">⚖️</span> Privacy & Legal</button>
             <div style="flex:1;"></div>
@@ -891,6 +905,40 @@
                 <button class="btn btn-primary" style="flex:1;" id="shareMenuBtn">📤 Share</button>
                 <button class="btn btn-gold" style="flex:1;" id="statusMenuBtn">📱 Status</button>
             </div>
+        </div>
+
+        <!-- ===== MAIN APP ===== -->
+        <div id="mainApp">
+            <!-- Top Bar -->
+            <div id="topBar">
+                <div class="logo">MEWO<span>NEN</span></div>
+                <div class="stats">
+                    <span>🔥 <span id="streakCount">0</span></span>
+                    <span>⭐ <span id="xpCount">0</span></span>
+                </div>
+            </div>
+
+            <!-- Draw Area -->
+            <div id="drawArea">
+                <div id="glowRing"></div>
+                <canvas id="drawCanvas" width="400" height="400"></canvas>
+            </div>
+
+            <!-- Result -->
+            <div id="result">
+                <div id="emotionEmoji"></div>
+                <div id="emotionName"></div>
+                <div id="rarityBadge"></div>
+            </div>
+
+            <!-- Reveal Button -->
+            <button id="revealBtn">
+                <span class="ripple"></span>
+                ✨ Reveal my mood
+            </button>
+
+            <!-- Reels Grid -->
+            <div id="reelsGrid"></div>
         </div>
 
         <!-- ===== SHARE OVERLAY ===== -->
@@ -929,69 +977,67 @@
             <div class="sub">Mewonen protects you</div>
             <div class="legal-content">
                 <h3>🔒 Privacy Policy</h3>
-                <p><span class="highlight">Mewonen is 100% private.</span> We collect absolutely <strong>no personal data</strong>. Everything you draw, every emotion you express, every Reel you watch — <strong>it stays on your device</strong>. No servers. No tracking. No advertising.</p>
-                <p>Your drawings are stored locally in your browser's storage. <span class="highlight">We never send them anywhere.</span></p>
-
-                <h3>📱 Your Connected Accounts</h3>
-                <p>When you connect Instagram, TikTok, or Meta, <span class="highlight">you are in full control</span>. Mewonen uses the official APIs to fetch your Reels and filter them based on your emotion. No data is stored or shared.</p>
-
-                <h3>🔐 Security</h3>
-                <p>Your data stays on your device. No account is required. No login. No password. <span class="highlight">You are anonymous.</span></p>
-
+                <p>100% private. No data collected. Everything stays on your device.</p>
+                <h3>📱 Connected Accounts</h3>
+                <p>You control your data. Mewonen uses official APIs to fetch your Reels. Nothing is stored.</p>
                 <h3>⚖️ Intellectual Property</h3>
                 <p><span class="highlight">© 2026 Mewonen</span> — All rights reserved.</p>
-
-                <h3>🆘 Disclaimer</h3>
-                <p>Mewonen is a creative and emotional exploration tool. It is <strong>not</strong> a medical or therapeutic device.</p>
             </div>
         </div>
 
-        <!-- ===== BADGE NOTIFICATION ===== -->
-        <div id="badgeNotif"><span class="badge-icon">🎁</span> <span id="badgeText">New badge unlocked!</span></div>
+        <!-- ===== TOAST ===== -->
+        <div id="toast"></div>
     </div>
 
     <script>
         // ============================================================
-        //  MEWONEN — APP COMPLÈTE (UI VIVE, MENU CLAIR, SHARE VISIBLE)
+        //  MEWONEN — FINAL VERSION (SWIPE ONBOARDING + PERMISSIONS + REELS GRID)
         // ============================================================
 
         (function() {
             'use strict';
 
-            // ===== DOM REFS =====
+            // ===== DOM =====
             const canvas = document.getElementById('drawCanvas');
             const ctx = canvas.getContext('2d');
             const glowRing = document.getElementById('glowRing');
             const emotionEmoji = document.getElementById('emotionEmoji');
             const emotionName = document.getElementById('emotionName');
             const rarityBadge = document.getElementById('rarityBadge');
-            const reelsContainer = document.getElementById('reelsContainer');
+            const reelsGrid = document.getElementById('reelsGrid');
             const streakCount = document.getElementById('streakCount');
             const xpCount = document.getElementById('xpCount');
-            const badgeText = document.getElementById('badgeText');
+            const revealBtn = document.getElementById('revealBtn');
             const shareOverlay = document.getElementById('shareOverlay');
             const sharePreview = document.getElementById('sharePreview');
             const shareEmotion = document.getElementById('shareEmotion');
             const shareText = document.getElementById('shareText');
             const galleryGrid = document.getElementById('galleryGrid');
             const statsList = document.getElementById('statsList');
-            const galleryBadge = document.getElementById('galleryBadge');
-            const clearBtn = document.getElementById('clearBtn');
-            const analyzeBtn = document.getElementById('analyzeBtn');
-            const shareBtn = document.getElementById('shareBtn');
-            const shareAppBtn = document.getElementById('shareAppBtn');
-            const shareMenuBtn = document.getElementById('shareMenuBtn');
-            const statusMenuBtn = document.getElementById('statusMenuBtn');
-            const downloadBtn = document.getElementById('downloadBtn');
-            const copyBtn = document.getElementById('copyBtn');
-            const shareClose = document.getElementById('shareClose');
+            const toast = document.getElementById('toast');
+
+            // Menu
             const menuBtn = document.getElementById('menuBtn');
             const menuOverlay = document.getElementById('menuOverlay');
             const menuPanel = document.getElementById('menuPanel');
             const menuClose = document.getElementById('menuClose');
-            const connectInsta = document.getElementById('connectInsta');
-            const connectTikTok = document.getElementById('connectTikTok');
-            const connectMeta = document.getElementById('connectMeta');
+
+            // Onboarding
+            const obContainer = document.getElementById('obContainer');
+            const obSlides = document.getElementById('obSlides');
+            const obDots = document.querySelectorAll('#obDots span');
+            const permissions = document.getElementById('permissions');
+            const permItems = document.querySelectorAll('.perm-item');
+            const permBtn = document.getElementById('permBtn');
+            const onboarding = document.getElementById('onboarding');
+            const mainApp = document.getElementById('mainApp');
+
+            // Share
+            const shareBtn = document.getElementById('shareMenuBtn');
+            const statusBtn = document.getElementById('statusMenuBtn');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const copyBtn = document.getElementById('copyBtn');
+            const shareClose = document.getElementById('shareClose');
 
             // ===== STATE =====
             let isDrawing = false;
@@ -1003,7 +1049,10 @@
             let shareImageData = null;
             let drawings = [];
             let emotionHistory = [];
-            let connectedAccounts = { instagram: false, tiktok: false, meta: false };
+            let slideIndex = 0;
+            let startX = 0;
+            let isDragging = false;
+            let permissionsGranted = { instagram: false, tiktok: false, meta: false };
 
             // ===== EMOTIONS & RARITY =====
             const EMOTIONS = [
@@ -1026,48 +1075,75 @@
                 { name: 'Mythic', color: '#FF1493', weight: 1 },
             ];
 
-            // ===== EMOTION → KEYWORDS FOR REELS =====
-            const EMOTION_KEYWORDS = {
-                'Joy': ['fun', 'dance', 'happy', 'celebration', 'viral', 'trend'],
-                'Sadness': ['nature', 'comfort', 'hope', 'healing', 'peaceful'],
-                'Anger': ['calm', 'peace', 'meditation', 'relax', 'chill'],
-                'Peace': ['zen', 'nature', 'calm', 'relax', 'meditation'],
-                'Passion': ['motivation', 'inspiration', 'power', 'energy'],
-                'Calm': ['relax', 'nature', 'peace', 'sleep', 'asmr'],
-                'Hope': ['inspiration', 'motivation', 'future', 'success'],
-                'Freedom': ['adventure', 'nature', 'travel', 'explore']
-            };
-
             // ===== DEMO REELS DATA =====
             const DEMO_REELS = {
                 'Joy': [
-                    { title: 'Dance vibes 🕺', views: '1.2M', likes: '45K', thumbnail: '🎵' },
-                    { title: 'Happy moments compilation 😊', views: '890K', likes: '32K', thumbnail: '🎉' },
-                    { title: 'Funniest videos of the week 🤣', views: '2.1M', likes: '78K', thumbnail: '😄' }
+                    { title: 'Dance vibes 🕺', views: '1.2M', likes: '45K', thumb: '🎵' },
+                    { title: 'Happy moments 😊', views: '890K', likes: '32K', thumb: '🎉' },
+                    { title: 'Funny videos 🤣', views: '2.1M', likes: '78K', thumb: '😄' },
+                    { title: 'Celebration 🥳', views: '560K', likes: '18K', thumb: '🎊' },
+                    { title: 'Good vibes ✨', views: '720K', likes: '24K', thumb: '🌟' },
+                    { title: 'Smile 😁', views: '430K', likes: '12K', thumb: '😊' },
                 ],
                 'Sadness': [
-                    { title: 'Nature healing 🌿', views: '450K', likes: '12K', thumbnail: '🌱' },
-                    { title: 'Comfort quotes for tough days 💜', views: '320K', likes: '8K', thumbnail: '💭' },
-                    { title: 'Hope will find you 🌅', views: '680K', likes: '22K', thumbnail: '✨' }
+                    { title: 'Nature healing 🌿', views: '450K', likes: '12K', thumb: '🌱' },
+                    { title: 'Comfort quotes 💜', views: '320K', likes: '8K', thumb: '💭' },
+                    { title: 'Hope will find you 🌅', views: '680K', likes: '22K', thumb: '✨' },
+                    { title: 'Peaceful rain 🌧️', views: '210K', likes: '5K', thumb: '🌧️' },
+                    { title: 'Gentle music 🎵', views: '380K', likes: '9K', thumb: '🎶' },
+                    { title: 'Hug yourself 🤗', views: '150K', likes: '4K', thumb: '💜' },
                 ],
                 'Anger': [
-                    { title: 'Calm your mind 🧘', views: '210K', likes: '5K', thumbnail: '🧘' },
-                    { title: 'Peaceful ocean sounds 🌊', views: '340K', likes: '9K', thumbnail: '🌊' },
-                    { title: 'Breathe and relax 🌬️', views: '180K', likes: '4K', thumbnail: '🌬️' }
-                ],
-                'Peace': [
-                    { title: 'Zen garden meditation 🪷', views: '560K', likes: '15K', thumbnail: '🪷' },
-                    { title: 'Calm music for sleep 🎵', views: '1.1M', likes: '34K', thumbnail: '🎶' },
-                    { title: 'Nature sounds for anxiety 🌿', views: '780K', likes: '21K', thumbnail: '🌿' }
+                    { title: 'Calm your mind 🧘', views: '210K', likes: '5K', thumb: '🧘' },
+                    { title: 'Ocean sounds 🌊', views: '340K', likes: '9K', thumb: '🌊' },
+                    { title: 'Breathe and relax 🌬️', views: '180K', likes: '4K', thumb: '🌬️' },
+                    { title: 'Zen garden 🪷', views: '270K', likes: '6K', thumb: '🪷' },
+                    { title: 'Peaceful forest 🌲', views: '150K', likes: '3K', thumb: '🌲' },
+                    { title: 'Soft piano 🎹', views: '290K', likes: '7K', thumb: '🎹' },
                 ],
                 'Calm': [
-                    { title: 'ASMR for deep sleep 💤', views: '920K', likes: '28K', thumbnail: '💤' },
-                    { title: 'Rain sounds to relax 🌧️', views: '1.4M', likes: '52K', thumbnail: '🌧️' },
-                    { title: 'Gentle piano music 🎹', views: '650K', likes: '18K', thumbnail: '🎹' }
+                    { title: 'ASMR sleep 💤', views: '920K', likes: '28K', thumb: '💤' },
+                    { title: 'Rain sounds 🌧️', views: '1.4M', likes: '52K', thumb: '🌧️' },
+                    { title: 'Gentle piano 🎹', views: '650K', likes: '18K', thumb: '🎹' },
+                    { title: 'Ocean waves 🌊', views: '780K', likes: '22K', thumb: '🌊' },
+                    { title: 'Forest sounds 🌲', views: '430K', likes: '11K', thumb: '🌲' },
+                    { title: 'Meditation 🧘', views: '560K', likes: '15K', thumb: '🧘' },
+                ],
+                'Peace': [
+                    { title: 'Zen garden 🪷', views: '560K', likes: '15K', thumb: '🪷' },
+                    { title: 'Calm music 🎵', views: '1.1M', likes: '34K', thumb: '🎶' },
+                    { title: 'Nature sounds 🌿', views: '780K', likes: '21K', thumb: '🌿' },
+                    { title: 'Sunset 🌅', views: '920K', likes: '28K', thumb: '🌅' },
+                    { title: 'Still water 💧', views: '340K', likes: '8K', thumb: '💧' },
+                    { title: 'Quiet mind 🧠', views: '450K', likes: '12K', thumb: '🧠' },
+                ],
+                'Passion': [
+                    { title: 'Motivation 🔥', views: '1.2M', likes: '45K', thumb: '🔥' },
+                    { title: 'Power 💪', views: '890K', likes: '32K', thumb: '💪' },
+                    { title: 'Energy ⚡', views: '2.1M', likes: '78K', thumb: '⚡' },
+                    { title: 'Dream big 🌟', views: '560K', likes: '18K', thumb: '🌟' },
+                    { title: 'Success 🏆', views: '720K', likes: '24K', thumb: '🏆' },
+                    { title: 'Ambition 🚀', views: '430K', likes: '12K', thumb: '🚀' },
+                ],
+                'Hope': [
+                    { title: 'Inspiration ✨', views: '450K', likes: '12K', thumb: '✨' },
+                    { title: 'Future 🌅', views: '320K', likes: '8K', thumb: '🌅' },
+                    { title: 'Success 🏆', views: '680K', likes: '22K', thumb: '🏆' },
+                    { title: 'Growth 🌱', views: '210K', likes: '5K', thumb: '🌱' },
+                    { title: 'Believe 💪', views: '380K', likes: '9K', thumb: '💪' },
+                    { title: 'Rise 🌟', views: '150K', likes: '4K', thumb: '🌟' },
+                ],
+                'Freedom': [
+                    { title: 'Adventure 🗺️', views: '210K', likes: '5K', thumb: '🗺️' },
+                    { title: 'Nature 🌿', views: '340K', likes: '9K', thumb: '🌿' },
+                    { title: 'Travel ✈️', views: '180K', likes: '4K', thumb: '✈️' },
+                    { title: 'Explore 🔍', views: '270K', likes: '6K', thumb: '🔍' },
+                    { title: 'Sky 🌤️', views: '150K', likes: '3K', thumb: '🌤️' },
+                    { title: 'Open road 🛣️', views: '290K', likes: '7K', thumb: '🛣️' },
                 ]
             };
 
-            // ===== STREAK, XP & BADGES =====
+            // ===== STREAK & XP =====
             function loadProgress() {
                 try {
                     streak = parseInt(localStorage.getItem('mewonen_streak') || '0', 10);
@@ -1091,33 +1167,6 @@
                     xp = 0; }
                 streakCount.textContent = streak;
                 xpCount.textContent = xp;
-                checkBadges();
-            }
-
-            function checkBadges() {
-                const unlocked = JSON.parse(localStorage.getItem('mewonen_badges') || '[]');
-                const badges = [
-                    { id: 'first', name: 'First Stroke', icon: '✍️', condition: 1 },
-                    { id: 'week', name: 'Week Warrior', icon: '🔥', condition: 7 },
-                    { id: 'month', name: 'Monthly Master', icon: '👑', condition: 30 },
-                    { id: 'rainbow', name: 'Rainbow Soul', icon: '🌈', condition: 5 },
-                    { id: 'phoenix', name: 'Risen', icon: '🦋', condition: 10 },
-                ];
-                let nb = null;
-                for (const b of badges) {
-                    if (!unlocked.includes(b.id) && streak >= b.condition) {
-                        unlocked.push(b.id);
-                        nb = b;
-                        break;
-                    }
-                }
-                if (nb) {
-                    localStorage.setItem('mewonen_badges', JSON.stringify(unlocked));
-                    badgeText.textContent = `🎁 ${nb.icon} ${nb.name} unlocked!`;
-                    const notif = document.getElementById('badgeNotif');
-                    notif.classList.add('show');
-                    setTimeout(() => notif.classList.remove('show'), 4000);
-                }
             }
 
             // ===== DRAWINGS & STATS =====
@@ -1146,10 +1195,8 @@
                 if (drawings.length === 0) {
                     galleryGrid.innerHTML =
                         '<div style="grid-column:1/-1;text-align:center;color:rgba(255,255,255,0.05);font-size:0.7rem;padding:20px;">No drawings yet.</div>';
-                    galleryBadge.textContent = '0';
                     return;
                 }
-                galleryBadge.textContent = drawings.length;
                 const items = drawings.slice(-9).reverse();
                 for (const d of items) {
                     const div = document.createElement('div');
@@ -1201,7 +1248,7 @@
                 return RARITY_TIERS[0];
             }
 
-            // ===== CANVAS DRAWING =====
+            // ===== CANVAS =====
             function setupCanvas() {
                 const rect = canvas.getBoundingClientRect();
                 const dpr = window.devicePixelRatio || 1;
@@ -1233,8 +1280,8 @@
                 emotionEmoji.textContent = '';
                 emotionName.textContent = '';
                 rarityBadge.classList.remove('show');
-                reelsContainer.classList.remove('show');
-                reelsContainer.innerHTML = '';
+                reelsGrid.classList.remove('show');
+                reelsGrid.innerHTML = '';
             }
 
             function moveDraw(e) {
@@ -1320,35 +1367,35 @@
                 }, 4000);
             }
 
-            // ===== REELS =====
+            // ===== REELS GRID =====
             function showReels(emotion) {
-                const keyword = EMOTION_KEYWORDS[emotion.name] ? EMOTION_KEYWORDS[emotion.name][0] : 'peace';
                 const reelsData = DEMO_REELS[emotion.name] || DEMO_REELS['Calm'];
+                reelsGrid.innerHTML = '';
 
-                reelsContainer.innerHTML = '';
+                // Add a label
                 const label = document.createElement('div');
                 label.style.cssText =
-                    'font-size:0.6rem;color:rgba(255,255,255,0.15);text-align:center;padding:4px 0;letter-spacing:1px;';
-                label.textContent = `✨ Reels for you ( #${keyword} )`;
-                reelsContainer.appendChild(label);
+                    'grid-column:1/-1;font-size:0.55rem;color:rgba(255,255,255,0.1);text-align:center;padding:4px 0;letter-spacing:1px;';
+                label.textContent = `✨ Reels for your mood (${emotion.name})`;
+                reelsGrid.appendChild(label);
 
                 for (const reel of reelsData) {
-                    const item = document.createElement('a');
-                    item.className = 'reel-item';
-                    item.href = '#';
-                    item.target = '_blank';
-                    item.innerHTML = `
-                    <div class="thumb">${reel.thumbnail}</div>
-                    <div class="info">
-                        <div class="title">${reel.title}</div>
-                        <div class="meta">👁️ ${reel.views} ❤️ ${reel.likes}</div>
+                    const card = document.createElement('a');
+                    card.className = 'reel-card';
+                    card.href = '#';
+                    card.target = '_blank';
+                    card.innerHTML = `
+                    <div class="thumb">${reel.thumb}</div>
+                    <div class="reel-info">
+                        <span>${reel.title}</span>
+                        <span>❤️ ${reel.likes}</span>
                     </div>
-                    <div class="play-icon">▶</div>
+                    <div class="play-overlay"><span>▶</span></div>
                 `;
-                    reelsContainer.appendChild(item);
+                    reelsGrid.appendChild(card);
                 }
 
-                reelsContainer.classList.add('show');
+                reelsGrid.classList.add('show');
             }
 
             // ===== SHARE =====
@@ -1460,29 +1507,6 @@
                 });
             }
 
-            function shareApp() {
-                const text = '💜 Draw your emotion with Mewonen! mewonen.com';
-                if (navigator.share) {
-                    navigator.share({
-                        title: 'Mewonen — Draw Your Emotion',
-                        text: text,
-                        url: 'https://mewonen.com'
-                    }).catch(() => {});
-                } else {
-                    navigator.clipboard.writeText(text).then(() => {
-                        showToast('📋 Link copied! Share it everywhere.');
-                    }).catch(() => {
-                        const ta = document.createElement('textarea');
-                        ta.value = text;
-                        document.body.appendChild(ta);
-                        ta.select();
-                        document.execCommand('copy');
-                        ta.remove();
-                        showToast('📋 Link copied!');
-                    });
-                }
-            }
-
             function generateStatus() {
                 if (!lastEmotion) { showToast('Draw something first! ✍️'); return; }
                 const offscreen = document.createElement('canvas');
@@ -1528,8 +1552,8 @@
                 emotionEmoji.textContent = '';
                 emotionName.textContent = '';
                 rarityBadge.classList.remove('show');
-                reelsContainer.classList.remove('show');
-                reelsContainer.innerHTML = '';
+                reelsGrid.classList.remove('show');
+                reelsGrid.innerHTML = '';
                 glowRing.style.borderColor = 'rgba(255,107,53,0.04)';
                 glowRing.style.boxShadow = 'none';
                 lastEmotion = null;
@@ -1540,55 +1564,107 @@
 
             // ===== TOAST =====
             function showToast(msg) {
-                const t = document.createElement('div');
-                t.style.cssText =
-                    'position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:rgba(13,27,42,0.95);backdrop-filter:blur(16px);border:1px solid rgba(255,107,53,0.08);padding:10px 24px;border-radius:16px;font-size:0.65rem;color:rgba(255,255,255,0.8);z-index:200;opacity:0;transition:opacity 0.4s ease;pointer-events:none;white-space:nowrap;';
-                t.textContent = msg;
-                document.body.appendChild(t);
-                requestAnimationFrame(() => { t.style.opacity = '1'; });
-                setTimeout(() => {
-                    t.style.opacity = '0';
-                    setTimeout(() => t.remove(), 400);
+                toast.textContent = msg;
+                toast.classList.add('show');
+                clearTimeout(toast._timer);
+                toast._timer = setTimeout(() => {
+                    toast.classList.remove('show');
                 }, 2500);
             }
 
-            // ===== ONBOARDING =====
+            // ===== ONBOARDING (SWIPE) =====
             function initOnboarding() {
                 if (localStorage.getItem('mewonen_onboarded') === '1') {
-                    document.getElementById('onboarding').classList.add('hide');
+                    onboarding.classList.add('hide');
+                    mainApp.classList.add('show');
                     return;
                 }
-                let slide = 0;
-                const slides = document.querySelectorAll('.ob-slide');
-                const dots = document.querySelectorAll('.ob-dots span');
-                const nextBtn = document.getElementById('obNext');
-                const skipBtn = document.getElementById('obSkip');
 
-                function goTo(n) {
-                    slide = n;
-                    slides.forEach((s, i) => s.classList.toggle('active', i === slide));
-                    dots.forEach((d, i) => d.classList.toggle('active', i === slide));
-                    nextBtn.textContent = slide === slides.length - 1 ? 'Start ✨' : 'Continue →';
+                let startX = 0;
+                let isDragging = false;
+
+                obContainer.addEventListener('touchstart', function(e) {
+                    startX = e.touches[0].clientX;
+                    isDragging = true;
+                }, { passive: true });
+
+                obContainer.addEventListener('touchend', function(e) {
+                    if (!isDragging) return;
+                    isDragging = false;
+                    const diff = startX - e.changedTouches[0].clientX;
+                    if (Math.abs(diff) > 40) {
+                        if (diff > 0 && slideIndex < 2) {
+                            goToSlide(slideIndex + 1);
+                        } else if (diff < 0 && slideIndex > 0) {
+                            goToSlide(slideIndex - 1);
+                        }
+                    }
+                }, { passive: true });
+
+                // Also support mouse drag for desktop
+                let mouseStartX = 0;
+                let mouseDragging = false;
+                obContainer.addEventListener('mousedown', function(e) {
+                    mouseStartX = e.clientX;
+                    mouseDragging = true;
+                });
+                obContainer.addEventListener('mouseup', function(e) {
+                    if (!mouseDragging) return;
+                    mouseDragging = false;
+                    const diff = mouseStartX - e.clientX;
+                    if (Math.abs(diff) > 40) {
+                        if (diff > 0 && slideIndex < 2) {
+                            goToSlide(slideIndex + 1);
+                        } else if (diff < 0 && slideIndex > 0) {
+                            goToSlide(slideIndex - 1);
+                        }
+                    }
+                });
+                obContainer.addEventListener('mouseleave', function() {
+                    mouseDragging = false;
+                });
+
+                function goToSlide(index) {
+                    slideIndex = index;
+                    obSlides.style.transform = `translateX(-${index * 33.333}%)`;
+                    obDots.forEach((dot, i) => {
+                        dot.classList.toggle('active', i === index);
+                    });
+                    // Show permissions only on last slide
+                    if (index === 2) {
+                        permissions.classList.add('show');
+                    } else {
+                        permissions.classList.remove('show');
+                    }
                 }
 
-                nextBtn.addEventListener('click', () => {
-                    if (slide === slides.length - 1) {
-                        localStorage.setItem('mewonen_onboarded', '1');
-                        document.getElementById('onboarding').classList.add('hide');
-                        return;
-                    }
-                    goTo(slide + 1);
+                // Permissions
+                permItems.forEach(item => {
+                    item.addEventListener('click', function() {
+                        this.classList.toggle('active');
+                    });
                 });
 
-                skipBtn.addEventListener('click', () => {
+                permBtn.addEventListener('click', function() {
+                    // Check if at least one permission is granted
+                    const active = document.querySelectorAll('.perm-item.active');
+                    if (active.length === 0) {
+                        showToast('Please connect at least one account');
+                        return;
+                    }
                     localStorage.setItem('mewonen_onboarded', '1');
-                    document.getElementById('onboarding').classList.add('hide');
+                    onboarding.classList.add('hide');
+                    mainApp.classList.add('show');
+                    showToast('🎉 Welcome to Mewonen! Draw your mood.');
                 });
+
+                // Start at first slide
+                goToSlide(0);
             }
 
             // ===== MENU =====
             function initMenu() {
-                const mainScreen = document.getElementById('mainScreen');
+                const mainScreen = document.getElementById('mainApp');
                 const galleryScreen = document.getElementById('galleryScreen');
                 const statsScreen = document.getElementById('statsScreen');
                 const legalScreen = document.getElementById('legalScreen');
@@ -1596,7 +1672,11 @@
 
                 function showScreen(name) {
                     Object.keys(screens).forEach(k => {
-                        screens[k].style.display = k === name ? 'flex' : 'none';
+                        if (k === 'main') {
+                            screens[k].style.display = name === k ? 'flex' : 'none';
+                        } else {
+                            screens[k].classList.toggle('active', name === k);
+                        }
                     });
                     document.querySelectorAll('.menu-item').forEach(el => {
                         el.classList.toggle('active', el.dataset.screen === name);
@@ -1626,44 +1706,12 @@
                 menuOverlay.addEventListener('click', closeMenu);
                 menuClose.addEventListener('click', closeMenu);
 
-                shareMenuBtn.addEventListener('click', () => { closeMenu();
+                shareBtn.addEventListener('click', () => { closeMenu();
                     openShare(); });
-                statusMenuBtn.addEventListener('click', () => { closeMenu();
+                statusBtn.addEventListener('click', () => { closeMenu();
                     generateStatus(); });
 
                 showScreen('main');
-            }
-
-            // ===== CONNECT ACCOUNTS =====
-            function initConnections() {
-                function toggleConnect(btn, account) {
-                    const isConnected = connectedAccounts[account];
-                    if (isConnected) {
-                        connectedAccounts[account] = false;
-                        btn.classList.remove('connected');
-                        btn.textContent = btn.dataset.label;
-                        showToast(`🔓 ${btn.dataset.label} disconnected`);
-                    } else {
-                        connectedAccounts[account] = true;
-                        btn.classList.add('connected');
-                        btn.textContent = '✅ ' + btn.dataset.label;
-                        showToast(`🔗 ${btn.dataset.label} connected!`);
-                        // Simulate fetching reels from connected account
-                        setTimeout(() => {
-                            if (points.length >= 5 && lastEmotion) {
-                                showReels(lastEmotion);
-                            }
-                        }, 500);
-                    }
-                }
-
-                connectInsta.dataset.label = 'Instagram';
-                connectTikTok.dataset.label = 'TikTok';
-                connectMeta.dataset.label = 'Meta';
-
-                connectInsta.addEventListener('click', function() { toggleConnect(this, 'instagram'); });
-                connectTikTok.addEventListener('click', function() { toggleConnect(this, 'tiktok'); });
-                connectMeta.addEventListener('click', function() { toggleConnect(this, 'meta'); });
             }
 
             // ===== INIT =====
@@ -1673,11 +1721,6 @@
                 loadDrawings();
                 initOnboarding();
                 initMenu();
-                initConnections();
-
-                setTimeout(() => {
-                    showToast('Draw your mood ✍️');
-                }, 800);
 
                 canvas.addEventListener('touchstart', startDraw, { passive: false });
                 canvas.addEventListener('touchmove', moveDraw, { passive: false });
@@ -1687,10 +1730,10 @@
                 canvas.addEventListener('mouseup', endDraw);
                 canvas.addEventListener('mouseleave', endDraw);
 
-                clearBtn.addEventListener('click', clearCanvas);
-                analyzeBtn.addEventListener('click', analyzeDraw);
-                shareBtn.addEventListener('click', openShare);
-                shareAppBtn.addEventListener('click', shareApp);
+                // Reveal button
+                revealBtn.addEventListener('click', analyzeDraw);
+
+                // Share
                 downloadBtn.addEventListener('click', downloadShare);
                 copyBtn.addEventListener('click', copyShareText);
                 shareClose.addEventListener('click', closeShare);
@@ -1704,7 +1747,7 @@
                     resizeTimer = setTimeout(setupCanvas, 100);
                 });
 
-                console.log('💜 Mewonen — App Finale (UI Vive, Menu Clair, Share Visible)');
+                console.log('💜 Mewonen — Final Version (Swipe + Permissions + Reels Grid)');
             }
 
             if (document.readyState === 'loading') {
