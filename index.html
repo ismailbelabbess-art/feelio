@@ -3,59 +3,127 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>Mewonen — Draw Your Emotion</title>
+    <title>Mewonen — Draw what you can't say</title>
 
-    <!-- ===== POLICES GOOGLE ===== -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+    <!-- ===== MANIFEST ===== -->
+    <link rel="manifest" href="manifest.webmanifest" />
 
+    <!-- ===== ICONS ===== -->
+    <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg" />
+    <link rel="apple-touch-icon" href="assets/icons/icon-192.png" />
+
+    <!-- ===== FONTS LOCALES ===== -->
+    <link rel="preload" href="assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="assets/fonts/playfair-display.woff2" as="font" type="font/woff2" crossorigin />
+
+    <!-- ===== STYLES ===== -->
     <style>
-        /* ===== RESET ===== */
-        * {
+        /* ============================================================
+           MEWONEN V2 — STYLES COMPLETS
+           ============================================================ */
+
+        /* ----- RESET ----- */
+        *,
+        *::before,
+        *::after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
         }
+
+        :root {
+            --bg-primary: #0D1B2A;
+            --bg-secondary: #1B2A3A;
+            --bg-surface: rgba(255, 255, 255, 0.02);
+            --bg-surface-hover: rgba(255, 255, 255, 0.04);
+            --text-primary: #FFFFFF;
+            --text-secondary: rgba(255, 255, 255, 0.4);
+            --text-muted: rgba(255, 255, 255, 0.1);
+            --accent-1: #FF6B35;
+            --accent-2: #FF1493;
+            --accent-3: #FFD700;
+            --accent-gradient: linear-gradient(135deg, #FF6B35, #FF1493);
+            --radius-sm: 8px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --radius-xl: 40px;
+            --shadow-card: 0 8px 40px rgba(0, 0, 0, 0.3);
+            --shadow-glow: 0 0 60px rgba(255, 107, 53, 0.08);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --font-serif: 'Playfair Display', Georgia, serif;
+        }
+
+        @font-face {
+            font-family: 'Inter';
+            src: url('assets/fonts/inter.woff2') format('woff2');
+            font-weight: 300 700;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Playfair Display';
+            src: url('assets/fonts/playfair-display.woff2') format('woff2');
+            font-weight: 400 700;
+            font-display: swap;
+        }
+
+        html,
         body {
-            background: #0D1B2A;
-            color: #fff;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            height: 100dvh;
+            height: 100%;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
             overflow: hidden;
-            touch-action: none;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
+
+        /* ----- SCROLLBAR ----- */
+        ::-webkit-scrollbar {
+            width: 3px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 107, 53, 0.2);
+            border-radius: 10px;
+        }
+
+        /* ----- REDUCED MOTION ----- */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* ----- APP SHELL ----- */
         #app {
-            width: 100%;
             max-width: 430px;
             height: 100dvh;
             margin: 0 auto;
-            position: relative;
-            background: linear-gradient(145deg, #0D1B2A, #1B2A3A);
-            overflow: hidden;
+            background: radial-gradient(ellipse at 50% 30%, var(--bg-secondary), var(--bg-primary));
             display: flex;
             flex-direction: column;
+            position: relative;
+            overflow: hidden;
         }
 
-        /* ===== FONT UTILITY ===== */
-        .serif {
-            font-family: 'Playfair Display', serif;
-        }
-        .sans {
-            font-family: 'Inter', sans-serif;
-        }
-
-        /* ===== ONBOARDING (TINDER) ===== */
+        /* ============================================================
+           ONBOARDING
+           ============================================================ */
         #onboarding {
             position: absolute;
             inset: 0;
             z-index: 200;
-            background: #0D1B2A;
+            background: var(--bg-primary);
             display: flex;
             flex-direction: column;
-            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s ease;
             transform: translateX(0);
             opacity: 1;
         }
@@ -64,18 +132,19 @@
             opacity: 0;
             pointer-events: none;
         }
-        .ob-wrapper {
+
+        .ob-swipe {
             flex: 1;
             display: flex;
             overflow: hidden;
-            position: relative;
             touch-action: pan-y;
+            position: relative;
         }
         .ob-track {
             display: flex;
             width: 300%;
             height: 100%;
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             will-change: transform;
         }
         .ob-slide {
@@ -94,7 +163,7 @@
             margin-bottom: 20px;
         }
         .ob-slide h2 {
-            font-family: 'Playfair Display', serif;
+            font-family: var(--font-serif);
             font-size: 1.8rem;
             font-weight: 400;
             line-height: 1.3;
@@ -102,15 +171,14 @@
             color: #fff;
         }
         .ob-slide h2 span {
-            background: linear-gradient(135deg, #FF6B35, #FF1493);
+            background: var(--accent-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
         .ob-slide p {
-            font-family: 'Inter', sans-serif;
             font-size: 0.85rem;
-            color: rgba(255, 255, 255, 0.4);
+            color: var(--text-secondary);
             line-height: 1.6;
             max-width: 280px;
             font-weight: 300;
@@ -126,143 +194,103 @@
             width: 8px;
             height: 8px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.06);
+            background: var(--text-muted);
             transition: all 0.4s ease;
         }
         .ob-dots span.active {
-            background: #FF6B35;
+            background: var(--accent-1);
             width: 30px;
             border-radius: 4px;
         }
         .ob-hint {
             text-align: center;
-            font-family: 'Inter', sans-serif;
             font-size: 0.6rem;
-            color: rgba(255, 255, 255, 0.05);
+            color: var(--text-muted);
             padding-bottom: 8px;
             flex-shrink: 0;
             letter-spacing: 2px;
             font-weight: 300;
         }
 
-        /* ===== PERMISSIONS ===== */
-        #permissions {
-            padding: 16px 20px 20px;
-            display: none;
-            flex-direction: column;
-            gap: 10px;
-            background: rgba(255, 255, 255, 0.02);
-            border-top: 1px solid rgba(255, 255, 255, 0.03);
-            flex-shrink: 0;
-        }
-        #permissions.show {
-            display: flex;
-        }
-        #permissions .title {
-            font-family: 'Inter', sans-serif;
-            font-size: 0.7rem;
-            color: rgba(255, 255, 255, 0.2);
-            text-align: center;
-            letter-spacing: 1px;
-            font-weight: 300;
-        }
-        .perm-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 10px 14px;
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .perm-item:active {
-            transform: scale(0.97);
-        }
-        .perm-item .icon {
-            font-size: 1.2rem;
-        }
-        .perm-item .info {
-            flex: 1;
-        }
-        .perm-item .info .name {
-            font-family: 'Inter', sans-serif;
-            font-size: 0.7rem;
-            color: rgba(255, 255, 255, 0.6);
-            font-weight: 400;
-        }
-        .perm-item .info .desc {
-            font-family: 'Inter', sans-serif;
-            font-size: 0.5rem;
-            color: rgba(255, 255, 255, 0.15);
-            font-weight: 300;
-        }
-        .perm-item .check {
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
-            border: 2px solid rgba(255, 255, 255, 0.06);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            font-size: 0.7rem;
-            color: transparent;
-            font-family: 'Inter', sans-serif;
-        }
-        .perm-item.active .check {
-            background: linear-gradient(135deg, #FF6B35, #FF1493);
-            border-color: #FF6B35;
-            color: #fff;
-        }
-        .perm-btn {
-            padding: 12px;
-            border-radius: 30px;
+        .ob-start-btn {
+            margin: 0 20px 20px;
+            padding: 16px;
+            border-radius: var(--radius-xl);
             border: none;
-            background: linear-gradient(135deg, #FF6B35, #FF1493);
+            background: var(--accent-gradient);
             color: #fff;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.8rem;
+            font-family: var(--font-sans);
+            font-size: 0.9rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 30px rgba(255, 107, 53, 0.2);
+            transition: var(--transition);
+            box-shadow: 0 8px 30px rgba(255, 107, 53, 0.25);
+            display: none;
         }
-        .perm-btn:active {
+        .ob-start-btn.show {
+            display: block;
+        }
+        .ob-start-btn:active {
             transform: scale(0.94);
         }
 
-        /* ===== MENU DÉROULANT ===== */
-        #menuBtn {
-            position: absolute;
-            top: 14px;
-            left: 16px;
-            z-index: 30;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 12px;
-            padding: 8px 14px;
-            color: rgba(255, 255, 255, 0.3);
-            font-family: 'Inter', sans-serif;
-            font-size: 0.7rem;
+        /* ============================================================
+           TOP BAR
+           ============================================================ */
+        #topBar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 20px 10px;
+            flex-shrink: 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+        }
+        #topBar .logo {
+            font-family: var(--font-serif);
+            font-size: 1.2rem;
+            letter-spacing: 4px;
+            color: #fff;
             font-weight: 400;
+        }
+        #topBar .logo span {
+            color: var(--accent-1);
+        }
+        #topBar .stats {
+            display: flex;
+            gap: 14px;
+            font-size: 0.5rem;
+            color: var(--text-muted);
+            font-weight: 300;
+        }
+        #topBar .stats span {
+            color: var(--accent-3);
+        }
+        #topBar .stats .xp {
+            color: var(--accent-1);
+        }
+
+        #menuBtn {
+            background: var(--bg-surface);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: var(--radius-sm);
+            padding: 6px 10px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
             cursor: pointer;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(8px);
+            transition: var(--transition);
+            font-family: var(--font-sans);
             display: flex;
             align-items: center;
-            gap: 6px;
-            letter-spacing: 0.5px;
+            gap: 4px;
         }
         #menuBtn:active {
             transform: scale(0.92);
             background: rgba(255, 107, 53, 0.08);
         }
-        #menuBtn .icon {
-            font-size: 1rem;
-        }
 
+        /* ============================================================
+           MENU PANEL
+           ============================================================ */
         #menuOverlay {
             position: fixed;
             inset: 0;
@@ -277,6 +305,7 @@
             display: block;
             opacity: 1;
         }
+
         #menuPanel {
             position: fixed;
             left: 0;
@@ -292,13 +321,13 @@
             padding: 24px 20px;
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 2px;
         }
         #menuPanel.show {
             transform: translateX(0);
         }
         .menu-header {
-            font-family: 'Playfair Display', serif;
+            font-family: var(--font-serif);
             font-size: 1.6rem;
             letter-spacing: 6px;
             color: #fff;
@@ -308,22 +337,22 @@
             font-weight: 400;
         }
         .menu-header span {
-            color: #FF6B35;
+            color: var(--accent-1);
         }
         .menu-item {
             display: flex;
             align-items: center;
             gap: 14px;
             padding: 12px 16px;
-            border-radius: 12px;
+            border-radius: var(--radius-sm);
             background: none;
             border: none;
-            color: rgba(255, 255, 255, 0.3);
-            font-family: 'Inter', sans-serif;
+            color: var(--text-secondary);
+            font-family: var(--font-sans);
             font-size: 0.75rem;
             font-weight: 400;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: var(--transition);
             width: 100%;
             text-align: left;
         }
@@ -337,12 +366,11 @@
         }
         .menu-item .badge {
             margin-left: auto;
-            font-family: 'Inter', sans-serif;
             font-size: 0.5rem;
             background: rgba(255, 107, 53, 0.1);
             padding: 2px 10px;
             border-radius: 20px;
-            color: #FF6B35;
+            color: var(--accent-1);
             font-weight: 300;
         }
         .menu-close {
@@ -351,115 +379,75 @@
             right: 16px;
             background: none;
             border: none;
-            color: rgba(255, 255, 255, 0.1);
-            font-family: 'Inter', sans-serif;
+            color: var(--text-muted);
             font-size: 1rem;
             cursor: pointer;
         }
 
-        /* ===== MAIN APP ===== */
+        /* ============================================================
+           MAIN APP
+           ============================================================ */
         #mainApp {
             flex: 1;
             display: none;
             flex-direction: column;
-            padding: 16px 20px 20px;
+            padding: 8px 20px 0;
             overflow-y: auto;
         }
         #mainApp.show {
             display: flex;
         }
 
-        /* ===== TOP BAR ===== */
-        #topBar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-bottom: 12px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
-            flex-shrink: 0;
-        }
-        #topBar .logo {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.3rem;
-            letter-spacing: 4px;
-            color: #fff;
-            font-weight: 400;
-        }
-        #topBar .logo span {
-            color: #FF6B35;
-        }
-        #topBar .stats {
-            display: flex;
-            gap: 12px;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.5rem;
-            color: rgba(255, 255, 255, 0.1);
-            font-weight: 300;
-        }
-        #topBar .stats span {
-            color: #FFD700;
-        }
-
-        /* ===== DRAW AREA ===== */
-        #drawArea {
+        /* ----- CANVAS ----- */
+        #canvasWrapper {
             position: relative;
             width: 100%;
-            max-width: 280px;
+            max-width: 300px;
             aspect-ratio: 1/1;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.015);
-            border: 1px solid rgba(255, 107, 53, 0.06);
-            box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.4);
-            touch-action: none;
-            margin: 12px auto;
+            margin: 8px auto;
             flex-shrink: 0;
         }
-        #drawCanvas {
+        #canvasWrapper canvas {
             width: 100%;
             height: 100%;
             border-radius: 50%;
             display: block;
             touch-action: none;
             cursor: crosshair;
+            background: rgba(255, 255, 255, 0.015);
+            border: 1px solid rgba(255, 107, 53, 0.06);
+            box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.4);
+            transition: border-color 0.6s ease;
         }
-        #glowRing {
-            position: absolute;
-            inset: -8px;
-            border-radius: 50%;
-            border: 1px solid rgba(255, 107, 53, 0.04);
-            pointer-events: none;
-            transition: all 0.6s ease;
-        }
-        #glowRing.active {
-            border-color: rgba(255, 107, 53, 0.3);
-            box-shadow: 0 0 60px rgba(255, 107, 53, 0.08);
+        #canvasWrapper canvas.active {
+            border-color: rgba(255, 107, 53, 0.2);
+            box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.4), 0 0 60px rgba(255, 107, 53, 0.05);
         }
 
-        /* ===== REVEAL BUTTON ===== */
+        /* ----- REVEAL BUTTON ----- */
         #revealBtn {
             padding: 14px 32px;
-            border-radius: 40px;
+            border-radius: var(--radius-xl);
             border: none;
-            background: linear-gradient(135deg, #FF6B35, #FF1493);
+            background: var(--accent-gradient);
             color: #fff;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.9rem;
+            font-family: var(--font-sans);
+            font-size: 0.85rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 30px rgba(255, 107, 53, 0.3);
+            transition: var(--transition);
+            box-shadow: 0 8px 30px rgba(255, 107, 53, 0.25);
             margin: 8px auto 0;
             position: relative;
-            animation: pulseBtn 2s ease-in-out infinite;
-            letter-spacing: 0.5px;
+            animation: pulseReveal 2s ease-in-out infinite;
         }
-        @keyframes pulseBtn {
+        @keyframes pulseReveal {
             0%,
             100% {
-                box-shadow: 0 8px 30px rgba(255, 107, 53, 0.3);
+                box-shadow: 0 8px 30px rgba(255, 107, 53, 0.25);
             }
             50% {
-                box-shadow: 0 8px 60px rgba(255, 107, 53, 0.6);
+                box-shadow: 0 8px 60px rgba(255, 107, 53, 0.5);
             }
         }
         #revealBtn:active {
@@ -468,7 +456,7 @@
         #revealBtn .ripple {
             position: absolute;
             inset: 0;
-            border-radius: 40px;
+            border-radius: var(--radius-xl);
             border: 2px solid rgba(255, 255, 255, 0.1);
             animation: rippleOut 1.5s ease-out infinite;
         }
@@ -483,42 +471,52 @@
             }
         }
 
-        /* ===== RESULT ===== */
+        /* ----- RESULT ----- */
         #result {
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 36px;
+            min-height: 70px;
+            margin-top: 6px;
+            text-align: center;
+        }
+        #result .emoji {
+            font-size: 2.2rem;
+            animation: popIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        #result .name {
+            font-family: var(--font-serif);
+            font-size: 1.2rem;
+            margin-top: 4px;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        #result .confidence {
+            font-size: 0.6rem;
+            color: var(--text-secondary);
+            font-weight: 300;
+        }
+        #result .phrase {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            font-weight: 300;
+            margin-top: 4px;
+            max-width: 280px;
+            line-height: 1.5;
+            font-style: italic;
+        }
+        #result .rarity {
+            font-size: 0.5rem;
+            color: var(--accent-3);
+            background: rgba(255, 215, 0, 0.06);
+            padding: 2px 14px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 215, 0, 0.06);
             margin-top: 4px;
         }
-        #emotionEmoji {
-            font-size: 1.8rem;
-            animation: pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        #emotionName {
-            font-family: 'Inter', sans-serif;
-            font-size: 0.6rem;
-            color: rgba(255, 255, 255, 0.15);
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            font-weight: 300;
-        }
-        #rarityBadge {
-            font-family: 'Inter', sans-serif;
-            font-size: 0.45rem;
-            color: #FFD700;
-            background: rgba(255, 215, 0, 0.06);
-            padding: 2px 12px;
-            border-radius: 12px;
-            margin-top: 2px;
-            border: 1px solid rgba(255, 215, 0, 0.06);
-            display: none;
-            font-weight: 300;
-        }
-        #rarityBadge.show {
-            display: inline-block;
-        }
-        @keyframes pop {
+        @keyframes popIn {
             0% {
                 opacity: 0;
                 transform: scale(0.3) rotate(-8deg);
@@ -529,198 +527,208 @@
             }
         }
 
-        /* ===== REELS GRID ===== */
-        #reelsGrid {
-            display: none;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 6px;
-            margin-top: 12px;
-            padding: 4px;
-            max-height: 300px;
-            overflow-y: auto;
-            scrollbar-width: thin;
-            scrollbar-color: rgba(255, 107, 53, 0.1) transparent;
-        }
-        #reelsGrid.show {
-            display: grid;
-        }
-        #reelsGrid::-webkit-scrollbar {
-            width: 3px;
-        }
-        #reelsGrid::-webkit-scrollbar-thumb {
-            background: rgba(255, 107, 53, 0.2);
-            border-radius: 10px;
-        }
-        .reel-card {
-            aspect-ratio: 9/16;
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            overflow: hidden;
+        /* ----- ACTIONS ----- */
+        #actions {
             display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 6px;
+            flex-wrap: wrap;
+        }
+        #actions button {
+            padding: 8px 18px;
+            border-radius: var(--radius-xl);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            background: var(--bg-surface);
+            color: var(--text-secondary);
+            font-family: var(--font-sans);
+            font-size: 0.6rem;
+            font-weight: 400;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        #actions button:active {
+            transform: scale(0.92);
+            background: rgba(255, 107, 53, 0.06);
+        }
+        #actions button.primary {
+            background: var(--accent-gradient);
+            color: #fff;
+            border: none;
+        }
+        #actions button.gold {
+            background: linear-gradient(135deg, var(--accent-3), #f59e0b);
+            color: #0D1B2A;
+            border: none;
+            font-weight: 500;
+        }
+
+        /* ============================================================
+           REVEAL CINEMATIC
+           ============================================================ */
+        #revealOverlay {
+            position: fixed;
+            inset: 0;
+            z-index: 150;
+            background: rgba(13, 27, 42, 0.95);
+            backdrop-filter: blur(20px);
+            display: none;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            color: #fff;
-            position: relative;
+            padding: 30px;
+            animation: fadeIn 0.4s ease;
         }
-        .reel-card:active {
-            transform: scale(0.94);
-        }
-        .reel-card .thumb {
-            width: 100%;
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            background: rgba(255, 255, 255, 0.01);
-            font-family: 'Inter', sans-serif;
-        }
-        .reel-card .reel-info {
-            width: 100%;
-            padding: 3px 6px;
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(4px);
-            font-family: 'Inter', sans-serif;
-            font-size: 0.35rem;
-            color: rgba(255, 255, 255, 0.3);
-            display: flex;
-            justify-content: space-between;
-            font-weight: 300;
-        }
-        .reel-card .play-overlay {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(0, 0, 0, 0.1);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        .reel-card:active .play-overlay {
-            opacity: 1;
-        }
-        .reel-card .play-overlay span {
-            font-size: 1.8rem;
-            color: rgba(255, 255, 255, 0.3);
-        }
-
-        /* ===== SHARE OVERLAY ===== */
-        #shareOverlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(12px);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 100;
-            padding: 20px;
-        }
-        #shareOverlay.show {
+        #revealOverlay.show {
             display: flex;
         }
-        #shareCard {
-            background: rgba(16, 16, 32, 0.98);
-            border: 1px solid rgba(255, 107, 53, 0.08);
-            border-radius: 24px;
-            padding: 24px;
-            max-width: 340px;
-            width: 100%;
-            text-align: center;
-            animation: cardIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        @keyframes cardIn {
+        @keyframes fadeIn {
             0% {
                 opacity: 0;
-                transform: scale(0.9) translateY(20px);
             }
             100% {
                 opacity: 1;
-                transform: scale(1) translateY(0);
             }
         }
-        #shareCard .preview {
-            width: 100%;
-            aspect-ratio: 1/1;
-            border-radius: 16px;
-            background: radial-gradient(circle at 30% 30%, #1B2A3A, #0D1B2A);
-            border: 1px solid rgba(255, 107, 53, 0.06);
-            margin-bottom: 12px;
-            overflow: hidden;
+        #revealOverlay .loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
         }
-        #shareCard .preview img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            border-radius: 16px;
+        #revealOverlay .loading .spinner {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 3px solid rgba(255, 255, 255, 0.04);
+            border-top-color: var(--accent-1);
+            animation: spin 0.8s linear infinite;
         }
-        #shareCard .preview-text {
-            font-family: 'Inter', sans-serif;
-            font-size: 0.65rem;
-            color: rgba(255, 255, 255, 0.5);
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        #revealOverlay .loading p {
+            font-family: var(--font-sans);
+            font-size: 0.8rem;
+            color: var(--text-secondary);
             font-weight: 300;
-            margin-bottom: 8px;
+            letter-spacing: 1px;
         }
-        #shareCard .preview-text strong {
-            color: rgba(255, 255, 255, 0.8);
+
+        #revealOverlay .result-card {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            animation: fadeUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        #revealOverlay .result-card.show {
+            display: flex;
+        }
+        @keyframes fadeUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        #revealOverlay .result-card .emoji {
+            font-size: 4rem;
+        }
+        #revealOverlay .result-card .name {
+            font-family: var(--font-serif);
+            font-size: 2rem;
+            margin-top: 8px;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        #revealOverlay .result-card .confidence {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            font-weight: 300;
+            margin-top: 2px;
+        }
+        #revealOverlay .result-card .phrase {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-style: italic;
+            max-width: 280px;
+            margin-top: 8px;
+            line-height: 1.6;
+            font-weight: 300;
+        }
+        #revealOverlay .result-card .features {
+            display: flex;
+            gap: 20px;
+            margin-top: 12px;
+            font-size: 0.5rem;
+            color: var(--text-muted);
+            font-weight: 300;
+            letter-spacing: 0.5px;
+        }
+        #revealOverlay .result-card .features span {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+        }
+        #revealOverlay .result-card .features .value {
+            color: var(--text-secondary);
+            font-size: 0.7rem;
             font-weight: 400;
         }
-        #shareCard .share-actions {
+        #revealOverlay .result-card .actions {
             display: flex;
-            gap: 8px;
-            justify-content: center;
+            gap: 12px;
+            margin-top: 16px;
         }
-        #shareCard .share-actions .btn {
-            flex: 1;
-            justify-content: center;
-        }
-        .btn {
-            padding: 8px 18px;
-            border-radius: 30px;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.6rem;
-            font-weight: 500;
+        #revealOverlay .result-card .actions button {
+            padding: 10px 24px;
+            border-radius: var(--radius-xl);
             border: none;
-            background: rgba(255, 255, 255, 0.03);
-            color: rgba(255, 255, 255, 0.3);
+            font-family: var(--font-sans);
+            font-size: 0.7rem;
+            font-weight: 500;
             cursor: pointer;
-            transition: all 0.2s ease;
-            border: 1px solid rgba(255, 255, 255, 0.03);
+            transition: var(--transition);
         }
-        .btn:active {
+        #revealOverlay .result-card .actions button:active {
             transform: scale(0.92);
         }
-        .btn-primary {
-            background: linear-gradient(135deg, #FF6B35, #FF1493);
+        #revealOverlay .result-card .actions .save {
+            background: var(--bg-surface);
+            color: var(--text-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+        #revealOverlay .result-card .actions .share {
+            background: var(--accent-gradient);
             color: #fff;
-            border: none;
-            box-shadow: 0 4px 20px rgba(255, 107, 53, 0.2);
+            box-shadow: 0 8px 30px rgba(255, 107, 53, 0.2);
         }
-        .btn-gold {
-            background: linear-gradient(135deg, #FFD700, #FF6B35);
-            color: #0D1B2A;
-            border: none;
-            font-weight: 600;
-        }
-        .share-close {
+        #revealOverlay .close-reveal {
             position: absolute;
-            top: 8px;
-            right: 12px;
+            top: 20px;
+            right: 20px;
             background: none;
             border: none;
-            color: rgba(255, 255, 255, 0.15);
-            font-family: 'Inter', sans-serif;
-            font-size: 1rem;
+            color: var(--text-muted);
+            font-size: 1.2rem;
             cursor: pointer;
         }
 
-        /* ===== GALLERY & STATS ===== */
+        /* ============================================================
+           SCREENS (Gallery, Stats, Legal)
+           ============================================================ */
         .screen {
             display: none;
             flex-direction: column;
@@ -731,14 +739,14 @@
             overflow-y: auto;
             position: absolute;
             inset: 0;
-            background: radial-gradient(ellipse at 50% 30%, #1B2A3A, #0D1B2A);
+            background: radial-gradient(ellipse at 50% 30%, var(--bg-secondary), var(--bg-primary));
             z-index: 5;
         }
         .screen.active {
             display: flex;
         }
         .screen .title {
-            font-family: 'Playfair Display', serif;
+            font-family: var(--font-serif);
             font-size: 1.3rem;
             font-weight: 400;
             letter-spacing: 1px;
@@ -747,12 +755,25 @@
             color: #fff;
         }
         .screen .sub {
-            font-family: 'Inter', sans-serif;
-            color: rgba(255, 255, 255, 0.2);
+            color: var(--text-secondary);
             font-size: 0.6rem;
             margin-bottom: 16px;
             font-weight: 300;
         }
+
+        .screen .back-btn {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            cursor: pointer;
+            font-family: var(--font-sans);
+            font-weight: 300;
+        }
+
         .gallery-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -762,8 +783,8 @@
         }
         .gallery-item {
             aspect-ratio: 1/1;
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.02);
+            border-radius: var(--radius-sm);
+            background: var(--bg-surface);
             border: 1px solid rgba(255, 255, 255, 0.02);
             overflow: hidden;
         }
@@ -771,8 +792,17 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            border-radius: 12px;
+            display: block;
         }
+        .gallery-item .empty {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: var(--text-muted);
+            font-size: 0.5rem;
+        }
+
         .stats-list {
             width: 100%;
             max-width: 320px;
@@ -782,8 +812,8 @@
             align-items: center;
             gap: 12px;
             padding: 10px 14px;
-            background: rgba(255, 255, 255, 0.01);
-            border-radius: 12px;
+            background: var(--bg-surface);
+            border-radius: var(--radius-sm);
             border: 1px solid rgba(255, 255, 255, 0.02);
             margin-bottom: 6px;
         }
@@ -796,67 +826,52 @@
             flex-direction: column;
         }
         .stats-item .info .name {
-            font-family: 'Inter', sans-serif;
             font-size: 0.7rem;
             color: #fff;
             font-weight: 400;
         }
         .stats-item .info .count {
-            font-family: 'Inter', sans-serif;
             font-size: 0.5rem;
-            color: rgba(255, 255, 255, 0.2);
+            color: var(--text-secondary);
             font-weight: 300;
         }
         .stats-item .bar {
             width: 60px;
             height: 3px;
             border-radius: 2px;
-            background: rgba(255, 255, 255, 0.02);
+            background: var(--bg-surface);
         }
         .stats-item .bar span {
             display: block;
             height: 100%;
             border-radius: 2px;
-            background: linear-gradient(90deg, #FF6B35, #FF1493);
-        }
-        .back-btn {
-            position: absolute;
-            top: 16px;
-            left: 16px;
-            background: none;
-            border: none;
-            color: rgba(255, 255, 255, 0.1);
-            font-family: 'Inter', sans-serif;
-            font-size: 0.8rem;
-            cursor: pointer;
-            z-index: 10;
-            font-weight: 300;
+            background: var(--accent-gradient);
         }
 
-        /* ===== LEGAL ===== */
-        #legalScreen .legal-content {
+        /* ----- LEGAL ----- */
+        .legal-content {
             max-width: 340px;
             text-align: left;
-            font-family: 'Inter', sans-serif;
             font-size: 0.6rem;
             line-height: 1.8;
-            color: rgba(255, 255, 255, 0.5);
+            color: var(--text-secondary);
             padding: 8px 0;
             font-weight: 300;
         }
-        #legalScreen .legal-content h3 {
-            color: rgba(255, 255, 255, 0.8);
-            font-family: 'Inter', sans-serif;
+        .legal-content h3 {
+            color: var(--text-primary);
             font-size: 0.7rem;
             font-weight: 500;
             margin-top: 12px;
             margin-bottom: 4px;
         }
-        #legalScreen .legal-content .highlight {
-            color: #FF6B35;
+        .legal-content .highlight {
+            color: var(--accent-1);
         }
 
-        /* ===== TOAST ===== */
+        /* ============================================================
+           TOAST
+           ============================================================ */
         #toast {
             position: fixed;
             bottom: 100px;
@@ -866,10 +881,10 @@
             backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 107, 53, 0.08);
             padding: 10px 24px;
-            border-radius: 16px;
-            font-family: 'Inter', sans-serif;
+            border-radius: var(--radius-md);
+            font-family: var(--font-sans);
             font-size: 0.6rem;
-            color: rgba(255, 255, 255, 0.8);
+            color: var(--text-primary);
             z-index: 200;
             opacity: 0;
             transition: opacity 0.4s ease;
@@ -881,6 +896,9 @@
             opacity: 1;
         }
 
+        /* ============================================================
+           RESPONSIVE
+           ============================================================ */
         @media (max-width: 380px) {
             .ob-slide h2 {
                 font-size: 1.3rem;
@@ -888,89 +906,89 @@
             .ob-slide .icon {
                 font-size: 3.5rem;
             }
-            #drawArea {
+            #canvasWrapper {
                 max-width: 200px;
-            }
-            #reelsGrid {
-                gap: 4px;
             }
         }
         @media (min-width: 600px) {
-            #drawArea {
-                max-width: 320px;
-            }
-            #reelsGrid {
-                gap: 8px;
+            #canvasWrapper {
+                max-width: 340px;
             }
         }
     </style>
 </head>
 <body>
 
+    <!-- ===== APP ===== -->
     <div id="app">
 
-        <!-- ===== ONBOARDING (TINDER) ===== -->
+        <!-- ===== ONBOARDING ===== -->
         <div id="onboarding">
-            <div class="ob-wrapper" id="obWrapper">
+            <div class="ob-swipe" id="obSwipe">
                 <div class="ob-track" id="obTrack">
                     <div class="ob-slide">
                         <div class="icon">🎨</div>
-                        <h2>Draw your <span>emotion</span></h2>
-                        <p>One stroke. One feeling. Mewonen reads what you draw.</p>
+                        <h2>You don't have to <span>explain</span></h2>
+                        <p>How you feel. Just draw it.</p>
                     </div>
                     <div class="ob-slide">
                         <div class="icon">🧠</div>
-                        <h2>Mewonen <span>reacts</span></h2>
-                        <p>It finds Reels that match your mood. Calm, chill, healing.</p>
+                        <h2>Mewonen <span>reads</span> your lines</h2>
+                        <p>Locally. No data leaves your device.</p>
                     </div>
                     <div class="ob-slide">
                         <div class="icon">💜</div>
-                        <h2>You <span>share</span></h2>
-                        <p>An image + viral text. Ready for Instagram, TikTok, anywhere.</p>
+                        <h2>Discover what your <span>mood</span> holds</h2>
+                        <p>Emotions. Insights. Your journey.</p>
                     </div>
                 </div>
             </div>
-
             <div class="ob-dots" id="obDots">
                 <span class="active"></span>
                 <span></span>
                 <span></span>
             </div>
             <div class="ob-hint">← SWIPE →</div>
+            <button class="ob-start-btn" id="obStartBtn">✍️ Draw my mood</button>
+        </div>
 
-            <!-- PERMISSIONS -->
-            <div id="permissions" class="show">
-                <div class="title">🔗 Connect your accounts to see your Reels</div>
-                <div class="perm-item" data-account="instagram">
-                    <span class="icon">📸</span>
-                    <div class="info">
-                        <div class="name">Instagram</div>
-                        <div class="desc">Allow Mewonen to read your Reels</div>
-                    </div>
-                    <div class="check">✓</div>
-                </div>
-                <div class="perm-item" data-account="tiktok">
-                    <span class="icon">🎵</span>
-                    <div class="info">
-                        <div class="name">TikTok</div>
-                        <div class="desc">Allow Mewonen to read your videos</div>
-                    </div>
-                    <div class="check">✓</div>
-                </div>
-                <div class="perm-item" data-account="meta">
-                    <span class="icon">📱</span>
-                    <div class="info">
-                        <div class="name">Meta</div>
-                        <div class="desc">Allow Mewonen to read your Facebook Reels</div>
-                    </div>
-                    <div class="check">✓</div>
-                </div>
-                <button class="perm-btn" id="permBtn">✅ Continue to Mewonen</button>
+        <!-- ===== TOP BAR ===== -->
+        <div id="topBar">
+            <button id="menuBtn">☰ <span style="font-size:0.5rem;letter-spacing:1px;font-weight:300;">MENU</span></button>
+            <div class="logo">MEWO<span>NEN</span></div>
+            <div class="stats">
+                <span>🔥 <span id="streakCount">0</span></span>
+                <span class="xp">⭐ <span id="xpCount">0</span></span>
             </div>
         </div>
 
-        <!-- ===== MENU DÉROULANT ===== -->
-        <button id="menuBtn"><span class="icon">☰</span> MENU</button>
+        <!-- ===== MAIN APP ===== -->
+        <div id="mainApp">
+            <div id="canvasWrapper">
+                <canvas id="drawCanvas" width="400" height="400"></canvas>
+            </div>
+
+            <button id="revealBtn">
+                <span class="ripple"></span>
+                ✨ Reveal my mood
+            </button>
+
+            <div id="result">
+                <div class="emoji" id="resEmoji"></div>
+                <div class="name" id="resName"></div>
+                <div class="confidence" id="resConfidence"></div>
+                <div class="phrase" id="resPhrase"></div>
+                <div class="rarity" id="resRarity"></div>
+            </div>
+
+            <div id="actions">
+                <button id="clearBtn">Clear</button>
+                <button class="gold" id="shareBtn">📤 Share</button>
+                <button id="statusBtn">📱 Status</button>
+            </div>
+        </div>
+
+        <!-- ===== MENU ===== -->
         <div id="menuOverlay"></div>
         <div id="menuPanel">
             <button class="menu-close" id="menuClose">✕</button>
@@ -981,54 +999,45 @@
             <button class="menu-item" data-screen="legal"><span class="icon">⚖️</span> Privacy & Legal</button>
             <div style="flex:1;"></div>
             <div style="display:flex;gap:8px;padding:4px;">
-                <button class="btn btn-primary" style="flex:1;" id="shareMenuBtn">📤 Share</button>
-                <button class="btn btn-gold" style="flex:1;" id="statusMenuBtn">📱 Status</button>
+                <button class="menu-item" style="flex:1;justify-content:center;background:var(--accent-gradient);color:#fff;border-radius:var(--radius-xl);" id="shareMenuBtn">📤 Share</button>
             </div>
         </div>
 
-        <!-- ===== MAIN APP ===== -->
-        <div id="mainApp">
-            <!-- Top Bar -->
-            <div id="topBar">
-                <div class="logo">MEWO<span>NEN</span></div>
-                <div class="stats">
-                    <span>🔥 <span id="streakCount">0</span></span>
-                    <span>⭐ <span id="xpCount">0</span></span>
+        <!-- ===== REVEAL OVERLAY ===== -->
+        <div id="revealOverlay">
+            <button class="close-reveal" id="closeReveal">✕</button>
+            <div class="loading" id="revealLoading">
+                <div class="spinner"></div>
+                <p>Mewonen is reading your lines...</p>
+            </div>
+            <div class="result-card" id="revealResult">
+                <div class="emoji" id="revealEmoji"></div>
+                <div class="name" id="revealName"></div>
+                <div class="confidence" id="revealConfidence"></div>
+                <div class="phrase" id="revealPhrase"></div>
+                <div class="features" id="revealFeatures">
+                    <span>Speed <span class="value" id="revealSpeed">—</span></span>
+                    <span>Shape <span class="value" id="revealShape">—</span></span>
+                    <span>Flow <span class="value" id="revealFlow">—</span></span>
+                </div>
+                <div class="actions">
+                    <button class="save" id="revealSave">💾 Save</button>
+                    <button class="share" id="revealShare">📤 Share</button>
                 </div>
             </div>
-
-            <!-- Draw Area -->
-            <div id="drawArea">
-                <div id="glowRing"></div>
-                <canvas id="drawCanvas" width="400" height="400"></canvas>
-            </div>
-
-            <!-- Result -->
-            <div id="result">
-                <div id="emotionEmoji"></div>
-                <div id="emotionName"></div>
-                <div id="rarityBadge"></div>
-            </div>
-
-            <!-- Reveal Button -->
-            <button id="revealBtn">
-                <span class="ripple"></span>
-                ✨ Reveal my mood
-            </button>
-
-            <!-- Reels Grid -->
-            <div id="reelsGrid"></div>
         </div>
 
         <!-- ===== SHARE OVERLAY ===== -->
-        <div id="shareOverlay">
-            <div id="shareCard">
-                <button class="share-close" id="shareClose">✕</button>
-                <div class="preview" id="sharePreview"></div>
-                <div class="preview-text" id="shareText">✨ <strong id="shareEmotion">Joy</strong> — Mewonen saw your soul</div>
-                <div class="share-actions">
-                    <button class="btn btn-primary" id="downloadBtn">💾 Download</button>
-                    <button class="btn btn-gold" id="copyBtn">📋 Copy Text</button>
+        <div id="shareOverlay" style="position:fixed;inset:0;z-index:100;background:rgba(0,0,0,0.7);backdrop-filter:blur(12px);display:none;align-items:center;justify-content:center;padding:20px;">
+            <div style="background:rgba(16,16,32,0.98);border-radius:24px;padding:24px;max-width:340px;width:100%;text-align:center;border:1px solid rgba(255,107,53,0.08);">
+                <button style="position:relative;float:right;background:none;border:none;color:rgba(255,255,255,0.15);font-size:1rem;cursor:pointer;" id="shareClose">✕</button>
+                <div style="width:100%;aspect-ratio:1/1;border-radius:16px;background:radial-gradient(circle at 30% 30%,#1B2A3A,#0D1B2A);border:1px solid rgba(255,107,53,0.06);margin-bottom:12px;overflow:hidden;">
+                    <img id="sharePreview" style="width:100%;height:100%;object-fit:contain;" src="" alt="Mewonen mood" />
+                </div>
+                <div style="font-size:0.65rem;color:var(--text-secondary);font-weight:300;margin-bottom:8px;">✨ <strong id="shareEmotion" style="color:#fff;">Joy</strong> — <span id="sharePhrase">You are shining today.</span></div>
+                <div style="display:flex;gap:8px;justify-content:center;">
+                    <button class="btn-primary" style="padding:8px 18px;border-radius:30px;border:none;background:var(--accent-gradient);color:#fff;font-family:var(--font-sans);font-size:0.6rem;font-weight:500;cursor:pointer;" id="downloadBtn">💾 Download</button>
+                    <button class="btn-gold" style="padding:8px 18px;border-radius:30px;border:none;background:linear-gradient(135deg,var(--accent-3),#f59e0b);color:#0D1B2A;font-family:var(--font-sans);font-size:0.6rem;font-weight:600;cursor:pointer;" id="copyBtn">📋 Copy</button>
                 </div>
             </div>
         </div>
@@ -1037,7 +1046,7 @@
         <div class="screen" id="galleryScreen">
             <button class="back-btn" data-back="main">← Back</button>
             <div class="title">Gallery</div>
-            <div class="sub">Your drawings</div>
+            <div class="sub">Your journey</div>
             <div class="gallery-grid" id="galleryGrid"></div>
         </div>
 
@@ -1045,7 +1054,7 @@
         <div class="screen" id="statsScreen">
             <button class="back-btn" data-back="main">← Back</button>
             <div class="title">Stats</div>
-            <div class="sub">Your emotional journey</div>
+            <div class="sub">Your emotional landscape</div>
             <div class="stats-list" id="statsList"></div>
         </div>
 
@@ -1053,12 +1062,14 @@
         <div class="screen" id="legalScreen">
             <button class="back-btn" data-back="main">← Back</button>
             <div class="title">Privacy & Legal</div>
-            <div class="sub">Mewonen protects you</div>
+            <div class="sub">Your data, your device</div>
             <div class="legal-content">
                 <h3>🔒 Privacy Policy</h3>
-                <p>100% private. No data collected. Everything stays on your device.</p>
-                <h3>📱 Connected Accounts</h3>
-                <p>You control your data. Mewonen uses official APIs to fetch your Reels. Nothing is stored.</p>
+                <p>100% private. <span class="highlight">Nothing leaves your device.</span> No data collected. No tracking. No accounts.</p>
+                <h3>🧠 AI</h3>
+                <p>Mewonen's AI runs <span class="highlight">locally in your browser</span>. Your drawings are never sent anywhere.</p>
+                <h3>📱 Storage</h3>
+                <p>All your drawings and emotions are stored locally on your device. You can delete everything at any time.</p>
                 <h3>⚖️ Intellectual Property</h3>
                 <p><span class="highlight">© 2026 Mewonen</span> — All rights reserved.</p>
             </div>
@@ -1068,245 +1079,723 @@
         <div id="toast"></div>
     </div>
 
+    <!-- ============================================================
+    JAVASCRIPT — MEWONEN V2
+    ============================================================ -->
     <script>
+        'use strict';
+
         // ============================================================
-        //  MEWONEN — FINAL VERSION (TINDER SWIPE + PERMISSIONS + REELS + MENU)
+        //  MEWONEN V2 — APP COMPLETE
+        //  Features: Canvas, AI, IndexedDB, Reveal, Share, Offline-ready
         // ============================================================
 
         (function() {
-            'use strict';
 
-            // ===== DOM =====
-            const canvas = document.getElementById('drawCanvas');
-            const ctx = canvas.getContext('2d');
-            const glowRing = document.getElementById('glowRing');
-            const emotionEmoji = document.getElementById('emotionEmoji');
-            const emotionName = document.getElementById('emotionName');
-            const rarityBadge = document.getElementById('rarityBadge');
-            const reelsGrid = document.getElementById('reelsGrid');
-            const streakCount = document.getElementById('streakCount');
-            const xpCount = document.getElementById('xpCount');
-            const revealBtn = document.getElementById('revealBtn');
-            const shareOverlay = document.getElementById('shareOverlay');
-            const sharePreview = document.getElementById('sharePreview');
-            const shareEmotion = document.getElementById('shareEmotion');
-            const shareText = document.getElementById('shareText');
-            const galleryGrid = document.getElementById('galleryGrid');
-            const statsList = document.getElementById('statsList');
-            const toast = document.getElementById('toast');
-
-            // Menu
-            const menuBtn = document.getElementById('menuBtn');
-            const menuOverlay = document.getElementById('menuOverlay');
-            const menuPanel = document.getElementById('menuPanel');
-            const menuClose = document.getElementById('menuClose');
-
-            // Onboarding
-            const obTrack = document.getElementById('obTrack');
-            const obDots = document.querySelectorAll('#obDots span');
-            const permissions = document.getElementById('permissions');
-            const permItems = document.querySelectorAll('.perm-item');
-            const permBtn = document.getElementById('permBtn');
-            const onboarding = document.getElementById('onboarding');
-            const mainApp = document.getElementById('mainApp');
-
-            // Share
-            const shareBtn = document.getElementById('shareMenuBtn');
-            const statusBtn = document.getElementById('statusMenuBtn');
-            const downloadBtn = document.getElementById('downloadBtn');
-            const copyBtn = document.getElementById('copyBtn');
-            const shareClose = document.getElementById('shareClose');
-
-            // ===== STATE =====
-            let isDrawing = false;
-            let points = [];
-            let lastEmotion = null;
-            let lastRarity = null;
-            let streak = 0;
-            let xp = 0;
-            let shareImageData = null;
-            let drawings = [];
-            let emotionHistory = [];
-            let slideIndex = 0;
-
-            // ===== EMOTIONS & RARITY =====
-            const EMOTIONS = [
-                { emoji: '☀️', name: 'Joy', phrase: 'You are shining today.', color: '#FFD700' },
-                { emoji: '🌧️', name: 'Sadness', phrase: 'Let it wash over you.', color: '#60A5FA' },
-                { emoji: '🌪️', name: 'Anger', phrase: 'Even storms run out of rain.', color: '#EF4444' },
-                { emoji: '🌈', name: 'Peace', phrase: 'You crossed the storm.', color: '#A78BFA' },
-                { emoji: '🔥', name: 'Passion', phrase: 'Your fire is powerful.', color: '#FF6B35' },
-                { emoji: '🌙', name: 'Calm', phrase: 'Rest is not weakness.', color: '#8B5CF6' },
-                { emoji: '🌱', name: 'Hope', phrase: 'Something is growing.', color: '#34D399' },
-                { emoji: '🕊️', name: 'Freedom', phrase: 'You are light.', color: '#F472B6' },
-            ];
-
-            const RARITY_TIERS = [
-                { name: 'Common', color: '#6B7280', weight: 40 },
-                { name: 'Uncommon', color: '#34D399', weight: 30 },
-                { name: 'Rare', color: '#60A5FA', weight: 20 },
-                { name: 'Epic', color: '#A78BFA', weight: 8 },
-                { name: 'Legendary', color: '#FFD700', weight: 2 },
-                { name: 'Mythic', color: '#FF1493', weight: 1 },
-            ];
-
-            // ===== DEMO REELS =====
-            const DEMO_REELS = {
-                'Joy': [
-                    { title: 'Dance vibes 🕺', views: '1.2M', likes: '45K', thumb: '🎵' },
-                    { title: 'Happy moments 😊', views: '890K', likes: '32K', thumb: '🎉' },
-                    { title: 'Funny videos 🤣', views: '2.1M', likes: '78K', thumb: '😄' },
-                    { title: 'Celebration 🥳', views: '560K', likes: '18K', thumb: '🎊' },
-                    { title: 'Good vibes ✨', views: '720K', likes: '24K', thumb: '🌟' },
-                    { title: 'Smile 😁', views: '430K', likes: '12K', thumb: '😊' },
-                ],
-                'Sadness': [
-                    { title: 'Nature healing 🌿', views: '450K', likes: '12K', thumb: '🌱' },
-                    { title: 'Comfort quotes 💜', views: '320K', likes: '8K', thumb: '💭' },
-                    { title: 'Hope will find you 🌅', views: '680K', likes: '22K', thumb: '✨' },
-                    { title: 'Peaceful rain 🌧️', views: '210K', likes: '5K', thumb: '🌧️' },
-                    { title: 'Gentle music 🎵', views: '380K', likes: '9K', thumb: '🎶' },
-                    { title: 'Hug yourself 🤗', views: '150K', likes: '4K', thumb: '💜' },
-                ],
-                'Anger': [
-                    { title: 'Calm your mind 🧘', views: '210K', likes: '5K', thumb: '🧘' },
-                    { title: 'Ocean sounds 🌊', views: '340K', likes: '9K', thumb: '🌊' },
-                    { title: 'Breathe and relax 🌬️', views: '180K', likes: '4K', thumb: '🌬️' },
-                    { title: 'Zen garden 🪷', views: '270K', likes: '6K', thumb: '🪷' },
-                    { title: 'Peaceful forest 🌲', views: '150K', likes: '3K', thumb: '🌲' },
-                    { title: 'Soft piano 🎹', views: '290K', likes: '7K', thumb: '🎹' },
-                ],
-                'Calm': [
-                    { title: 'ASMR sleep 💤', views: '920K', likes: '28K', thumb: '💤' },
-                    { title: 'Rain sounds 🌧️', views: '1.4M', likes: '52K', thumb: '🌧️' },
-                    { title: 'Gentle piano 🎹', views: '650K', likes: '18K', thumb: '🎹' },
-                    { title: 'Ocean waves 🌊', views: '780K', likes: '22K', thumb: '🌊' },
-                    { title: 'Forest sounds 🌲', views: '430K', likes: '11K', thumb: '🌲' },
-                    { title: 'Meditation 🧘', views: '560K', likes: '15K', thumb: '🧘' },
-                ],
-                'Peace': [
-                    { title: 'Zen garden 🪷', views: '560K', likes: '15K', thumb: '🪷' },
-                    { title: 'Calm music 🎵', views: '1.1M', likes: '34K', thumb: '🎶' },
-                    { title: 'Nature sounds 🌿', views: '780K', likes: '21K', thumb: '🌿' },
-                    { title: 'Sunset 🌅', views: '920K', likes: '28K', thumb: '🌅' },
-                    { title: 'Still water 💧', views: '340K', likes: '8K', thumb: '💧' },
-                    { title: 'Quiet mind 🧠', views: '450K', likes: '12K', thumb: '🧠' },
-                ],
-                'Passion': [
-                    { title: 'Motivation 🔥', views: '1.2M', likes: '45K', thumb: '🔥' },
-                    { title: 'Power 💪', views: '890K', likes: '32K', thumb: '💪' },
-                    { title: 'Energy ⚡', views: '2.1M', likes: '78K', thumb: '⚡' },
-                    { title: 'Dream big 🌟', views: '560K', likes: '18K', thumb: '🌟' },
-                    { title: 'Success 🏆', views: '720K', likes: '24K', thumb: '🏆' },
-                    { title: 'Ambition 🚀', views: '430K', likes: '12K', thumb: '🚀' },
-                ],
-                'Hope': [
-                    { title: 'Inspiration ✨', views: '450K', likes: '12K', thumb: '✨' },
-                    { title: 'Future 🌅', views: '320K', likes: '8K', thumb: '🌅' },
-                    { title: 'Success 🏆', views: '680K', likes: '22K', thumb: '🏆' },
-                    { title: 'Growth 🌱', views: '210K', likes: '5K', thumb: '🌱' },
-                    { title: 'Believe 💪', views: '380K', likes: '9K', thumb: '💪' },
-                    { title: 'Rise 🌟', views: '150K', likes: '4K', thumb: '🌟' },
-                ],
-                'Freedom': [
-                    { title: 'Adventure 🗺️', views: '210K', likes: '5K', thumb: '🗺️' },
-                    { title: 'Nature 🌿', views: '340K', likes: '9K', thumb: '🌿' },
-                    { title: 'Travel ✈️', views: '180K', likes: '4K', thumb: '✈️' },
-                    { title: 'Explore 🔍', views: '270K', likes: '6K', thumb: '🔍' },
-                    { title: 'Sky 🌤️', views: '150K', likes: '3K', thumb: '🌤️' },
-                    { title: 'Open road 🛣️', views: '290K', likes: '7K', thumb: '🛣️' },
-                ]
+            // ============================================================
+            //  STATE
+            // ============================================================
+            const STATE = {
+                isDrawing: false,
+                isDrawingStored: false, // true après un dessin valide
+                points: [],
+                strokes: [],
+                currentDrawing: null,
+                lastEmotion: null,
+                lastRarity: null,
+                lastConfidence: 0,
+                lastPhrase: '',
+                streak: 0,
+                xp: 0,
+                drawings: [],
+                emotionHistory: [],
+                gallery: [],
+                isRevealing: false,
+                shareImageData: null,
             };
 
-            // ===== STREAK & XP =====
-            function loadProgress() {
-                try {
-                    streak = parseInt(localStorage.getItem('mewonen_streak') || '0', 10);
-                    xp = parseInt(localStorage.getItem('mewonen_xp') || '0', 10);
-                    const lastDate = localStorage.getItem('mewonen_last_date');
-                    const today = new Date().toDateString();
-                    if (lastDate !== today) {
-                        if (lastDate) {
-                            const y = new Date();
-                            y.setDate(y.getDate() - 1);
-                            if (lastDate === y.toDateString()) { streak += 1; } else { streak = 1; }
-                        } else { streak = 1; }
-                        localStorage.setItem('mewonen_streak', String(streak));
-                        localStorage.setItem('mewonen_last_date', today);
-                        if (streak > 0) {
-                            xp += streak * 2;
-                            localStorage.setItem('mewonen_xp', String(xp));
+            // ============================================================
+            //  DOM REFS
+            // ============================================================
+            const $ = (id) => document.getElementById(id);
+            const canvas = $('drawCanvas');
+            const ctx = canvas.getContext('2d');
+            const app = $('app');
+
+            // Onboarding
+            const onboarding = $('onboarding');
+            const obTrack = $('obTrack');
+            const obDots = document.querySelectorAll('#obDots span');
+            const obStartBtn = $('obStartBtn');
+
+            // Main
+            const mainApp = $('mainApp');
+            const revealBtn = $('revealBtn');
+            const clearBtn = $('clearBtn');
+            const shareBtn = $('shareBtn');
+            const statusBtn = $('statusBtn');
+
+            // Result
+            const resEmoji = $('resEmoji');
+            const resName = $('resName');
+            const resConfidence = $('resConfidence');
+            const resPhrase = $('resPhrase');
+            const resRarity = $('resRarity');
+
+            // Reveal overlay
+            const revealOverlay = $('revealOverlay');
+            const revealLoading = $('revealLoading');
+            const revealResult = $('revealResult');
+            const revealEmoji = $('revealEmoji');
+            const revealName = $('revealName');
+            const revealConfidence = $('revealConfidence');
+            const revealPhrase = $('revealPhrase');
+            const revealSpeed = $('revealSpeed');
+            const revealShape = $('revealShape');
+            const revealFlow = $('revealFlow');
+            const revealSave = $('revealSave');
+            const revealShare = $('revealShare');
+            const closeReveal = $('closeReveal');
+
+            // Menu
+            const menuBtn = $('menuBtn');
+            const menuOverlay = $('menuOverlay');
+            const menuPanel = $('menuPanel');
+            const menuClose = $('menuClose');
+
+            // Gallery / Stats
+            const galleryGrid = $('galleryGrid');
+            const statsList = $('statsList');
+            const galleryBadge = $('galleryBadge');
+
+            // Share
+            const shareOverlay = $('shareOverlay');
+            const sharePreview = $('sharePreview');
+            const shareEmotion = $('shareEmotion');
+            const sharePhrase = $('sharePhrase');
+            const shareClose = $('shareClose');
+            const downloadBtn = $('downloadBtn');
+            const copyBtn = $('copyBtn');
+
+            // Toast
+            const toast = $('toast');
+
+            // ============================================================
+            //  CONSTANTS
+            // ============================================================
+            const EMOTIONS = [{
+                emoji: '☀️',
+                name: 'Joy',
+                phrase: 'Your lines feel light and expansive.',
+                color: '#FFD700'
+            }, {
+                emoji: '🌙',
+                name: 'Calm',
+                phrase: 'Your lines move slowly, but they never stop.',
+                color: '#8B5CF6'
+            }, {
+                emoji: '🌧️',
+                name: 'Sadness',
+                phrase: 'Your lines carry a quiet weight.',
+                color: '#60A5FA'
+            }, {
+                emoji: '🌪️',
+                name: 'Anger',
+                phrase: 'Your lines are sharp and energetic.',
+                color: '#EF4444'
+            }, {
+                emoji: '🌱',
+                name: 'Hope',
+                phrase: 'Your lines are reaching forward.',
+                color: '#34D399'
+            }, {
+                emoji: '🕊️',
+                name: 'Freedom',
+                phrase: 'Your lines flow without restriction.',
+                color: '#F472B6'
+            }, {
+                emoji: '🔥',
+                name: 'Passion',
+                phrase: 'Your lines burn with intensity.',
+                color: '#F97316'
+            }, {
+                emoji: '🌈',
+                name: 'Peace',
+                phrase: 'Your lines have found their balance.',
+                color: '#A78BFA'
+            }];
+
+            const RARITY_TIERS = [
+                { name: 'Common', color: '#6B7280', threshold: 0.8 },
+                { name: 'Uncommon', color: '#34D399', threshold: 0.6 },
+                { name: 'Rare', color: '#60A5FA', threshold: 0.4 },
+                { name: 'Epic', color: '#A78BFA', threshold: 0.2 },
+                { name: 'Legendary', color: '#FFD700', threshold: 0.08 },
+                { name: 'Mythic', color: '#FF1493', threshold: 0.02 },
+            ];
+
+            // ============================================================
+            //  STORAGE (IndexedDB)
+            // ============================================================
+            const DB_NAME = 'MewonenDB';
+            const DB_VERSION = 2;
+
+            function openDB() {
+                return new Promise((resolve, reject) => {
+                    const request = indexedDB.open(DB_NAME, DB_VERSION);
+                    request.onupgradeneeded = (e) => {
+                        const db = e.target.result;
+                        if (!db.objectStoreNames.contains('drawings')) {
+                            db.createObjectStore('drawings', { keyPath: 'id', autoIncrement: true });
                         }
+                        if (!db.objectStoreNames.contains('meta')) {
+                            db.createObjectStore('meta', { keyPath: 'key' });
+                        }
+                    };
+                    request.onsuccess = () => resolve(request.result);
+                    request.onerror = () => reject(request.error);
+                });
+            }
+
+            async function dbSaveDrawing(drawing) {
+                const db = await openDB();
+                const tx = db.transaction('drawings', 'readwrite');
+                const store = tx.objectStore('drawings');
+                store.add(drawing);
+                return new Promise((resolve, reject) => {
+                    tx.oncomplete = () => resolve();
+                    tx.onerror = () => reject(tx.error);
+                });
+            }
+
+            async function dbGetDrawings() {
+                const db = await openDB();
+                return new Promise((resolve, reject) => {
+                    const tx = db.transaction('drawings', 'readonly');
+                    const store = tx.objectStore('drawings');
+                    const request = store.getAll();
+                    request.onsuccess = () => resolve(request.result);
+                    request.onerror = () => reject(request.error);
+                });
+            }
+
+            async function dbDeleteAll() {
+                const db = await openDB();
+                const tx = db.transaction('drawings', 'readwrite');
+                const store = tx.objectStore('drawings');
+                store.clear();
+                return new Promise((resolve, reject) => {
+                    tx.oncomplete = () => resolve();
+                    tx.onerror = () => reject(tx.error);
+                });
+            }
+
+            async function dbSetMeta(key, value) {
+                const db = await openDB();
+                const tx = db.transaction('meta', 'readwrite');
+                const store = tx.objectStore('meta');
+                store.put({ key, value });
+                return new Promise((resolve, reject) => {
+                    tx.oncomplete = () => resolve();
+                    tx.onerror = () => reject(tx.error);
+                });
+            }
+
+            async function dbGetMeta(key) {
+                const db = await openDB();
+                return new Promise((resolve, reject) => {
+                    const tx = db.transaction('meta', 'readonly');
+                    const store = tx.objectStore('meta');
+                    const request = store.get(key);
+                    request.onsuccess = () => resolve(request.result ? request.result.value : null);
+                    request.onerror = () => reject(request.error);
+                });
+            }
+
+            // ============================================================
+            //  AI — Mini modèle local (Feature extraction + inference)
+            // ============================================================
+            function extractFeatures(points) {
+                if (!points || points.length < 2) return null;
+                const n = points.length;
+                let totalDist = 0;
+                let speeds = [];
+                let angles = [];
+                let bbox = { minX: Infinity, minY: Infinity, maxX: -Infinity, maxY: -Infinity };
+                let pauses = 0;
+                let directionChanges = 0;
+                let curvature = 0;
+
+                for (let i = 1; i < n; i++) {
+                    const dx = points[i].x - points[i - 1].x;
+                    const dy = points[i].y - points[i - 1].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    totalDist += dist;
+                    const speed = dist / ((points[i].t || i) - (points[i - 1].t || (i - 1)) || 1);
+                    speeds.push(speed);
+                    const angle = Math.atan2(dy, dx);
+                    angles.push(angle);
+
+                    // Bounding box
+                    if (points[i].x < bbox.minX) bbox.minX = points[i].x;
+                    if (points[i].y < bbox.minY) bbox.minY = points[i].y;
+                    if (points[i].x > bbox.maxX) bbox.maxX = points[i].x;
+                    if (points[i].y > bbox.maxY) bbox.maxY = points[i].y;
+
+                    // Direction changes
+                    if (i > 1) {
+                        const prevAngle = Math.atan2(points[i].y - points[i - 1].y, points[i].x - points[i - 1].x);
+                        const currAngle = Math.atan2(points[i - 1].y - points[i - 2].y, points[i - 1].x - points[i - 2].x);
+                        let diff = currAngle - prevAngle;
+                        if (diff > Math.PI) diff -= 2 * Math.PI;
+                        if (diff < -Math.PI) diff += 2 * Math.PI;
+                        directionChanges += Math.abs(diff);
                     }
-                } catch (e) { streak = 1;
-                    xp = 0; }
-                streakCount.textContent = streak;
-                xpCount.textContent = xp;
+                }
+
+                // Pauses (if speed < 0.5 for a point)
+                for (let i = 1; i < n; i++) {
+                    if (speeds[i - 1] < 0.5) pauses++;
+                }
+
+                const avgSpeed = speeds.length > 0 ? speeds.reduce((a, b) => a + b, 0) / speeds.length : 0;
+                const avgDist = totalDist / n;
+                const bboxArea = (bbox.maxX - bbox.minX) * (bbox.maxY - bbox.minY);
+                const canvasArea = 400 * 400;
+                const occupancy = bboxArea / canvasArea;
+
+                // Curvature (avg angle change)
+                if (angles.length > 1) {
+                    let totalAngle = 0;
+                    for (let i = 1; i < angles.length; i++) {
+                        let diff = angles[i] - angles[i - 1];
+                        if (diff > Math.PI) diff -= 2 * Math.PI;
+                        if (diff < -Math.PI) diff += 2 * Math.PI;
+                        totalAngle += Math.abs(diff);
+                    }
+                    curvature = totalAngle / (angles.length - 1);
+                }
+
+                // Symmetry (based on bounding box center)
+                const centerX = (bbox.minX + bbox.maxX) / 2;
+                const centerY = (bbox.minY + bbox.maxY) / 2;
+                const symX = Math.abs(centerX - 200) / 200;
+                const symY = Math.abs(centerY - 200) / 200;
+
+                return {
+                    totalDist,
+                    avgSpeed,
+                    avgDist,
+                    occupancy,
+                    curvature,
+                    directionChanges,
+                    pauses,
+                    symX,
+                    symY,
+                    n,
+                    bboxArea,
+                    speedVariance: speeds.length > 0 ? speeds.reduce((a, b) => a + (b - avgSpeed) ** 2, 0) / speeds.length :
+                        0,
+                };
             }
 
-            // ===== DRAWINGS & STATS =====
-            function loadDrawings() {
-                try {
-                    const d = localStorage.getItem('mewonen_drawings');
-                    if (d) drawings = JSON.parse(d);
-                    const h = localStorage.getItem('mewonen_history');
-                    if (h) emotionHistory = JSON.parse(h);
-                } catch (e) {}
-                updateGallery();
-                updateStats();
+            function inferEmotion(features) {
+                if (!features) return { emotion: EMOTIONS[0], confidence: 0.2, distribution: {} };
+
+                // Simple heuristic-based inference (V2 will use a real trained model)
+                const scores = {};
+
+                // Joy: high speed, high distance, low curvature
+                const joyScore = (features.avgSpeed / 5) * 0.4 + (features.totalDist / 200) * 0.3 + (1 - features.curvature) *
+                0.3;
+
+                // Calm: low speed, low distance, low direction changes
+                const calmScore = (1 - Math.min(features.avgSpeed / 5, 1)) * 0.4 + (1 - Math.min(features.totalDist / 200, 1)) *
+                    0.3 + (1 - Math.min(features.directionChanges / 10, 1)) * 0.3;
+
+                // Sadness: low speed, high pauses, low curvature
+                const sadScore = (1 - Math.min(features.avgSpeed / 3, 1)) * 0.4 + Math.min(features.pauses / 10, 1) * 0.3 + (
+                    1 - features.curvature) * 0.3;
+
+                // Anger: high speed, high direction changes, high curvature
+                const angerScore = Math.min(features.avgSpeed / 5, 1) * 0.3 + Math.min(features.directionChanges / 15, 1) *
+                0.4 + Math.min(features.curvature, 1) * 0.3;
+
+                // Hope: medium speed, upward curve (symY lower)
+                const hopeScore = Math.min(features.avgSpeed / 4, 1) * 0.3 + (1 - features.symY) * 0.4 + features.curvature *
+                    0.3;
+
+                // Freedom: high speed, high occupancy, low symmetry
+                const freedomScore = Math.min(features.avgSpeed / 5, 1) * 0.3 + Math.min(features.occupancy / 0.5, 1) * 0.4 + (
+                    1 - features.symX) * 0.3;
+
+                // Passion: high speed, high curvature, high direction changes
+                const passionScore = Math.min(features.avgSpeed / 5, 1) * 0.3 + Math.min(features.curvature, 1) * 0.4 + Math
+                    .min(features.directionChanges / 15, 1) * 0.3;
+
+                // Peace: medium speed, low direction changes, high symmetry
+                const peaceScore = (1 - Math.min(Math.abs(features.avgSpeed - 2) / 3, 1)) * 0.3 + (1 - Math.min(features
+                    .directionChanges / 10, 1)) * 0.3 + (1 - features.symX) * 0.2 + (1 - features.symY) * 0.2;
+
+                // Normalize scores to sum to 1
+                const rawScores = {
+                    'Joy': Math.max(0, Math.min(1, joyScore)),
+                    'Calm': Math.max(0, Math.min(1, calmScore)),
+                    'Sadness': Math.max(0, Math.min(1, sadScore)),
+                    'Anger': Math.max(0, Math.min(1, angerScore)),
+                    'Hope': Math.max(0, Math.min(1, hopeScore)),
+                    'Freedom': Math.max(0, Math.min(1, freedomScore)),
+                    'Passion': Math.max(0, Math.min(1, passionScore)),
+                    'Peace': Math.max(0, Math.min(1, peaceScore)),
+                };
+
+                let total = Object.values(rawScores).reduce((a, b) => a + b, 0);
+                if (total === 0) total = 0.01;
+
+                const distribution = {};
+                let maxScore = 0;
+                let maxEmotion = EMOTIONS[0];
+                for (const [name, score] of Object.entries(rawScores)) {
+                    distribution[name] = (score / total);
+                    if (distribution[name] > maxScore) {
+                        maxScore = distribution[name];
+                        const found = EMOTIONS.find(e => e.name === name);
+                        if (found) maxEmotion = found;
+                    }
+                }
+
+                // Add some randomness for natural variation
+                const confidence = Math.max(0.25, Math.min(0.92, maxScore * 1.2 + 0.05));
+
+                return {
+                    emotion: maxEmotion,
+                    confidence,
+                    distribution,
+                    features
+                };
             }
 
-            function saveDrawings() {
-                try {
-                    localStorage.setItem('mewonen_drawings', JSON.stringify(drawings));
-                    localStorage.setItem('mewonen_history', JSON.stringify(emotionHistory));
-                } catch (e) {}
-                updateGallery();
-                updateStats();
+            function getRarity(confidence, emotionName) {
+                // Rarity based on confidence and emotion rarity in history
+                const baseRandom = Math.random();
+                // Boost rarity for high confidence
+                const adjusted = baseRandom * (1 - confidence * 0.4);
+                for (const tier of RARITY_TIERS) {
+                    if (adjusted > tier.threshold) {
+                        return tier;
+                    }
+                }
+                return RARITY_TIERS[RARITY_TIERS.length - 1];
             }
 
-            function updateGallery() {
+            // ============================================================
+            //  CANVAS (Pointer Events)
+            // ============================================================
+            function setupCanvas() {
+                const rect = canvas.getBoundingClientRect();
+                const dpr = window.devicePixelRatio || 1;
+                const w = rect.width;
+                const h = rect.height;
+                canvas.width = w * dpr;
+                canvas.height = h * dpr;
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+                ctx.lineWidth = 4;
+                ctx.strokeStyle = 'rgba(255, 107, 53, 0.8)';
+            }
+
+            function getCanvasPos(e) {
+                const rect = canvas.getBoundingClientRect();
+                return {
+                    x: e.clientX - rect.left,
+                    y: e.clientY - rect.top,
+                    t: Date.now()
+                };
+            }
+
+            let pointerId = null;
+
+            function onPointerDown(e) {
+                e.preventDefault();
+                if (STATE.isDrawing) return;
+                pointerId = e.pointerId;
+                STATE.isDrawing = true;
+                STATE.isDrawingStored = false;
+                STATE.points = [];
+                STATE.strokes = [];
+
+                // Reset results
+                resEmoji.textContent = '';
+                resName.textContent = '';
+                resConfidence.textContent = '';
+                resPhrase.textContent = '';
+                resRarity.textContent = '';
+                resRarity.style.display = 'none';
+
+                const p = getCanvasPos(e);
+                p.t = 0;
+                STATE.points.push(p);
+                STATE.strokes.push({ x: p.x, y: p.y, t: 0, p: e.pressure || 0.5 });
+
+                ctx.beginPath();
+                ctx.moveTo(p.x, p.y);
+                canvas.classList.add('active');
+                canvas.setPointerCapture(e.pointerId);
+            }
+
+            function onPointerMove(e) {
+                e.preventDefault();
+                if (!STATE.isDrawing) return;
+                const p = getCanvasPos(e);
+                p.t = Date.now() - (STATE.points[0]?.t || Date.now());
+                STATE.points.push(p);
+                STATE.strokes.push({ x: p.x, y: p.y, t: p.t, p: e.pressure || 0.5 });
+
+                // Dynamic stroke based on speed
+                const speed = p.t > 0 ? Math.sqrt((p.x - STATE.points[STATE.points.length - 2]?.x || 0) ** 2 + (p.y - STATE
+                    .points[STATE.points.length - 2]?.y || 0) ** 2) / p.t : 0;
+                const lineWidth = 2 + Math.min(speed * 10, 6);
+                ctx.lineWidth = lineWidth;
+
+                const pressure = e.pressure || 0.5;
+                const opacity = 0.6 + pressure * 0.4;
+                ctx.strokeStyle = `rgba(255, 107, 53, ${opacity})`;
+
+                ctx.lineTo(p.x, p.y);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(p.x, p.y);
+            }
+
+            function onPointerUp(e) {
+                if (!STATE.isDrawing) return;
+                STATE.isDrawing = false;
+                canvas.classList.remove('active');
+                if (STATE.points.length < 5) {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    showToast('Draw a little more ✍️');
+                    return;
+                }
+                STATE.isDrawingStored = true;
+                showToast('Ready to reveal ✨');
+                // Auto-enable reveal
+                revealBtn.style.opacity = '1';
+            }
+
+            function onPointerCancel(e) {
+                STATE.isDrawing = false;
+                canvas.classList.remove('active');
+            }
+
+            function clearCanvas() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                STATE.points = [];
+                STATE.strokes = [];
+                STATE.isDrawingStored = false;
+                resEmoji.textContent = '';
+                resName.textContent = '';
+                resConfidence.textContent = '';
+                resPhrase.textContent = '';
+                resRarity.textContent = '';
+                resRarity.style.display = 'none';
+                showToast('Cleared ✨');
+            }
+
+            // ============================================================
+            //  REVEAL (Cinematic sequence)
+            // ============================================================
+            function runReveal() {
+                if (!STATE.isDrawingStored || STATE.points.length < 5) {
+                    showToast('Draw something first ✍️');
+                    return;
+                }
+                if (STATE.isRevealing) return;
+                STATE.isRevealing = true;
+
+                // Show overlay
+                revealOverlay.classList.add('show');
+                revealLoading.style.display = 'flex';
+                revealResult.classList.remove('show');
+
+                // Extract features
+                const features = extractFeatures(STATE.points);
+                if (!features) {
+                    showToast('Could not read your drawing. Try again.');
+                    STATE.isRevealing = false;
+                    revealOverlay.classList.remove('show');
+                    return;
+                }
+
+                // Run inference
+                const result = inferEmotion(features);
+                const emotion = result.emotion;
+                const confidence = result.confidence;
+                const rarity = getRarity(confidence, emotion.name);
+                STATE.lastEmotion = emotion;
+                STATE.lastRarity = rarity;
+                STATE.lastConfidence = confidence;
+                STATE.lastPhrase = emotion.phrase;
+
+                // Simulate delay for cinematic effect
+                setTimeout(() => {
+                    // Hide loading, show result
+                    revealLoading.style.display = 'none';
+                    revealResult.classList.add('show');
+
+                    // Update result card
+                    revealEmoji.textContent = emotion.emoji;
+                    revealName.textContent = emotion.name;
+                    revealConfidence.textContent = `${Math.round(confidence * 100)}% match`;
+                    revealPhrase.textContent = emotion.phrase;
+
+                    // Features
+                    const speedVal = features.avgSpeed < 1 ? 'Slow' : features.avgSpeed < 3 ? 'Moderate' : 'Fast';
+                    const shapeVal = features.curvature < 0.3 ? 'Linear' : features.curvature < 0.6 ? 'Curved' : 'Complex';
+                    const flowVal = features.directionChanges < 5 ? 'Smooth' : 'Energetic';
+                    revealSpeed.textContent = speedVal;
+                    revealShape.textContent = shapeVal;
+                    revealFlow.textContent = flowVal;
+
+                    // Save to storage
+                    saveDrawing(features, emotion, rarity, confidence);
+
+                    // Update UI
+                    updateUI();
+
+                    STATE.isRevealing = false;
+                }, 1800);
+            }
+
+            // ============================================================
+            //  SAVE
+            // ============================================================
+            async function saveDrawing(features, emotion, rarity, confidence) {
+                const dataUrl = canvas.toDataURL('image/png');
+                const drawing = {
+                    date: new Date().toISOString(),
+                    emotion: emotion.name,
+                    emoji: emotion.emoji,
+                    rarity: rarity.name,
+                    confidence,
+                    phrase: emotion.phrase,
+                    features: features,
+                    dataUrl: dataUrl,
+                };
+
+                await dbSaveDrawing(drawing);
+
+                // Update state
+                STATE.drawings.push(drawing);
+                STATE.emotionHistory.push({ date: drawing.date, emotion: emotion.name, emoji: emotion.emoji });
+
+                // Update streak
+                await updateStreak();
+
+                // Update XP
+                const xpGain = Math.round(10 + (1 / (RARITY_TIERS.findIndex(t => t.name === rarity.name) + 1)) * 20);
+                STATE.xp += xpGain;
+                await dbSetMeta('xp', STATE.xp);
+                STATE.xp = await dbGetMeta('xp') || 0;
+
+                await dbSetMeta('emotionHistory', STATE.emotionHistory);
+            }
+
+            // ============================================================
+            //  STREAK
+            // ============================================================
+            async function updateStreak() {
+                const today = new Date().toISOString().split('T')[0];
+                const lastDraw = await dbGetMeta('lastDrawDate');
+                const currentStreak = await dbGetMeta('streak') || 0;
+
+                if (lastDraw === today) {
+                    // Already drew today, no change
+                    return;
+                }
+
+                const yesterday = new Date();
+                yesterday.setDate(yesterday.getDate() - 1);
+                const yesterdayStr = yesterday.toISOString().split('T')[0];
+
+                let newStreak = 1;
+                if (lastDraw === yesterdayStr) {
+                    newStreak = currentStreak + 1;
+                }
+
+                await dbSetMeta('lastDrawDate', today);
+                await dbSetMeta('streak', newStreak);
+                STATE.streak = newStreak;
+            }
+
+            // ============================================================
+            //  UI UPDATES
+            // ============================================================
+            async function updateUI() {
+                const streak = await dbGetMeta('streak') || 0;
+                const xp = await dbGetMeta('xp') || 0;
+                document.getElementById('streakCount').textContent = streak;
+                document.getElementById('xpCount').textContent = xp;
+                STATE.streak = streak;
+                STATE.xp = xp;
+
+                // Update gallery
+                const drawings = await dbGetDrawings();
+                STATE.drawings = drawings;
+                renderGallery(drawings);
+                renderStats(drawings);
+                galleryBadge.textContent = drawings.length;
+            }
+
+            function renderGallery(drawings) {
                 galleryGrid.innerHTML = '';
                 if (drawings.length === 0) {
                     galleryGrid.innerHTML =
-                        '<div style="grid-column:1/-1;text-align:center;color:rgba(255,255,255,0.05);font-size:0.7rem;padding:20px;">No drawings yet.</div>';
+                        '<div style="grid-column:1/-1;text-align:center;color:var(--text-muted);font-size:0.7rem;padding:20px;">No drawings yet.</div>';
                     return;
                 }
                 const items = drawings.slice(-9).reverse();
                 for (const d of items) {
                     const div = document.createElement('div');
                     div.className = 'gallery-item';
-                    const img = document.createElement('img');
-                    img.src = d.data;
-                    img.alt = 'drawing';
-                    div.appendChild(img);
+                    if (d.dataUrl) {
+                        const img = document.createElement('img');
+                        img.src = d.dataUrl;
+                        img.alt = `Mood: ${d.emotion}`;
+                        img.loading = 'lazy';
+                        div.appendChild(img);
+                    } else {
+                        div.innerHTML = `<div class="empty">${d.emoji}</div>`;
+                    }
                     galleryGrid.appendChild(div);
                 }
-                document.getElementById('galleryBadge').textContent = drawings.length;
             }
 
-            function updateStats() {
+            function renderStats(drawings) {
                 statsList.innerHTML = '';
-                if (emotionHistory.length === 0) {
+                if (drawings.length === 0) {
                     statsList.innerHTML =
-                        '<div style="text-align:center;color:rgba(255,255,255,0.05);font-size:0.7rem;padding:20px;">No data yet.</div>';
+                        '<div style="text-align:center;color:var(--text-muted);font-size:0.7rem;padding:20px;">No data yet.</div>';
                     return;
                 }
                 const counts = {};
-                for (const h of emotionHistory) {
-                    counts[h.emoji] = (counts[h.emoji] || 0) + 1;
+                for (const d of drawings) {
+                    counts[d.emotion] = (counts[d.emotion] || 0) + 1;
                 }
                 const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
                 const max = sorted.length ? sorted[0][1] : 1;
-                for (const [emoji, count] of sorted.slice(0, 5)) {
+                const emojiMap = {};
+                for (const e of EMOTIONS) { emojiMap[e.name] = e.emoji; }
+
+                for (const [name, count] of sorted.slice(0, 6)) {
                     const div = document.createElement('div');
                     div.className = 'stats-item';
                     const pct = (count / max) * 100;
                     div.innerHTML = `
-                    <span class="emoji">${emoji}</span>
+                    <span class="emoji">${emojiMap[name] || '💜'}</span>
                     <div class="info">
-                        <span class="name">${count}x</span>
-                        <span class="count">times</span>
+                        <span class="name">${name}</span>
+                        <span class="count">${count}×</span>
                     </div>
                     <div class="bar"><span style="width:${pct}%;"></span></div>
                 `;
@@ -1314,167 +1803,10 @@
                 }
             }
 
-            function getRarity() {
-                const total = RARITY_TIERS.reduce((s, t) => s + t.weight, 0);
-                let r = Math.random() * total;
-                for (const tier of RARITY_TIERS) {
-                    r -= tier.weight;
-                    if (r <= 0) return tier;
-                }
-                return RARITY_TIERS[0];
-            }
-
-            // ===== CANVAS =====
-            function setupCanvas() {
-                const rect = canvas.getBoundingClientRect();
-                const dpr = window.devicePixelRatio || 1;
-                canvas.width = rect.width * dpr;
-                canvas.height = rect.height * dpr;
-                ctx.scale(dpr, dpr);
-                ctx.lineWidth = 4;
-                ctx.lineCap = 'round';
-                ctx.lineJoin = 'round';
-                ctx.strokeStyle = 'rgba(255, 107, 53, 0.85)';
-            }
-
-            function getPos(e) {
-                const rect = canvas.getBoundingClientRect();
-                const cx = e.touches ? e.touches[0].clientX : e.clientX;
-                const cy = e.touches ? e.touches[0].clientY : e.clientY;
-                return { x: cx - rect.left, y: cy - rect.top };
-            }
-
-            function startDraw(e) {
-                e.preventDefault();
-                isDrawing = true;
-                points = [];
-                const p = getPos(e);
-                points.push(p);
-                ctx.beginPath();
-                ctx.moveTo(p.x, p.y);
-                glowRing.classList.add('active');
-                emotionEmoji.textContent = '';
-                emotionName.textContent = '';
-                rarityBadge.classList.remove('show');
-                reelsGrid.classList.remove('show');
-                reelsGrid.innerHTML = '';
-            }
-
-            function moveDraw(e) {
-                e.preventDefault();
-                if (!isDrawing) return;
-                const p = getPos(e);
-                points.push(p);
-                ctx.lineTo(p.x, p.y);
-                ctx.stroke();
-            }
-
-            function endDraw() {
-                if (!isDrawing) return;
-                isDrawing = false;
-                glowRing.classList.remove('active');
-                if (points.length < 5) {
-                    showToast('Draw a little more... ✍️');
-                    return;
-                }
-            }
-
-            // ===== ANALYSIS =====
-            function analyzeDraw() {
-                if (points.length < 5) {
-                    showToast('Draw something first! ✍️');
-                    return;
-                }
-                let totalDist = 0;
-                for (let i = 1; i < points.length; i++) {
-                    const dx = points[i].x - points[i - 1].x;
-                    const dy = points[i].y - points[i - 1].y;
-                    totalDist += Math.sqrt(dx * dx + dy * dy);
-                }
-                const avg = totalDist / points.length;
-                let idx = 0;
-                if (avg > 8) idx = 0;
-                else if (avg > 4) idx = 3;
-                else if (avg > 2) idx = 1;
-                else if (avg < 1) idx = 7;
-                else idx = 4;
-                const rand = Math.random();
-                if (rand < 0.15 && idx !== 7) idx = 2;
-                else if (rand > 0.85 && idx !== 7) idx = 5;
-
-                const emotion = EMOTIONS[idx % EMOTIONS.length];
-                const rarity = getRarity();
-                lastEmotion = emotion;
-                lastRarity = rarity;
-
-                const data = canvas.toDataURL('image/png');
-                drawings.push({ data, date: new Date().toISOString(), mood: emotion.name, rarity: rarity.name });
-                emotionHistory.push({ emoji: emotion.emoji, name: emotion.name, date: new Date().toISOString() });
-                const xpGain = 10 + (rarity.weight * 2);
-                xp += xpGain;
-                localStorage.setItem('mewonen_xp', String(xp));
-                xpCount.textContent = xp;
-                saveDrawings();
-
-                displayResult(emotion, rarity);
-                showReels(emotion);
-                generateShareImage(emotion, rarity);
-
-                const rarityEmoji = rarity.name === 'Mythic' ? '🌟' : rarity.name === 'Legendary' ? '✨' : '💜';
-                showToast(`🎉 ${emotion.emoji} ${emotion.name}! ${rarity.name} ${rarityEmoji} +${xpGain} XP`);
-            }
-
-            function displayResult(emotion, rarity) {
-                emotionEmoji.textContent = emotion.emoji;
-                emotionEmoji.style.animation = 'none';
-                requestAnimationFrame(() => {
-                    emotionEmoji.style.animation = 'pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
-                });
-                emotionName.textContent = emotion.name;
-                rarityBadge.textContent = `✨ ${rarity.name}`;
-                rarityBadge.style.color = rarity.color;
-                rarityBadge.style.borderColor = rarity.color + '44';
-                rarityBadge.classList.add('show');
-                glowRing.style.borderColor = rarity.color + '44';
-                glowRing.style.boxShadow = `0 0 60px ${rarity.color}11`;
-                setTimeout(() => {
-                    glowRing.style.borderColor = 'rgba(255,107,53,0.04)';
-                    glowRing.style.boxShadow = 'none';
-                }, 4000);
-            }
-
-            // ===== REELS =====
-            function showReels(emotion) {
-                const reelsData = DEMO_REELS[emotion.name] || DEMO_REELS['Calm'];
-                reelsGrid.innerHTML = '';
-
-                const label = document.createElement('div');
-                label.style.cssText =
-                    'grid-column:1/-1;font-family:Inter,sans-serif;font-size:0.55rem;color:rgba(255,255,255,0.1);text-align:center;padding:4px 0;letter-spacing:1px;font-weight:300;';
-                label.textContent = `✨ Reels for your mood (${emotion.name})`;
-                reelsGrid.appendChild(label);
-
-                for (const reel of reelsData) {
-                    const card = document.createElement('a');
-                    card.className = 'reel-card';
-                    card.href = '#';
-                    card.target = '_blank';
-                    card.innerHTML = `
-                    <div class="thumb">${reel.thumb}</div>
-                    <div class="reel-info">
-                        <span>${reel.title}</span>
-                        <span>❤️ ${reel.likes}</span>
-                    </div>
-                    <div class="play-overlay"><span>▶</span></div>
-                `;
-                    reelsGrid.appendChild(card);
-                }
-
-                reelsGrid.classList.add('show');
-            }
-
-            // ===== SHARE =====
-            function generateShareImage(emotion, rarity) {
+            // ============================================================
+            //  SHARE
+            // ============================================================
+            function generateShareImage(emotion, rarity, confidence, phrase) {
                 const offscreen = document.createElement('canvas');
                 offscreen.width = 800;
                 offscreen.height = 800;
@@ -1487,12 +1819,14 @@
                 c.fillStyle = grad;
                 c.fillRect(0, 0, 800, 800);
 
+                // Border glow
                 c.beginPath();
                 c.arc(400, 350, 220, 0, Math.PI * 2);
                 c.strokeStyle = rarity.color + '44';
                 c.lineWidth = 4;
                 c.stroke();
 
+                // Drawing
                 const img = new Image();
                 img.onload = function() {
                     c.save();
@@ -1502,76 +1836,75 @@
                     c.drawImage(img, 400 - 200, 350 - 200, 400, 400);
                     c.restore();
 
+                    // Emoji
                     c.font = '80px Arial';
                     c.textAlign = 'center';
                     c.textBaseline = 'middle';
                     c.fillText(emotion.emoji, 400, 150);
 
-                    c.font = 'bold 48px Arial';
+                    // Emotion name
+                    c.font = 'bold 48px Inter, sans-serif';
                     c.fillStyle = '#fff';
                     c.fillText(emotion.name, 400, 620);
 
-                    c.font = '24px Arial';
+                    // Confidence
+                    c.font = '24px Inter, sans-serif';
                     c.fillStyle = 'rgba(255,255,255,0.4)';
-                    c.fillText(emotion.phrase, 400, 680);
+                    c.fillText(`${Math.round(confidence * 100)}% match`, 400, 660);
 
-                    c.font = 'bold 28px Arial';
+                    // Phrase
+                    c.font = '22px Inter, sans-serif';
+                    c.fillStyle = 'rgba(255,255,255,0.3)';
+                    c.fillText(phrase, 400, 700);
+
+                    // Rarity
+                    c.font = 'bold 26px Inter, sans-serif';
                     c.fillStyle = rarity.color;
-                    c.fillText('✨ ' + rarity.name, 400, 570);
+                    c.fillText(`✨ ${rarity.name}`, 400, 570);
 
-                    c.font = '20px Arial';
+                    // Brand
+                    c.font = '20px Inter, sans-serif';
                     c.fillStyle = '#FF6B35';
-                    c.fillText('💜 @mewonen', 400, 740);
+                    c.fillText('💜 @mewonen', 400, 760);
 
-                    shareImageData = offscreen.toDataURL('image/png');
+                    STATE.shareImageData = offscreen.toDataURL('image/png');
+                    openSharePanel();
                 };
-                img.src = canvas.toDataURL();
+                img.src = canvas.toDataURL('image/png');
             }
 
-            function getViralText(emotion, rarity) {
-                const t = {
-                    'Joy': '✨ I drew my joy. Mewonen saw it.',
-                    'Sadness': '💜 I drew my tears. Mewonen caught them.',
-                    'Anger': '🔥 My fire. Mewonen saw it.',
-                    'Peace': '🌈 I crossed the storm.',
-                    'Passion': '💫 This is my power.',
-                    'Calm': '🌙 This is my peace.',
-                    'Hope': '🌱 Something is growing.',
-                    'Freedom': '🕊️ I am light.'
-                };
-                return `${t[emotion.name] || '💜 Mewonen saw my soul.'} ${rarity.name} ✨`;
-            }
-
-            function openShare() {
-                if (!shareImageData) { showToast('Draw something first! ✍️'); return; }
-                sharePreview.innerHTML = '';
-                const img = document.createElement('img');
-                img.src = shareImageData;
-                sharePreview.appendChild(img);
-                if (lastEmotion && lastRarity) {
-                    shareEmotion.textContent = lastEmotion.name;
-                    shareText.innerHTML = `✨ <strong>${lastEmotion.name}</strong> — ${getViralText(lastEmotion, lastRarity)}`;
+            function openSharePanel() {
+                if (!STATE.shareImageData) {
+                    showToast('Draw something first ✍️');
+                    return;
                 }
-                shareOverlay.classList.add('show');
+                sharePreview.src = STATE.shareImageData;
+                if (STATE.lastEmotion) {
+                    shareEmotion.textContent = STATE.lastEmotion.name;
+                    sharePhrase.textContent = STATE.lastPhrase;
+                }
+                shareOverlay.style.display = 'flex';
             }
 
-            function closeShare() { shareOverlay.classList.remove('show'); }
+            function closeSharePanel() {
+                shareOverlay.style.display = 'none';
+            }
 
             function downloadShare() {
-                if (!shareImageData) return;
-                const a = document.createElement('a');
-                a.download = `mewonen-${lastEmotion ? lastEmotion.name.toLowerCase() : 'mood'}.png`;
-                a.href = shareImageData;
-                a.click();
+                if (!STATE.shareImageData) return;
+                const link = document.createElement('a');
+                link.download = `mewonen-${STATE.lastEmotion?.name?.toLowerCase() || 'mood'}.png`;
+                link.href = STATE.shareImageData;
+                link.click();
             }
 
             function copyShareText() {
-                if (!lastEmotion || !lastRarity) return;
-                const text =
-                    `${getViralText(lastEmotion, lastRarity)} 💜 @mewonen — Draw your mood at mewonen.com`;
+                if (!STATE.lastEmotion) return;
+                const text = `${STATE.lastEmotion.emoji} ${STATE.lastEmotion.name} — ${STATE.lastPhrase} 💜 @mewonen`;
                 navigator.clipboard.writeText(text).then(() => {
                     showToast('📋 Text copied!');
                 }).catch(() => {
+                    // Fallback
                     const ta = document.createElement('textarea');
                     ta.value = text;
                     document.body.appendChild(ta);
@@ -1582,8 +1915,14 @@
                 });
             }
 
+            // ============================================================
+            //  STATUS
+            // ============================================================
             function generateStatus() {
-                if (!lastEmotion) { showToast('Draw something first! ✍️'); return; }
+                if (!STATE.lastEmotion) {
+                    showToast('Draw something first ✍️');
+                    return;
+                }
                 const offscreen = document.createElement('canvas');
                 offscreen.width = 800;
                 offscreen.height = 800;
@@ -1599,55 +1938,32 @@
                 c.font = '200px Arial';
                 c.textAlign = 'center';
                 c.textBaseline = 'middle';
-                c.fillText(lastEmotion.emoji, 400, 350);
+                c.fillText(STATE.lastEmotion.emoji, 400, 350);
 
-                c.font = '48px Arial';
+                c.font = 'bold 48px Inter, sans-serif';
                 c.fillStyle = '#fff';
-                c.fillText(lastEmotion.name, 400, 550);
+                c.fillText(STATE.lastEmotion.name, 400, 550);
 
-                if (lastRarity) {
-                    c.font = '24px Arial';
-                    c.fillStyle = lastRarity.color;
-                    c.fillText('✨ ' + lastRarity.name, 400, 620);
+                if (STATE.lastRarity) {
+                    c.font = '24px Inter, sans-serif';
+                    c.fillStyle = STATE.lastRarity.color;
+                    c.fillText(`✨ ${STATE.lastRarity.name}`, 400, 620);
                 }
 
-                c.font = '28px Arial';
-                c.fillStyle = 'rgba(255,255,255,0.3)';
+                c.font = '28px Inter, sans-serif';
+                c.fillStyle = 'rgba(255,255,255,0.2)';
                 c.fillText('💜 mewonen.com', 400, 700);
 
-                const a = document.createElement('a');
-                a.download = `mewonen-status-${lastEmotion.name.toLowerCase()}.png`;
-                a.href = offscreen.toDataURL('image/png');
-                a.click();
+                const link = document.createElement('a');
+                link.download = `mewonen-status-${STATE.lastEmotion.name.toLowerCase()}.png`;
+                link.href = offscreen.toDataURL('image/png');
+                link.click();
                 showToast('📱 Status saved!');
             }
 
-            function clearCanvas() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                emotionEmoji.textContent = '';
-                emotionName.textContent = '';
-                rarityBadge.classList.remove('show');
-                reelsGrid.classList.remove('show');
-                reelsGrid.innerHTML = '';
-                glowRing.style.borderColor = 'rgba(255,107,53,0.04)';
-                glowRing.style.boxShadow = 'none';
-                lastEmotion = null;
-                lastRarity = null;
-                shareImageData = null;
-                showToast('Cleared. Ready for a new drawing. ✨');
-            }
-
-            // ===== TOAST =====
-            function showToast(msg) {
-                toast.textContent = msg;
-                toast.classList.add('show');
-                clearTimeout(toast._timer);
-                toast._timer = setTimeout(() => {
-                    toast.classList.remove('show');
-                }, 2500);
-            }
-
-            // ===== ONBOARDING (TINDER) =====
+            // ============================================================
+            //  ONBOARDING (Tinder swipe)
+            // ============================================================
             function initOnboarding() {
                 if (localStorage.getItem('mewonen_onboarded') === '1') {
                     onboarding.classList.add('hide');
@@ -1655,16 +1971,17 @@
                     return;
                 }
 
-                const wrapper = document.getElementById('obWrapper');
+                const swipe = document.getElementById('obSwipe');
                 let startX = 0;
                 let isDragging = false;
+                let slideIndex = 0;
 
-                wrapper.addEventListener('touchstart', function(e) {
+                swipe.addEventListener('touchstart', (e) => {
                     startX = e.touches[0].clientX;
                     isDragging = true;
                 }, { passive: true });
 
-                wrapper.addEventListener('touchend', function(e) {
+                swipe.addEventListener('touchend', (e) => {
                     if (!isDragging) return;
                     isDragging = false;
                     const diff = startX - e.changedTouches[0].clientX;
@@ -1677,13 +1994,14 @@
                     }
                 }, { passive: true });
 
+                // Mouse support
                 let mouseStartX = 0;
                 let mouseDragging = false;
-                wrapper.addEventListener('mousedown', function(e) {
+                swipe.addEventListener('mousedown', (e) => {
                     mouseStartX = e.clientX;
                     mouseDragging = true;
                 });
-                wrapper.addEventListener('mouseup', function(e) {
+                swipe.addEventListener('mouseup', (e) => {
                     if (!mouseDragging) return;
                     mouseDragging = false;
                     const diff = mouseStartX - e.clientX;
@@ -1695,9 +2013,7 @@
                         }
                     }
                 });
-                wrapper.addEventListener('mouseleave', function() {
-                    mouseDragging = false;
-                });
+                swipe.addEventListener('mouseleave', () => { mouseDragging = false; });
 
                 function goToSlide(index) {
                     slideIndex = index;
@@ -1705,41 +2021,29 @@
                     obDots.forEach((dot, i) => {
                         dot.classList.toggle('active', i === index);
                     });
-                    if (index === 2) {
-                        permissions.classList.add('show');
-                    } else {
-                        permissions.classList.remove('show');
-                    }
+                    obStartBtn.classList.toggle('show', index === 2);
                 }
 
-                permItems.forEach(item => {
-                    item.addEventListener('click', function() {
-                        this.classList.toggle('active');
-                    });
-                });
-
-                permBtn.addEventListener('click', function() {
-                    const active = document.querySelectorAll('.perm-item.active');
-                    if (active.length === 0) {
-                        showToast('Please connect at least one account');
-                        return;
-                    }
+                obStartBtn.addEventListener('click', () => {
                     localStorage.setItem('mewonen_onboarded', '1');
                     onboarding.classList.add('hide');
                     mainApp.classList.add('show');
-                    showToast('🎉 Welcome to Mewonen! Draw your mood.');
+                    showToast('🎨 Draw your mood');
                 });
 
                 goToSlide(0);
             }
 
-            // ===== MENU =====
+            // ============================================================
+            //  MENU
+            // ============================================================
             function initMenu() {
-                const mainScreen = document.getElementById('mainApp');
-                const galleryScreen = document.getElementById('galleryScreen');
-                const statsScreen = document.getElementById('statsScreen');
-                const legalScreen = document.getElementById('legalScreen');
-                const screens = { main: mainScreen, gallery: galleryScreen, stats: statsScreen, legal: legalScreen };
+                const screens = {
+                    main: document.getElementById('mainApp'),
+                    gallery: document.getElementById('galleryScreen'),
+                    stats: document.getElementById('statsScreen'),
+                    legal: document.getElementById('legalScreen'),
+                };
 
                 function showScreen(name) {
                     Object.keys(screens).forEach(k => {
@@ -1755,7 +2059,7 @@
                     closeMenu();
                 }
 
-                document.querySelectorAll('.menu-item').forEach(el => {
+                document.querySelectorAll('.menu-item[data-screen]').forEach(el => {
                     el.addEventListener('click', () => showScreen(el.dataset.screen));
                 });
 
@@ -1777,48 +2081,122 @@
                 menuOverlay.addEventListener('click', closeMenu);
                 menuClose.addEventListener('click', closeMenu);
 
-                shareBtn.addEventListener('click', () => { closeMenu();
-                    openShare(); });
-                statusBtn.addEventListener('click', () => { closeMenu();
-                    generateStatus(); });
+                document.getElementById('shareMenuBtn').addEventListener('click', () => {
+                    closeMenu();
+                    generateShareImage(
+                        STATE.lastEmotion || EMOTIONS[0],
+                        STATE.lastRarity || RARITY_TIERS[0],
+                        STATE.lastConfidence || 0.5,
+                        STATE.lastPhrase || 'Draw your mood.'
+                    );
+                });
 
                 showScreen('main');
             }
 
-            // ===== INIT =====
-            function init() {
+            // ============================================================
+            //  TOAST
+            // ============================================================
+            function showToast(msg) {
+                toast.textContent = msg;
+                toast.classList.add('show');
+                clearTimeout(toast._timer);
+                toast._timer = setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 2500);
+            }
+
+            // ============================================================
+            //  INIT
+            // ============================================================
+            async function init() {
+                // Setup canvas
                 setupCanvas();
-                loadProgress();
-                loadDrawings();
+
+                // Load data
+                const drawings = await dbGetDrawings();
+                STATE.drawings = drawings;
+                STATE.streak = await dbGetMeta('streak') || 0;
+                STATE.xp = await dbGetMeta('xp') || 0;
+                STATE.emotionHistory = await dbGetMeta('emotionHistory') || [];
+
+                // Setup UI
+                updateUI();
                 initOnboarding();
                 initMenu();
 
-                canvas.addEventListener('touchstart', startDraw, { passive: false });
-                canvas.addEventListener('touchmove', moveDraw, { passive: false });
-                canvas.addEventListener('touchend', endDraw);
-                canvas.addEventListener('mousedown', startDraw);
-                canvas.addEventListener('mousemove', moveDraw);
-                canvas.addEventListener('mouseup', endDraw);
-                canvas.addEventListener('mouseleave', endDraw);
+                // Canvas events (Pointer Events)
+                canvas.addEventListener('pointerdown', onPointerDown);
+                canvas.addEventListener('pointermove', onPointerMove);
+                canvas.addEventListener('pointerup', onPointerUp);
+                canvas.addEventListener('pointercancel', onPointerCancel);
+                canvas.addEventListener('pointerleave', onPointerUp);
 
-                revealBtn.addEventListener('click', analyzeDraw);
+                // Buttons
+                revealBtn.addEventListener('click', runReveal);
+                clearBtn.addEventListener('click', clearCanvas);
+                shareBtn.addEventListener('click', () => {
+                    if (!STATE.lastEmotion) {
+                        showToast('Draw something first ✍️');
+                        return;
+                    }
+                    generateShareImage(
+                        STATE.lastEmotion,
+                        STATE.lastRarity || RARITY_TIERS[0],
+                        STATE.lastConfidence || 0.5,
+                        STATE.lastPhrase
+                    );
+                });
+                statusBtn.addEventListener('click', generateStatus);
 
-                downloadBtn.addEventListener('click', downloadShare);
-                copyBtn.addEventListener('click', copyShareText);
-                shareClose.addEventListener('click', closeShare);
-                shareOverlay.addEventListener('click', function(e) {
-                    if (e.target === this) closeShare();
+                // Reveal overlay
+                closeReveal.addEventListener('click', () => {
+                    revealOverlay.classList.remove('show');
+                    STATE.isRevealing = false;
+                });
+                revealOverlay.addEventListener('click', (e) => {
+                    if (e.target === revealOverlay) {
+                        revealOverlay.classList.remove('show');
+                        STATE.isRevealing = false;
+                    }
+                });
+                revealSave.addEventListener('click', () => {
+                    showToast('💾 Drawing saved to gallery');
+                    revealOverlay.classList.remove('show');
+                    STATE.isRevealing = false;
+                });
+                revealShare.addEventListener('click', () => {
+                    generateShareImage(
+                        STATE.lastEmotion || EMOTIONS[0],
+                        STATE.lastRarity || RARITY_TIERS[0],
+                        STATE.lastConfidence || 0.5,
+                        STATE.lastPhrase || 'Draw your mood.'
+                    );
+                    revealOverlay.classList.remove('show');
+                    STATE.isRevealing = false;
                 });
 
+                // Share
+                shareClose.addEventListener('click', closeSharePanel);
+                downloadBtn.addEventListener('click', downloadShare);
+                copyBtn.addEventListener('click', copyShareText);
+                shareOverlay.addEventListener('click', (e) => {
+                    if (e.target === shareOverlay) closeSharePanel();
+                });
+
+                // Resize
                 let resizeTimer;
-                window.addEventListener('resize', function() {
+                window.addEventListener('resize', () => {
                     clearTimeout(resizeTimer);
                     resizeTimer = setTimeout(setupCanvas, 100);
                 });
 
-                console.log('💜 Mewonen — Final avec menu & polices Google');
+                console.log('💜 Mewonen V2 loaded');
+                console.log('🔒 AI runs locally. No data sent anywhere.');
+                console.log(`📊 ${STATE.drawings.length} drawings loaded.`);
             }
 
+            // Start
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', init);
             } else {
