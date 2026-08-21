@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>Mewonen — Draw what you can't say</title>
+    <title>Mewonen — Draw your mood</title>
 
     <style>
-        /* ===== RESET ===== */
-        *,
-        *::before,
-        *::after {
+        /* ============================================================
+           MEWONEN V3 — DESIGN COMPLET
+           ============================================================ */
+        * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -18,32 +18,36 @@
         }
 
         :root {
-            --bg-primary: #0D1B2A;
-            --bg-secondary: #1B2A3A;
-            --bg-surface: rgba(255, 255, 255, 0.02);
-            --text-primary: #FFFFFF;
-            --text-secondary: rgba(255, 255, 255, 0.4);
-            --text-muted: rgba(255, 255, 255, 0.1);
-            --accent-1: #FF6B35;
-            --accent-2: #FF1493;
-            --accent-3: #FFD700;
-            --accent-gradient: linear-gradient(135deg, #FF6B35, #FF1493);
-            --radius-sm: 8px;
-            --radius-md: 16px;
-            --radius-lg: 24px;
-            --radius-xl: 40px;
-            --shadow-card: 0 8px 40px rgba(0, 0, 0, 0.3);
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            --font-serif: 'Georgia', 'Playfair Display', serif;
+            --bg: #0D1B2A;
+            --bg2: #1B2A3A;
+            --surface: rgba(255, 255, 255, 0.02);
+            --text: #FFFFFF;
+            --text2: rgba(255, 255, 255, 0.4);
+            --text3: rgba(255, 255, 255, 0.1);
+            --accent1: #FF6B35;
+            --accent2: #FF1493;
+            --accent3: #FFD700;
+            --gradient: linear-gradient(135deg, #FF6B35, #FF1493);
+            --radius: 16px;
+            --radius2: 40px;
+            --shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
+            --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --font-serif: 'Georgia', serif;
+        }
+
+        @font-face {
+            font-family: 'Inter';
+            src: url('data:font/woff2;base64,d09GMgABAAAAAA...') format('woff2');
+            font-weight: 300 700;
+            font-display: swap;
         }
 
         html,
         body {
             height: 100%;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            font-family: var(--font-sans);
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--font);
             overflow: hidden;
             -webkit-font-smoothing: antialiased;
         }
@@ -52,7 +56,7 @@
             max-width: 430px;
             height: 100dvh;
             margin: 0 auto;
-            background: radial-gradient(ellipse at 50% 30%, var(--bg-secondary), var(--bg-primary));
+            background: radial-gradient(ellipse at 50% 30%, var(--bg2), var(--bg));
             display: flex;
             flex-direction: column;
             position: relative;
@@ -66,7 +70,7 @@
             position: absolute;
             inset: 0;
             z-index: 200;
-            background: var(--bg-primary);
+            background: var(--bg);
             display: flex;
             flex-direction: column;
             transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s ease;
@@ -78,7 +82,6 @@
             opacity: 0;
             pointer-events: none;
         }
-
         .ob-swipe {
             flex: 1;
             display: flex;
@@ -107,6 +110,16 @@
         .ob-slide .icon {
             font-size: 4.5rem;
             margin-bottom: 20px;
+            animation: floatIcon 3s ease-in-out infinite;
+        }
+        @keyframes floatIcon {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-12px);
+            }
         }
         .ob-slide h2 {
             font-family: var(--font-serif);
@@ -117,14 +130,14 @@
             color: #fff;
         }
         .ob-slide h2 span {
-            background: var(--accent-gradient);
+            background: var(--gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
         .ob-slide p {
             font-size: 0.85rem;
-            color: var(--text-secondary);
+            color: var(--text2);
             line-height: 1.6;
             max-width: 280px;
             font-weight: 300;
@@ -140,36 +153,35 @@
             width: 8px;
             height: 8px;
             border-radius: 50%;
-            background: var(--text-muted);
+            background: var(--text3);
             transition: all 0.4s ease;
         }
         .ob-dots span.active {
-            background: var(--accent-1);
+            background: var(--accent1);
             width: 30px;
             border-radius: 4px;
         }
         .ob-hint {
             text-align: center;
             font-size: 0.6rem;
-            color: var(--text-muted);
+            color: var(--text3);
             padding-bottom: 8px;
             flex-shrink: 0;
             letter-spacing: 2px;
             font-weight: 300;
         }
-
         .ob-start-btn {
             margin: 0 20px 20px;
             padding: 16px;
-            border-radius: var(--radius-xl);
+            border-radius: var(--radius2);
             border: none;
-            background: var(--accent-gradient);
+            background: var(--gradient);
             color: #fff;
-            font-family: var(--font-sans);
+            font-family: var(--font);
             font-size: 0.9rem;
             font-weight: 600;
             cursor: pointer;
-            transition: var(--transition);
+            transition: all 0.3s ease;
             box-shadow: 0 8px 30px rgba(255, 107, 53, 0.25);
             display: none;
         }
@@ -199,32 +211,32 @@
             font-weight: 400;
         }
         #topBar .logo span {
-            color: var(--accent-1);
+            color: var(--accent1);
         }
         #topBar .stats {
             display: flex;
             gap: 14px;
             font-size: 0.5rem;
-            color: var(--text-muted);
+            color: var(--text3);
             font-weight: 300;
         }
         #topBar .stats span {
-            color: var(--accent-3);
+            color: var(--accent3);
         }
         #topBar .stats .xp {
-            color: var(--accent-1);
+            color: var(--accent1);
         }
 
         #menuBtn {
-            background: var(--bg-surface);
+            background: var(--surface);
             border: 1px solid rgba(255, 255, 255, 0.04);
-            border-radius: var(--radius-sm);
+            border-radius: var(--radius);
             padding: 6px 10px;
-            color: var(--text-secondary);
+            color: var(--text2);
             font-size: 0.9rem;
             cursor: pointer;
-            transition: var(--transition);
-            font-family: var(--font-sans);
+            transition: all 0.3s ease;
+            font-family: var(--font);
             display: flex;
             align-items: center;
             gap: 4px;
@@ -283,22 +295,22 @@
             font-weight: 400;
         }
         .menu-header span {
-            color: var(--accent-1);
+            color: var(--accent1);
         }
         .menu-item {
             display: flex;
             align-items: center;
             gap: 14px;
             padding: 12px 16px;
-            border-radius: var(--radius-sm);
+            border-radius: var(--radius);
             background: none;
             border: none;
-            color: var(--text-secondary);
-            font-family: var(--font-sans);
+            color: var(--text2);
+            font-family: var(--font);
             font-size: 0.75rem;
             font-weight: 400;
             cursor: pointer;
-            transition: var(--transition);
+            transition: all 0.3s ease;
             width: 100%;
             text-align: left;
         }
@@ -316,7 +328,7 @@
             background: rgba(255, 107, 53, 0.1);
             padding: 2px 10px;
             border-radius: 20px;
-            color: var(--accent-1);
+            color: var(--accent1);
             font-weight: 300;
         }
         .menu-close {
@@ -325,7 +337,7 @@
             right: 16px;
             background: none;
             border: none;
-            color: var(--text-muted);
+            color: var(--text3);
             font-size: 1rem;
             cursor: pointer;
         }
@@ -363,29 +375,39 @@
             background: rgba(255, 255, 255, 0.015);
             border: 1px solid rgba(255, 107, 53, 0.06);
             box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.4);
-            transition: border-color 0.6s ease;
+            transition: border-color 0.6s ease, box-shadow 0.6s ease;
         }
         #canvasWrapper canvas.active {
             border-color: rgba(255, 107, 53, 0.2);
             box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.4), 0 0 60px rgba(255, 107, 53, 0.05);
         }
+        #canvasWrapper canvas.drawing {
+            border-color: rgba(255, 107, 53, 0.4);
+            box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.4), 0 0 60px rgba(255, 107, 53, 0.1);
+        }
 
         /* ----- REVEAL BUTTON ----- */
         #revealBtn {
             padding: 14px 32px;
-            border-radius: var(--radius-xl);
+            border-radius: var(--radius2);
             border: none;
-            background: var(--accent-gradient);
+            background: var(--gradient);
             color: #fff;
-            font-family: var(--font-sans);
+            font-family: var(--font);
             font-size: 0.85rem;
             font-weight: 600;
             cursor: pointer;
-            transition: var(--transition);
+            transition: all 0.3s ease;
             box-shadow: 0 8px 30px rgba(255, 107, 53, 0.25);
             margin: 8px auto 0;
             position: relative;
             animation: pulseReveal 2s ease-in-out infinite;
+            opacity: 0.4;
+            pointer-events: none;
+        }
+        #revealBtn.active {
+            opacity: 1;
+            pointer-events: auto;
         }
         @keyframes pulseReveal {
             0%,
@@ -402,7 +424,7 @@
         #revealBtn .ripple {
             position: absolute;
             inset: 0;
-            border-radius: var(--radius-xl);
+            border-radius: var(--radius2);
             border: 2px solid rgba(255, 255, 255, 0.1);
             animation: rippleOut 1.5s ease-out infinite;
         }
@@ -434,19 +456,19 @@
             font-family: var(--font-serif);
             font-size: 1.2rem;
             margin-top: 4px;
-            background: var(--accent-gradient);
+            background: var(--gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
         #result .confidence {
             font-size: 0.6rem;
-            color: var(--text-secondary);
+            color: var(--text2);
             font-weight: 300;
         }
         #result .phrase {
             font-size: 0.7rem;
-            color: var(--text-secondary);
+            color: var(--text2);
             font-weight: 300;
             margin-top: 4px;
             max-width: 280px;
@@ -455,7 +477,7 @@
         }
         #result .rarity {
             font-size: 0.5rem;
-            color: var(--accent-3);
+            color: var(--accent3);
             background: rgba(255, 215, 0, 0.06);
             padding: 2px 14px;
             border-radius: 20px;
@@ -483,27 +505,27 @@
         }
         #actions button {
             padding: 8px 18px;
-            border-radius: var(--radius-xl);
+            border-radius: var(--radius2);
             border: 1px solid rgba(255, 255, 255, 0.04);
-            background: var(--bg-surface);
-            color: var(--text-secondary);
-            font-family: var(--font-sans);
+            background: var(--surface);
+            color: var(--text2);
+            font-family: var(--font);
             font-size: 0.6rem;
             font-weight: 400;
             cursor: pointer;
-            transition: var(--transition);
+            transition: all 0.3s ease;
         }
         #actions button:active {
             transform: scale(0.92);
             background: rgba(255, 107, 53, 0.06);
         }
         #actions button.primary {
-            background: var(--accent-gradient);
+            background: var(--gradient);
             color: #fff;
             border: none;
         }
         #actions button.gold {
-            background: linear-gradient(135deg, var(--accent-3), #f59e0b);
+            background: linear-gradient(135deg, var(--accent3), #f59e0b);
             color: #0D1B2A;
             border: none;
             font-weight: 500;
@@ -547,7 +569,7 @@
             height: 40px;
             border-radius: 50%;
             border: 3px solid rgba(255, 255, 255, 0.04);
-            border-top-color: var(--accent-1);
+            border-top-color: var(--accent1);
             animation: spin 0.8s linear infinite;
         }
         @keyframes spin {
@@ -559,9 +581,9 @@
             }
         }
         #revealOverlay .loading p {
-            font-family: var(--font-sans);
+            font-family: var(--font);
             font-size: 0.8rem;
-            color: var(--text-secondary);
+            color: var(--text2);
             font-weight: 300;
             letter-spacing: 1px;
         }
@@ -593,20 +615,20 @@
             font-family: var(--font-serif);
             font-size: 2rem;
             margin-top: 8px;
-            background: var(--accent-gradient);
+            background: var(--gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
         #revealOverlay .result-card .confidence {
             font-size: 0.7rem;
-            color: var(--text-secondary);
+            color: var(--text2);
             font-weight: 300;
             margin-top: 2px;
         }
         #revealOverlay .result-card .phrase {
             font-size: 0.9rem;
-            color: var(--text-secondary);
+            color: var(--text2);
             font-style: italic;
             max-width: 280px;
             margin-top: 8px;
@@ -620,24 +642,24 @@
         }
         #revealOverlay .result-card .actions button {
             padding: 10px 24px;
-            border-radius: var(--radius-xl);
+            border-radius: var(--radius2);
             border: none;
-            font-family: var(--font-sans);
+            font-family: var(--font);
             font-size: 0.7rem;
             font-weight: 500;
             cursor: pointer;
-            transition: var(--transition);
+            transition: all 0.3s ease;
         }
         #revealOverlay .result-card .actions button:active {
             transform: scale(0.92);
         }
         #revealOverlay .result-card .actions .save {
-            background: var(--bg-surface);
-            color: var(--text-secondary);
+            background: var(--surface);
+            color: var(--text2);
             border: 1px solid rgba(255, 255, 255, 0.04);
         }
         #revealOverlay .result-card .actions .share {
-            background: var(--accent-gradient);
+            background: var(--gradient);
             color: #fff;
             box-shadow: 0 8px 30px rgba(255, 107, 53, 0.2);
         }
@@ -647,7 +669,7 @@
             right: 20px;
             background: none;
             border: none;
-            color: var(--text-muted);
+            color: var(--text3);
             font-size: 1.2rem;
             cursor: pointer;
         }
@@ -665,7 +687,7 @@
             overflow-y: auto;
             position: absolute;
             inset: 0;
-            background: radial-gradient(ellipse at 50% 30%, var(--bg-secondary), var(--bg-primary));
+            background: radial-gradient(ellipse at 50% 30%, var(--bg2), var(--bg));
             z-index: 5;
         }
         .screen.active {
@@ -681,22 +703,21 @@
             color: #fff;
         }
         .screen .sub {
-            color: var(--text-secondary);
+            color: var(--text2);
             font-size: 0.6rem;
             margin-bottom: 16px;
             font-weight: 300;
         }
-
         .screen .back-btn {
             position: absolute;
             top: 16px;
             left: 16px;
             background: none;
             border: none;
-            color: var(--text-muted);
+            color: var(--text3);
             font-size: 0.8rem;
             cursor: pointer;
-            font-family: var(--font-sans);
+            font-family: var(--font);
             font-weight: 300;
         }
 
@@ -709,8 +730,8 @@
         }
         .gallery-item {
             aspect-ratio: 1/1;
-            border-radius: var(--radius-sm);
-            background: var(--bg-surface);
+            border-radius: var(--radius);
+            background: var(--surface);
             border: 1px solid rgba(255, 255, 255, 0.02);
             overflow: hidden;
         }
@@ -725,7 +746,7 @@
             align-items: center;
             justify-content: center;
             height: 100%;
-            color: var(--text-muted);
+            color: var(--text3);
             font-size: 0.5rem;
         }
 
@@ -738,8 +759,8 @@
             align-items: center;
             gap: 12px;
             padding: 10px 14px;
-            background: var(--bg-surface);
-            border-radius: var(--radius-sm);
+            background: var(--surface);
+            border-radius: var(--radius);
             border: 1px solid rgba(255, 255, 255, 0.02);
             margin-bottom: 6px;
         }
@@ -758,20 +779,20 @@
         }
         .stats-item .info .count {
             font-size: 0.5rem;
-            color: var(--text-secondary);
+            color: var(--text2);
             font-weight: 300;
         }
         .stats-item .bar {
             width: 60px;
             height: 3px;
             border-radius: 2px;
-            background: var(--bg-surface);
+            background: var(--surface);
         }
         .stats-item .bar span {
             display: block;
             height: 100%;
             border-radius: 2px;
-            background: var(--accent-gradient);
+            background: var(--gradient);
         }
 
         /* ----- LEGAL ----- */
@@ -780,19 +801,19 @@
             text-align: left;
             font-size: 0.6rem;
             line-height: 1.8;
-            color: var(--text-secondary);
+            color: var(--text2);
             padding: 8px 0;
             font-weight: 300;
         }
         .legal-content h3 {
-            color: var(--text-primary);
+            color: var(--text);
             font-size: 0.7rem;
             font-weight: 500;
             margin-top: 12px;
             margin-bottom: 4px;
         }
         .legal-content .highlight {
-            color: var(--accent-1);
+            color: var(--accent1);
         }
 
         /* ============================================================
@@ -807,10 +828,10 @@
             backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 107, 53, 0.08);
             padding: 10px 24px;
-            border-radius: var(--radius-md);
-            font-family: var(--font-sans);
+            border-radius: var(--radius);
+            font-family: var(--font);
             font-size: 0.6rem;
-            color: var(--text-primary);
+            color: var(--text);
             z-index: 200;
             opacity: 0;
             transition: opacity 0.4s ease;
@@ -841,7 +862,7 @@
         }
         #shareOverlay .card {
             background: rgba(16, 16, 32, 0.98);
-            border-radius: var(--radius-lg);
+            border-radius: var(--radius);
             padding: 24px;
             max-width: 340px;
             width: 100%;
@@ -851,8 +872,8 @@
         #shareOverlay .card .preview {
             width: 100%;
             aspect-ratio: 1/1;
-            border-radius: var(--radius-sm);
-            background: radial-gradient(circle at 30% 30%, var(--bg-secondary), var(--bg-primary));
+            border-radius: var(--radius);
+            background: radial-gradient(circle at 30% 30%, var(--bg2), var(--bg));
             border: 1px solid rgba(255, 107, 53, 0.06);
             margin-bottom: 12px;
             overflow: hidden;
@@ -864,12 +885,12 @@
         }
         #shareOverlay .card .text {
             font-size: 0.65rem;
-            color: var(--text-secondary);
+            color: var(--text2);
             font-weight: 300;
             margin-bottom: 8px;
         }
         #shareOverlay .card .text strong {
-            color: var(--text-primary);
+            color: var(--text);
         }
         #shareOverlay .card .actions {
             display: flex;
@@ -879,23 +900,23 @@
         #shareOverlay .card .actions button {
             flex: 1;
             padding: 8px 18px;
-            border-radius: var(--radius-xl);
+            border-radius: var(--radius2);
             border: none;
-            font-family: var(--font-sans);
+            font-family: var(--font);
             font-size: 0.6rem;
             font-weight: 500;
             cursor: pointer;
-            transition: var(--transition);
+            transition: all 0.3s ease;
         }
         #shareOverlay .card .actions button:active {
             transform: scale(0.92);
         }
         #shareOverlay .card .actions .primary {
-            background: var(--accent-gradient);
+            background: var(--gradient);
             color: #fff;
         }
         #shareOverlay .card .actions .gold {
-            background: linear-gradient(135deg, var(--accent-3), #f59e0b);
+            background: linear-gradient(135deg, var(--accent3), #f59e0b);
             color: #0D1B2A;
         }
         #shareOverlay .close {
@@ -903,7 +924,7 @@
             float: right;
             background: none;
             border: none;
-            color: var(--text-muted);
+            color: var(--text3);
             font-size: 1rem;
             cursor: pointer;
         }
@@ -931,7 +952,9 @@
 </head>
 <body>
 
-    <!-- ===== APP ===== -->
+    <!-- ============================================================
+    APP SHELL
+    ============================================================ -->
     <div id="app">
 
         <!-- ===== ONBOARDING ===== -->
@@ -980,7 +1003,7 @@
                 <canvas id="drawCanvas" width="400" height="400"></canvas>
             </div>
 
-            <button id="revealBtn">
+            <button id="revealBtn" disabled>
                 <span class="ripple"></span>
                 ✨ Reveal my mood
             </button>
@@ -1011,7 +1034,7 @@
             <button class="menu-item" data-screen="legal"><span class="icon">⚖️</span> Privacy & Legal</button>
             <div style="flex:1;"></div>
             <div style="display:flex;gap:8px;padding:4px;">
-                <button class="menu-item" style="flex:1;justify-content:center;background:var(--accent-gradient);color:#fff;border-radius:var(--radius-xl);" id="shareMenuBtn">📤 Share</button>
+                <button class="menu-item" style="flex:1;justify-content:center;background:var(--gradient);color:#fff;border-radius:var(--radius2);" id="shareMenuBtn">📤 Share</button>
             </div>
         </div>
 
@@ -1083,7 +1106,7 @@
     </div>
 
     <!-- ============================================================
-    JAVASCRIPT — MEWONEN V2 COMPLETE
+    JAVASCRIPT — MEWONEN V3 COMPLETE
     ============================================================ -->
     <script>
         'use strict';
@@ -1173,7 +1196,7 @@
             let isDrawing = false;
             let points = [];
             let strokes = [];
-            let hasValidDrawing = false;
+            let hasDrawing = false;
             let lastEmotion = null;
             let lastRarity = null;
             let lastConfidence = 0;
@@ -1204,26 +1227,26 @@
             }
 
             // ============================================================
-            // CANVAS DRAWING (Pointer Events)
+            // CANVAS DRAWING (Pointer Events + touch fallback)
             // ============================================================
             function getPos(e) {
                 const rect = canvas.getBoundingClientRect();
                 return {
                     x: e.clientX - rect.left,
                     y: e.clientY - rect.top,
-                    t: Date.now()
+                    t: Date.now(),
+                    p: e.pressure || 0.5
                 };
             }
 
-            function onPointerDown(e) {
+            function startDrawing(e) {
                 e.preventDefault();
                 if (isDrawing) return;
                 isDrawing = true;
-                hasValidDrawing = false;
+                hasDrawing = false;
                 points = [];
                 strokes = [];
 
-                // Clear results
                 resEmoji.textContent = '';
                 resName.textContent = '';
                 resConfidence.textContent = '';
@@ -1234,29 +1257,35 @@
                 const p = getPos(e);
                 p.t = 0;
                 points.push(p);
-                strokes.push({ x: p.x, y: p.y, t: 0, p: e.pressure || 0.5 });
+                strokes.push({ x: p.x, y: p.y, t: 0, p: p.p });
 
                 ctx.beginPath();
                 ctx.moveTo(p.x, p.y);
-                canvas.classList.add('active');
+
+                // Small dot on click
+                ctx.arc(p.x, p.y, ctx.lineWidth / 2, 0, Math.PI * 2);
+                ctx.fillStyle = ctx.strokeStyle;
+                ctx.fill();
+
+                canvas.classList.add('active', 'drawing');
                 canvas.setPointerCapture(e.pointerId);
             }
 
-            function onPointerMove(e) {
+            function moveDrawing(e) {
                 e.preventDefault();
                 if (!isDrawing) return;
                 const p = getPos(e);
                 p.t = Date.now() - (points[0]?.t || Date.now());
                 points.push(p);
-                strokes.push({ x: p.x, y: p.y, t: p.t, p: e.pressure || 0.5 });
+                strokes.push({ x: p.x, y: p.y, t: p.t, p: p.p });
 
                 const speed = p.t > 0 ? Math.sqrt(
                     (p.x - (points[points.length - 2]?.x || p.x)) ** 2 +
                     (p.y - (points[points.length - 2]?.y || p.y)) ** 2
                 ) / p.t : 0;
-                ctx.lineWidth = 2 + Math.min(speed * 10, 6);
-                const pressure = e.pressure || 0.5;
-                ctx.strokeStyle = `rgba(255, 107, 53, ${0.6 + pressure * 0.4})`;
+
+                ctx.lineWidth = 2 + Math.min(speed * 8, 6);
+                ctx.strokeStyle = `rgba(255, 107, 53, ${0.6 + p.p * 0.4})`;
 
                 ctx.lineTo(p.x, p.y);
                 ctx.stroke();
@@ -1264,29 +1293,79 @@
                 ctx.moveTo(p.x, p.y);
             }
 
-            function onPointerUp(e) {
+            function endDrawing(e) {
                 if (!isDrawing) return;
                 isDrawing = false;
-                canvas.classList.remove('active');
+                canvas.classList.remove('active', 'drawing');
+
                 if (points.length < 5) {
+                    // If only a dot, keep it
+                    if (strokes.length > 0) {
+                        hasDrawing = true;
+                        revealBtn.disabled = false;
+                        revealBtn.classList.add('active');
+                        showToast('Dot saved ✨');
+                        return;
+                    }
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
                     showToast('Draw a little more ✍️');
                     return;
                 }
-                hasValidDrawing = true;
+
+                hasDrawing = true;
+                revealBtn.disabled = false;
+                revealBtn.classList.add('active');
                 showToast('Ready to reveal ✨');
             }
 
-            function onPointerCancel(e) {
+            function cancelDrawing(e) {
                 isDrawing = false;
-                canvas.classList.remove('active');
+                canvas.classList.remove('active', 'drawing');
             }
 
+            // Touch fallback
+            function touchStart(e) {
+                e.preventDefault();
+                const touch = e.touches[0];
+                const mouseEvent = new PointerEvent('pointerdown', {
+                    clientX: touch.clientX,
+                    clientY: touch.clientY,
+                    pressure: 0.5,
+                    pointerId: 1,
+                });
+                canvas.dispatchEvent(mouseEvent);
+            }
+
+            function touchMove(e) {
+                e.preventDefault();
+                const touch = e.touches[0];
+                const mouseEvent = new PointerEvent('pointermove', {
+                    clientX: touch.clientX,
+                    clientY: touch.clientY,
+                    pressure: 0.5,
+                    pointerId: 1,
+                });
+                canvas.dispatchEvent(mouseEvent);
+            }
+
+            function touchEnd(e) {
+                e.preventDefault();
+                const mouseEvent = new PointerEvent('pointerup', {
+                    pointerId: 1,
+                });
+                canvas.dispatchEvent(mouseEvent);
+            }
+
+            // ============================================================
+            // CLEAR
+            // ============================================================
             function clearCanvas() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 points = [];
                 strokes = [];
-                hasValidDrawing = false;
+                hasDrawing = false;
+                revealBtn.disabled = true;
+                revealBtn.classList.remove('active');
                 resEmoji.textContent = '';
                 resName.textContent = '';
                 resConfidence.textContent = '';
@@ -1372,60 +1451,52 @@
                     symX,
                     symY,
                     n,
+                    pointCount: n,
                     speedVariance: speeds.length > 0 ? speeds.reduce((a, b) => a + (b - avgSpeed) ** 2, 0) / speeds.length :
                         0,
                 };
             }
 
             // ============================================================
-            // INFERENCE (Local deterministic engine)
+            // INFERENCE
             // ============================================================
             function inferEmotion(features) {
-                if (!features) return { emotion: EMOTIONS[0], confidence: 0.2, distribution: {} };
+                if (!features || features.pointCount < 2) return null;
 
                 const rawScores = {};
 
-                // Joy: high speed, high distance, low curvature
                 rawScores.Joy = (features.avgSpeed / 5) * 0.4 + (features.totalDist / 200) * 0.3 + (1 - features.curvature) *
-                0.3;
+                    0.3;
 
-                // Calm: low speed, low distance, low direction changes
                 rawScores.Calm = (1 - Math.min(features.avgSpeed / 5, 1)) * 0.4 +
                     (1 - Math.min(features.totalDist / 200, 1)) * 0.3 +
                     (1 - Math.min(features.directionChanges / 10, 1)) * 0.3;
 
-                // Sadness: low speed, high pauses, low curvature
                 rawScores.Sadness = (1 - Math.min(features.avgSpeed / 3, 1)) * 0.4 +
                     Math.min(features.pauses / 10, 1) * 0.3 +
                     (1 - features.curvature) * 0.3;
 
-                // Anger: high speed, high direction changes, high curvature
                 rawScores.Anger = Math.min(features.avgSpeed / 5, 1) * 0.3 +
                     Math.min(features.directionChanges / 15, 1) * 0.4 +
                     Math.min(features.curvature, 1) * 0.3;
 
-                // Hope: medium speed, upward curve (symY lower)
                 rawScores.Hope = Math.min(features.avgSpeed / 4, 1) * 0.3 +
                     (1 - features.symY) * 0.4 +
                     features.curvature * 0.3;
 
-                // Freedom: high speed, high occupancy, low symmetry
                 rawScores.Freedom = Math.min(features.avgSpeed / 5, 1) * 0.3 +
                     Math.min(features.occupancy / 0.5, 1) * 0.4 +
                     (1 - features.symX) * 0.3;
 
-                // Passion: high speed, high curvature, high direction changes
                 rawScores.Passion = Math.min(features.avgSpeed / 5, 1) * 0.3 +
                     Math.min(features.curvature, 1) * 0.4 +
                     Math.min(features.directionChanges / 15, 1) * 0.3;
 
-                // Peace: medium speed, low direction changes, high symmetry
                 rawScores.Peace = (1 - Math.min(Math.abs(features.avgSpeed - 2) / 3, 1)) * 0.3 +
                     (1 - Math.min(features.directionChanges / 10, 1)) * 0.3 +
                     (1 - features.symX) * 0.2 +
                     (1 - features.symY) * 0.2;
 
-                // Normalize
                 let total = 0;
                 for (const key in rawScores) {
                     rawScores[key] = Math.max(0, Math.min(1, rawScores[key]));
@@ -1450,7 +1521,7 @@
                 return { emotion: maxEmotion, confidence, distribution, features };
             }
 
-            function getRarity(confidence, emotionName) {
+            function getRarity(confidence) {
                 const adjusted = Math.random() * (1 - confidence * 0.3);
                 for (const tier of RARITY_TIERS) {
                     if (adjusted > tier.threshold) {
@@ -1464,7 +1535,7 @@
             // REVEAL
             // ============================================================
             function runReveal() {
-                if (!hasValidDrawing || points.length < 5) {
+                if (!hasDrawing || points.length < 2) {
                     showToast('Draw something first ✍️');
                     return;
                 }
@@ -1476,7 +1547,7 @@
                 revealResult.classList.remove('show');
 
                 const features = extractFeatures(points);
-                if (!features) {
+                if (!features || features.pointCount < 2) {
                     showToast('Could not read your drawing. Try again.');
                     isRevealing = false;
                     revealOverlay.classList.remove('show');
@@ -1484,16 +1555,23 @@
                 }
 
                 const result = inferEmotion(features);
+                if (!result) {
+                    showToast('Could not read your drawing. Try again.');
+                    isRevealing = false;
+                    revealOverlay.classList.remove('show');
+                    return;
+                }
+
                 const emotion = result.emotion;
                 const confidence = result.confidence;
-                const rarity = getRarity(confidence, emotion.name);
+                const rarity = getRarity(confidence);
 
                 lastEmotion = emotion;
                 lastRarity = rarity;
                 lastConfidence = confidence;
                 lastPhrase = emotion.phrase;
 
-                // Save to storage
+                // Save drawing
                 saveDrawing(features, emotion, rarity, confidence);
 
                 setTimeout(() => {
@@ -1505,9 +1583,7 @@
                     revealConfidence.textContent = `${Math.round(confidence * 100)}% match`;
                     revealPhrase.textContent = emotion.phrase;
 
-                    // Update UI
                     updateUI();
-
                     isRevealing = false;
                 }, 1800);
             }
@@ -1591,17 +1667,14 @@
                 drawings.push(drawing);
                 emotionHistory.push({ date: drawing.date, emotion: emotion.name, emoji: emotion.emoji });
 
-                // Streak
                 await updateStreak();
 
-                // XP
                 const tierIndex = RARITY_TIERS.findIndex(t => t.name === rarity.name) + 1;
                 const xpGain = Math.round(10 + (1 / tierIndex) * 20);
                 xp += xpGain;
                 await dbSetMeta('xp', xp);
                 await dbSetMeta('emotionHistory', emotionHistory);
 
-                // Update streak display immediately
                 const newStreak = await dbGetMeta('streak') || 0;
                 streak = newStreak;
                 document.getElementById('streakCount').textContent = streak;
@@ -1654,7 +1727,7 @@
                 galleryGrid.innerHTML = '';
                 if (drawings.length === 0) {
                     galleryGrid.innerHTML =
-                        '<div style="grid-column:1/-1;text-align:center;color:var(--text-muted);font-size:0.7rem;padding:20px;">No drawings yet.</div>';
+                        '<div style="grid-column:1/-1;text-align:center;color:var(--text3);font-size:0.7rem;padding:20px;">No drawings yet.</div>';
                     return;
                 }
                 const items = drawings.slice(-9).reverse();
@@ -1677,7 +1750,7 @@
                 statsList.innerHTML = '';
                 if (drawings.length === 0) {
                     statsList.innerHTML =
-                        '<div style="text-align:center;color:var(--text-muted);font-size:0.7rem;padding:20px;">No data yet.</div>';
+                        '<div style="text-align:center;color:var(--text3);font-size:0.7rem;padding:20px;">No data yet.</div>';
                     return;
                 }
                 const counts = {};
@@ -2016,12 +2089,19 @@
                 initOnboarding();
                 initMenu();
 
-                canvas.addEventListener('pointerdown', onPointerDown);
-                canvas.addEventListener('pointermove', onPointerMove);
-                canvas.addEventListener('pointerup', onPointerUp);
-                canvas.addEventListener('pointercancel', onPointerCancel);
-                canvas.addEventListener('pointerleave', onPointerUp);
+                // Pointer Events
+                canvas.addEventListener('pointerdown', startDrawing);
+                canvas.addEventListener('pointermove', moveDrawing);
+                canvas.addEventListener('pointerup', endDrawing);
+                canvas.addEventListener('pointercancel', cancelDrawing);
+                canvas.addEventListener('pointerleave', endDrawing);
 
+                // Touch fallback for older devices
+                canvas.addEventListener('touchstart', touchStart, { passive: false });
+                canvas.addEventListener('touchmove', touchMove, { passive: false });
+                canvas.addEventListener('touchend', touchEnd, { passive: false });
+
+                // Prevent page scroll while drawing
                 canvas.addEventListener('touchmove', (e) => e.preventDefault(), { passive: false });
 
                 revealBtn.addEventListener('click', runReveal);
@@ -2053,8 +2133,9 @@
 
                 window.addEventListener('resize', handleResize);
 
-                console.log('💜 Mewonen V2 loaded');
+                console.log('💜 Mewonen V3 loaded');
                 console.log('🔒 AI runs locally. No data sent anywhere.');
+                console.log('📊 IndexedDB storage ready.');
             }
 
             if (document.readyState === 'loading') {
